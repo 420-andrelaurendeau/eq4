@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @Inheritance
 @NoArgsConstructor
-@AllArgsConstructor
 public class Student extends User {
     @Column
-    private String email;
-    @Column
     private String studentNumber;
-    @Column
-    private String password;
+
+    public Student(Long id, String email, String password, String studentNumber) {
+        super(id, email, password);
+        this.studentNumber = studentNumber;
+    }
 }
