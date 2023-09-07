@@ -8,3 +8,11 @@ meilleur que l'équipe 3
 - **Database**: PostGreSQL 15.4
 - **Test**: JUnit, Mockito
 - **Style**: ??
+
+### VsCode extensions
+
+- **Auto Rename Tag**
+- **ESLint**
+- **Git Lens**
+- **Prettier**
+- **ES7 + React/Redux/React-Native snippets**
