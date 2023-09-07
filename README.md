@@ -16,3 +16,11 @@ meilleur que l'équipe 3
 - **Git Lens**
 - **Prettier**
 - **ES7 + React/Redux/React-Native snippets**
+
+## Installing PostgreSQL
+[Installation link](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)
+
+### Create database
+1. $ `psql -U postgres` enter password from installation
+3. postgres=# `CREATE USER eq4 WITH PASSWORD 'eq4';`
+4. postgres=# `CREATE DATABASE audace OWNER eq4;`
