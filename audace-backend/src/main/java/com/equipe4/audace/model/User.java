@@ -9,6 +9,7 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "AUDACE_USER")
 public abstract class User {
     @Id
     @GeneratedValue(strategy=SEQUENCE, generator="SEQUENCE_USER")
