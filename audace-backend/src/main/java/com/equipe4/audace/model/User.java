@@ -11,7 +11,7 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@Table(name = "AUDACE_USER")
+//@Table(name = "AUDACE_USER") -> Ne permets pas la creation des tables Student et Employer
 public abstract class User {
     @Id
     @GeneratedValue(strategy=SEQUENCE, generator="SEQUENCE_USER")
