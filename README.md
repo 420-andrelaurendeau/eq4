@@ -19,10 +19,8 @@ meilleur que l'équipe 3
 
 ## Installing PostgreSQL
 [Installation link](https://www.enterprisedb.com/downloads/postgres-postgresql-downloads)
-Password: admin
 
 ### Create database
-1. $ `psql -U postgres`
-2. $ `admin`
+1. $ `psql -U postgres` enter password from installation
 3. postgres=# `CREATE USER eq4 WITH PASSWORD 'eq4';`
 4. postgres=# `CREATE DATABASE audace OWNER eq4;`
