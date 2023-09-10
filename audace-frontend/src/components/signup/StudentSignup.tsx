@@ -14,6 +14,8 @@ const StudentSignup = () => {
         if (!validateForm())
             return;
 
+        // TODO: add hashing for password
+
         let student: Student = {
             email: email,
             studentId: studentId,
