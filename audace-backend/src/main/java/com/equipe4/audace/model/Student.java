@@ -14,6 +14,11 @@ public class Student extends User {
     @Column
     private String studentNumber;
 
+    public Student(String email, String password, String studentNumber) {
+        super(email, password);
+        this.studentNumber = studentNumber;
+    }
+
     public Student(Long id, String email, String password, String studentNumber) {
         super(id, email, password);
         this.studentNumber = studentNumber;

@@ -13,7 +13,7 @@ public class StudentDTO extends UserDTO {
     private String studentNumber;
 
     public Student fromDTO() {
-        return new Student(id, email, password, studentNumber);
+        return new Student(email, password, studentNumber);
     }
 
     public StudentDTO(Long id, String email, String password, String studentNumber) {

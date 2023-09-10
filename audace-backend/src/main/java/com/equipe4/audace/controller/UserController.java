@@ -20,23 +20,4 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
-    @PostMapping("/createUser")
-    @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<User> createUser(@RequestBody UserDTO userDTO) {
-        logger.info("createUser");
-        if (userDTO == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-        return userService.createUser(userDTO)
-                .map(user -> ResponseEntity.status(HttpStatus.OK).body(user))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-    }
-
-    @GetMapping("/getAllUsers")
-    @CrossOrigin(origins = "http://localhost:3000")
-    public List<UserDTO> getAllUsers() {
-        logger.info("getAllUsers");
-        return userService.getAllUsers();
-    }
 }
