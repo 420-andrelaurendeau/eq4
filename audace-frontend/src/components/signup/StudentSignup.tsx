@@ -26,7 +26,19 @@ const StudentSignup = () => {
     }
 
     const validateForm = (): boolean => {
-        return email !== "" && studentId !== "" && password !== ""
+        return validateEmail() && validateStudentId() && validatePassword()
+    }
+
+    const validateEmail = (): boolean => {
+        return email !== ""
+    }
+
+    const validateStudentId = (): boolean => {
+        return studentId !== ""
+    }
+
+    const validatePassword = (): boolean => {
+        return password !== ""
     }
 
     return (
