@@ -20,5 +20,10 @@ public abstract class User {
     @Column
     protected String password;
 
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
     public abstract UserDTO toDTO();
 }

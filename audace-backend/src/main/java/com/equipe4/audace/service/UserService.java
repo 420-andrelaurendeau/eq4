@@ -15,16 +15,4 @@ import java.util.Optional;
 public class UserService {
     //TODO : Spring Security Password
     UserRepository userRepository;
-    public Optional<User> createUser(UserDTO userDTO) {
-        return Optional.of(userRepository.save(userDTO.fromDTO()));
-    }
-
-    public List<UserDTO> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        List<UserDTO> userDTOS = new ArrayList<>();
-        for (User user : users) {
-            userDTOS.add(user.toDTO());
-        }
-        return userDTOS;
-    }
 }
