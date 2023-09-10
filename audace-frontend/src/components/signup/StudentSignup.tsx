@@ -2,8 +2,10 @@ import { useState } from "react"
 import { Button, Form } from "react-bootstrap"
 import { studentSignup } from "../../services/signupService"
 import { Student } from "../../model/user"
+import { useTranslation } from "react-i18next"
 
 const StudentSignup = () => {
+    const {t} = useTranslation();
     const [email, setEmail] = useState<string>("")
     const [studentId, setStudentId] = useState<string>("")
     const [password, setPassword] = useState<string>("")
@@ -29,20 +31,20 @@ const StudentSignup = () => {
 
     return (
         <>
-            <h3>Student Signup</h3>
+            <h3>{t("signup.studentFormTitle")}</h3>
             <Form>
                 <Form.Group controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
+                    <Form.Label>{t("signup.emailEntry")}</Form.Label>
                     <Form.Control 
                         type="email" 
-                        placeholder="Enter email"
+                        placeholder={t("signup.emailEntry")}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
                 </Form.Group>
 
                 <Form.Group controlId="formBasicStudentId">
-                    <Form.Label>Student ID</Form.Label>
+                    <Form.Label>{t("signup.studentId")}</Form.Label>
                     <Form.Control 
                         type="text" 
                         placeholder="Enter student ID"
@@ -52,7 +54,7 @@ const StudentSignup = () => {
                 </Form.Group>
 
                 <Form.Group controlId="formBasicPassword">
-                    <Form.Label>Password</Form.Label>
+                    <Form.Label>{t("signup.password")}</Form.Label>
                     <Form.Control 
                         type="password" 
                         placeholder="Password"
@@ -62,7 +64,7 @@ const StudentSignup = () => {
                 </Form.Group>
 
                 <Button variant="primary" type="submit" className="mt-3" onSubmit={handleSubmit}>
-                    Submit
+                    {t("signup.signup")}
                 </Button>
             </Form>
         </>

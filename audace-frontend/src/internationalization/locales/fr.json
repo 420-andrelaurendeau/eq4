@@ -1,3 +1,10 @@
 {
-    "langCode": "fr"
+    "langCode": "fr",
+    "signup": {
+        "studentFormTitle": "Inscription étudiant",
+        "emailEntry": "Courriel",
+        "studentId": "Matricule",
+        "password": "Mot de passe",
+        "signup": "S'inscrire"
+    }
 }

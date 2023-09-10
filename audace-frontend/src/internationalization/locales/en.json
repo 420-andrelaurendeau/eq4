@@ -1,3 +1,10 @@
 {
-    "langCode": "en"
+    "langCode": "en",
+    "signup": {
+        "studentFormTitle": "Student Sign Up",
+        "emailEntry": "Email",
+        "studentId": "Student ID",
+        "password": "Password",
+        "signup": "Sign Up"
+    }
 }
