@@ -1,5 +1,6 @@
 package com.equipe4.audace.model;
 
+import com.equipe4.audace.dto.StudentDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
@@ -16,5 +17,9 @@ public class Student extends User {
     public Student(Long id, String email, String password, String studentNumber) {
         super(id, email, password);
         this.studentNumber = studentNumber;
+    }
+
+    public StudentDTO toDTO() {
+        return new StudentDTO(id, email, password, studentNumber);
     }
 }
