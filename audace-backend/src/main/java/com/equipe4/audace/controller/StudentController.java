@@ -3,7 +3,6 @@ package com.equipe4.audace.controller;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.service.StudentService;
-import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
