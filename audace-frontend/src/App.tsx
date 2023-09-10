@@ -2,11 +2,8 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useTranslation } from 'react-i18next';
 
 function App() {
-  const {t} = useTranslation();
-
   return (
     <div className="App">
       <header className="App-header">
@@ -14,7 +11,6 @@ function App() {
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
-        <p>{t("temp")}</p>
         <a
           className="App-link"
           href="https://reactjs.org"
