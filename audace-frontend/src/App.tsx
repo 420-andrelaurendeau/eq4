@@ -1,5 +1,5 @@
 import './App.css';
-import SignupView from './views/signup/SignupView';
+import SignupView from './views/Signup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
