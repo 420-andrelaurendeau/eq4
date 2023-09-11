@@ -4,17 +4,25 @@ import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.service.EmployerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-//TODO: API
+import java.util.List;
+
+
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
+@RequestMapping("/employers")
 public class EmployerController {
     private final EmployerService employerService;
 
     public EmployerController(EmployerService employerService) {
         this.employerService = employerService;
+    }
+
+
+    @GetMapping
+    public List<EmployerDTO> getAllEmployers(){
+        return employerService.findAllEmployers();
     }
 
     @PostMapping
