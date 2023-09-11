@@ -5,7 +5,7 @@ import { Student } from "../../../model/user";
 import { useTranslation } from "react-i18next";
 
 const StudentSignup = () => {
-  const { t } = useTranslation();
+  const {t} = useTranslation();
   const [email, setEmail] = useState<string>("");
   const [studentId, setStudentId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
