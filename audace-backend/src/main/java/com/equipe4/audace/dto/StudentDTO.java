@@ -2,8 +2,6 @@ package com.equipe4.audace.dto;
 
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.model.Student;
-import jakarta.persistence.Column;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
