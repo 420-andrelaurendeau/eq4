@@ -56,7 +56,7 @@ public class EmployerDTO {
     }
 
     public Employer fromDTO(){
-        return Employer.employerBuilder()
+        Employer employer = Employer.employerBuilder()
                 .firstName(firstName)
                 .lastName(lastName)
                 .organisation(organisation)
@@ -65,5 +65,9 @@ public class EmployerDTO {
                 .phone(phone)
                 .extension(extension)
                 .build();
+
+        employer.setOffers(offers.stream().map(offerDTO -> offerDTO.fromDto(employer)).toList());
+
+        return employer;
     }
 }

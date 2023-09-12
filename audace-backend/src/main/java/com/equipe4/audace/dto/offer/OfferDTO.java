@@ -1,5 +1,6 @@
 package com.equipe4.audace.dto.offer;
 
+import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.offer.Offer;
 import lombok.Data;
 
@@ -33,5 +34,9 @@ public class OfferDTO {
         this.internshipEndDate = offer.getInternshipEndDate();
         this.offerEndDate = offer.getOfferEndDate();
         this.employerId = offer.getEmployer().getId();
+    }
+
+    public Offer fromDto(Employer employer) {
+        return new Offer(title, description, internshipStartDate, internshipEndDate, offerEndDate, employer);
     }
 }
