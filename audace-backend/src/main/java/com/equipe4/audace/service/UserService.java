@@ -22,6 +22,14 @@ public class UserService {
 
         return userDTO.usersToDTO(users);
     }
-    
+
+    UserDTO getUser(long id) {
+        User user = userRepository.findById(id);
+        UserDTO userDTO = new UserDTO();
+        
+        return userDTO.userToDTO(user);
+    }
+
+
 
 }
