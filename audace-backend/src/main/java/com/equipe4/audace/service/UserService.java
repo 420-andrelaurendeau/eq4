@@ -16,17 +16,17 @@ public class UserService {
 
     }
 
-    List<UserDTO> getAllUsers() {
+    public List<UserDTO> getAllUsers() {
         List<User> users = userRepository.findAll();
         UserDTO userDTO = new UserDTO();
 
         return userDTO.usersToDTO(users);
     }
 
-    UserDTO getUser(long id) {
+    public UserDTO getUser(long id) {
         User user = userRepository.findById(id);
         UserDTO userDTO = new UserDTO();
-        
+
         return userDTO.userToDTO(user);
     }
 
