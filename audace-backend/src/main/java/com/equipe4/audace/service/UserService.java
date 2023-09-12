@@ -16,4 +16,12 @@ public class UserService {
 
     }
 
+    List<UserDTO> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        UserDTO userDTO = new UserDTO();
+
+        return userDTO.usersToDTO(users);
+    }
+    
+
 }
