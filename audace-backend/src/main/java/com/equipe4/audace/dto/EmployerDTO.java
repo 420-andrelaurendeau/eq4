@@ -15,6 +15,9 @@ public class EmployerDTO {
     @Column
     private String lastName;
     @Column
+    private String email;
+    private String password;
+    @Column
     private String organisation;
     @Column
     private String position;
@@ -29,6 +32,8 @@ public class EmployerDTO {
         this.id = employer.getId();
         this.firstName = employer.getFirstName();
         this.lastName = employer.getLastName();
+        this.email = employer.getEmail();
+        this.password = employer.getPassword();
         this.organisation = employer.getOrganisation();
         this.position = employer.getPosition();
         this.address = employer.getAddress();
@@ -37,16 +42,20 @@ public class EmployerDTO {
     }
 
     @Builder(builderMethodName = "employerDTOBuilder")
-    public EmployerDTO(Long id, String firstName, String lastName, String organisation, String position, String address, String phone, String extension) {
+    public EmployerDTO(Long id, String firstName, String lastName, String email, String password, String organisation, String position, String address, String phone, String extension) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
+        this.password = password;
         this.organisation = organisation;
         this.position = position;
         this.address = address;
         this.phone = phone;
         this.extension = extension;
     }
+
+
 
     public Employer fromDTO(){
         return Employer.employerBuilder()
