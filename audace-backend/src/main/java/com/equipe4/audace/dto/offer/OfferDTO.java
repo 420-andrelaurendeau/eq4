@@ -24,4 +24,14 @@ public class OfferDTO {
         this.offerEndDate = offerEndDate;
         this.employerId = employerId;
     }
+
+    public OfferDTO(Offer offer) {
+        this.id = offer.getId();
+        this.title = offer.getTitle();
+        this.description = offer.getDescription();
+        this.internshipStartDate = offer.getInternshipStartDate();
+        this.internshipEndDate = offer.getInternshipEndDate();
+        this.offerEndDate = offer.getOfferEndDate();
+        this.employerId = offer.getEmployer().getId();
+    }
 }
