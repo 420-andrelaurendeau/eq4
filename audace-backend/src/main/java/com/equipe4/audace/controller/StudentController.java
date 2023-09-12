@@ -1,11 +1,11 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.StudentDTO;
-import com.equipe4.audace.model.Student;
 import com.equipe4.audace.service.StudentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,10 +22,10 @@ public class StudentController {
 
     @PostMapping("/signup")
     @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentDTO studentDTO) {
+    public ResponseEntity<HttpStatus> createStudent(@RequestBody StudentDTO studentDTO) {
         logger.info("createStudent");
-        return studentService.createStudent(studentDTO)
-                .map(student -> ResponseEntity.ok())
-                .orElse(ResponseEntity.badRequest()).build();
+        studentService.createStudent(studentDTO);
+
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
