@@ -21,10 +21,10 @@ public class StudentController {
 
     @PostMapping("/signup")
     @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<Student> createStudent(@RequestBody StudentDTO studentDTO) {
+    public ResponseEntity<StudentDTO> createStudent(@RequestBody StudentDTO studentDTO) {
         logger.info("createStudent");
         return studentService.createStudent(studentDTO)
-                .map(student -> ResponseEntity.ok().body(student))
-                .orElse(ResponseEntity.notFound().build());
+                .map(student -> ResponseEntity.ok())
+                .orElse(ResponseEntity.badRequest()).build();
     }
 }

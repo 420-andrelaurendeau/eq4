@@ -10,16 +10,17 @@ import java.util.Optional;
 @Service
 public class StudentService {
     StudentRepository studentRepository;
-    public Optional<Student> createStudent(StudentDTO studentDTO) {
+    public Optional<StudentDTO> createStudent(StudentDTO studentDTO) {
         if (studentDTO == null) {
             throw new IllegalArgumentException("Student cannot be null");
         }
-        if (null != studentRepository.findStudentByStudentNumber(studentDTO.getStudentNumber())) {
+        if (studentRepository.findStudentByStudentNumber(studentDTO.getStudentNumber()).isPresent()) {
             throw new IllegalArgumentException("Student already exists");
         }
-        if (null != studentRepository.findStudentByEmail(studentDTO.getEmail())) {
+        if (studentRepository.findStudentByEmail(studentDTO.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Student already exists");
         }
-        return Optional.of(studentRepository.save(studentDTO.fromDTO()));
+        Student student = studentRepository.save(studentDTO.fromDTO());
+        return Optional.of(student.toDTO());
     }
 }
