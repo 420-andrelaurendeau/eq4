@@ -1,6 +1,7 @@
 package com.equipe4.audace.model;
 
 import com.equipe4.audace.model.offer.Offer;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -24,7 +25,7 @@ public class Employer extends User {
     @Column
     private String extension;
 
-    @OneToMany(mappedBy = "employer")
+    @OneToMany(mappedBy = "employer", cascade = CascadeType.ALL)
     List<Offer> offers;
 
     @Builder(builderMethodName = "employerBuilder")
