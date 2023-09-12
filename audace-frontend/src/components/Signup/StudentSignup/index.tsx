@@ -17,17 +17,13 @@ const StudentSignup = () => {
 
     let student: Student = {
       email: email,
-      studentId: studentId,
+      studentNumber: studentId,
       password: password,
     };
 
     studentSignup(student)
-      .then((res) => {
-        console.log("Yaintizit")
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      .then((res) => {})
+      .catch((err) => {});
   };
 
   const validateForm = (): boolean => {

@@ -5,5 +5,5 @@ export interface User {
 }
 
 export interface Student extends User{
-    studentId: string;
+    studentNumber: string;
 }
