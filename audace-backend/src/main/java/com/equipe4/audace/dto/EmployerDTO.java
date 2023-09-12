@@ -43,7 +43,15 @@ public class EmployerDTO {
     }
 
     @Builder(builderMethodName = "employerDTOBuilder")
-    public EmployerDTO(Long id, String firstName, String lastName, String organisation, String position, String address, String phone, String extension, List<OfferDTO> offers) {
+    public EmployerDTO(Long id,
+                       String firstName,
+                       String lastName,
+                       String organisation,
+                       String position,
+                       String address,
+                       String phone,
+                       String extension,
+                       List<OfferDTO> offers) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;

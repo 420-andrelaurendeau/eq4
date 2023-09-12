@@ -18,7 +18,14 @@ public class OfferDTO {
     private Long employerId;
     private DepartmentDTO department;
 
-    public OfferDTO(Long id, String title, String description, Date internshipStartDate, Date internshipEndDate, Date offerEndDate, Long employerId, DepartmentDTO department) {
+    public OfferDTO(Long id,
+                    String title,
+                    String description,
+                    Date internshipStartDate,
+                    Date internshipEndDate,
+                    Date offerEndDate,
+                    Long employerId,
+                    DepartmentDTO department) {
         this.id = id;
         this.title = title;
         this.description = description;
