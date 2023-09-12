@@ -22,8 +22,12 @@ const StudentSignup = () => {
     };
 
     studentSignup(student)
-      .then((res) => {})
-      .catch((err) => {});
+      .then((res) => {
+        console.log("Yaintizit")
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const validateForm = (): boolean => {
@@ -78,9 +82,8 @@ const StudentSignup = () => {
 
         <Button
           variant="primary"
-          type="submit"
           className="mt-3"
-          onSubmit={handleSubmit}
+          onClick={handleSubmit}
         >
           {t("signup.signup")}
         </Button>
