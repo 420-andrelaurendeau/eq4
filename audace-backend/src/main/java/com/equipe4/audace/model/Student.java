@@ -5,10 +5,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.ManyToOne;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Inheritance
+@Data
 @NoArgsConstructor
 public class Student extends User {
     @Column
