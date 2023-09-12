@@ -5,6 +5,7 @@ import com.equipe4.audace.model.Student;
 import com.equipe4.audace.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -17,16 +18,18 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
+    @Transactional
     public Optional<StudentDTO> createStudent(StudentDTO studentDTO) {
         if (studentDTO == null) {
             throw new IllegalArgumentException("Student cannot be null");
         }
-        if (studentRepository.findStudentByStudentNumber(studentDTO.getStudentNumber()).isPresent()) {
+        Optional<Student> studentOptional =
+                studentRepository.findStudentByStudentNumberOrEmail(studentDTO.getStudentNumber(), studentDTO.getEmail());
+
+        if (studentOptional.isPresent()) {
             throw new IllegalArgumentException("Student already exists");
         }
-        if (studentRepository.findStudentByEmail(studentDTO.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Student already exists");
-        }
+
         Student student = studentRepository.save(studentDTO.fromDTO());
         return Optional.of(student.toDTO());
     }
