@@ -11,20 +11,13 @@ import lombok.NoArgsConstructor;
 public class EmployerDTO {
     private Long id;
     private String firstName;
-    @Column
     private String lastName;
-    @Column
     private String email;
     private String password;
-    @Column
     private String organisation;
-    @Column
     private String position;
-    @Column
     private String address;
-    @Column
     private String phone;
-    @Column
     private String extension;
 
     public EmployerDTO(Employer employer) {
