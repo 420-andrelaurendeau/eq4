@@ -54,8 +54,6 @@ public class EmployerDTO {
         this.extension = extension;
     }
 
-
-
     public Employer fromDTO(){
         return Employer.employerBuilder()
                 .firstName(firstName)
