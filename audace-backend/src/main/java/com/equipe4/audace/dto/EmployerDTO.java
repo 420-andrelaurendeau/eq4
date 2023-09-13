@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EmployerDTO {
     private Long id;
-    @Column
     private String firstName;
     @Column
     private String lastName;
