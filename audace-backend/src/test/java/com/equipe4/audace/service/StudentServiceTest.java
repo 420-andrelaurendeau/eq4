@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -32,7 +33,7 @@ public class StudentServiceTest {
     private StudentService studentService;
 
     @Test
-    public void getOffersByDepartment_happyPath() {
+    void getOffersByDepartment_happyPath() {
         Department mockedDepartment = mock(Department.class);
         List<Offer> offers = new ArrayList<>();
 
@@ -70,5 +71,26 @@ public class StudentServiceTest {
 
         assertThat(result.size()).isEqualTo(offers.size());
         assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDto).toList());
+    }
+
+    @Test
+    void getOffersByDepartment_departmentNotFound() {
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> studentService.getOffersByDepartment(1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Department not found");
+    }
+
+    @Test
+    void getOffersByDepartment_noOffers() {
+        Department mockedDepartment = mock(Department.class);
+
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
+        when(offerRepository.findAllByDepartment(mockedDepartment)).thenReturn(new ArrayList<>());
+
+        List<OfferDTO> result = studentService.getOffersByDepartment(1L);
+
+        assertThat(result.size()).isEqualTo(0);
     }
 }
