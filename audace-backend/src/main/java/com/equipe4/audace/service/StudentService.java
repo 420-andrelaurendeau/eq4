@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class StudentService {
@@ -32,7 +33,8 @@ public class StudentService {
 
     @Transactional
     public List<OfferDTO> getOffersByDepartment(Long departmentId) {
-        Department department = departmentRepository.findById(departmentId).orElseThrow();
+        Department department = departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new NoSuchElementException("Department not found"));
         List<Offer> offers = offerRepository.findAllByDepartment(department);
 
         return offers.stream().map(Offer::toDto).toList();
