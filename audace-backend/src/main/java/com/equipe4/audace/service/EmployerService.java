@@ -9,7 +9,7 @@ import java.util.*;
 
 @Service
 public class EmployerService {
-    public EmployerRepository employerRepository;
+    private final EmployerRepository employerRepository;
 
     public Optional<EmployerDTO> saveEmployer(EmployerDTO employerDTO){
         return Optional.of(new EmployerDTO(employerRepository.save(employerDTO.fromDTO())));
