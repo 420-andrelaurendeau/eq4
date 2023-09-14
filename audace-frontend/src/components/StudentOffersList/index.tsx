@@ -7,7 +7,7 @@ interface Props {
     student: Student;
 }
 
-const StudentOffers = ({student}: Props) => {
+const StudentOffersList = ({student}: Props) => {
     const [offers, setOffers] = useState<Offer[]>([]);
 
     useEffect(() => {
@@ -32,4 +32,4 @@ const StudentOffers = ({student}: Props) => {
     )
 }
 
-export default StudentOffers;
+export default StudentOffersList;

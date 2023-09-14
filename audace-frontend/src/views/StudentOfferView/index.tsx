@@ -1,7 +1,7 @@
 import { Container } from "react-bootstrap";
-import StudentOffers from "../../components/StudentOffers";
 import { Student } from "../../model/user";
 import { Department } from "../../model/department";
+import StudentOffersList from "../../components/StudentOffersList";
 
 const tempDepartment: Department = {
     id: 1,
@@ -21,7 +21,7 @@ const StudentOfferView = () => {
     return (
         <Container>
             <h1>Student Offer View</h1>
-            <StudentOffers student={tempStudent}/>
+            <StudentOffersList student={tempStudent}/>
         </Container>
     );
 };
