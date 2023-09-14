@@ -32,12 +32,8 @@ public class EmployerDTO {
 
     public EmployerDTO(Employer employer) {
         this.id = employer.getId();
-        this.firstName = employer.getFirstName();
-        this.lastName = employer.getLastName();
         this.organisation = employer.getOrganisation();
         this.position = employer.getPosition();
-        this.address = employer.getAddress();
-        this.phone = employer.getPhone();
         this.extension = employer.getExtension();
         this.offers = employer.getOffers().stream().map(OfferDTO::new).toList();
     }
@@ -65,12 +61,8 @@ public class EmployerDTO {
 
     public Employer fromDTO(){
         Employer employer = Employer.employerBuilder()
-                .firstName(firstName)
-                .lastName(lastName)
                 .organisation(organisation)
                 .position(position)
-                .address(address)
-                .phone(phone)
                 .extension(extension)
                 .build();
 

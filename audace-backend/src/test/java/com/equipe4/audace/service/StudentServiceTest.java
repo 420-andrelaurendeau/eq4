@@ -40,13 +40,9 @@ public class StudentServiceTest {
         Employer fakeEmployer = new Employer(
                 "email",
                 "password",
-                "name",
-                "phone",
-                "companyName",
-                "companyAddress",
-                "companyPhone",
-                "companyEmail",
-                "companyWebsite"
+                "organisation",
+                "position",
+                "extension"
         );
         fakeEmployer.setId(1L);
 
