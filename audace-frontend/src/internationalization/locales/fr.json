@@ -2,6 +2,7 @@
     "langCode": "fr",
     "signup": {
         "employerFormTitle": "Inscription Employeur",
+        "studentFormTitle": "Inscription Étudiant",
         "companyNameEntry": "Nom de l'entreprise",
         "addressEntry": "Adresse",
         "cityEntry": "Ville",
@@ -14,6 +15,7 @@
         "emailEntry": "Courriel",
         "password": "Choisissez un mot de passe",
         "passwordConfirmation": "Confirmez votre mot de passe",
+        "studentId": "Matricule",
         "signup": "S'inscrire"
     },
     "studentOffersList": {

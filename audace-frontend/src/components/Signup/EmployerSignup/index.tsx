@@ -36,6 +36,7 @@ const EmployerSignup = () => {
       extension: extension,
       address: `${address}, ${city}, ${postalCode}`,
       password: password,
+      offers: []
     };
 
     employerSignup(employer)

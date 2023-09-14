@@ -16,7 +16,7 @@ const StudentOffersList = ({student}: Props) => {
     const {t} = useTranslation();
 
     useEffect(() => {
-        getOffersByDepartment(student.department.id!)
+        getOffersByDepartment(student.department!.id!)
         .then((res) => {
             setOffers(res.data);
         })

@@ -18,7 +18,7 @@ const StudentSignup = () => {
     let student: Student = {
       email: email,
       studentNumber: studentId,
-      password: password,
+      password: password
     };
 
     studentSignup(student)
