@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/students")
@@ -36,6 +37,14 @@ public class StudentController {
     public ResponseEntity<List<OfferDTO>> getOffersByDepartment(@PathVariable Long departmentId) {
         logger.info("getOffersByDepartment");
 
-        return ResponseEntity.ok(studentService.getOffersByDepartment(departmentId));
+        List<OfferDTO> offers;
+
+        try {
+            offers = studentService.getOffersByDepartment(departmentId);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(offers);
     }
 }
