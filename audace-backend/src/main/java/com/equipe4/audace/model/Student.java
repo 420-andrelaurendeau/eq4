@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class Student extends User {
     @Column
     private String studentNumber;
+    private String department;
 
     public Student(String email, String password, String studentNumber) {
         super(email, password);
@@ -23,8 +24,12 @@ public class Student extends User {
         super(id, email, password);
         this.studentNumber = studentNumber;
     }
-
+    public Student(Long id, String email, String password, String studentNumber, String department) {
+        super(id, email, password);
+        this.studentNumber = studentNumber;
+        this.department = department;
+    }
     public StudentDTO toDTO() {
-        return new StudentDTO(id, email, password, studentNumber);
+        return new StudentDTO(id, email, password, studentNumber, department);
     }
 }

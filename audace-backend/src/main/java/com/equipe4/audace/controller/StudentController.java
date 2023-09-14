@@ -25,7 +25,6 @@ public class StudentController {
     public ResponseEntity<HttpStatus> createStudent(@RequestBody StudentDTO studentDTO) {
         logger.info("createStudent");
         studentService.createStudent(studentDTO);
-
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
