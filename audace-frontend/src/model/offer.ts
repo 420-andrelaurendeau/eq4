@@ -1,12 +1,12 @@
 import { Department } from "./department";
-import { Employer } from "./user";
 
 export interface Offer {
     id?: number;
+    title: string;
     description: string;
     internshipStartDate: Date;
     internshipEndDate: Date;
     offerEndDate: Date;
     department: Department;
-    employer: Employer;
+    employerId: number;
 }
