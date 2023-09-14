@@ -11,17 +11,8 @@ import java.util.stream.Collectors;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO {
+public abstract class UserDTO {
     protected Long id;
     protected String email;
     protected String password;
-
-    public UserDTO userToDTO(User user) {
-        return new UserDTO(user.getId(), user.getEmail(), user.getPassword());
-    }
-    public List<UserDTO> usersToDTO(List<User> users) {
-        return users.stream()
-                .map(this::userToDTO)
-                .collect(Collectors.toList());
-    }
 }

@@ -1,9 +1,12 @@
 package com.equipe4.audace.model;
 
+import com.equipe4.audace.dto.UserDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
@@ -20,4 +23,6 @@ public abstract class User {
     protected String email;
     @Column
     protected String password;
+
+    public abstract UserDTO toDTO();
 }

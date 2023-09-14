@@ -2,9 +2,11 @@ package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -12,7 +14,7 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-
+    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -23,7 +25,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserDTO getUser(@PathVariable long id) {
+    public Optional<UserDTO> getUser(@PathVariable long id) {
         return userService.getUser(id);
     }
 }
