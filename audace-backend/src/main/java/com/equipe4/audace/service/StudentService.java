@@ -1,7 +1,9 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.StudentDTO;
-import com.equipe4.audace.dto.OfferDTO;
+import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.model.department.Department;
+import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.DepartmentRepository;
 import com.equipe4.audace.repository.OfferRepository;

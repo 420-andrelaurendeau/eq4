@@ -1,6 +1,6 @@
-package com.equipe4.audace.model;
+package com.equipe4.audace.model.department;
 
-import com.equipe4.audace.dto.DepartmentDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;

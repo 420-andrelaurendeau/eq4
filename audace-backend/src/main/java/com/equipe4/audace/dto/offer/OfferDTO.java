@@ -1,5 +1,6 @@
-package com.equipe4.audace.dto;
+package com.equipe4.audace.dto.offer;
 
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.offer.Offer;
 import lombok.Data;

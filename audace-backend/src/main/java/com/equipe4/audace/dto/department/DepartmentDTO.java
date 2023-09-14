@@ -1,4 +1,4 @@
-package com.equipe4.audace.dto;
+package com.equipe4.audace.dto.department;
 
 import com.equipe4.audace.model.department.Department;
 import lombok.Data;
