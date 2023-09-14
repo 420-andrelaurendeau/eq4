@@ -11,37 +11,41 @@ interface Props {
 
 const StudentOffersList = ({student}: Props) => {
     const [offers, setOffers] = useState<Offer[]>([]);
+    const [error, setError] = useState<string>("");
 
     useEffect(() => {
         getOffersByDepartment(student.department.id!)
         .then((res) => {
-            console.log(res.data)
             setOffers(res.data);
         })
         .catch((err) => {
-            console.log(err);
+            if (err.response.status === 404) setError("Department Not Found");
         })
     }, [student.department]);
 
     return (
         <>
             {
-                offers.length > 0 
-                ?
-                <Table striped bordered hover size="sm">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {offers.map((offer) => {return <StudentOffer key={offer.id} offer={offer} />})}
-                    </tbody>
-                </Table>
-                :
-                <p>No offers available</p>
+                error !== "" 
+                ? 
+                <p>{error}</p> 
+                : 
+                offers.length > 0
+                    ?
+                    <Table striped bordered hover size="sm">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {offers.map((offer) => {return <StudentOffer key={offer.id} offer={offer} />})}
+                        </tbody>
+                    </Table>
+                    :
+                    <p>No offers available</p>
             }
         </>
     )
