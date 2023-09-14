@@ -1,7 +1,6 @@
 package com.equipe4.audace.dto;
 
 import com.equipe4.audace.model.Employer;
-import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
