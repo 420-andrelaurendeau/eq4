@@ -2,6 +2,7 @@ import { Container } from "react-bootstrap";
 import { Student } from "../../model/user";
 import { Department } from "../../model/department";
 import StudentOffersList from "../../components/StudentOffersList";
+import { useTranslation } from "react-i18next";
 
 const tempDepartment: Department = {
     id: 1,
@@ -18,9 +19,11 @@ const tempStudent: Student = {
 }
 
 const StudentOfferView = () => {
+    const {t} = useTranslation();
+
     return (
         <Container>
-            <h1>Student Offer View</h1>
+            <h1>{t("studentOffersList.viewTitle")}</h1>
             <StudentOffersList student={tempStudent}/>
         </Container>
     );

@@ -4,6 +4,7 @@ import { Offer } from "../../model/offer";
 import { getOffersByDepartment } from "../../services/offerService";
 import StudentOffer from "./StudentOffer";
 import { Table } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     student: Student;
@@ -12,6 +13,7 @@ interface Props {
 const StudentOffersList = ({student}: Props) => {
     const [offers, setOffers] = useState<Offer[]>([]);
     const [error, setError] = useState<string>("");
+    const {t} = useTranslation();
 
     useEffect(() => {
         getOffersByDepartment(student.department.id!)
@@ -19,9 +21,9 @@ const StudentOffersList = ({student}: Props) => {
             setOffers(res.data);
         })
         .catch((err) => {
-            if (err.response.status === 404) setError("Department Not Found");
+            if (err.response.status === 404) setError(t("studentOffersList.errors.departmentNotFound"));
         })
-    }, [student.department]);
+    }, [student.department, t]);
 
     return (
         <>
@@ -35,9 +37,9 @@ const StudentOffersList = ({student}: Props) => {
                     <Table striped bordered hover size="sm">
                         <thead>
                             <tr>
-                                <th>Title</th>
-                                <th>Start Date</th>
-                                <th>End Date</th>
+                                <th>{t("studentOffersList.title")}</th>
+                                <th>{t("studentOffersList.internshipStartDate")}</th>
+                                <th>{t("studentOffersList.internshipEndDate")}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,7 +47,7 @@ const StudentOffersList = ({student}: Props) => {
                         </tbody>
                     </Table>
                     :
-                    <p>No offers available</p>
+                    <p>{t("studentOffersList.noOffers")}</p>
             }
         </>
     )
