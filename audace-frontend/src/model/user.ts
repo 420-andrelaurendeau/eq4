@@ -1,3 +1,6 @@
+import { Department } from "./department";
+import { Offer } from "./offer";
+
 export interface User {
     id?: number;
     email: string;
@@ -6,4 +9,12 @@ export interface User {
 
 export interface Student extends User{
     studentNumber: string;
+    department: Department;
+}
+
+export interface Employer extends User{
+    organisation: string;
+    position: string;
+    extension: string;
+    offers: Offer[];
 }

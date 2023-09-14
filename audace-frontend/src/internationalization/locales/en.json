@@ -1,5 +1,15 @@
 {
     "langCode": "en",
+    "studentOffersList": {
+        "errors": {
+            "departmentNotFound": "Department not found"
+        },
+        "title": "Title",
+        "internshipEndDate": "End Date",
+        "internshipStartDate": "Start Date",
+        "noOffers": "No offers available",
+        "viewTitle": "Available Offers"
+    },
     "signup": {
         "studentFormTitle": "Student Sign Up",
         "emailEntry": "Email",
