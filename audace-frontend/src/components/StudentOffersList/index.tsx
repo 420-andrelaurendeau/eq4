@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Student } from "../../model/user";
 import { Offer } from "../../model/offer";
 import { getOffersByDepartment } from "../../services/offerService";
+import StudentOffer from "./StudentOffer";
+import { Table } from "react-bootstrap";
 
 interface Props {
     student: Student;
@@ -13,6 +15,7 @@ const StudentOffersList = ({student}: Props) => {
     useEffect(() => {
         getOffersByDepartment(student.department.id!)
         .then((res) => {
+            console.log(res.data)
             setOffers(res.data);
         })
         .catch((err) => {
@@ -22,10 +25,22 @@ const StudentOffersList = ({student}: Props) => {
 
     return (
         <>
-            <h1>Available offers</h1>
             {
-                offers.length > 0 ?
-                offers.map((offer) => {return <p>{offer.description}</p>}) :
+                offers.length > 0 
+                ?
+                <Table striped bordered hover size="sm">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {offers.map((offer) => {return <StudentOffer key={offer.id} offer={offer} />})}
+                    </tbody>
+                </Table>
+                :
                 <p>No offers available</p>
             }
         </>
