@@ -10,7 +10,7 @@ import {
 
 const EmployerSignup = () => {
   const { t } = useTranslation();
-  const [organisation, setOrganisation] = useState<string>("");
+  const [organization, setOrganization] = useState<string>("");
   const [position, setPosition] = useState<string>("");
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
@@ -27,7 +27,7 @@ const EmployerSignup = () => {
     if (!validateForm()) return;
 
     let employer: Employer = {
-      organisation: organisation,
+      organization: organization,
       position: position,
       firstName: firstName,
       lastName: lastName,
@@ -45,7 +45,7 @@ const EmployerSignup = () => {
 
   const validateForm = (): boolean => {
     return (
-      validateOrganisation() &&
+      validateorganization() &&
       validatePosition() &&
       validateFirstName() &&
       validateLastName() &&
@@ -59,8 +59,8 @@ const EmployerSignup = () => {
     );
   };
 
-  const validateOrganisation = (): boolean => {
-    return organisation !== "";
+  const validateorganization = (): boolean => {
+    return organization !== "";
   };
 
   const validatePosition = (): boolean => {
@@ -106,8 +106,8 @@ const EmployerSignup = () => {
             <Form.Label>{t("signup.companyNameEntry")}</Form.Label>
             <Form.Control
               type="text"
-              value={organisation}
-              onChange={(e) => setOrganisation(e.target.value)}
+              value={organization}
+              onChange={(e) => setOrganization(e.target.value)}
             />
           </Form.Group>
 
