@@ -26,6 +26,4 @@ public abstract class User {
         this.email = email;
         this.password = password;
     }
-
-    public abstract UserDTO toDTO();
 }

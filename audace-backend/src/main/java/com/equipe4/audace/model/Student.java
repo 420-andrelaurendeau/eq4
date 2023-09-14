@@ -33,6 +33,6 @@ public class Student extends User {
     }
 
     public StudentDTO toDTO() {
-        return new StudentDTO(id, email, password, studentNumber, department);
+        return new StudentDTO(id, email, password, studentNumber, department.toDto());
     }
 }

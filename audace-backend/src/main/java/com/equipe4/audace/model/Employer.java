@@ -1,5 +1,7 @@
 package com.equipe4.audace.model;
 
+import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.model.offer.Offer;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
