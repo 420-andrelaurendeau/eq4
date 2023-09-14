@@ -1,5 +1,21 @@
 {
     "langCode": "en",
+    "signup": {
+        "employerFormTitle": "Employer Registration",
+        "companyNameEntry": "Company Name",
+        "addressEntry": "Address",
+        "cityEntry": "City",
+        "postalCodeEntry": "Postal Code",
+        "phoneEntry": "Phone",
+        "extensionEntry": "Extension",
+        "lastNameEntry": "Last Name",
+        "firstNameEntry": "First Name",
+        "positionEntry": "Position",
+        "emailEntry": "Work Email",
+        "password": "Choose a Password",
+        "passwordConfirmation": "Confirm Your Password",
+        "signup": "Sign Up"
+    },
     "studentOffersList": {
         "errors": {
             "departmentNotFound": "Department not found"
@@ -9,12 +25,5 @@
         "internshipStartDate": "Start Date",
         "noOffers": "No offers available",
         "viewTitle": "Available Offers"
-    },
-    "signup": {
-        "studentFormTitle": "Student Sign Up",
-        "emailEntry": "Email",
-        "studentId": "Student ID",
-        "password": "Password",
-        "signup": "Sign Up"
     }
 }
