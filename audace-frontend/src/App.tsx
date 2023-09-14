@@ -1,29 +1,41 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { Container } from "react-bootstrap";
+import { Nav, Navbar } from "react-bootstrap";
+import LanguageToggler from "./components/LanguageToggler";
+import { useTranslation } from "react-i18next";
 import SignupView from "./views/Signup";
 
 function App() {
+  const { t } = useTranslation();
+
   return (
-    <Router>
-      <Container>
-        <h1>Audace</h1>
+    <>
+      <Navbar bg="light" expand="lg">
+        <Navbar.Brand href="/">Audace</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav>
+            <Nav.Link href="/signup">{t("signup.signup")}</Nav.Link>
+          </Nav>
+          <LanguageToggler />
+        </Navbar.Collapse>
+      </Navbar>
+      <Router>
         <Routes>
           <Route
             path="/"
             element={
               <>
-                <Link to="/signup">Signup</Link>
+                <h1>OSE ÊTRE MEILLEUR</h1>
               </>
             }
           />
           <Route path="/signup" element={<SignupView />} />
         </Routes>
-      </Container>
-    </Router>
+      </Router>
+    </>
   );
 }
 

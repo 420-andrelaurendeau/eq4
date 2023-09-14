@@ -3,7 +3,10 @@ import { Button, Form, Row, Col } from "react-bootstrap";
 import { employerSignup } from "../../../services/signupService";
 import { Employer } from "../../../model/user";
 import { useTranslation } from "react-i18next";
-import { validatePassword } from "../../../services/passwordService";
+import {
+  validateEmail,
+  validatePassword,
+} from "../../../services/validationService";
 
 const EmployerSignup = () => {
   const { t } = useTranslation();
@@ -46,23 +49,13 @@ const EmployerSignup = () => {
       validatePosition() &&
       validateFirstName() &&
       validateLastName() &&
-      validateEmail() &&
+      validateEmail(email) &&
       validatePhone() &&
       validateExtension() &&
       validateAddress() &&
       validateCity() &&
       validatePostalCode() &&
       validatePassword(password, passwordConfirmation)
-    );
-  };
-
-  const validateEmail = (): boolean => {
-    return (
-      email !== "" &&
-      /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/i.test(email) &&
-      !email.endsWith("gmail.com") &&
-      !email.endsWith("hotmail.com") &&
-      !email.endsWith("outlook.com")
     );
   };
 
