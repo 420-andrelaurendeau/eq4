@@ -98,14 +98,16 @@ public class StudentServiceTest {
 
         when(studentRepository.save(any())).thenReturn(studentDTO.fromDTO());
 
-        Optional<StudentDTO> optionalStudentDTO = studentService.createStudent(studentDTO);
+        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(studentDTO.getDepartment().fromDto()));
+
+        Optional<StudentDTO> optionalStudentDTO = studentService.createStudent(studentDTO, "420");
 
         assertThat(optionalStudentDTO).isPresent();
     }
 
     @Test
     void createStudentNullStudent() { //HAHA COPILOT GO BRRRR
-        assertThatThrownBy(() -> studentService.createStudent(null))
+        assertThatThrownBy(() -> studentService.createStudent(null, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Student cannot be null");
     }
@@ -115,8 +117,18 @@ public class StudentServiceTest {
         StudentDTO studentDTO = new StudentDTO(1L, "test@mail.com", "Passw0rd", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
         when(studentRepository.findStudentByStudentNumberOrEmail(anyString(), anyString())).thenReturn(Optional.of(studentDTO.fromDTO()));
 
-        assertThatThrownBy(() -> studentService.createStudent(studentDTO))
+        assertThatThrownBy(() -> studentService.createStudent(studentDTO, "420"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Student already exists");
+    }
+
+    @Test
+    void createStudentDepartmentInvalid() {
+        StudentDTO studentDTO = new StudentDTO(1L, "test@mail.com", "Passw0rd", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
+        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> studentService.createStudent(studentDTO, "INVALIDE DUH"))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Department not found");
     }
 }

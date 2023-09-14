@@ -24,11 +24,11 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/signup/{departmentId}")
     @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<HttpStatus> createStudent(@RequestBody StudentDTO studentDTO) {
+    public ResponseEntity<HttpStatus> createStudent(@RequestBody StudentDTO studentDTO, @PathVariable String departmentCode) {
         logger.info("createStudent");
-        studentService.createStudent(studentDTO);
+        studentService.createStudent(studentDTO, departmentCode);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
