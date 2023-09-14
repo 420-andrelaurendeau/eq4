@@ -1,5 +1,7 @@
 package com.equipe4.audace.service;
 
+import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
@@ -88,5 +90,33 @@ public class StudentServiceTest {
         List<OfferDTO> result = studentService.getOffersByDepartment(1L);
 
         assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
+    void createStudent() {
+        StudentDTO studentDTO = new StudentDTO(1L, "test@mail.com", "Passw0rd", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
+
+        when(studentRepository.save(any())).thenReturn(studentDTO.fromDTO());
+
+        Optional<StudentDTO> optionalStudentDTO = studentService.createStudent(studentDTO);
+
+        assertThat(optionalStudentDTO).isPresent();
+    }
+
+    @Test
+    void createStudentNullStudent() { //HAHA COPILOT GO BRRRR
+        assertThatThrownBy(() -> studentService.createStudent(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Student cannot be null");
+    }
+
+    @Test
+    void createStudentAlreadyExists() {
+        StudentDTO studentDTO = new StudentDTO(1L, "test@mail.com", "Passw0rd", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
+        when(studentRepository.findStudentByStudentNumberOrEmail(anyString(), anyString())).thenReturn(Optional.of(studentDTO.fromDTO()));
+
+        assertThatThrownBy(() -> studentService.createStudent(studentDTO))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Student already exists");
     }
 }

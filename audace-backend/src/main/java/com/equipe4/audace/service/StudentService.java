@@ -40,7 +40,6 @@ public class StudentService {
         if (studentOptional.isPresent()) {
             throw new IllegalArgumentException("Student already exists");
         }
-
         Student student = studentRepository.save(studentDTO.fromDTO());
         return Optional.of(student.toDTO());
     }
