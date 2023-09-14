@@ -1,3 +1,19 @@
 {
-    "langCode": "en"
+    "langCode": "fr",
+    "signup": {
+        "employerFormTitle": "Employer Registration",
+        "companyNameEntry": "Company Name",
+        "addressEntry": "Address",
+        "cityEntry": "City",
+        "postalCodeEntry": "Postal Code",
+        "phoneEntry": "Phone",
+        "extensionEntry": "Extension",
+        "lastNameEntry": "Last Name",
+        "firstNameEntry": "First Name",
+        "positionEntry": "Position",
+        "emailEntry": "Work Email",
+        "password": "Choose a Password",
+        "passwordConfirmation": "Confirm Your Password",
+        "signup": "Sign Up"
+    }
 }
