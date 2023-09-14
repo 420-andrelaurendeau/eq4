@@ -1,12 +1,10 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.StudentDTO;
-import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.department.Department;
-import com.equipe4.audace.model.offer.Offer;
+import com.equipe4.audace.dto.OfferDTO;
 import com.equipe4.audace.repository.StudentRepository;
-import com.equipe4.audace.repository.department.DepartmentRepository;
-import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.repository.DepartmentRepository;
+import com.equipe4.audace.repository.OfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

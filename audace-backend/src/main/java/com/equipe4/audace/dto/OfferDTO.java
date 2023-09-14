@@ -1,8 +1,7 @@
-package com.equipe4.audace.dto.offer;
+package com.equipe4.audace.dto;
 
-import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.model.Employer;
-import com.equipe4.audace.model.offer.Offer;
+import com.equipe4.audace.model.Offer;
 import lombok.Data;
 
 import java.util.Date;

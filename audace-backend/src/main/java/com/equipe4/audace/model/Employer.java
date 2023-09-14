@@ -13,11 +13,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 public class Employer extends User {
-    @Column
+
     private String organisation;
-    @Column
     private String position;
-    @Column
     private String extension;
 
     @Builder(builderMethodName = "employerBuilder")

@@ -1,6 +1,5 @@
 package com.equipe4.audace.dto;
 
-import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.model.Student;
 import lombok.Data;
 import lombok.NoArgsConstructor;
