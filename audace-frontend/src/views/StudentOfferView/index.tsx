@@ -4,6 +4,8 @@ import { Department } from "../../model/department";
 import StudentOffersList from "../../components/StudentOffersList";
 import { useTranslation } from "react-i18next";
 
+// Temp until login works
+
 const tempDepartment: Department = {
     id: 1,
     name: "",
