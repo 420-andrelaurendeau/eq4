@@ -14,7 +14,6 @@ public class Department {
     @Id
     @GeneratedValue
     private Long id;
-
     private String code;
     private String name;
 

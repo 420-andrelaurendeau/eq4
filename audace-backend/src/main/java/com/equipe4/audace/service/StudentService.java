@@ -30,7 +30,7 @@ public class StudentService {
     }
 
     @Transactional
-    public Optional<StudentDTO> createStudent(StudentDTO studentDTO) {
+    public Optional<StudentDTO> createStudent(StudentDTO studentDTO, String departmentCode) {
         if (studentDTO == null) {
             throw new IllegalArgumentException("Student cannot be null");
         }
@@ -40,6 +40,12 @@ public class StudentService {
         if (studentOptional.isPresent()) {
             throw new IllegalArgumentException("Student already exists");
         }
+        Optional<Department> departmentOptional = departmentRepository.findByCode(departmentCode);
+
+        if (departmentOptional.isEmpty()) {
+            throw new NoSuchElementException("Department not found");
+        }
+        studentDTO.setDepartment(departmentOptional.get().toDto());
         Student student = studentRepository.save(studentDTO.fromDTO());
         return Optional.of(student.toDTO());
     }
