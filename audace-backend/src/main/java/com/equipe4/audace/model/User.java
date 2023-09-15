@@ -16,11 +16,11 @@ public abstract class User {
     @Id
     @GeneratedValue(strategy=SEQUENCE, generator="SEQUENCE_USER")
     @SequenceGenerator(name = "SEQUENCE_USER", sequenceName = "USER_SEC", allocationSize = 1)
-    protected Long id;
+    private Long id;
     private String firstName;
     private String lastName;
-    protected String email;
-    protected String password;
+    private String email;
+    private String password;
     private String address;
     private String phone;
 

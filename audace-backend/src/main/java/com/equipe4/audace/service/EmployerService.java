@@ -17,7 +17,7 @@ public class EmployerService {
         this.employerRepository = employerRepository;
     }
 
-    public Optional<EmployerDTO> saveEmployer(EmployerDTO employerDTO){
+    public Optional<EmployerDTO> createEmployer(EmployerDTO employerDTO){
         return Optional.of(new EmployerDTO(employerRepository.save(employerDTO.fromDTO())));
     }
 

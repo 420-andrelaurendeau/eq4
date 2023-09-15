@@ -33,7 +33,7 @@ public class EmployerServiceTest {
         when(employerRepository.save(any(Employer.class))).thenReturn(employerDTO.fromDTO());
 
         // Act
-        EmployerDTO dto = employerService.saveEmployer(employerDTO).get();
+        EmployerDTO dto = employerService.createEmployer(employerDTO).get();
 
         // Assert
         assertThat(dto.equals(employerDTO));

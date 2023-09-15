@@ -31,7 +31,7 @@ public class EmployerController {
     @PostMapping
     public ResponseEntity<HttpStatus> createEmployer(@RequestBody EmployerDTO employerDTO){
         logger.info("createEmployer");
-        employerService.saveEmployer(employerDTO);
+        employerService.createEmployer(employerDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

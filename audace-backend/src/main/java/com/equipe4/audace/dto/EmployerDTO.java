@@ -1,10 +1,7 @@
 package com.equipe4.audace.dto;
 
 import com.equipe4.audace.model.Employer;
-import jakarta.persistence.Column;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
@@ -51,6 +48,8 @@ public class EmployerDTO {
         return Employer.employerBuilder()
                 .firstName(firstName)
                 .lastName(lastName)
+                .email(email)
+                .password(password)
                 .organisation(organisation)
                 .position(position)
                 .address(address)
