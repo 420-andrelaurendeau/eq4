@@ -41,7 +41,7 @@ const EmployerSignup = () => {
 
   const validateOrganisation = (errorsToDisplay: string[]): boolean => {
     if (organisation === "") {
-      errorsToDisplay.push(t("signup.organisationError"));
+      errorsToDisplay.push("signup.errors.organisation");
       return false;
     }
 
@@ -50,7 +50,7 @@ const EmployerSignup = () => {
 
   const validatePosition = (errorsToDisplay: string[]): boolean => {
     if (position === "") {
-      errorsToDisplay.push(t("signup.positionError"));
+      errorsToDisplay.push("signup.errors.position");
       return false;
     }
 

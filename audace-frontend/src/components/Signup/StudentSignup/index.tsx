@@ -38,7 +38,7 @@ const StudentSignup = () => {
 
   const validateStudentId = (errorsToDisplay: string[]): boolean => {
     if (studentId === "") {
-      errorsToDisplay.push(t("signup.studentIdError"));
+      errorsToDisplay.push("signup.errors.studentId");
       return false;
     }
 

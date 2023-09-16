@@ -53,11 +53,11 @@ const Signup = ({handleSubmit, extension, setExtension, setErrors, validateExtra
         if (!validatePhone(errorsToDisplay)) isFormValid = false;
 
         if (!validateEmail(email)) {
-            errorsToDisplay.push(t("signup.emailError"));
+            errorsToDisplay.push("signup.errors.email");
             isFormValid = false;
         }
         if (!validatePassword(password, passwordConfirmation)) {
-            errorsToDisplay.push(t("signup.passwordError"));
+            errorsToDisplay.push("signup.errors.password");
             isFormValid = false;
         }
 
@@ -69,7 +69,7 @@ const Signup = ({handleSubmit, extension, setExtension, setErrors, validateExtra
 
     const validateFirstName = (errorsToDisplay: string[]): boolean => {
         if (firstName === "") {
-            errorsToDisplay.push(t("signup.firstNameError"));
+            errorsToDisplay.push("signup.errors.firstName");
             return false;
         }
 
@@ -78,7 +78,7 @@ const Signup = ({handleSubmit, extension, setExtension, setErrors, validateExtra
     
       const validateLastName = (errorsToDisplay: string[]): boolean => {
         if (lastName === "") {
-            errorsToDisplay.push(t("signup.lastNameError"));
+            errorsToDisplay.push("signup.errors.lastName");
             return false;
         }
     
@@ -87,7 +87,7 @@ const Signup = ({handleSubmit, extension, setExtension, setErrors, validateExtra
     
       const validatePhone = (errorsToDisplay: string[]): boolean => {
         if (phone === "" || !/^[0-9]{10}$/i.test(phone)) {
-            errorsToDisplay.push(t("signup.phoneError"));
+            errorsToDisplay.push("signup.errors.phone");
             return false;
         }
     
@@ -96,7 +96,7 @@ const Signup = ({handleSubmit, extension, setExtension, setErrors, validateExtra
     
       const validateAddress = (errorsToDisplay: string[]): boolean => {
         if (address === "") {
-            errorsToDisplay.push(t("signup.addressError"));
+            errorsToDisplay.push("signup.errors.address");
             return false;
         }
     
@@ -105,7 +105,7 @@ const Signup = ({handleSubmit, extension, setExtension, setErrors, validateExtra
     
       const validateCity = (errorsToDisplay: string[]): boolean => {
         if (city === "") {
-            errorsToDisplay.push(t("signup.cityError"));
+            errorsToDisplay.push("signup.errors.city");
             return false;
         }
     
@@ -114,7 +114,7 @@ const Signup = ({handleSubmit, extension, setExtension, setErrors, validateExtra
     
       const validatePostalCode = (errorsToDisplay: string[]): boolean => {
         if (postalCode === "" || !/^[a-z][0-9][a-z] ?[0-9][a-z][0-9]$/i.test(postalCode)) {
-            errorsToDisplay.push(t("signup.postalCodeError"));
+            errorsToDisplay.push("signup.errors.postalCode");
             return false;
         }
     
