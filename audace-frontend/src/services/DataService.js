@@ -1,12 +1,13 @@
 import http from "../constants/http";
 
+
 class DataService{
 
     getAllOffers(){
-        return http.get("");
+        return http.get("/offers");
     }
     getOffersByEmployerId(id){
-        return http.get("");
+        return http.get(`/employer/offers/${id}`);
     }
 }
 
