@@ -25,7 +25,7 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @PostMapping("/signup/{departmentId}")
+    @PostMapping("/signup/{departmentCode}")
     @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<HttpStatus> createStudent(@RequestBody StudentDTO studentDTO, @PathVariable String departmentCode) {
         logger.info("createStudent");
