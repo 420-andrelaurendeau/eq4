@@ -9,9 +9,10 @@ interface Props {
     extension?: string;
     setExtension?: (extension: string) => void;
     setErrors: (errors: string[]) => void;
+    validateExtraFormValues?: (errorsToDisplay: string[]) => boolean;
 }
 
-const Signup = ({handleSubmit, extension, setExtension, setErrors}: Props) => {
+const Signup = ({handleSubmit, extension, setExtension, setErrors, validateExtraFormValues}: Props) => {
     const {t} = useTranslation();
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
@@ -61,6 +62,7 @@ const Signup = ({handleSubmit, extension, setExtension, setErrors}: Props) => {
         }
 
         setErrors(errorsToDisplay);
+        if (validateExtraFormValues !== undefined) isFormValid = validateExtraFormValues(errorsToDisplay);
 
         return isFormValid;
     };

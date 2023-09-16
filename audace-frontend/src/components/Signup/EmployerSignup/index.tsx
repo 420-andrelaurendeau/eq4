@@ -14,8 +14,6 @@ const EmployerSignup = () => {
   const [errors, setErrors] = useState<string[]>([]);
 
   const handleSubmit = (user: User) => {
-    if (!validateForm()) return;
-
     let employer: Employer = {
       ...user,
       organisation: organisation,
@@ -29,16 +27,34 @@ const EmployerSignup = () => {
       .catch((err) => {});
   };
 
-  const validateForm = (): boolean => {
-    return validateOrganisation() && validatePosition();
+  const validateForm = (errors: string[]): boolean => {
+    let isFormValid = true;
+    let errorsToDisplay: string[] = [];
+
+    if (!validateOrganisation(errorsToDisplay)) isFormValid = false;
+    if (!validatePosition(errorsToDisplay)) isFormValid = false;
+
+    setErrors([...errorsToDisplay, ...errors]);
+
+    return isFormValid;
   };
 
-  const validateOrganisation = (): boolean => {
-    return organisation !== "";
+  const validateOrganisation = (errorsToDisplay: string[]): boolean => {
+    if (organisation === "") {
+      errorsToDisplay.push(t("signup.organisationError"));
+      return false;
+    }
+
+    return true;
   };
 
-  const validatePosition = (): boolean => {
-    return position !== "";
+  const validatePosition = (errorsToDisplay: string[]): boolean => {
+    if (position === "") {
+      errorsToDisplay.push(t("signup.positionError"));
+      return false;
+    }
+
+    return true;
   };
 
   return (
@@ -66,10 +82,11 @@ const EmployerSignup = () => {
           </Form.Group>
         </Row>
 
-        <Signup 
-          handleSubmit={handleSubmit} 
-          extension={extension} 
+        <Signup
+          handleSubmit={handleSubmit}
+          extension={extension}
           setExtension={setExtension}
+          validateExtraFormValues={validateForm}
           setErrors={setErrors}
         />
       </Form>

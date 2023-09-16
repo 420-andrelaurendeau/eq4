@@ -15,7 +15,6 @@ const StudentSignup = () => {
 
   const handleSubmit = (user: User) => {
     if (!depCode) return;
-    if (!validateForm()) return;
 
     let student: Student = {
       ...user,
@@ -27,12 +26,23 @@ const StudentSignup = () => {
       .catch((err) => {});
   };
 
-  const validateForm = (): boolean => {
-    return validateStudentId();
+  const validateForm = (errors: string[]): boolean => {
+    let isFormValid = true;
+    let errorsToDisplay: string[] = [];
+
+    if (!validateStudentId(errorsToDisplay)) isFormValid = false;
+    setErrors([...errorsToDisplay, ...errors]);
+
+    return isFormValid;
   };
 
-  const validateStudentId = (): boolean => {
-    return studentId !== "";
+  const validateStudentId = (errorsToDisplay: string[]): boolean => {
+    if (studentId === "") {
+      errorsToDisplay.push(t("signup.studentIdError"));
+      return false;
+    }
+
+    return true;
   };
 
   return (
@@ -52,6 +62,7 @@ const StudentSignup = () => {
         <Signup
           handleSubmit={handleSubmit}
           setErrors={setErrors}
+          validateExtraFormValues={validateForm}
         />
       </Form>
       <FormError errors={errors} />
