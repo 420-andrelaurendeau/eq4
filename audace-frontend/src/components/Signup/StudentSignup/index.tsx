@@ -5,17 +5,17 @@ import { Student, User } from "../../../model/user";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
 import Signup from "..";
+import FormError from "../../FormError";
 
 const StudentSignup = () => {
   const {t} = useTranslation();
   const [studentId, setStudentId] = useState<string>("");
   const {depCode} = useParams();
+  const [errors, setErrors] = useState<string[]>([]);
 
   const handleSubmit = (user: User) => {
     if (!depCode) return;
     if (!validateForm()) return;
-
-    // TODO: add hashing for password
 
     let student: Student = {
       ...user,
@@ -49,8 +49,12 @@ const StudentSignup = () => {
           />
         </Form.Group>
 
-        <Signup handleSubmit={handleSubmit} />
+        <Signup
+          handleSubmit={handleSubmit}
+          setErrors={setErrors}
+        />
       </Form>
+      <FormError errors={errors} />
     </>
   );
 };

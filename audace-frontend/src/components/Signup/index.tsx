@@ -8,9 +8,10 @@ interface Props {
     handleSubmit: (user: User) => void;
     extension?: string;
     setExtension?: (extension: string) => void;
+    setErrors: (errors: string[]) => void;
 }
 
-const Signup = ({handleSubmit, extension, setExtension}: Props) => {
+const Signup = ({handleSubmit, extension, setExtension, setErrors}: Props) => {
     const {t} = useTranslation();
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
@@ -25,6 +26,8 @@ const Signup = ({handleSubmit, extension, setExtension}: Props) => {
     const submitForm = () => {
         if (!validateForm()) return;
 
+        // TODO: add hashing for password
+
         let user: User = {
             firstName: firstName,
             lastName: lastName,
@@ -38,40 +41,82 @@ const Signup = ({handleSubmit, extension, setExtension}: Props) => {
     };
 
     const validateForm = (): boolean => {
-        return (
-            validateFirstName() &&
-            validateLastName() &&
-            validateAddress() &&
-            validateCity() &&
-            validatePostalCode() &&
-            validatePhone() &&
-            validateEmail(email) &&
-            validatePassword(password, passwordConfirmation)
-        );
+        let isFormValid = true;
+        let errorsToDisplay: string[] = [];
+
+        if (!validateFirstName(errorsToDisplay)) isFormValid = false;
+        if (!validateLastName(errorsToDisplay)) isFormValid = false;
+        if (!validateAddress(errorsToDisplay)) isFormValid = false;
+        if (!validateCity(errorsToDisplay)) isFormValid = false;
+        if (!validatePostalCode(errorsToDisplay)) isFormValid = false;
+        if (!validatePhone(errorsToDisplay)) isFormValid = false;
+
+        if (!validateEmail(email)) {
+            errorsToDisplay.push(t("signup.emailError"));
+            isFormValid = false;
+        }
+        if (!validatePassword(password, passwordConfirmation)) {
+            errorsToDisplay.push(t("signup.passwordError"));
+            isFormValid = false;
+        }
+
+        setErrors(errorsToDisplay);
+
+        return isFormValid;
     };
 
-    const validateFirstName = (): boolean => {
-        return firstName !== "";
+    const validateFirstName = (errorsToDisplay: string[]): boolean => {
+        if (firstName === "") {
+            errorsToDisplay.push(t("signup.firstNameError"));
+            return false;
+        }
+
+        return true;
       };
     
-      const validateLastName = (): boolean => {
-        return lastName !== "";
+      const validateLastName = (errorsToDisplay: string[]): boolean => {
+        if (lastName === "") {
+            errorsToDisplay.push(t("signup.lastNameError"));
+            return false;
+        }
+    
+        return true;
       };
     
-      const validatePhone = (): boolean => {
-        return phone !== "" && /^[0-9]{10}$/i.test(phone);
+      const validatePhone = (errorsToDisplay: string[]): boolean => {
+        if (phone === "" || !/^[0-9]{10}$/i.test(phone)) {
+            errorsToDisplay.push(t("signup.phoneError"));
+            return false;
+        }
+    
+        return true;
       };
     
-      const validateAddress = (): boolean => {
-        return address !== "";
+      const validateAddress = (errorsToDisplay: string[]): boolean => {
+        if (address === "") {
+            errorsToDisplay.push(t("signup.addressError"));
+            return false;
+        }
+    
+        return true;
       };
     
-      const validateCity = (): boolean => {
-        return city !== "";
+      const validateCity = (errorsToDisplay: string[]): boolean => {
+        if (city === "") {
+            errorsToDisplay.push(t("signup.cityError"));
+            return false;
+        }
+    
+        return true;
       };
     
-      const validatePostalCode = (): boolean => {
-        return postalCode !== "" && /^[A-Za-z0-9\s]+$/i.test(postalCode);
+      const validatePostalCode = (errorsToDisplay: string[]): boolean => {
+        if (postalCode === "" || !/^[a-z][0-9][a-z] ?[0-9][a-z][0-9]$/i.test(postalCode)) {
+            errorsToDisplay.push(t("signup.postalCodeError"));
+            return false;
+        }
+    
+        return true;
       };
 
     return (

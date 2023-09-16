@@ -4,12 +4,14 @@ import { employerSignup } from "../../../services/signupService";
 import { Employer, User } from "../../../model/user";
 import { useTranslation } from "react-i18next";
 import Signup from "..";
+import FormError from "../../FormError";
 
 const EmployerSignup = () => {
   const { t } = useTranslation();
   const [organisation, setOrganisation] = useState<string>("");
   const [position, setPosition] = useState<string>("");
   const [extension, setExtension] = useState<string>("");
+  const [errors, setErrors] = useState<string[]>([]);
 
   const handleSubmit = (user: User) => {
     if (!validateForm()) return;
@@ -64,8 +66,14 @@ const EmployerSignup = () => {
           </Form.Group>
         </Row>
 
-        <Signup handleSubmit={handleSubmit} extension={extension} setExtension={setExtension}/>
+        <Signup 
+          handleSubmit={handleSubmit} 
+          extension={extension} 
+          setExtension={setExtension}
+          setErrors={setErrors}
+        />
       </Form>
+      <FormError errors={errors} />
     </>
   );
 };
