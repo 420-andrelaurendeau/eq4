@@ -19,10 +19,7 @@ function PublishedOffers(){
         offer => {
             return <tr key={offer.id}>
                 <td>{offer.title}</td>
-                <td>{offer.description}</td>
                 <td>{offer.internshipStartDate.toString()}</td>
-                <td>{offer.internshipEndDate.toString()}</td>
-                <td>{offer.offerEndDate.toString()}</td>
                 <td>{offer.department.name}</td>
             </tr>
         }
@@ -34,6 +31,13 @@ function PublishedOffers(){
         <Container className="mt-2">
             <h3>Mes offres publies</h3>
             <Table className="m-4">
+                <thead>
+                    <tr>
+                        <td>Titre du poste</td>
+                        <td>Date de début</td>
+                        <td>Secteur d'activité</td>
+                    </tr>
+                </thead>
                 {publishedOffers}
             </Table>
         </Container>
