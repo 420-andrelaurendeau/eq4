@@ -3,14 +3,17 @@ import { Button, Form } from "react-bootstrap";
 import { studentSignup } from "../../../services/signupService";
 import { Student } from "../../../model/user";
 import { useTranslation } from "react-i18next";
+import { useParams } from "react-router";
 
 const StudentSignup = () => {
   const {t} = useTranslation();
   const [email, setEmail] = useState<string>("");
   const [studentId, setStudentId] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const {depCode} = useParams();
 
   const handleSubmit = () => {
+    if (!depCode) return;
     if (!validateForm()) return;
 
     // TODO: add hashing for password
@@ -21,7 +24,7 @@ const StudentSignup = () => {
       password: password
     };
 
-    studentSignup(student)
+    studentSignup(student, depCode)
       .then((res) => {})
       .catch((err) => {});
   };

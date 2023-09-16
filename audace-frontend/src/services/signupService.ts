@@ -6,6 +6,6 @@ export const employerSignup = async (employer: Employer): Promise<AxiosResponse>
     return http.post('/employer/signup', employer);
 }
 
-export const studentSignup = async (student: Student): Promise<AxiosResponse> => {
-    return http.post('/students/signup', student);
+export const studentSignup = async (student: Student, depCode: string): Promise<AxiosResponse> => {
+    return http.post(`/students/signup/${depCode}`, student);
 }
