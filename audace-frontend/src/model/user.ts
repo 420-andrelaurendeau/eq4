@@ -22,3 +22,8 @@ export interface Employer extends User{
     extension: string;
     offers: Offer[];
 }
+
+export enum UserType {
+    Student,
+    Employer
+}
