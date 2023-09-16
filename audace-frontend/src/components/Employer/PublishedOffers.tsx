@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import DataService from "../../services/DataService";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import EmployerNavBar from "./EmployerNavBar";
 import {Container, Table} from "reactstrap";
 import { Offer } from "../../model/offer"
+
 
 function PublishedOffers(){
     const [offers, setOffers] = useState<Offer[]>([]);
@@ -38,7 +39,9 @@ function PublishedOffers(){
                         <td>Secteur d'activité</td>
                     </tr>
                 </thead>
-                {publishedOffers}
+                <tbody>
+                    {publishedOffers}
+                </tbody>
             </Table>
         </Container>
     </div>

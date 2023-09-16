@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {useNavigate} from "react-router-dom";
-import {Navbar, NavbarBrand} from "reactstrap";
+import {Navbar, NavbarBrand, NavItem, NavLink} from "reactstrap";
 function EmployerNavBar(){
     const navigate = useNavigate();
     const handleNavigation = () => {
@@ -8,8 +8,10 @@ function EmployerNavBar(){
         window.location.reload();
     }
 
-    return <Navbar>
-        <NavbarBrand onClick={handleNavigation}>Home</NavbarBrand>
+    return <Navbar color="dark" dark >
+        <NavItem>
+            <NavLink >Home</NavLink>
+        </NavItem>
     </Navbar>
 }
-export default Navbar;
+export default EmployerNavBar;
