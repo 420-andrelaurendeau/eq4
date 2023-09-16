@@ -1,29 +1,26 @@
 import { useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { studentSignup } from "../../../services/signupService";
-import { Student } from "../../../model/user";
+import { Student, User } from "../../../model/user";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
-import { validateEmail, validatePassword } from "../../../services/validationService";
+import Signup from "..";
 
 const StudentSignup = () => {
   const {t} = useTranslation();
-  const [email, setEmail] = useState<string>("");
   const [studentId, setStudentId] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const {depCode} = useParams();
 
-  const handleSubmit = () => {
+  const handleSubmit = (user: User) => {
     if (!depCode) return;
     if (!validateForm()) return;
 
     // TODO: add hashing for password
 
     let student: Student = {
-      email: email,
+      ...user,
       studentNumber: studentId,
-      password: password
-    };
+    }
 
     studentSignup(student, depCode)
       .then((res) => {})
@@ -31,7 +28,7 @@ const StudentSignup = () => {
   };
 
   const validateForm = (): boolean => {
-    return validateEmail(email) && validateStudentId() && validatePassword(password, password);
+    return validateStudentId();
   };
 
   const validateStudentId = (): boolean => {
@@ -42,16 +39,6 @@ const StudentSignup = () => {
     <>
       <h3>{t("signup.studentFormTitle")}</h3>
       <Form>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>{t("signup.emailEntry")}</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder={t("signup.emailEntry")}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </Form.Group>
-
         <Form.Group controlId="formBasicStudentId">
           <Form.Label>{t("signup.studentId")}</Form.Label>
           <Form.Control
@@ -62,23 +49,7 @@ const StudentSignup = () => {
           />
         </Form.Group>
 
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>{t("signup.password")}</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Form.Group>
-
-        <Button
-          variant="primary"
-          className="mt-3"
-          onClick={handleSubmit}
-        >
-          {t("signup.signup")}
-        </Button>
+        <Signup handleSubmit={handleSubmit} />
       </Form>
     </>
   );
