@@ -16,7 +16,21 @@
         "password": "Choisissez un mot de passe",
         "passwordConfirmation": "Confirmez votre mot de passe",
         "studentId": "Matricule",
-        "signup": "S'inscrire"
+        "signup": "S'inscrire",
+        "errors": {
+            "organisation": "SVP entrez un nom d'organisation valide",
+            "position": "la fonction occupée ne peut pas être vide",
+            "firstName": "Le prénom ne peut pas être vide",
+            "lastName": "Le nom de famille ne peut pas être vide",
+            "address": "L'adresse ne peut pas être vide",
+            "city": "La ville ne peut pas être vide",
+            "postalCode": "SVP entrez un code postal valide",
+            "phone": "SVP entrez un numéro de téléphone valide",
+            "extension": "SVP entrez un numéro de poste valide",
+            "email": "SVP entrez un courriel valide",
+            "password": "SVP entrez un mot de passe valide",
+            "studentId": "SVP entrez une matricule valide"
+        }
     },
     "studentOffersList": {
         "errors": {

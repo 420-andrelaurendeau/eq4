@@ -16,7 +16,21 @@
         "password": "Choose a Password",
         "passwordConfirmation": "Confirm Your Password",
         "studentId": "Student number",
-        "signup": "Sign Up"
+        "signup": "Sign Up",
+        "errors": {
+            "organisation": "Please enter a valid organisation name",
+            "position": "Position cannot be empty",
+            "firstName": "First name cannot be empty",
+            "lastName": "Last name cannot be empty",
+            "address": "Address cannot be empty",
+            "city": "City cannot be empty",
+            "postalCode": "Postal code cannot be empty",
+            "phone": "Please enter a valid phone number",
+            "extension": "Please enter a valid extension",
+            "email": "Please enter a valid email address",
+            "password": "Please enter a valid password",
+            "studentId": "Please enter a valid student number"
+        }
     },
     "studentOffersList": {
         "errors": {
