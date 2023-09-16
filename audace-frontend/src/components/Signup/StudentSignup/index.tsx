@@ -4,6 +4,7 @@ import { studentSignup } from "../../../services/signupService";
 import { Student } from "../../../model/user";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
+import { validateEmail, validatePassword } from "../../../services/validationService";
 
 const StudentSignup = () => {
   const {t} = useTranslation();
@@ -30,19 +31,11 @@ const StudentSignup = () => {
   };
 
   const validateForm = (): boolean => {
-    return validateEmail() && validateStudentId() && validatePassword();
-  };
-
-  const validateEmail = (): boolean => {
-    return email !== "";
+    return validateEmail(email) && validateStudentId() && validatePassword(password, password);
   };
 
   const validateStudentId = (): boolean => {
     return studentId !== "";
-  };
-
-  const validatePassword = (): boolean => {
-    return password !== "";
   };
 
   return (
