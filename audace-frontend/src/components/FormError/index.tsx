@@ -7,11 +7,9 @@ interface Props {
 const FormError = ({errors}: Props) => {
     return (
         <>
-            <div className="error">
-                {errors.map((error, index) => (
-                    <p key={index} className="text">{error}</p>
-                ))}
-            </div>
+            {errors.map((error, index) => (
+                <p key={index} className="error">{error}</p>
+            ))}
         </>
     )
 }
