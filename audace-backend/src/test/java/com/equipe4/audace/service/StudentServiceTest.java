@@ -106,7 +106,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    void createStudentNullStudent() { //HAHA COPILOT GO BRRRR
+    void createStudentNullStudent() {
         assertThatThrownBy(() -> studentService.createStudent(null, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Student cannot be null");
