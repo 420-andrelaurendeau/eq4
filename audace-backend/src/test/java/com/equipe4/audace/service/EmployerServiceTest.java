@@ -1,7 +1,10 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.department.Department;
+import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.service.EmployerService;
 import org.junit.jupiter.api.BeforeEach;
@@ -66,5 +69,25 @@ public class EmployerServiceTest {
         // Assert
         assertThat(employerDTOList.size()).isEqualTo(2);
         verify(employerRepository, times(1)).findAll();
+    }
+
+    @Test
+    public void getAllOffersByEmployeeId() {
+        Employer employer = new Employer();
+        employer.setId(1L);
+        List<Offer> offers = new ArrayList<>();
+        Offer offer = new Offer();
+        offer.setEmployer(employer);
+        Department department = new Department();
+        department.setId(1L);
+        offer.setDepartment(department);
+        offers.add(offer);
+        employer.setOffers(offers);
+        when(employerRepository.getReferenceById(1L)).thenReturn(employer);
+
+        List<OfferDTO> offerDTOList = employerService.getAllOfferByEmployerId(1L);
+
+        assertThat(offerDTOList.size()).isEqualTo(1);
+
     }
 }

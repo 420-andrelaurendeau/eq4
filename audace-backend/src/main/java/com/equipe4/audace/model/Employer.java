@@ -27,7 +27,7 @@ public class Employer extends User {
     private String extension;
 
     @OneToMany(mappedBy = "employer", cascade = CascadeType.ALL)
-    List<Offer> offers;
+    private List<Offer> offers;
 
     @Builder(builderMethodName = "employerBuilder")
     public Employer(String firstName,

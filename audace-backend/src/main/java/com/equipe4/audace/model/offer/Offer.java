@@ -45,4 +45,8 @@ public class Offer {
     public OfferDTO toDto() {
         return new OfferDTO(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, employer.getId(), department.toDto());
     }
+
+    public String toString() { //Had to dod a toString or we'd have an infinite loop between the offers and the employers toString
+        return id + " " + title + " " + description + " " + internshipStartDate + " " + internshipEndDate + " " + offerEndDate + " " + employer.getId() + " " + department.toDto();
+    }
 }

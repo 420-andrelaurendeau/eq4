@@ -1,6 +1,7 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.repository.EmployerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,5 +24,9 @@ public class EmployerService {
 
     public List<EmployerDTO> findAllEmployers(){
         return employerRepository.findAll().stream().map(EmployerDTO::new).toList();
+    }
+
+    public List<OfferDTO> getAllOfferByEmployerId(Long id) {
+        return employerRepository.getReferenceById(id).getOffers().stream().map(OfferDTO::new).toList();
     }
 }

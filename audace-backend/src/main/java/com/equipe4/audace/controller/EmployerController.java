@@ -1,6 +1,7 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.service.EmployerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,5 +34,11 @@ public class EmployerController {
         logger.info("createEmployer");
         employerService.saveEmployer(employerDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}/offers")
+    public List<OfferDTO> getAllOfferByEmployerId(@PathVariable Long id) {
+        logger.info("getAllOfferByEmployerId");
+        return employerService.getAllOfferByEmployerId(id);
     }
 }

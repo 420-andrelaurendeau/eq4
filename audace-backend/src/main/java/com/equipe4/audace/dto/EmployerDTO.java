@@ -40,7 +40,7 @@ public class EmployerDTO {
         this.organisation = employer.getOrganisation();
         this.position = employer.getPosition();
         this.extension = employer.getExtension();
-        this.offers = new ArrayList<>();
+        this.offers = employer.getOffers().stream().map(OfferDTO::new).toList();
     }
 
     @Builder(builderMethodName = "employerDTOBuilder")
