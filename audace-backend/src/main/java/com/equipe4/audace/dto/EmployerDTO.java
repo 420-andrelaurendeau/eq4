@@ -2,7 +2,6 @@ package com.equipe4.audace.dto;
 
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
-import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,27 +10,15 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class EmployerDTO {
-    private Long id;
-    @Column
-    private String firstName;
-    @Column
-    private String lastName;
-    @Column
+public class EmployerDTO extends UserDTO {
     private String organisation;
-    @Column
     private String position;
-    @Column
-    private String address;
-    @Column
     private String phone;
-    @Column
     private String extension;
-
     private List<OfferDTO> offers;
 
     public EmployerDTO(Employer employer) {
-        this.id = employer.getId();
+        super(employer.getId(), employer.getEmail(), employer.getPassword());
         this.organisation = employer.getOrganisation();
         this.position = employer.getPosition();
         this.extension = employer.getExtension();
@@ -40,20 +27,16 @@ public class EmployerDTO {
 
     @Builder(builderMethodName = "employerDTOBuilder")
     public EmployerDTO(Long id,
-                       String firstName,
-                       String lastName,
                        String organisation,
                        String position,
-                       String address,
                        String phone,
                        String extension,
+                       String email,
+                       String password,
                        List<OfferDTO> offers) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        super(id, email, password);
         this.organisation = organisation;
         this.position = position;
-        this.address = address;
         this.phone = phone;
         this.extension = extension;
         this.offers = offers;
@@ -61,6 +44,8 @@ public class EmployerDTO {
 
     public Employer fromDTO(){
         Employer employer = Employer.employerBuilder()
+                .email(email)
+                .password(password)
                 .organisation(organisation)
                 .position(position)
                 .extension(extension)

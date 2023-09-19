@@ -24,6 +24,6 @@ public class DepartmentDTO {
     }
 
     public Department fromDto() {
-        return new Department(code, name);
+        return new Department(id, code, name);
     }
 }

@@ -48,6 +48,6 @@ public class OfferDTO {
     }
 
     public Offer fromDto(Employer employer) {
-        return new Offer(title, description, internshipStartDate, internshipEndDate, offerEndDate, employer, department.fromDto());
+        return new Offer(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, department.fromDto(), employer );
     }
 }
