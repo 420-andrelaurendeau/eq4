@@ -11,7 +11,7 @@ function PublishedOffers(){
     const params = useParams();
 
     useEffect(() => {
-        DataService.getOffersByEmployerId(params.id)
+        DataService.getAllOfferByEmployerId(params.id)
             .then(response => {
                 setOffers(response.data)
             });

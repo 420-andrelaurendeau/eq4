@@ -6,8 +6,8 @@ class DataService{
     getAllOffers(){
         return http.get("/offers");
     }
-    getOffersByEmployerId(id){
-        return http.get(`/employer/offers/${id}`);
+    getAllOfferByEmployerId(id){
+        return http.get(`/employers/${id}/offers`);
     }
 }
 
