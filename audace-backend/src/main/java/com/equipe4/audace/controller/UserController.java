@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE }, allowedHeaders = { "Content-Type", "Authorization" })
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -19,7 +19,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public List<UserDTO> getAllUsers() {
         return this.userService.getAllUsers();
     }
