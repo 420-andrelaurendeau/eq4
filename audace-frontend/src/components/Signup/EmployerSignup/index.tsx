@@ -25,7 +25,6 @@ const EmployerSignup = () => {
 
   const handleSubmit = () => {
     if (!validateForm()) return;
-
     let employer: Employer = {
       organization: organization,
       position: position,
@@ -94,7 +93,7 @@ const EmployerSignup = () => {
   };
 
   const validatePostalCode = (): boolean => {
-    return postalCode !== "" && /^[A-Za-z0-9\s]+$/i.test(postalCode);
+    return postalCode !== "" && /^[a-z][0-9][a-z] ?[0-9][a-z][0-9]$/i.test(postalCode);
   };
 
   return (
