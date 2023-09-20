@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.Data;
 
@@ -17,7 +18,7 @@ public class Student extends User {
     @Column
     private String studentNumber;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Department department;
 
     public Student(String email, String password, String studentNumber, Department department) {
