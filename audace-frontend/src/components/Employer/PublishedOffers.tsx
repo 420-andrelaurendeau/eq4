@@ -20,7 +20,7 @@ function PublishedOffers(){
         offer => {
             return <tr key={offer.id}>
                 <td>{offer.title}</td>
-                <td>{offer.internshipStartDate.toString()}</td>
+                <td>{new Date(offer.internshipStartDate).toLocaleString()}</td>
                 <td>{offer.department.name}</td>
             </tr>
         }
