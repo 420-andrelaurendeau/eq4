@@ -40,10 +40,15 @@ public class StudentServiceTest {
         List<Offer> offers = new ArrayList<>();
 
         Employer fakeEmployer = new Employer(
-                "email",
+                1L,
+                "employer",
+                "employerman",
+                "email@gmail.com",
                 "password",
                 "organisation",
                 "position",
+                "address",
+                "phone",
                 "extension"
         );
         fakeEmployer.setId(1L);
@@ -94,7 +99,7 @@ public class StudentServiceTest {
 
     @Test
     void createStudent() {
-        StudentDTO studentDTO = new StudentDTO(1L, "test@mail.com", "Passw0rd", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
+        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
 
         when(studentRepository.save(any())).thenReturn(studentDTO.fromDTO());
 
@@ -114,7 +119,7 @@ public class StudentServiceTest {
 
     @Test
     void createStudentAlreadyExists() {
-        StudentDTO studentDTO = new StudentDTO(1L, "test@mail.com", "Passw0rd", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
+        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
         when(studentRepository.findStudentByStudentNumberOrEmail(anyString(), anyString())).thenReturn(Optional.of(studentDTO.fromDTO()));
 
         assertThatThrownBy(() -> studentService.createStudent(studentDTO, "420"))
@@ -124,7 +129,7 @@ public class StudentServiceTest {
 
     @Test
     void createStudentDepartmentInvalid() {
-        StudentDTO studentDTO = new StudentDTO(1L, "test@mail.com", "Passw0rd", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
+        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
         when(departmentRepository.findByCode(anyString())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> studentService.createStudent(studentDTO, "INVALIDE DUH"))

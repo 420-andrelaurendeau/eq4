@@ -17,13 +17,13 @@ public abstract class User {
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "SEQUENCE_USER")
     @SequenceGenerator(name = "SEQUENCE_USER", sequenceName = "USER_SEC", allocationSize = 1)
-    private Long id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String password;
-    private String address;
-    private String phone;
+    protected Long id;
+    protected String firstName;
+    protected String lastName;
+    protected String email;
+    protected String password;
+    protected String address;
+    protected String phone;
 
     public User(String firstName, String lastName, String email, String password, String address, String phone) {
         this.firstName = firstName;

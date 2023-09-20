@@ -26,7 +26,18 @@ public class AudaceApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		Department department = departmentRepository.save(new Department("GLO", "Génie logiciel"));
-		Employer employer = new Employer("email", "password", "organisation", "position", "extension");
+		Employer employer = new Employer(
+				null,
+				"employer",
+				"employerman",
+				"temp@gmail.com",
+				"password",
+				"organisation",
+				"position",
+				"address",
+				"phone",
+				"extension"
+		);
 
 		Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
 		Offer offer4 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
