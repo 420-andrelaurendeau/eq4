@@ -37,8 +37,14 @@ public class EmployerDTO {
 
     public EmployerDTO(Employer employer) {
         this.id = employer.getId();
+        this.firstName = employer.getFirstName();
+        this.lastName = employer.getLastName();
+        this.email = employer.getEmail();
+        this.password = employer.getPassword();
         this.organisation = employer.getOrganisation();
         this.position = employer.getPosition();
+        this.address = employer.getAddress();
+        this.phone = employer.getPhone();
         this.extension = employer.getExtension();
         this.offers = new ArrayList<>();
     }
@@ -58,6 +64,8 @@ public class EmployerDTO {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
+        this.password = password;
         this.organisation = organisation;
         this.position = position;
         this.address = address;
@@ -70,13 +78,14 @@ public class EmployerDTO {
         Employer employer = Employer.employerBuilder()
                 .firstName(firstName)
                 .lastName(lastName)
+                .email(email)
+                .password(password)
                 .organisation(organisation)
                 .position(position)
                 .address(address)
                 .phone(phone)
                 .extension(extension)
                 .build();
-
         employer.setOffers(offers.stream().map(offerDTO -> offerDTO.fromDto(employer)).toList());
 
         return employer;
