@@ -48,4 +48,8 @@ public class Employer extends User {
         this.extension = extension;
         this.offers = new ArrayList<>();
     }
+
+    public void addOffer(Offer offer){
+        offers.add(offer);
+    }
 }
