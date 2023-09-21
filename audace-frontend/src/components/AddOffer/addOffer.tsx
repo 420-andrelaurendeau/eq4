@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Form, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
-const AddInternship: React.FC = () => {
+const AddOffer: React.FC = () => {
   const { t } = useTranslation();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -10,25 +10,32 @@ const AddInternship: React.FC = () => {
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [offerEndDate, setOfferEndDate] = useState<string>("");
-   const [personWhoPosted, setPersonWhoPosted] = useState<string>("");
-   const [organisation, setOrganisation] = useState<string>("");
+  const [personWhoPosted, setPersonWhoPosted] = useState<string>("");
+  const [organisation, setOrganisation] = useState<string>("");
 
-   const validateForm = () => {
-    if (!title || !description || !department || !startDate || !endDate || !offerEndDate) {
-      alert(t("addInternship.validationError"));
+  const validateForm = () => {
+    if (
+      !title ||
+      !description ||
+      !department ||
+      !startDate ||
+      !endDate ||
+      !offerEndDate
+    ) {
+      alert(t("addOffer.validationError"));
       return false;
     }
     return true;
   };
 
-  const addInternship = async (internship: any) => {
+  const addOffer = async (Offer: any) => {
     try {
       const response = await fetch("/stages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(internship),
+        body: JSON.stringify(Offer),
       });
 
       if (!response.ok) {
@@ -49,8 +56,8 @@ const AddInternship: React.FC = () => {
 
     const formData = {
       title,
-      personWhoPosted, 
-      organisation, 
+      personWhoPosted,
+      organisation,
       description,
       department,
       startDate,
@@ -58,16 +65,16 @@ const AddInternship: React.FC = () => {
       offerEndDate,
     };
 
-    addInternship(formData);
+    addOffer(formData);
   };
 
   return (
     <>
-      <h3 className="text-center">{t("addInternship.pageTitle")}</h3>
+      <h3 className="text-center">{t("addOffer.pageTitle")}</h3>
       <Form className="container mt-5">
         <Row>
-          <Form.Group as={Col} md="6" controlId="formInternshipTitle">
-            <Form.Label>{t("addInternship.title")}</Form.Label>
+          <Form.Group as={Col} md="6" controlId="formOfferTitle">
+            <Form.Label>{t("addOffer.title")}</Form.Label>
             <Form.Control
               type="text"
               value={title}
@@ -75,8 +82,8 @@ const AddInternship: React.FC = () => {
             />
           </Form.Group>
 
-          <Form.Group as={Col} md="6" controlId="formInternshipDepartment">
-            <Form.Label>{t("addInternship.department")}</Form.Label>
+          <Form.Group as={Col} md="6" controlId="formOfferDepartment">
+            <Form.Label>{t("addOffer.department")}</Form.Label>
             <Form.Control
               type="text"
               value={department}
@@ -85,8 +92,8 @@ const AddInternship: React.FC = () => {
           </Form.Group>
         </Row>
 
-        <Form.Group controlId="formInternshipDescription">
-          <Form.Label>{t("addInternship.description")}</Form.Label>
+        <Form.Group controlId="formOfferDescription">
+          <Form.Label>{t("addOffer.description")}</Form.Label>
           <Form.Control
             as="textarea"
             value={description}
@@ -95,8 +102,8 @@ const AddInternship: React.FC = () => {
         </Form.Group>
 
         <Row>
-          <Form.Group as={Col} md="4" controlId="formInternshipStartDate">
-            <Form.Label>{t("addInternship.startDate")}</Form.Label>
+          <Form.Group as={Col} md="4" controlId="formOfferStartDate">
+            <Form.Label>{t("addOffer.startDate")}</Form.Label>
             <Form.Control
               type="date"
               value={startDate}
@@ -104,8 +111,8 @@ const AddInternship: React.FC = () => {
             />
           </Form.Group>
 
-          <Form.Group as={Col} md="4" controlId="formInternshipEndDate">
-            <Form.Label>{t("addInternship.endDate")}</Form.Label>
+          <Form.Group as={Col} md="4" controlId="formOfferEndDate">
+            <Form.Label>{t("addOffer.endDate")}</Form.Label>
             <Form.Control
               type="date"
               value={endDate}
@@ -113,8 +120,8 @@ const AddInternship: React.FC = () => {
             />
           </Form.Group>
 
-          <Form.Group as={Col} md="4" controlId="formInternshipOfferEndDate">
-            <Form.Label>{t("addInternship.offerEndDate")}</Form.Label>
+          <Form.Group as={Col} md="4" controlId="formOfferOfferEndDate">
+            <Form.Label>{t("addOffer.offerEndDate")}</Form.Label>
             <Form.Control
               type="date"
               value={offerEndDate}
@@ -124,11 +131,11 @@ const AddInternship: React.FC = () => {
         </Row>
 
         <Button variant="primary" className="mt-3" onClick={handleSubmit}>
-          {t("addInternship.submit")}
+          {t("addOffer.submit")}
         </Button>
       </Form>
     </>
   );
 };
 
-export default AddInternship;
+export default AddOffer;

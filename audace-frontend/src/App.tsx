@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Navbar } from "react-bootstrap";
 import LanguageToggler from "./components/LanguageToggler";
 import { useTranslation } from "react-i18next";
-import AddInternshipView from "./views/Internship";
+import AddOfferView from "./views/Offer";
 
 function App() {
   const { t } = useTranslation();
@@ -29,7 +29,7 @@ function App() {
               </>
             }
           />
-          <Route path="/internship" element={<AddInternshipView />} />
+          <Route path="/internship" element={<AddOfferView />} />
         </Routes>
       </Router>
     </>

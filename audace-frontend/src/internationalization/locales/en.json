@@ -1,11 +1,11 @@
 {
     "langCode": "en",
-    "addInternship.pageTitle": "Add internship",
-    "addInternship.description": "Description",
-    "addInternship.title": "Title",
-    "addInternship.department": "Department",
-    "addInternship.startDate": "Start date",
-    "addInternship.endDate": "End date",
-    "addInternship.offerEndDate": "Offer end date",
-    "addInternship.submit": "Submit"
+    "addOffer.pageTitle": "Add Offer",
+    "addOffer.description": "Description",
+    "addOffer.title": "Title",
+    "addOffer.department": "Department",
+    "addOffer.startDate": "Start date",
+    "addOffer.endDate": "End date",
+    "addOffer.offerEndDate": "Offer end date",
+    "addOffer.submit": "Submit"
 }

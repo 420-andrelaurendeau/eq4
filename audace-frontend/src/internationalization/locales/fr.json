@@ -1,11 +1,11 @@
 {
     "langCode": "fr",
-    "addInternship.pageTitle": "Ajout de Stage",
-    "addInternship.description": "Description",
-    "addInternship.title": "Titre",
-    "addInternship.department": "Departement",
-    "addInternship.startDate": "Date de début",
-    "addInternship.endDate": "Date de fin",
-    "addInternship.offerEndDate": "Date de fin de l'offre",
-    "addInternship.submit": "Ajouter"
+    "addOffer.pageTitle": "Ajout de Stage",
+    "addOffer.description": "Description",
+    "addOffer.title": "Titre",
+    "addOffer.department": "Departement",
+    "addOffer.startDate": "Date de début",
+    "addOffer.endDate": "Date de fin",
+    "addOffer.offerEndDate": "Date de fin de l'offre",
+    "addOffer.submit": "Ajouter"
 }
