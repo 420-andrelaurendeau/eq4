@@ -30,7 +30,7 @@ const AddOffer: React.FC = () => {
 
   const addOffer = async (Offer: any) => {
     try {
-      const response = await fetch("/stages", {
+      const response = await fetch("/offers", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
