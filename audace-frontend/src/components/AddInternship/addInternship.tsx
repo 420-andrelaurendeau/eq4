@@ -1,34 +1,34 @@
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { Button, Form, Row, Col } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 const AddInternship: React.FC = () => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [department, setDepartment] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [offerEndDate, setOfferEndDate] = useState("");
-  const [language, setLanguage] = useState<"english" | "french">("english");
+  const { t } = useTranslation();
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [department, setDepartment] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+  const [offerEndDate, setOfferEndDate] = useState<string>("");
+   const [personWhoPosted, setPersonWhoPosted] = useState<string>("");
+   const [organisation, setOrganisation] = useState<string>("");
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
+   const validateForm = () => {
+    if (!title || !description || !department || !startDate || !endDate || !offerEndDate) {
+      alert(t("addInternship.validationError"));
+      return false;
+    }
+    return true;
+  };
 
-    const formData = {
-      title,
-      department,
-      description,
-      startDate,
-      endDate,
-      offerEndDate,
-    };
-
+  const addInternship = async (internship: any) => {
     try {
       const response = await fetch("/stages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(internship),
       });
 
       if (!response.ok) {
@@ -44,97 +44,90 @@ const AddInternship: React.FC = () => {
     }
   };
 
-  const toggleLanguage = () => {
-    setLanguage((prevLang) => (prevLang === "english" ? "french" : "english"));
-  };
+  const handleSubmit = () => {
+    if (!validateForm()) return;
 
-  const translations = {
-    pageTitle:
-      language === "english" ? "Add an Internship" : "Ajouter un Stage",
-    title: language === "english" ? "Title" : "Titre",
-    department: language === "english" ? "Department" : "Département",
-    description: language === "english" ? "Description" : "Description",
-    startDate: language === "english" ? "Start Date" : "Date de début",
-    endDate: language === "english" ? "End Date" : "Date de fin",
-    offerEndDate:
-      language === "english" ? "Offer End Date" : "Date de fin d'offre",
-    submit: language === "english" ? "Submit" : "Envoyer",
+    const formData = {
+      title,
+      personWhoPosted, 
+      organisation, 
+      description,
+      department,
+      startDate,
+      endDate,
+      offerEndDate,
+    };
+
+    addInternship(formData);
   };
 
   return (
-    <div className="container mt-5">
-      <div className="d-flex justify-content-center align-items-center mb-5">
-        <h2 className="flex-grow-1 text-center">{translations.pageTitle}</h2>
-        <button className="btn btn-secondary" onClick={toggleLanguage}>
-          {language === "english" ? "Français" : "English"}
-        </button>
-      </div>
-
-      <form onSubmit={handleSubmit} className="col-lg-8 mx-auto">
-        <div className="mb-2 row">
-          <div className="mb-5 col-md-6">
-            <label className="form-label">{translations.title}:</label>
-            <input
+    <>
+      <h3 className="text-center">{t("addInternship.pageTitle")}</h3>
+      <Form className="container mt-5">
+        <Row>
+          <Form.Group as={Col} md="6" controlId="formInternshipTitle">
+            <Form.Label>{t("addInternship.title")}</Form.Label>
+            <Form.Control
               type="text"
-              className="form-control"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
-          </div>
-          <div className="mb-5 col-md-6">
-            <label className="form-label">{translations.department}:</label>
-            <input
+          </Form.Group>
+
+          <Form.Group as={Col} md="6" controlId="formInternshipDepartment">
+            <Form.Label>{t("addInternship.department")}</Form.Label>
+            <Form.Control
               type="text"
-              className="form-control"
               value={department}
               onChange={(e) => setDepartment(e.target.value)}
             />
-          </div>
-        </div>
-        <div className="mb-5">
-          <label className="form-label">{translations.description}:</label>
-          <textarea
-            className="form-control"
+          </Form.Group>
+        </Row>
+
+        <Form.Group controlId="formInternshipDescription">
+          <Form.Label>{t("addInternship.description")}</Form.Label>
+          <Form.Control
+            as="textarea"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
-        </div>
-        <div className="mb-5 row">
-          <div className="col-md-4">
-            <label className="form-label">{translations.startDate}:</label>
-            <input
+        </Form.Group>
+
+        <Row>
+          <Form.Group as={Col} md="4" controlId="formInternshipStartDate">
+            <Form.Label>{t("addInternship.startDate")}</Form.Label>
+            <Form.Control
               type="date"
-              className="form-control"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
             />
-          </div>
-          <div className="col-md-4">
-            <label className="form-label">{translations.endDate}:</label>
-            <input
+          </Form.Group>
+
+          <Form.Group as={Col} md="4" controlId="formInternshipEndDate">
+            <Form.Label>{t("addInternship.endDate")}</Form.Label>
+            <Form.Control
               type="date"
-              className="form-control"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
             />
-          </div>
-          <div className="mb-5 col-md-4">
-            <label className="form-label">{translations.offerEndDate}:</label>
-            <input
+          </Form.Group>
+
+          <Form.Group as={Col} md="4" controlId="formInternshipOfferEndDate">
+            <Form.Label>{t("addInternship.offerEndDate")}</Form.Label>
+            <Form.Control
               type="date"
-              className="form-control"
               value={offerEndDate}
               onChange={(e) => setOfferEndDate(e.target.value)}
             />
-          </div>
-        </div>
-        <div className="text-center">
-          <button type="submit" className="btn btn-primary">
-            {translations.submit}
-          </button>
-        </div>
-      </form>
-    </div>
+          </Form.Group>
+        </Row>
+
+        <Button variant="primary" className="mt-3" onClick={handleSubmit}>
+          {t("addInternship.submit")}
+        </Button>
+      </Form>
+    </>
   );
 };
 
