@@ -26,6 +26,7 @@ const Signup = ({handleSubmit, extension, setExtension, setErrors, validateExtra
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [passwordConfirmation, setPasswordConfirmation] = useState<string>("");
+    const [isDisabled, setIsDisabled] = useState<boolean>(false);
 
     const submitForm = () => {
         if (!validateForm()) return;
@@ -41,12 +42,18 @@ const Signup = ({handleSubmit, extension, setExtension, setErrors, validateExtra
             password: password
         };
 
+        sendRequest(user);
+    };
+
+    const sendRequest = (user: User) => {
+        setIsDisabled(true);
+
         handleSubmit(user)
             .then((_) => {
                 navigate("/");
             })
             .catch((err) => {
-
+                setIsDisabled(false);
             });
     };
 
@@ -236,7 +243,12 @@ const Signup = ({handleSubmit, extension, setExtension, setErrors, validateExtra
                 </Form.Group>
             </Row>
 
-            <Button variant="primary" className="mt-3" onClick={submitForm}>
+            <Button 
+                variant="primary" 
+                className="mt-3" 
+                onClick={submitForm}
+                disabled={isDisabled}
+            >
                 {t("signup.signup")}
             </Button>
         </>
