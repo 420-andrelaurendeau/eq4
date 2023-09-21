@@ -43,10 +43,10 @@ public class AudaceApplication implements CommandLineRunner {
 		Offer offer4 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
 		Offer offer2 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
 		Offer offer3 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
-		employer.getOffers().add(offer1);
-		employer.getOffers().add(offer2);
-		employer.getOffers().add(offer3);
-		employer.getOffers().add(offer4);
-		employerRepository.save(employer);
+		employer.addOffer(offer1);
+		employer.addOffer(offer2);
+		employer.addOffer(offer3);
+		employer.addOffer(offer4);
+
 	}
 }

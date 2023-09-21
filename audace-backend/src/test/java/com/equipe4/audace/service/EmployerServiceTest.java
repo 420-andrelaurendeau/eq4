@@ -64,4 +64,21 @@ public class EmployerServiceTest {
         assertThat(employerDTOList.size()).isEqualTo(2);
         verify(employerRepository, times(1)).findAll();
     }
+
+    @Test
+    public void addOfferToEmployerTest() {
+        // Arrange
+        EmployerDTO employerDTO = EmployerDTO.employerDTOBuilder().id(1L)
+                .firstName("Employer1").lastName("Employer1").email("employer1@gmail.com").password("123456eE")
+                .organisation("Organisation1").position("Position1").phone("123-456-7890").extension("12345")
+                .address("Class Service, Javatown, Qc H8N1C1").build();
+        when(employerRepository.save(any(Employer.class))).thenReturn(employerDTO.fromDTO());
+
+        // Act
+        EmployerDTO dto = employerService.createEmployer(employerDTO).get();
+
+        // Assert
+        assertThat(dto.equals(employerDTO));
+        verify(employerRepository, times(1)).save(employerDTO.fromDTO());
+    }
 }

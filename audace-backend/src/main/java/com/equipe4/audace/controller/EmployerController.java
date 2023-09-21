@@ -1,6 +1,7 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.service.EmployerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,13 @@ public class EmployerController {
     public ResponseEntity<HttpStatus> createEmployer(@RequestBody EmployerDTO employerDTO){
         logger.info("createEmployer");
         employerService.createEmployer(employerDTO);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping("/offers")
+    public ResponseEntity<HttpStatus> createOffer(@RequestBody OfferDTO offerDTO) {
+        logger.info("createOffer");
+        employerService.createOffer(offerDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
