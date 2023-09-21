@@ -21,19 +21,21 @@ public class Student extends User {
     @ManyToOne(cascade = CascadeType.ALL)
     private Department department;
 
-    public Student(String email, String password, String studentNumber, Department department) {
-        super(email, password);
-        this.studentNumber = studentNumber;
-        this.department = department;
-    }
-
-    public Student(Long id, String email, String password, String studentNumber, Department department) {
-        super(id, email, password);
+    public Student(Long id,
+                   String firstname,
+                   String lastname,
+                   String email,
+                   String password,
+                   String address,
+                   String phone,
+                   String studentNumber,
+                   Department department) {
+        super(id, firstname, lastname, email, password, address, phone);
         this.studentNumber = studentNumber;
         this.department = department;
     }
 
     public StudentDTO toDTO() {
-        return new StudentDTO(id, email, password, studentNumber, department.toDto());
+        return new StudentDTO(id, getFirstName(), getLastName(), email, address, phone, password, studentNumber, department.toDto());
     }
 }

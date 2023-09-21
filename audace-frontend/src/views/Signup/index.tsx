@@ -7,7 +7,7 @@ interface Props {
   userType: UserType;
 }
 
-const SignupView = ({userType}: Props) => {
+const SignupView = ({ userType }: Props) => {
   const determineSignupForm = (): JSX.Element => {
     switch (userType) {
       case UserType.Student:
@@ -17,13 +17,9 @@ const SignupView = ({userType}: Props) => {
       default:
         return <></>;
     }
-  }
+  };
 
-  return (
-    <Container>
-      {determineSignupForm()}
-    </Container>
-  );
+  return <Container>{determineSignupForm()}</Container>;
 };
 
 export default SignupView;

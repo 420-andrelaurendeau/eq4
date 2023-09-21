@@ -32,12 +32,17 @@ public class Employer extends User {
     List<Offer> offers;
 
     @Builder(builderMethodName = "employerBuilder")
-    public Employer(String email,
+    public Employer(Long id,
+                    String firstName,
+                    String lastName,
+                    String email,
                     String password,
                     String organisation,
                     String position,
+                    String address,
+                    String phone,
                     String extension) {
-        super(email, password);
+        super(id, firstName, lastName, email, password, address, phone);
         this.organisation = organisation;
         this.position = position;
         this.extension = extension;

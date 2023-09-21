@@ -10,6 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public abstract class UserDTO {
     protected Long id;
+    protected String firstName;
+    protected String lastName;
+    protected String address;
+    protected String phone;
     protected String email;
     protected String password;
 
