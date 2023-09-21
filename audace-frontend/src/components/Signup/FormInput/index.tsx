@@ -24,7 +24,7 @@ const FormInput = ({label, value, onChange, errors, formError, controlId}: Props
                     onChange={onChange}
                 />
                 {errors.includes(formError) ?
-                    <p className="error">{t(formError)}</p> : 
+                    <p className="error fade-in">{t(formError)}</p> : 
                     <div className="error"/>
                 }
             </Form.Group>
