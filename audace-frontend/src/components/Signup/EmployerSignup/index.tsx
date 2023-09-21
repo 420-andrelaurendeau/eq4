@@ -22,9 +22,7 @@ const EmployerSignup = () => {
       offers: [],
     };
 
-    employerSignup(employer)
-      .then((res) => {})
-      .catch((err) => {});
+    return employerSignup(employer);
   };
 
   const validateForm = (errors: string[]): boolean => {

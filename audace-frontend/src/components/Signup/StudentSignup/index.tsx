@@ -14,19 +14,17 @@ const StudentSignup = () => {
   const [errors, setErrors] = useState<string[]>([]);
 
   const handleSubmit = (user: User) => {
-    if (!depCode) return;
-
     let student: Student = {
       ...user,
       studentNumber: studentId,
     }
 
-    studentSignup(student, depCode)
-      .then((res) => {})
-      .catch((err) => {});
+    return studentSignup(student, depCode);
   };
 
   const validateForm = (errors: string[]): boolean => {
+    if (!depCode) return false;
+
     let isFormValid = true;
     let errorsToDisplay: string[] = [];
 

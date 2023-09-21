@@ -3,9 +3,11 @@ import { Button, Col, Form, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { User } from "../../model/user";
 import { validateEmail, validatePassword } from "../../services/validationService";
+import { AxiosResponse } from "axios";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
-    handleSubmit: (user: User) => void;
+    handleSubmit: (user: User) => Promise<AxiosResponse>;
     extension?: string;
     setExtension?: (extension: string) => void;
     setErrors: (errors: string[]) => void;
@@ -14,6 +16,7 @@ interface Props {
 
 const Signup = ({handleSubmit, extension, setExtension, setErrors, validateExtraFormValues}: Props) => {
     const {t} = useTranslation();
+    const navigate = useNavigate();
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
     const [address, setAddress] = useState<string>("");
@@ -38,7 +41,13 @@ const Signup = ({handleSubmit, extension, setExtension, setErrors, validateExtra
             password: password
         };
 
-        handleSubmit(user);
+        handleSubmit(user)
+            .then((_) => {
+                navigate("/");
+            })
+            .catch((err) => {
+
+            });
     };
 
     const validateForm = (): boolean => {
