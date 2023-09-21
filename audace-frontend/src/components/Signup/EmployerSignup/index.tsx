@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Form, Row, Col } from "react-bootstrap";
+import { Form, Row } from "react-bootstrap";
 import { employerSignup } from "../../../services/signupService";
 import { Employer, User } from "../../../model/user";
 import { useTranslation } from "react-i18next";
 import Signup from "..";
-import FormError from "../../FormError";
+import FormInput from "../FormInput";
 
 const EmployerSignup = () => {
   const { t } = useTranslation();
@@ -60,24 +60,23 @@ const EmployerSignup = () => {
       <h3>{t("signup.employerFormTitle")}</h3>
       <Form>
         <Row>
-          <Form.Group as={Col} controlId="formBasicCompanyName">
-            <Form.Label>{t("signup.companyNameEntry")}</Form.Label>
-            <Form.Control
-              type="text"
-              value={organisation}
-              onChange={(e) => setOrganisation(e.target.value)}
-            />
-          </Form.Group>
+          <FormInput 
+            label="signup.companyNameEntry"
+            value={organisation}
+            onChange={(e) => setOrganisation(e.target.value)}
+            errors={errors}
+            formError="signup.errors.organisation"
+            controlId="formBasicCompanyName"
+          />
 
-          <Form.Group as={Col} controlId="formBasicPosition">
-            <Form.Label>{t("signup.positionEntry")}</Form.Label>
-            <Form.Control
-              type="text"
-              value={position}
-              onChange={(e) => setPosition(e.target.value)}
-              placeholder="e.g. CEO, HR Manager"
-            />
-          </Form.Group>
+          <FormInput 
+            label="signup.positionEntry"
+            value={position}
+            onChange={(e) => setPosition(e.target.value)}
+            errors={errors}
+            formError="signup.errors.position"
+            controlId="formBasicPosition"
+          />
         </Row>
 
         <Signup
@@ -85,10 +84,10 @@ const EmployerSignup = () => {
           extension={extension}
           setExtension={setExtension}
           validateExtraFormValues={validateForm}
+          errors={errors}
           setErrors={setErrors}
         />
       </Form>
-      <FormError errors={errors} />
     </>
   );
 };
