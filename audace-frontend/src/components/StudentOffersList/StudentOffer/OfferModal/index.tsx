@@ -4,6 +4,7 @@ import { Employer } from "../../../../model/user";
 import { Button, Modal } from "react-bootstrap";
 import { formatDate } from "..";
 import { getEmployerById } from "../../../../services/userService";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     offer: Offer;
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const OfferModal = ({offer, show, handleClose}: Props) => {
+    const {t} = useTranslation();
     const [employer, setEmployer] = useState<Employer | undefined>(undefined);
 
     useEffect(() => {
@@ -40,26 +42,31 @@ const OfferModal = ({offer, show, handleClose}: Props) => {
                 </Modal.Header>
                 <Modal.Body>
                     <div className="text-end">
-                        <div>Organization: {
+                        <div>{t("studentOffer.modal.org")}: {
                                 createBoldText(
                                     employer !== undefined ? 
                                     employer.organisation! : 
-                                    "Organization not found!"
+                                    t("studentOffer.modal.orgNotFound")
                                 )
                             }
                         </div>
-                        <div>From : {createBoldText(formatDate(offer.internshipStartDate))} to <b>{createBoldText(formatDate(offer.internshipEndDate))}</b></div>
-                        <div>Offer ends: {createBoldText(formatDate(offer.offerEndDate))}</div>
+                        <div>
+                            {t("studentOffer.modal.internDate.start")}:&nbsp;
+                            {createBoldText(formatDate(offer.internshipStartDate))}&nbsp;
+                            {t("studentOffer.modal.internDate.end")}:&nbsp;
+                            {createBoldText(formatDate(offer.internshipEndDate))}
+                        </div>
+                        <div>{t("studentOffer.modal.offerEnd")}: {createBoldText(formatDate(offer.offerEndDate))}</div>
                     </div>
 
                     <hr/>
 
-                    <u><h4 className="my-3 text-center">Offer description</h4></u>
+                    <u><h4 className="my-3 text-center">{t("studentOffer.modal.offerDescription")}</h4></u>
                     <div style={{textAlign : "justify"}}>{offer.description}</div>
                 </Modal.Body>
                 <Modal.Footer>
-                    {employer === undefined && <div className="text-danger">Employer not found! You cannot apply for this internship!</div>}
-                    <Button className="btn-success" onClick={applyToOffer} disabled={employer === undefined}>Apply</Button>
+                    {employer === undefined && <div className="text-danger">{t("studentOffer.modal.empNotFound")}</div>}
+                    <Button className="btn-success" onClick={applyToOffer} disabled={employer === undefined}>{t("studentOffer.modal.apply")}</Button>
                 </Modal.Footer>
             </Modal>
         </>
