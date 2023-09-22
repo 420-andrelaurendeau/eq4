@@ -29,7 +29,7 @@ const StudentOffer = ({offer}: Props) => {
                 <td>{formatDate(offer.internshipStartDate)}</td>
                 <td>{formatDate(offer.internshipEndDate)}</td>
             </tr>
-            <OfferModal offer={offer} handleClose={handleClose} show={show}/>
+            {show && <OfferModal offer={offer} show={show} handleClose={handleClose}/>}
         </>
     );
 };

@@ -3,6 +3,7 @@ import { Offer } from "../../../../model/offer";
 import { Employer } from "../../../../model/user";
 import { Button, Modal } from "react-bootstrap";
 import { formatDate } from "..";
+import { getEmployerById } from "../../../../services/userService";
 
 interface Props {
     offer: Offer;
@@ -11,24 +12,16 @@ interface Props {
 }
 
 const OfferModal = ({offer, show, handleClose}: Props) => {
-    const [employer, setEmployer] = useState<Employer>();
+    const [employer, setEmployer] = useState<Employer | undefined>(undefined);
 
     useEffect(() => {
-        let employer: Employer = {
-            id: offer.employerId,
-            firstName: "John",
-            lastName: "Doe",
-            address: "123 Fake Street",
-            phone: "1234567890",
-            email: "",
-            password: "",
-            organisation: "Fake Organisation",
-            extension: "fake",
-            position: "Fake Position",
-            offers: []
-        }
-
-        setEmployer(employer);
+        getEmployerById(offer.employerId)
+            .then((res) => {
+                setEmployer(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }, [setEmployer, offer]);
 
     const applyToOffer = () => {
@@ -47,7 +40,14 @@ const OfferModal = ({offer, show, handleClose}: Props) => {
                 </Modal.Header>
                 <Modal.Body>
                     <div className="text-end">
-                        <div>Organization: {createBoldText(employer?.organisation!)}</div>
+                        <div>Organization: {
+                                createBoldText(
+                                    employer !== undefined ? 
+                                    employer.organisation! : 
+                                    "Organization not found!"
+                                )
+                            }
+                        </div>
                         <div>From : {createBoldText(formatDate(offer.internshipStartDate))} to <b>{createBoldText(formatDate(offer.internshipEndDate))}</b></div>
                         <div>Offer ends: {createBoldText(formatDate(offer.offerEndDate))}</div>
                     </div>
@@ -58,7 +58,8 @@ const OfferModal = ({offer, show, handleClose}: Props) => {
                     <div style={{textAlign : "justify"}}>{offer.description}</div>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button className="btn-success" onClick={applyToOffer}>Apply</Button>
+                    {employer === undefined && <div className="text-danger">Employer not found! You cannot apply for this internship!</div>}
+                    <Button className="btn-success" onClick={applyToOffer} disabled={employer === undefined}>Apply</Button>
                 </Modal.Footer>
             </Modal>
         </>
