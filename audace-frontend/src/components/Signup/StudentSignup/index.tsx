@@ -19,7 +19,7 @@ const StudentSignup = () => {
       studentNumber: studentId,
     }
 
-    return studentSignup(student, depCode);
+    return studentSignup(student, depCode!);
   };
 
   const validateForm = (errors: string[]): boolean => {
