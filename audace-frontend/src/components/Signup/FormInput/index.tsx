@@ -16,18 +16,20 @@ const FormInput = ({label, value, onChange, errors, formError, controlId}: Props
 
     return (
         <>
-            <Form.Group as={Col} controlId={controlId}>
-                <Form.Label>{t(label)}</Form.Label>
-                <Form.Control
-                    type="text"
-                    value={value}
-                    onChange={onChange}
-                />
-                {errors.includes(formError) ?
-                    <p className="error fade-in">{t(formError)}</p> : 
-                    <div className="error"/>
-                }
-            </Form.Group>
+            <Col sm={12} md={true}>
+                <Form.Group controlId={controlId}>
+                    <Form.Label>{t(label)}</Form.Label>
+                    <Form.Control
+                        type="text"
+                        value={value}
+                        onChange={onChange}
+                    />
+                    {errors.includes(formError) ?
+                        <p className="error fade-in">{t(formError)}</p> : 
+                        <div className="error"/>
+                    }
+                </Form.Group>
+            </Col>
         </>
     )
 };
