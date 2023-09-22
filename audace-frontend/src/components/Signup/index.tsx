@@ -200,6 +200,7 @@ const Signup = ({handleSubmit, extension, setExtension, errors, setErrors, valid
                     errors={errors}
                     formError="signup.errors.phone"
                     controlId="formBasicPhone"
+                    placeholder="e.g. 5141234567"
                 />
                     {extension !== undefined && setExtension !== undefined && (
                         <FormInput 
@@ -221,6 +222,7 @@ const Signup = ({handleSubmit, extension, setExtension, errors, setErrors, valid
                     errors={errors}
                     formError="signup.errors.email"
                     controlId="formBasicEmail"
+                    type="email"
                 />
             </Row>
 
@@ -232,6 +234,7 @@ const Signup = ({handleSubmit, extension, setExtension, errors, setErrors, valid
                     errors={errors}
                     formError="signup.errors.password"
                     controlId="formBasicPassword"
+                    type="password"
                 />
 
                 <FormInput 
@@ -241,6 +244,7 @@ const Signup = ({handleSubmit, extension, setExtension, errors, setErrors, valid
                     errors={errors}
                     formError="signup.errors.passwordConfirmation"
                     controlId="formBasicPasswordConfirmation"
+                    type="password"
                 />
             </Row>
 

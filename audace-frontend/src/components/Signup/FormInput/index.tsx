@@ -9,9 +9,11 @@ interface Props {
     errors: string[];
     formError: string;
     controlId: string;
+    type?: string;
+    placeholder?: string;
 }
 
-const FormInput = ({label, value, onChange, errors, formError, controlId}: Props) => {
+const FormInput = ({label, value, onChange, errors, formError, controlId, type, placeholder}: Props) => {
     const {t} = useTranslation();
 
     return (
@@ -20,9 +22,10 @@ const FormInput = ({label, value, onChange, errors, formError, controlId}: Props
                 <Form.Group controlId={controlId}>
                     <Form.Label>{t(label)}</Form.Label>
                     <Form.Control
-                        type="text"
+                        type={type ? type : "text"}
                         value={value}
                         onChange={onChange}
+                        placeholder={placeholder ? placeholder : undefined}
                     />
                     {errors.includes(formError) ?
                         <p className="error fade-in">{t(formError)}</p> : 
