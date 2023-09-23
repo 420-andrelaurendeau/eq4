@@ -6,6 +6,7 @@ import { validateEmail, validatePassword } from "../../services/validationServic
 import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import FormInput from "./FormInput";
+import './styles.css'
 
 interface Props {
     handleSubmit: (user: User) => Promise<AxiosResponse>;
@@ -29,6 +30,7 @@ const Signup = ({handleSubmit, extension, setExtension, errors, setErrors, valid
     const [password, setPassword] = useState<string>("");
     const [passwordConfirmation, setPasswordConfirmation] = useState<string>("");
     const [isDisabled, setIsDisabled] = useState<boolean>(false);
+    const [unexpectedError, setUnexpectedError] = useState<string>("");
 
     const submitForm = () => {
         if (!validateForm()) return;
@@ -52,10 +54,12 @@ const Signup = ({handleSubmit, extension, setExtension, errors, setErrors, valid
 
         handleSubmit(user)
             .then((_) => {
+                setUnexpectedError("");
                 navigate("/");
             })
             .catch((err) => {
                 setIsDisabled(false);
+                setUnexpectedError(err.status);
             });
     };
 
@@ -256,6 +260,9 @@ const Signup = ({handleSubmit, extension, setExtension, errors, setErrors, valid
             >
                 {t("signup.signup")}
             </Button>
+            {unexpectedError !== "" && (
+                <p className="unexpected-error">{unexpectedError}</p>
+            )}
         </>
     );
 }
