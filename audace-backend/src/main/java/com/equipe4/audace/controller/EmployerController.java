@@ -28,6 +28,14 @@ public class EmployerController {
         return employerService.findAllEmployers();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<EmployerDTO> getEmployerById(@PathVariable Long id){
+        logger.info("getEmployerById");
+        return employerService.findEmployerById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public ResponseEntity<HttpStatus> createEmployer(@RequestBody EmployerDTO employerDTO){
         logger.info("createEmployer");

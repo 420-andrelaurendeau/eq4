@@ -32,17 +32,17 @@ public class AudaceApplication implements CommandLineRunner {
 				"employerman",
 				"temp@gmail.com",
 				"password",
-				"organisation",
-				"position",
-				"address",
-				"phone",
-				"extension"
+				"Temp Baklungel",
+				"Big Baklunger",
+				"123 Street Street",
+				"1234567890",
+				"-123"
 		);
 
-		Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
-		Offer offer4 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
-		Offer offer2 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
-		Offer offer3 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
+		Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), new Date(), employer, department);
+		Offer offer4 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), new Date(), employer, department);
+		Offer offer2 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), new Date(), employer, department);
+		Offer offer3 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), new Date(), employer, department);
 		employer.getOffers().add(offer1);
 		employer.getOffers().add(offer2);
 		employer.getOffers().add(offer3);

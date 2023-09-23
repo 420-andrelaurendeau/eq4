@@ -24,4 +24,8 @@ public class EmployerService {
     public List<EmployerDTO> findAllEmployers(){
         return employerRepository.findAll().stream().map(EmployerDTO::new).toList();
     }
+
+    public Optional<EmployerDTO> findEmployerById(Long id){
+        return employerRepository.findById(id).map(EmployerDTO::new);
+    }
 }
