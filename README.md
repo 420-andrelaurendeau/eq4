@@ -1,3 +1,14 @@
+# Points d'action
+- Faire une daily chaque samedi à 10:00 A.M.
+- Communication entre ceux assignés au backend et frontend d'une story pour décider de l'API chaque fois qu'une story est commencée.
+
+# Définition de DONE
+- Respecte les normes de l'équipe
+- Code vérifiée par un pair (peer programming ou code review)
+- S'agence au projet existant
+- Interface utilisateur intuitive
+- Code granulaire
+
 # eq4
 meilleur que l'équipe 3
 
