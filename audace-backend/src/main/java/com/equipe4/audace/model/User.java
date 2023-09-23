@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
@@ -12,7 +13,6 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-//@Table(name = "AUDACE_USER") -> Ne permets pas la creation des tables Student et Employer
 public abstract class User {
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "SEQUENCE_USER")
@@ -20,7 +20,9 @@ public abstract class User {
     protected Long id;
     protected String firstName;
     protected String lastName;
+    @Column(unique = true)
     protected String email;
+    @ToString.Exclude
     protected String password;
     protected String address;
     protected String phone;
