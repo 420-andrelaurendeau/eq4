@@ -4,7 +4,7 @@ import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.offer.Offer;
 import lombok.Data;
-
+import com.equipe4.audace.model.offer.Offer.Status;
 import java.util.Date;
 
 @Data
@@ -17,6 +17,7 @@ public class OfferDTO {
     private Date offerEndDate;
     private Long employerId;
     private DepartmentDTO department;
+    private Status status;
 
     public OfferDTO(Long id,
                     String title,
@@ -25,7 +26,8 @@ public class OfferDTO {
                     Date internshipEndDate,
                     Date offerEndDate,
                     Long employerId,
-                    DepartmentDTO department) {
+                    DepartmentDTO department,
+                    Status status) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -34,20 +36,10 @@ public class OfferDTO {
         this.offerEndDate = offerEndDate;
         this.employerId = employerId;
         this.department = department;
-    }
-
-    public OfferDTO(Offer offer) {
-        this.id = offer.getId();
-        this.title = offer.getTitle();
-        this.description = offer.getDescription();
-        this.internshipStartDate = offer.getInternshipStartDate();
-        this.internshipEndDate = offer.getInternshipEndDate();
-        this.offerEndDate = offer.getOfferEndDate();
-        this.employerId = offer.getEmployer().getId();
-        this.department = new DepartmentDTO(offer.getDepartment());
+        this.status = status;
     }
 
     public Offer fromDto(Employer employer) {
-        return new Offer(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, department.fromDto(), employer );
+        return new Offer(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, department.fromDto(), employer, status);
     }
 }
