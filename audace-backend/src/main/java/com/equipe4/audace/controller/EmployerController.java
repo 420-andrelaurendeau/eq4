@@ -2,6 +2,7 @@ package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.service.EmployerService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ import java.util.List;
 @RequestMapping("/employers")
 public class EmployerController {
     private final EmployerService employerService;
-    Logger logger = LoggerFactory.getLogger(EmployerController.class);
+    private Logger logger = LoggerFactory.getLogger(EmployerController.class);
 
     public EmployerController(EmployerService employerService) {
         this.employerService = employerService;
@@ -29,7 +30,7 @@ public class EmployerController {
     }
 
     @PostMapping
-    public ResponseEntity<HttpStatus> createEmployer(@RequestBody EmployerDTO employerDTO){
+    public ResponseEntity<HttpStatus> createEmployer(@RequestBody @Valid EmployerDTO employerDTO){
         logger.info("createEmployer");
         employerService.createEmployer(employerDTO);
         return new ResponseEntity<>(HttpStatus.CREATED);
