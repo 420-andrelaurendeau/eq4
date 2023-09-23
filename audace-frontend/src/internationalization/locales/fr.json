@@ -1,19 +1,45 @@
 {
-    "langCode": "fr",
-    "signup": {
-        "employerFormTitle": "Inscription Employeur",
-        "companyNameEntry": "Nom de l'entreprise",
-        "addressEntry": "Adresse",
-        "cityEntry": "Ville",
-        "postalCodeEntry": "Code postal",
-        "phoneEntry": "Téléphone",
-        "extensionEntry": "Poste",
-        "lastNameEntry": "Nom de famille",
-        "firstNameEntry": "Prénom",
-        "positionEntry": "Fonction occupée",
-        "emailEntry": "Courriel",
-        "password": "Choisissez un mot de passe",
-        "passwordConfirmation": "Confirmez votre mot de passe",
-        "signup": "S'inscrire"
+  "langCode": "fr",
+  "signup": {
+    "employerFormTitle": "Inscription Employeur",
+    "studentFormTitle": "Inscription Étudiant",
+    "companyNameEntry": "Nom de l'entreprise",
+    "addressEntry": "Adresse",
+    "cityEntry": "Ville",
+    "postalCodeEntry": "Code postal",
+    "phoneEntry": "Téléphone",
+    "extensionEntry": "Poste",
+    "lastNameEntry": "Nom de famille",
+    "firstNameEntry": "Prénom",
+    "positionEntry": "Fonction occupée",
+    "emailEntry": "Courriel",
+    "password": "Choisissez un mot de passe",
+    "passwordConfirmation": "Confirmez votre mot de passe",
+    "studentId": "Matricule",
+    "signup": "S'inscrire",
+    "errors": {
+      "organisation": "SVP entrez un nom d'organisation valide",
+      "position": "la fonction occupée ne peut pas être vide",
+      "firstName": "Le prénom ne peut pas être vide",
+      "lastName": "Le nom de famille ne peut pas être vide",
+      "address": "L'adresse ne peut pas être vide",
+      "city": "La ville ne peut pas être vide",
+      "postalCode": "SVP entrez un code postal valide",
+      "phone": "SVP entrez un numéro de téléphone valide",
+      "extension": "SVP entrez un numéro de poste valide",
+      "email": "SVP entrez un courriel valide",
+      "password": "SVP entrez un mot de passe valide",
+      "studentId": "SVP entrez une matricule valide"
     }
+  },
+  "studentOffersList": {
+    "errors": {
+      "departmentNotFound": "Aucun département trouvé"
+    },
+    "title": "Titre",
+    "internshipEndDate": "Date de fin",
+    "internshipStartDate": "Date de début",
+    "noOffers": "Aucun offre disponible",
+    "viewTitle": "Offres disponibles"
+  }
 }

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
+
 @Data
 @Entity
 @NoArgsConstructor
@@ -14,15 +15,15 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
 //@Table(name = "AUDACE_USER") -> Ne permets pas la creation des tables Student et Employer
 public abstract class User {
     @Id
-    @GeneratedValue(strategy=SEQUENCE, generator="SEQUENCE_USER")
+    @GeneratedValue(strategy = SEQUENCE, generator = "SEQUENCE_USER")
     @SequenceGenerator(name = "SEQUENCE_USER", sequenceName = "USER_SEC", allocationSize = 1)
-    private Long id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String password;
-    private String address;
-    private String phone;
+    protected Long id;
+    protected String firstName;
+    protected String lastName;
+    protected String email;
+    protected String password;
+    protected String address;
+    protected String phone;
 
     public User(String firstName, String lastName, String email, String password, String address, String phone) {
         this.firstName = firstName;
@@ -31,8 +32,5 @@ public abstract class User {
         this.password = password;
         this.address = address;
         this.phone = phone;
-    }
-
-    public User(Long id, String email, String password) {
     }
 }
