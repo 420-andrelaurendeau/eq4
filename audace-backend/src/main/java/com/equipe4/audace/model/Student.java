@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 import lombok.Data;
 
 @Entity
-@Inheritance
 @Data
 @NoArgsConstructor
 public class Student extends User {

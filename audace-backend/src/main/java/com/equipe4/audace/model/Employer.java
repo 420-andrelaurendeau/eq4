@@ -16,16 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Employer extends User {
-    @Column
     private String organisation;
-    @Column
     private String position;
-    @Column
     private String extension;
 
     @OneToMany(mappedBy = "employer", cascade = CascadeType.ALL)
