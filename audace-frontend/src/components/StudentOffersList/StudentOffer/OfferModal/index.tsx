@@ -50,6 +50,30 @@ const OfferModal = ({offer, show, handleClose}: Props) => {
                                 )
                             }
                         </div>
+                        <div>{t("studentOffer.modal.address")}:&nbsp;
+                            {createBoldText(
+                                employer !== undefined ? 
+                                employer.address! : 
+                                t("studentOffer.modal.orgNotFound")
+                            )}
+                        </div>
+                        <div>{t("studentOffer.modal.phone")}:&nbsp;
+                            {createBoldText(
+                                employer !== undefined ? 
+                                employer.phone! : 
+                                t("studentOffer.modal.orgNotFound")
+                            )}
+                        </div>
+                    </div>
+
+                    <hr/>
+
+                    <u><h4 className="my-3 text-center">{t("studentOffer.modal.offerDescription")}</h4></u>
+                    <div style={{textAlign : "justify"}}>{offer.description}</div>
+
+                    <hr/>
+
+                    <div className="text-end">
                         <div>
                             {t("studentOffer.modal.internDate.start")}:&nbsp;
                             {createBoldText(formatDate(offer.internshipStartDate))}&nbsp;
@@ -58,11 +82,6 @@ const OfferModal = ({offer, show, handleClose}: Props) => {
                         </div>
                         <div>{t("studentOffer.modal.offerEnd")}: {createBoldText(formatDate(offer.offerEndDate))}</div>
                     </div>
-
-                    <hr/>
-
-                    <u><h4 className="my-3 text-center">{t("studentOffer.modal.offerDescription")}</h4></u>
-                    <div style={{textAlign : "justify"}}>{offer.description}</div>
                 </Modal.Body>
                 <Modal.Footer>
                     {employer === undefined && <div className="text-danger">{t("studentOffer.modal.empNotFound")}</div>}

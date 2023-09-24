@@ -45,6 +45,8 @@
   "studentOffer": {
     "modal": {
       "org": "Organization",
+      "address": "Address",
+      "phone": "Phone number",
       "orgNotFound": "Organization not found",
       "offerEnd": "Offer ends on",
       "offerDescription": "Offer Description",
