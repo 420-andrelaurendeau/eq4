@@ -10,7 +10,6 @@ interface Props {
 
 const StudentOffer = ({offer}: Props) => {
     const [show, setShow] = useState<boolean>(false);
-
     const handleClick = () => setShow(true);
     const handleClose = () => setShow(false);
 
