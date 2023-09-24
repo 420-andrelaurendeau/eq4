@@ -2,18 +2,10 @@ import { useState } from "react";
 import { Offer } from "../../../model/offer";
 import OfferModal from "./OfferModal";
 import './styles.css'
+import { formatDate } from "../../../services/formatService";
 
 interface Props {
     offer: Offer;
-}
-
-export const formatDate = (date: Date) => {
-    const newDate = new Date(date);
-    const year = newDate.getFullYear();
-    const month = newDate.getMonth() + 1;
-    const day = newDate.getDate();
-
-    return `${day}/${month}/${year}`;
 }
 
 const StudentOffer = ({offer}: Props) => {

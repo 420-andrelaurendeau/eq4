@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { Offer } from "../../../../model/offer";
 import { Employer } from "../../../../model/user";
 import { Button, Modal } from "react-bootstrap";
-import { formatDate } from "..";
 import { getEmployerById } from "../../../../services/userService";
 import { useTranslation } from "react-i18next";
+import { formatDate } from "../../../../services/formatService";
 
 interface Props {
     offer: Offer;
