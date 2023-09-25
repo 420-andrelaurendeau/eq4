@@ -29,6 +29,13 @@ public class OfferController {
         logger.info("getAllOffers");
         return offerService.findAllOffers();
     }
+
+    @GetMapping
+    public List<OfferDTO> getAllOffersByEmployerId(@RequestParam("employerId") Long employerId){
+        logger.info("getAllOffersByEmployerId");
+        return offerService.findAllOffersByEmployerId(employerId);
+    }
+
     @PostMapping
     public ResponseEntity<HttpStatus> createOffer(@RequestBody OfferDTO offerDTO){
         logger.info("createOffer");

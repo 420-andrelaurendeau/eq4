@@ -38,9 +38,5 @@ public class EmployerController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}/offers")
-    public List<OfferDTO> getAllOfferByEmployerId(@PathVariable Long id) {
-        logger.info("getAllOfferByEmployerId");
-        return employerService.getAllOfferByEmployerId(id);
-    }
+
 }

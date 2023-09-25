@@ -56,5 +56,9 @@ public class OfferService {
         return offerRepository.findAll().stream().map(OfferDTO::new).toList();
     }
 
+    public List<OfferDTO> findAllOffersByEmployerId(Long employerId){
+        Employer employer = employerService.findEmployerById(employerId);
+        return offerRepository.findAllByEmployer(employer).stream().map(OfferDTO::new).toList();
+    }
 
 }
