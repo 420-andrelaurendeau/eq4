@@ -3,15 +3,10 @@ package com.equipe4.audace.model.offer;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -19,32 +14,46 @@ import java.util.Date;
 @NoArgsConstructor
 public class Offer {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "offer_gen")
+    @SequenceGenerator(name = "offer_gen", sequenceName = "offer_sec", allocationSize = 1)
+    @Column(name = "offer_id")
     private Long id;
 
     private String title;
     private String description;
-    private Date internshipStartDate;
-    private Date internshipEndDate;
-    private Date offerEndDate;
+    private LocalDate internshipStartDate;
+    private LocalDate internshipEndDate;
+    private LocalDate offerEndDate;
+    private int availablePlaces;
+    private boolean approved;
 
     @ManyToOne
+    @JoinColumn(name = "department_id")
     private Department department;
 
     @ManyToOne
+    @JoinColumn(name = "employer_id")
+    @ToString.Exclude
     private Employer employer;
 
-    public Offer(String title, String description, Date internshipStartDate, Date internshipEndDate, Date offerEndDate, Employer employer, Department department) {
+
+    @Builder(builderMethodName = "offerBuilder")
+    public Offer(String title, String description, LocalDate internshipStartDate, LocalDate internshipEndDate, LocalDate offerEndDate, int availablePlaces, Department department, Employer employer) {
         this.title = title;
         this.description = description;
         this.internshipStartDate = internshipStartDate;
         this.internshipEndDate = internshipEndDate;
         this.offerEndDate = offerEndDate;
-        this.employer = employer;
+        this.availablePlaces = availablePlaces;
+        this.approved = false;
         this.department = department;
+        this.employer = employer;
     }
 
-    public OfferDTO toDto() {
+
+
+
+    /*public OfferDTO toDto() {
         return new OfferDTO(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, employer.getId(), department.toDto());
-    }
+    }*/
 }

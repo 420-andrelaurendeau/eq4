@@ -1,6 +1,9 @@
 package com.equipe4.audace.dto;
 
 import com.equipe4.audace.model.Employer;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Data
@@ -55,6 +58,6 @@ public class EmployerDTO {
                 .address(address)
                 .phone(phone)
                 .extension(extension)
-                .build();
+        .build();
     }
 }

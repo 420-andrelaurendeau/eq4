@@ -1,6 +1,8 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.repository.EmployerRepository;
 import org.junit.jupiter.api.Test;
@@ -11,8 +13,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,7 +28,7 @@ public class EmployerServiceTest {
     private EmployerService employerService;
 
     @Test
-    public void saveEmployerTest(){
+    public void createEmployer_HappyPath(){
         // Arrange
         EmployerDTO employerDTO = EmployerDTO.employerDTOBuilder().id(1L)
                 .firstName("Employer1").lastName("Employer1").email("employer1@gmail.com").password("123456eE")
@@ -39,6 +43,26 @@ public class EmployerServiceTest {
         assertThat(dto.equals(employerDTO));
         verify(employerRepository, times(1)).save(employerDTO.fromDTO());
     }
+    @Test
+    public void createEmployer_NullEmployer(){
+        assertThatThrownBy(() -> employerService.createEmployer(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Employer cannot be null");
+    }
+    @Test
+    void createEmployer_EmailAlreadyInUse() {
+        // Arrange
+        EmployerDTO employerDTO = EmployerDTO.employerDTOBuilder().id(1L)
+                .firstName("Employer1").lastName("Employer1").email("employer1@gmail.com").password("123456eE")
+                .organisation("Organisation1").position("Position1").phone("123-456-7890").extension("12345")
+                .address("Class Service, Javatown, Qc H8N1C1").build();
+        when(employerRepository.findByEmail(anyString())).thenReturn(Optional.of(employerDTO.fromDTO()));
+
+        assertThatThrownBy(() -> employerService.createEmployer(employerDTO))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Email already in use");
+    }
+
 
     @Test
     public void findAllEmployersTest(){
