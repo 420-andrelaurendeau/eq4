@@ -1,24 +1,22 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.EmployerDTO;
-import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.model.Employer;
-import com.equipe4.audace.model.department.Department;
-import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
-import com.equipe4.audace.service.EmployerService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -30,21 +28,41 @@ public class EmployerServiceTest {
     private EmployerService employerService;
 
     @Test
-    public void saveEmployerTest(){
+    public void createEmployer_HappyPath(){
         // Arrange
         EmployerDTO employerDTO = EmployerDTO.employerDTOBuilder().id(1L)
                 .firstName("Employer1").lastName("Employer1").email("employer1@gmail.com").password("123456eE")
                 .organisation("Organisation1").position("Position1").phone("123-456-7890").extension("12345")
-                .address("Class Service, Javatown, Qc H8N1C1").offers(new ArrayList<>()).build();
+                .address("Class Service, Javatown, Qc H8N1C1").build();
         when(employerRepository.save(any(Employer.class))).thenReturn(employerDTO.fromDTO());
 
         // Act
-        EmployerDTO dto = employerService.saveEmployer(employerDTO).get();
+        EmployerDTO dto = employerService.createEmployer(employerDTO).get();
 
         // Assert
         assertThat(dto.equals(employerDTO));
         verify(employerRepository, times(1)).save(employerDTO.fromDTO());
     }
+    @Test
+    public void createEmployer_NullEmployer(){
+        assertThatThrownBy(() -> employerService.createEmployer(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Employer cannot be null");
+    }
+    @Test
+    void createEmployer_EmailAlreadyInUse() {
+        // Arrange
+        EmployerDTO employerDTO = EmployerDTO.employerDTOBuilder().id(1L)
+                .firstName("Employer1").lastName("Employer1").email("employer1@gmail.com").password("123456eE")
+                .organisation("Organisation1").position("Position1").phone("123-456-7890").extension("12345")
+                .address("Class Service, Javatown, Qc H8N1C1").build();
+        when(employerRepository.findByEmail(anyString())).thenReturn(Optional.of(employerDTO.fromDTO()));
+
+        assertThatThrownBy(() -> employerService.createEmployer(employerDTO))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Email already in use");
+    }
+
 
     @Test
     public void findAllEmployersTest(){
@@ -69,25 +87,5 @@ public class EmployerServiceTest {
         // Assert
         assertThat(employerDTOList.size()).isEqualTo(2);
         verify(employerRepository, times(1)).findAll();
-    }
-
-    @Test
-    public void getAllOffersByEmployeeId() {
-        Employer employer = new Employer();
-        employer.setId(1L);
-        List<Offer> offers = new ArrayList<>();
-        Offer offer = new Offer();
-        offer.setEmployer(employer);
-        Department department = new Department();
-        department.setId(1L);
-        offer.setDepartment(department);
-        offers.add(offer);
-        employer.setOffers(offers);
-        when(employerRepository.getReferenceById(1L)).thenReturn(employer);
-
-        List<OfferDTO> offerDTOList = employerService.getAllOfferByEmployerId(1L);
-
-        assertThat(offerDTOList.size()).isEqualTo(1);
-
     }
 }

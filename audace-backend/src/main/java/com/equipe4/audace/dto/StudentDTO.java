@@ -13,11 +13,19 @@ public class StudentDTO extends UserDTO {
     private DepartmentDTO department;
 
     public Student fromDTO() {
-        return new Student(id, email, password, studentNumber, department.fromDto());
+        return new Student(id, firstName, lastName, email, password, address, phone, studentNumber, department.fromDto());
     }
 
-    public StudentDTO(Long id, String email, String password, String studentNumber, DepartmentDTO department) {
-        super(id, email, password);
+    public StudentDTO(Long id,
+                      String firstName,
+                      String lastName,
+                      String email,
+                      String address,
+                      String phone,
+                      String password,
+                      String studentNumber,
+                      DepartmentDTO department) {
+        super(id, firstName, lastName, address, phone, email, password);
         this.studentNumber = studentNumber;
         this.department = department;
     }

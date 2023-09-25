@@ -1,40 +1,30 @@
 package com.equipe4.audace.dto.offer;
 
+import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
+@NoArgsConstructor
 public class OfferDTO {
     private Long id;
     private String title;
     private String description;
-    private Date internshipStartDate;
-    private Date internshipEndDate;
-    private Date offerEndDate;
+    private LocalDate internshipStartDate;
+    private LocalDate internshipEndDate;
+    private LocalDate offerEndDate;
+    private int availablePlaces;
+    private boolean approved;
+    private String departmentCode;
     private Long employerId;
-    private DepartmentDTO department;
 
-    public OfferDTO(Long id,
-                    String title,
-                    String description,
-                    Date internshipStartDate,
-                    Date internshipEndDate,
-                    Date offerEndDate,
-                    Long employerId,
-                    DepartmentDTO department) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.internshipStartDate = internshipStartDate;
-        this.internshipEndDate = internshipEndDate;
-        this.offerEndDate = offerEndDate;
-        this.employerId = employerId;
-        this.department = department;
-    }
 
     public OfferDTO(Offer offer) {
         this.id = offer.getId();
@@ -43,11 +33,35 @@ public class OfferDTO {
         this.internshipStartDate = offer.getInternshipStartDate();
         this.internshipEndDate = offer.getInternshipEndDate();
         this.offerEndDate = offer.getOfferEndDate();
+        this.availablePlaces = offer.getAvailablePlaces();
+        this.approved = offer.isApproved();
+        this.departmentCode = offer.getDepartment().getCode();
         this.employerId = offer.getEmployer().getId();
-        this.department = new DepartmentDTO(offer.getDepartment());
     }
 
-    public Offer fromDto(Employer employer) {
-        return new Offer(title, description, internshipStartDate, internshipEndDate, offerEndDate, employer, department.fromDto());
+    @Builder(builderMethodName = "offerDTOBuilder")
+    public OfferDTO(Long id, String title, String description, LocalDate internshipStartDate, LocalDate internshipEndDate, LocalDate offerEndDate, int availablePlaces, boolean approved, String departmentCode, Long employerId) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.internshipStartDate = internshipStartDate;
+        this.internshipEndDate = internshipEndDate;
+        this.offerEndDate = offerEndDate;
+        this.availablePlaces = availablePlaces;
+        this.approved = approved;
+        this.departmentCode = departmentCode;
+        this.employerId = employerId;
+    }
+
+
+    public Offer fromDto() {
+        return Offer.offerBuilder()
+                .title(title)
+                .description(description)
+                .internshipStartDate(internshipStartDate)
+                .internshipEndDate(internshipEndDate)
+                .offerEndDate(offerEndDate)
+                .availablePlaces(availablePlaces)
+                .build();
     }
 }

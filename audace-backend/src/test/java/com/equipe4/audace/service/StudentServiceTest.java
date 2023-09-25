@@ -1,18 +1,21 @@
 package com.equipe4.audace.service;
 
+import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.StudentRepository;
-import com.equipe4.audace.repository.DepartmentRepository;
-import com.equipe4.audace.repository.OfferRepository;
+import com.equipe4.audace.repository.department.DepartmentRepository;
+import com.equipe4.audace.repository.offer.OfferRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -38,27 +41,29 @@ public class StudentServiceTest {
         List<Offer> offers = new ArrayList<>();
 
         Employer fakeEmployer = new Employer(
-                "firstName",
-                "lastName",
-                "email",
+                "employer",
+                "employerman",
+                "email@gmail.com",
                 "password",
-                "address",
-                "phone",
                 "organisation",
                 "position",
+                "address",
+                "phone",
                 "extension"
         );
         fakeEmployer.setId(1L);
 
-        Offer fakeOffer = new Offer(
-                "title",
-                "description",
-                null,
-                null,
-                null,
-                fakeEmployer,
-                mockedDepartment
-        );
+        Offer fakeOffer = Offer.offerBuilder()
+                .title("title")
+                .description("description")
+                .internshipStartDate(LocalDate.now())
+                .internshipEndDate(LocalDate.now())
+                .offerEndDate(LocalDate.now())
+                .availablePlaces(2)
+                .department(mockedDepartment)
+                .employer(fakeEmployer)
+                .build();
+
         fakeEmployer.getOffers().add(fakeOffer);
 
         for (int i = 0; i < 3; i++)
@@ -70,7 +75,7 @@ public class StudentServiceTest {
         List<OfferDTO> result = studentService.getOffersByDepartment(1L);
 
         assertThat(result.size()).isEqualTo(offers.size());
-        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDto).toList());
+        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(OfferDTO::new).toList());
     }
 
     @Test
@@ -92,5 +97,45 @@ public class StudentServiceTest {
         List<OfferDTO> result = studentService.getOffersByDepartment(1L);
 
         assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
+    void createStudent() {
+        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
+
+        when(studentRepository.save(any())).thenReturn(studentDTO.fromDTO());
+
+        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(studentDTO.getDepartment().fromDto()));
+
+        Optional<StudentDTO> optionalStudentDTO = studentService.createStudent(studentDTO, "420");
+
+        assertThat(optionalStudentDTO).isPresent();
+    }
+
+    @Test
+    void createStudentNullStudent() {
+        assertThatThrownBy(() -> studentService.createStudent(null, null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Student cannot be null");
+    }
+
+    @Test
+    void createStudentAlreadyExists() {
+        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
+        when(studentRepository.findStudentByStudentNumberOrEmail(anyString(), anyString())).thenReturn(Optional.of(studentDTO.fromDTO()));
+
+        assertThatThrownBy(() -> studentService.createStudent(studentDTO, "420"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Student already exists");
+    }
+
+    @Test
+    void createStudentDepartmentInvalid() {
+        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
+        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> studentService.createStudent(studentDTO, "INVALIDE DUH"))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Department not found");
     }
 }

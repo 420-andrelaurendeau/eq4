@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/students")
@@ -24,11 +25,11 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<HttpStatus> createStudent(@RequestBody StudentDTO studentDTO) {
+    @PostMapping("/signup/{departmentCode}")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<HttpStatus> createStudent(@RequestBody StudentDTO studentDTO, @PathVariable String departmentCode) {
         logger.info("createStudent");
-        studentService.createStudent(studentDTO);
-
+        studentService.createStudent(studentDTO, departmentCode);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -36,6 +37,14 @@ public class StudentController {
     public ResponseEntity<List<OfferDTO>> getOffersByDepartment(@PathVariable Long departmentId) {
         logger.info("getOffersByDepartment");
 
-        return ResponseEntity.ok(studentService.getOffersByDepartment(departmentId));
+        List<OfferDTO> offers;
+
+        try {
+            offers = studentService.getOffersByDepartment(departmentId);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(offers);
     }
 }

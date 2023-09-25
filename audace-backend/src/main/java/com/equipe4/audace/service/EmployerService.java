@@ -1,9 +1,8 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.EmployerDTO;
-import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.repository.EmployerRepository;
-import com.equipe4.audace.repository.OfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,23 +12,28 @@ import java.util.Optional;
 @Service
 public class EmployerService {
     private final EmployerRepository employerRepository;
-    private final OfferRepository offerRepository;
 
     @Autowired
-    public EmployerService(EmployerRepository employerRepository, OfferRepository offerRepository) {
+    public EmployerService(EmployerRepository employerRepository) {
         this.employerRepository = employerRepository;
-        this.offerRepository = offerRepository;
     }
 
-    public Optional<EmployerDTO> saveEmployer(EmployerDTO employerDTO){
+    public Optional<EmployerDTO> createEmployer(EmployerDTO employerDTO){
+        if (employerDTO == null) throw new IllegalArgumentException("Employer cannot be null");
+
+        Optional<Employer> employerOptional = employerRepository.findByEmail(employerDTO.getEmail());
+
+        if (employerOptional.isPresent()) throw new IllegalArgumentException("Email already in use");
+
         return Optional.of(new EmployerDTO(employerRepository.save(employerDTO.fromDTO())));
+    }
+    public Employer findEmployerById(long employerId){
+        Optional<Employer> employerOptional = employerRepository.findById(employerId);
+        if (employerOptional.isEmpty()) throw new IllegalArgumentException("Employer doesn't exists");
+        return employerOptional.get();
     }
 
     public List<EmployerDTO> findAllEmployers(){
         return employerRepository.findAll().stream().map(EmployerDTO::new).toList();
-    }
-
-    public List<OfferDTO> getAllOfferByEmployerId(Long id) {
-        return offerRepository.findAllByEmployerId(id).stream().map(OfferDTO::new).toList();
     }
 }
