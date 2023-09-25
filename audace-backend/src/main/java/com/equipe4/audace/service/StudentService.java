@@ -54,8 +54,7 @@ public class StudentService {
     public List<OfferDTO> getOffersByDepartment(Long departmentId) {
         Department department = departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
-        List<Offer> offers = offerRepository.findAllByDepartment(department);
-
-        return offers.stream().map(Offer::toDto).toList();
+        //List<Offer> offers = offerRepository.findAllByDepartment(department);
+        return offerRepository.findAllByDepartment(department).stream().map(OfferDTO::new).toList();
     }
 }

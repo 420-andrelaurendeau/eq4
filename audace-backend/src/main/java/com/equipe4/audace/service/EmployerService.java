@@ -27,6 +27,11 @@ public class EmployerService {
 
         return Optional.of(new EmployerDTO(employerRepository.save(employerDTO.fromDTO())));
     }
+    public Employer findEmployerById(long employerId){
+        Optional<Employer> employerOptional = employerRepository.findById(employerId);
+        if (employerOptional.isEmpty()) throw new IllegalArgumentException("Employer doesn't exists");
+        return employerOptional.get();
+    }
 
     public List<EmployerDTO> findAllEmployers(){
         return employerRepository.findAll().stream().map(EmployerDTO::new).toList();
