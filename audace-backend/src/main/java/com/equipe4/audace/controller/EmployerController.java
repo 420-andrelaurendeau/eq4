@@ -2,7 +2,6 @@ package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.service.EmployerService;
-import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

@@ -1,10 +1,9 @@
 package com.equipe4.audace.dto;
 
 import com.equipe4.audace.model.Employer;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
@@ -34,8 +33,7 @@ public class EmployerDTO {
     }
 
     @Builder(builderMethodName = "employerDTOBuilder")
-    public EmployerDTO(Long id, String firstName, String lastName, String email, String password, String organisation, String position, String address, String phone, String extension) {
-        this.id = id;
+    public EmployerDTO(String firstName, String lastName, String email, String password, String organisation, String position, String address, String phone, String extension) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
