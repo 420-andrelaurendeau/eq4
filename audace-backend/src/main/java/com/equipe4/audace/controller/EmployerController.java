@@ -1,7 +1,9 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.service.EmployerService;
+import com.equipe4.audace.service.OfferService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +19,25 @@ import java.util.List;
 @RequestMapping("/employers")
 public class EmployerController {
     private final EmployerService employerService;
+    private final OfferService offerService;
     private Logger logger = LoggerFactory.getLogger(EmployerController.class);
 
     @Autowired
-    public EmployerController(EmployerService employerService) {
+    public EmployerController(EmployerService employerService, OfferService offerService) {
         this.employerService = employerService;
+        this.offerService = offerService;
     }
 
     @GetMapping
     public List<EmployerDTO> getAllEmployers(){
         logger.info("getAllEmployers");
         return employerService.findAllEmployers();
+    }
+
+    @GetMapping("/{id}/offers")
+    public List<OfferDTO> getAllOffersByEmployerId(@PathVariable Long id) {
+        logger.info("getAllOffersByEmployerId");
+        return offerService.findAllOffersByEmployerId(id);
     }
 
     @PostMapping
