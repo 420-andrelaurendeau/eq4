@@ -1,7 +1,6 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.EmployerDTO;
-import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.service.EmployerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
