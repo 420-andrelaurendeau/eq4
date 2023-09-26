@@ -60,6 +60,17 @@ public class Student extends User {
     }
 
     public StudentDTO toDTO() {
-        return new StudentDTO(id, getFirstName(), getLastName(), email, address, phone, password, studentNumber, department.toDto());
+        return new StudentDTO(
+                id,
+                getFirstName(),
+                getLastName(),
+                email,
+                address,
+                phone,
+                password,
+                studentNumber,
+                department.toDto(),
+                cvs
+        );
     }
 }
