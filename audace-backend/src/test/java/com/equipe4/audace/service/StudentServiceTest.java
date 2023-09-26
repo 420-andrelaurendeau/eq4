@@ -21,6 +21,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -147,12 +148,7 @@ public class StudentServiceTest {
 
     @Test
     void saveCv_happyPath() {
-        MultipartFile file = new MockMultipartFile(
-                "file",
-                "test.txt",
-                MediaType.TEXT_PLAIN_VALUE,
-                "test data".getBytes()
-        );
+        MultipartFile file = createMockFile();
 
         StudentDTO studentDTO = createStudentDTO();
         when(studentRepository.findById(studentDTO.getId())).thenReturn(Optional.of(studentDTO.fromDTO()));
@@ -183,6 +179,44 @@ public class StudentServiceTest {
         assertThat(student.getCvs().get(0).getName()).isEqualTo(name);
     }
 
+    @Test
+    void saveCv_studentNotFound() {
+        MultipartFile file = createMockFile();
+
+        StudentDTO studentDTO = createStudentDTO();
+        when(studentRepository.findById(studentDTO.getId())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> studentService.saveCv(file, studentDTO.getId()))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Student not found");
+    }
+
+    @Test
+    void saveCv_fileNull() {
+        StudentDTO studentDTO = createStudentDTO();
+
+        assertThatThrownBy(() -> studentService.saveCv(null, studentDTO.getId()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("File cannot be null");
+    }
+
+    @Test
+    void saveCv_fileUnreadable() {
+        MultipartFile file = new CustomMockMultipartFile(
+                "file",
+                "test.txt",
+                MediaType.TEXT_PLAIN_VALUE,
+                null
+        );
+
+        StudentDTO studentDTO = createStudentDTO();
+        when(studentRepository.findById(studentDTO.getId())).thenReturn(Optional.of(studentDTO.fromDTO()));
+
+        assertThatThrownBy(() -> studentService.saveCv(file, studentDTO.getId()))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("File cannot be read");
+    }
+
     private StudentDTO createStudentDTO() {
         return new StudentDTO(
                 1L,
@@ -196,5 +230,26 @@ public class StudentServiceTest {
                 new DepartmentDTO(1L, "GEN", "Génie"),
                 new ArrayList<>()
         );
+    }
+
+    private MultipartFile createMockFile() {
+        return new MockMultipartFile(
+                "file",
+                "test.txt",
+                MediaType.TEXT_PLAIN_VALUE,
+                "test data".getBytes()
+        );
+    }
+
+    private static class CustomMockMultipartFile extends MockMultipartFile {
+        public CustomMockMultipartFile(String name, String originalFilename, String contentType, byte[] content) {
+            super(name, originalFilename, contentType, content);
+        }
+
+        // To test the IOException
+        @Override
+        public byte[] getBytes() throws IOException {
+            throw new IOException();
+        }
     }
 }
