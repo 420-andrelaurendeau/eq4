@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -46,5 +47,12 @@ public class StudentController {
         }
 
         return ResponseEntity.ok(offers);
+    }
+
+    @PostMapping("/upload/{studentId}")
+    public ResponseEntity<HttpStatus> uploadCv(@PathVariable Long studentId, @RequestParam("file") MultipartFile file) {
+        logger.info("uploadCv");
+        studentService.saveCv(file, studentId);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
