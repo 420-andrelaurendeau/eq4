@@ -21,14 +21,16 @@ public class Cv {
 
     @ManyToOne
     private Student uploader;
+    private String name;
     private byte[] content;
 
-    public Cv(Student uploader, byte[] content) {
+    public Cv(Student uploader, String name, byte[] content) {
         this.uploader = uploader;
+        this.name = name;
         this.content = content;
     }
 
     public CvDTO toDto() {
-        return new CvDTO(id, content, uploader.getId());
+        return new CvDTO(id, name, content, uploader.getId());
     }
 }

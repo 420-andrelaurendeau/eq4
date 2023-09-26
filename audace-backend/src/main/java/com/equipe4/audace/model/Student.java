@@ -1,8 +1,8 @@
 package com.equipe4.audace.model;
 
-import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
+import com.equipe4.audace.dto.StudentDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;

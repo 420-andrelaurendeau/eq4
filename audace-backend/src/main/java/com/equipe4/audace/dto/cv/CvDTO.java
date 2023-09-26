@@ -11,10 +11,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CvDTO {
     private Long id;
+    private String name;
     private byte[] content;
     private Long uploaderId;
 
     public Cv fromDto(Student uploader) {
-        return new Cv(id, uploader, content);
+        return new Cv(id, uploader, name, content);
     }
 }
