@@ -23,6 +23,11 @@ public class Cv {
     private Student uploader;
     private byte[] content;
 
+    public Cv(Student uploader, byte[] content) {
+        this.uploader = uploader;
+        this.content = content;
+    }
+
     public CvDTO toDto() {
         return new CvDTO(id, content, uploader.getId());
     }
