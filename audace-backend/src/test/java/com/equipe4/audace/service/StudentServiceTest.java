@@ -4,6 +4,8 @@ import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.StudentRepository;
@@ -14,7 +16,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -99,17 +105,7 @@ public class StudentServiceTest {
 
     @Test
     void createStudent() {
-        StudentDTO studentDTO = new StudentDTO(
-                1L,
-                "student",
-                "studentMan",
-                "email@gmail.com",
-                "adress",
-                "1234567890",
-                "password",
-                "2212895",
-                new DepartmentDTO(1L, "GEN", "Génie"),
-                new ArrayList<>());
+        StudentDTO studentDTO = createStudentDTO();
 
         when(studentRepository.save(any())).thenReturn(studentDTO.fromDTO());
 
@@ -129,17 +125,7 @@ public class StudentServiceTest {
 
     @Test
     void createStudentAlreadyExists() {
-        StudentDTO studentDTO = new StudentDTO(
-                1L,
-                "student",
-                "studentMan",
-                "email@gmail.com",
-                "adress",
-                "1234567890",
-                "password",
-                "2212895",
-                new DepartmentDTO(1L, "GEN", "Génie"),
-                new ArrayList<>());
+        StudentDTO studentDTO = createStudentDTO();
 
         when(studentRepository.findStudentByStudentNumberOrEmail(anyString(), anyString())).thenReturn(Optional.of(studentDTO.fromDTO()));
 
@@ -150,7 +136,55 @@ public class StudentServiceTest {
 
     @Test
     void createStudentDepartmentInvalid() {
-        StudentDTO studentDTO = new StudentDTO(
+        StudentDTO studentDTO = createStudentDTO();
+
+        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> studentService.createStudent(studentDTO, "INVALIDE DUH"))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Department not found");
+    }
+
+    @Test
+    void saveCv_happyPath() {
+        MultipartFile file = new MockMultipartFile(
+                "file",
+                "test.txt",
+                MediaType.TEXT_PLAIN_VALUE,
+                "test data".getBytes()
+        );
+
+        StudentDTO studentDTO = createStudentDTO();
+        when(studentRepository.findById(studentDTO.getId())).thenReturn(Optional.of(studentDTO.fromDTO()));
+
+        byte[] bytes;
+        String name;
+
+        try {
+            bytes = file.getBytes();
+            name = file.getName();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read file");
+        }
+
+        Cv cv = new Cv(studentDTO.fromDTO(), name, bytes);
+        Student student = studentDTO.fromDTO();
+
+        List<Cv> cvs = new ArrayList<>(student.getCvs());
+        cvs.add(cv);
+        student.setCvs(cvs);
+        when(studentRepository.save(any())).thenReturn(student);
+
+        studentService.saveCv(file, studentDTO.getId());
+
+        verify(studentRepository, times(1)).save(any());
+        assertThat(student.getCvs().size()).isEqualTo(1);
+        assertThat(student.getCvs().get(0).getContent()).isEqualTo(bytes);
+        assertThat(student.getCvs().get(0).getName()).isEqualTo(name);
+    }
+
+    private StudentDTO createStudentDTO() {
+        return new StudentDTO(
                 1L,
                 "student",
                 "studentMan",
@@ -160,12 +194,7 @@ public class StudentServiceTest {
                 "password",
                 "2212895",
                 new DepartmentDTO(1L, "GEN", "Génie"),
-                new ArrayList<>());
-
-        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> studentService.createStudent(studentDTO, "INVALIDE DUH"))
-                .isInstanceOf(NoSuchElementException.class)
-                .hasMessage("Department not found");
+                new ArrayList<>()
+        );
     }
 }
