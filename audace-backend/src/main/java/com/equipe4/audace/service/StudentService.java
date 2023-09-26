@@ -8,6 +8,7 @@ import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.StudentRepository;
+import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import jakarta.transaction.Transactional;
@@ -28,6 +29,7 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final OfferRepository offerRepository;
     private final DepartmentRepository departmentRepository;
+    private final CvRepository cvRepository;
 
     @Transactional
     public Optional<StudentDTO> createStudent(StudentDTO studentDTO, String departmentCode) {
@@ -79,13 +81,6 @@ public class StudentService {
         }
 
         Cv cv = new Cv(student, name, bytes);
-        List<Cv> cvs = new ArrayList<>(student.getCvs());
-        cvs.add(cv);
-        student.setCvs(cvs);
-
-        student = studentRepository.save(student);
-
-        cvs = new ArrayList<>(student.getCvs());
-        return Optional.of(cvs.get(cvs.size() - 1).toDto());
+        return Optional.of(cvRepository.save(cv).toDto());
     }
 }

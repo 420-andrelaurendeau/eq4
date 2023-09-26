@@ -3,6 +3,7 @@ package com.equipe4.audace.controller;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.StudentRepository;
+import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.service.StudentService;
@@ -21,7 +22,6 @@ import java.util.Optional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,6 +40,8 @@ public class StudentControllerTest {
     private DepartmentRepository departmentRepository;
     @MockBean
     private EmployerRepository employerRepository;
+    @MockBean
+    private CvRepository cvRepository;
 
     @Test
     void uploadCv_happyPath() throws Exception {

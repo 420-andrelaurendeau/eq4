@@ -1,6 +1,7 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
@@ -9,6 +10,7 @@ import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.StudentRepository;
+import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import org.junit.jupiter.api.Test;
@@ -38,6 +40,8 @@ public class StudentServiceTest {
     private OfferRepository offerRepository;
     @Mock
     private DepartmentRepository departmentRepository;
+    @Mock
+    private CvRepository cvRepository;
     @InjectMocks
     private StudentService studentService;
 
@@ -163,20 +167,14 @@ public class StudentServiceTest {
             throw new RuntimeException("Failed to read file");
         }
 
-        Cv cv = new Cv(studentDTO.fromDTO(), name, bytes);
-        Student student = studentDTO.fromDTO();
+        Cv cv = new Cv(2L, studentDTO.fromDTO(), name, bytes);
+        CvDTO expected = cv.toDto();
 
-        List<Cv> cvs = new ArrayList<>(student.getCvs());
-        cvs.add(cv);
-        student.setCvs(cvs);
-        when(studentRepository.save(any())).thenReturn(student);
+        when(cvRepository.save(any())).thenReturn(cv);
+        CvDTO result = studentService.saveCv(file, studentDTO.getId()).get();
 
-        studentService.saveCv(file, studentDTO.getId());
-
-        verify(studentRepository, times(1)).save(any());
-        assertThat(student.getCvs().size()).isEqualTo(1);
-        assertThat(student.getCvs().get(0).getContent()).isEqualTo(bytes);
-        assertThat(student.getCvs().get(0).getName()).isEqualTo(name);
+        verify(cvRepository, times(1)).save(any());
+        assertThat(result).isEqualTo(expected);
     }
 
     @Test
