@@ -70,7 +70,7 @@ public class Student extends User {
                 password,
                 studentNumber,
                 department.toDto(),
-                cvs
+                cvs.stream().map(Cv::toDto).toList()
         );
     }
 }

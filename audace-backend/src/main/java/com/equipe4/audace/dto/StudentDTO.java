@@ -1,5 +1,6 @@
 package com.equipe4.audace.dto;
 
+import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.cv.Cv;
@@ -14,10 +15,10 @@ public class StudentDTO extends UserDTO {
     //TODO : Spring Validation
     private String studentNumber;
     private DepartmentDTO department;
-    private List<Cv> cvs;
+    private List<CvDTO> cvs;
 
     public Student fromDTO() {
-        return new Student(
+        Student student = new Student(
                 id,
                 firstName,
                 lastName,
@@ -26,9 +27,11 @@ public class StudentDTO extends UserDTO {
                 address,
                 phone,
                 studentNumber,
-                department.fromDto(),
-                cvs
+                department.fromDto()
         );
+
+        student.setCvs(cvs.stream().map(cvDTO -> cvDTO.fromDto(student)).toList());
+        return student;
     }
 
     public StudentDTO(Long id,
@@ -40,7 +43,7 @@ public class StudentDTO extends UserDTO {
                       String password,
                       String studentNumber,
                       DepartmentDTO department,
-                      List<Cv> cvs) {
+                      List<CvDTO> cvs) {
         super(id, firstName, lastName, address, phone, email, password);
         this.studentNumber = studentNumber;
         this.department = department;
