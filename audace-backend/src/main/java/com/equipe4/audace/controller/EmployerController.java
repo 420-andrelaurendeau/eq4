@@ -31,7 +31,13 @@ public class EmployerController {
     @PostMapping
     public ResponseEntity<HttpStatus> createEmployer(@RequestBody EmployerDTO employerDTO){
         logger.info("createEmployer");
-        employerService.createEmployer(employerDTO);
+        try {
+            employerService.createEmployer(employerDTO);
+        } catch (IllegalArgumentException e){
+            logger.error(e.getMessage());
+            if (e.getMessage().equals("Invalid employer")) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            if (e.getMessage().equals("Email already in use")) return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

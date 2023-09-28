@@ -45,6 +45,19 @@ public class EmployerDTO {
         this.extension = extension;
     }
 
+    public boolean isEmployerValid() {
+        return (firstName != null && !firstName.isBlank()) &&
+                (lastName != null && !lastName.isBlank()) &&
+                (email != null && !email.isBlank()) &&
+                (password != null && !password.isBlank()) &&
+                (organisation != null && !organisation.isBlank()) &&
+                (position != null && !position.isBlank()) &&
+                (address != null && !address.isBlank()) &&
+                (phone != null && !phone.isBlank()) &&
+                (extension != null && !extension.isBlank());
+    }
+
+
     public Employer fromDTO(){
         return Employer.employerBuilder()
                 .firstName(firstName)

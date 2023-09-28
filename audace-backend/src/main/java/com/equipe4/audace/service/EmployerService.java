@@ -19,7 +19,7 @@ public class EmployerService {
     }
 
     public Optional<EmployerDTO> createEmployer(EmployerDTO employerDTO){
-        if (employerDTO == null) throw new IllegalArgumentException("Employer cannot be null");
+        if (employerDTO == null || !employerDTO.isEmployerValid()) throw new IllegalArgumentException("Invalid employer");
 
         Optional<Employer> employerOptional = employerRepository.findByEmail(employerDTO.getEmail());
 
