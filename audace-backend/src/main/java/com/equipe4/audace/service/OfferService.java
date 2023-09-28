@@ -1,6 +1,5 @@
 package com.equipe4.audace.service;
 
-import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
@@ -15,8 +14,8 @@ import java.util.Optional;
 @Service
 public class OfferService {
     private final OfferRepository offerRepository;
-    private EmployerService employerService;
-    private DepartmentService departmentService;
+    private final EmployerService employerService;
+    private final DepartmentService departmentService;
 
 
     @Autowired
@@ -32,7 +31,7 @@ public class OfferService {
         Employer employer = employerService.findEmployerById(offerDTO.getEmployerId());
         Department department = departmentService.findDepartmentByCode(offerDTO.getDepartmentCode());
 
-        Offer offer = offerDTO.fromDto();
+        Offer offer = offerDTO.fromDTO();
         offer.setEmployer(employer);
         offer.setDepartment(department);
 
@@ -43,8 +42,7 @@ public class OfferService {
         return Optional.of(new OfferDTO(offerRepository.save(offer)));
     }
     public void deleteOffer(Long offerId){
-        Offer offer = findOfferById(offerId);
-        offerRepository.deleteById(offerId);
+        if(findOfferById(offerId) != null) offerRepository.deleteById(offerId);
     }
 
     public Offer findOfferById(Long offerId){

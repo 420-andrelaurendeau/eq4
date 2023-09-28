@@ -30,7 +30,7 @@ public class EmployerServiceTest {
     @Test
     public void createEmployer_HappyPath(){
         // Arrange
-        EmployerDTO employerDTO = EmployerDTO.employerDTOBuilder().id(1L)
+        EmployerDTO employerDTO = EmployerDTO.employerDTOBuilder()
                 .firstName("Employer1").lastName("Employer1").email("employer1@gmail.com").password("123456eE")
                 .organisation("Organisation1").position("Position1").phone("123-456-7890").extension("12345")
                 .address("Class Service, Javatown, Qc H8N1C1").build();

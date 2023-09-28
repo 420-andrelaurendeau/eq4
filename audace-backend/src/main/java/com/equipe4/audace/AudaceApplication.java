@@ -5,7 +5,6 @@ import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
-import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.service.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -13,7 +12,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @SpringBootApplication
 public class AudaceApplication implements CommandLineRunner {

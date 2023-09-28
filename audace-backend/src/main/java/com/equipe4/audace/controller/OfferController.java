@@ -1,6 +1,7 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.service.OfferService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -30,11 +32,13 @@ public class OfferController {
         return offerService.findAllOffers();
     }
     @PostMapping
-    public ResponseEntity<HttpStatus> createOffer(@RequestBody OfferDTO offerDTO){
+    public ResponseEntity<OfferDTO> createOffer(@RequestBody OfferDTO offerDTO){
         logger.info("createOffer");
         offerService.createOffer(offerDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return offerService.createOffer(offerDTO).map(offer -> ResponseEntity.status(HttpStatus.CREATED).body(offerDTO))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
+
     @PutMapping
     public ResponseEntity updateOffer(@RequestBody OfferDTO offerDTO){
         logger.info("updateOffer");

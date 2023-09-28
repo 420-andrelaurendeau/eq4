@@ -1,15 +1,9 @@
 package com.equipe4.audace.dto.offer;
 
-import com.equipe4.audace.dto.EmployerDTO;
-import com.equipe4.audace.dto.department.DepartmentDTO;
-import com.equipe4.audace.model.Employer;
-import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -54,7 +48,7 @@ public class OfferDTO {
     }
 
 
-    public Offer fromDto() {
+    public Offer fromDTO() {
         return Offer.offerBuilder()
                 .title(title)
                 .description(description)

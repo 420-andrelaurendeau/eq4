@@ -9,9 +9,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Inheritance
+@ToString(callSuper = true)
 @Data
 @NoArgsConstructor
 public class Student extends User {

@@ -29,6 +29,7 @@ public class Offer {
 
     @ManyToOne
     @JoinColumn(name = "department_id")
+    @ToString.Exclude
     private Department department;
 
     @ManyToOne
