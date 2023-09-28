@@ -3,6 +3,7 @@ package com.equipe4.audace.service;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
+import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -15,15 +16,14 @@ import java.util.Date;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ManagerServiceTest {
     @Mock
-    public OfferRepository offerRepository;
+    private OfferRepository offerRepository;
     @InjectMocks
-    public ManagerService managerService;
+    private ManagerService managerService;
 
     @Test
     public void acceptOffer() {
