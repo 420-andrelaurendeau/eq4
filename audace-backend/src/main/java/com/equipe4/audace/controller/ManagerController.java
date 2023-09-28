@@ -26,14 +26,22 @@ public class ManagerController {
     @PostMapping("/accept_offer/{offerId}")
     public ResponseEntity<HttpStatus> acceptOffer(@PathVariable Long offerId) {
         logger.info("acceptOffer");
-        managerService.acceptOffer(offerId);
+        try {
+            managerService.acceptOffer(offerId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/refuse_offer/{offerId}")
     public ResponseEntity<HttpStatus> refuseOffer(@PathVariable Long offerId) {
         logger.info("refuseOffer");
-        managerService.refuseOffer(offerId);
+        try {
+            managerService.refuseOffer(offerId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

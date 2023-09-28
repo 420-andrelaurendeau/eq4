@@ -1,10 +1,13 @@
 package com.equipe4.audace.service;
 
+import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class ManagerService {
@@ -16,15 +19,23 @@ public class ManagerService {
     }
 
     @Transactional
-    public void acceptOffer(Long offerId) {
-        Offer offer = offerRepository.getReferenceById(offerId);
+    public Optional<OfferDTO> acceptOffer(Long offerId) {
+        Optional<Offer> offerOptional = offerRepository.findById(offerId);
+        if (offerOptional.isEmpty()) {
+            throw new IllegalArgumentException("OfferId is invalid");
+        }
+        Offer offer = offerOptional.get();
         offer.setStatus(Offer.Status.ACCEPTED);
-        offerRepository.save(offer);
+        return Optional.of(offerRepository.save(offer).toDto());
     }
     @Transactional
-    public void refuseOffer(Long offerId) {
-        Offer offer = offerRepository.getReferenceById(offerId);
+    public Optional<OfferDTO> refuseOffer(Long offerId) {
+        Optional<Offer> offerOptional = offerRepository.findById(offerId);
+        if (offerOptional.isEmpty()) {
+            throw new IllegalArgumentException("OfferId is invalid");
+        }
+        Offer offer = offerOptional.get();
         offer.setStatus(Offer.Status.REFUSED);
-        offerRepository.save(offer);
+        return Optional.of(offerRepository.save(offer).toDto());
     }
 }
