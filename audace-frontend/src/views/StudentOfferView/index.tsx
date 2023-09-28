@@ -3,6 +3,9 @@ import { Student } from "../../model/user";
 import { Department } from "../../model/department";
 import StudentOffersList from "../../components/StudentOffersList";
 import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
+import { getOffersByDepartment } from "../../services/offerService";
+import { Offer } from "../../model/offer";
 
 // Temp until login works
 
@@ -12,7 +15,7 @@ const tempDepartment: Department = {
     code: "",
 }
 
-const tempStudent: Student = {
+export const tempStudent: Student = {
     id: 1,
     email: "",
     password: "",
@@ -20,13 +23,30 @@ const tempStudent: Student = {
     department: tempDepartment,
 }
 
-const StudentOfferView = () => {
+interface Props {
+    student: Student;
+}
+
+const StudentOfferView = ({student}: Props) => {
+    const [offers, setOffers] = useState<Offer[]>([]);
+    const [error, setError] = useState<string>("");
     const {t} = useTranslation();
+
+    useEffect(() => {
+        getOffersByDepartment(student.department!.id!)
+        .then((res) => {
+            setOffers(res.data);
+        })
+        .catch((err) => {
+            console.log(err)
+            if (err.request.status === 404) setError(t("studentOffersList.errors.departmentNotFound"));
+        })
+    }, [student.department, t]);
 
     return (
         <Container>
             <h1>{t("studentOffersList.viewTitle")}</h1>
-            <StudentOffersList student={tempStudent}/>
+            <StudentOffersList offers={offers} error={error}/>
         </Container>
     );
 };

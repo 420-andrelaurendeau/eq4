@@ -1,30 +1,15 @@
-import { useEffect, useState } from "react";
-import { Student } from "../../model/user";
 import { Offer } from "../../model/offer";
-import { getOffersByDepartment } from "../../services/offerService";
 import StudentOffer from "./StudentOffer";
 import { Table } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
 interface Props {
-    student: Student;
+    offers: Offer[];
+    error: string;
 }
 
-const StudentOffersList = ({student}: Props) => {
-    const [offers, setOffers] = useState<Offer[]>([]);
-    const [error, setError] = useState<string>("");
+const StudentOffersList = ({offers, error}: Props) => {
     const {t} = useTranslation();
-
-    useEffect(() => {
-        getOffersByDepartment(student.department!.id!)
-        .then((res) => {
-            setOffers(res.data);
-        })
-        .catch((err) => {
-            console.log(err)
-            if (err.request.status === 404) setError(t("studentOffersList.errors.departmentNotFound"));
-        })
-    }, [student.department, t]);
 
     return (
         <>

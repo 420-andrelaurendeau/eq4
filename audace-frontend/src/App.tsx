@@ -7,7 +7,7 @@ import LanguageToggler from "./components/LanguageToggler";
 import { useTranslation } from "react-i18next";
 import SignupView from "./views/Signup";
 import { UserType } from "./model/user";
-import StudentOfferView from "./views/StudentOfferView";
+import StudentOfferView, { tempStudent } from "./views/StudentOfferView";
 
 function App() {
   const { t } = useTranslation();
@@ -36,7 +36,7 @@ function App() {
           />
           <Route path="/student/*" element={
             <Routes>
-              <Route path="offers" element={<StudentOfferView />}/>
+              <Route path="offers" element={<StudentOfferView student={tempStudent} />}/>
             </Routes>
           } />
           <Route path="/signup/*" element={
