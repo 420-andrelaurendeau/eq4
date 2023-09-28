@@ -26,7 +26,7 @@ public class EmployerController extends GenericUserController<EmployerService>{
     @GetMapping("/{id}")
     public ResponseEntity<EmployerDTO> getEmployerById(@PathVariable Long id){
         logger.info("getEmployerById");
-        return employerService.findEmployerById(id)
+        return service.findEmployerById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
