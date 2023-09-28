@@ -32,7 +32,7 @@
       "studentId": "SVP entrez une matricule valide"
     }
   },
-  "studentOffersList": {
+  "offersList": {
     "errors": {
       "departmentNotFound": "Aucun département trouvé"
     },
@@ -42,7 +42,7 @@
     "noOffers": "Aucun offre disponible",
     "viewTitle": "Offres disponibles"
   },
-  "studentOffer": {
+  "offer": {
     "modal": {
       "org": "Organisation",
       "address": "Adresse",
@@ -57,5 +57,8 @@
         "end": "à"
       }
     }
+  },
+  "studentOffersList": {
+    "viewTitle": "Offres disponibles"
   }
 }

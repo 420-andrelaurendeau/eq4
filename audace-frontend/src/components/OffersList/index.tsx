@@ -1,14 +1,14 @@
 import { Offer } from "../../model/offer";
-import StudentOffer from "./StudentOffer";
 import { Table } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import OfferRow from "./OfferRow";
 
 interface Props {
     offers: Offer[];
     error: string;
 }
 
-const StudentOffersList = ({offers, error}: Props) => {
+const OffersList = ({offers, error}: Props) => {
     const {t} = useTranslation();
 
     return (
@@ -23,20 +23,20 @@ const StudentOffersList = ({offers, error}: Props) => {
                     <Table striped bordered hover size="sm">
                         <thead>
                             <tr>
-                                <th>{t("studentOffersList.title")}</th>
-                                <th>{t("studentOffersList.internshipStartDate")}</th>
-                                <th>{t("studentOffersList.internshipEndDate")}</th>
+                                <th>{t("offersList.title")}</th>
+                                <th>{t("offersList.internshipStartDate")}</th>
+                                <th>{t("offersList.internshipEndDate")}</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {offers.map((offer) => {return <StudentOffer key={offer.id} offer={offer} />})}
+                            {offers.map((offer) => {return <OfferRow key={offer.id} offer={offer} />})}
                         </tbody>
                     </Table>
                     :
-                    <p>{t("studentOffersList.noOffers")}</p>
+                    <p>{t("offersList.noOffers")}</p>
             }
         </>
     )
 }
 
-export default StudentOffersList;
+export default OffersList;

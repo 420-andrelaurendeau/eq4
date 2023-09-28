@@ -1,11 +1,11 @@
 import { Container } from "react-bootstrap";
 import { Student } from "../../model/user";
 import { Department } from "../../model/department";
-import StudentOffersList from "../../components/StudentOffersList";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { getOffersByDepartment } from "../../services/offerService";
 import { Offer } from "../../model/offer";
+import OffersList from "../../components/OffersList";
 
 // Temp until login works
 
@@ -39,14 +39,14 @@ const StudentOfferView = ({student}: Props) => {
         })
         .catch((err) => {
             console.log(err)
-            if (err.request.status === 404) setError(t("studentOffersList.errors.departmentNotFound"));
+            if (err.request.status === 404) setError(t("offersList.errors.departmentNotFound"));
         })
     }, [student.department, t]);
 
     return (
         <Container>
             <h1>{t("studentOffersList.viewTitle")}</h1>
-            <StudentOffersList offers={offers} error={error}/>
+            <OffersList offers={offers} error={error}/>
         </Container>
     );
 };

@@ -42,50 +42,50 @@ const OfferModal = ({offer, show, handleClose}: Props) => {
                 </Modal.Header>
                 <Modal.Body>
                     <div className="text-end">
-                        <div>{t("studentOffer.modal.org")}: {
+                        <div>{t("offer.modal.org")}: {
                                 createBoldText(
                                     employer !== undefined ? 
                                     employer.organisation! : 
-                                    t("studentOffer.modal.orgNotFound")
+                                    t("offer.modal.orgNotFound")
                                 )
                             }
                         </div>
-                        <div>{t("studentOffer.modal.address")}:&nbsp;
+                        <div>{t("offer.modal.address")}:&nbsp;
                             {createBoldText(
                                 employer !== undefined ? 
                                 employer.address! : 
-                                t("studentOffer.modal.orgNotFound")
+                                t("offer.modal.orgNotFound")
                             )}
                         </div>
-                        <div>{t("studentOffer.modal.phone")}:&nbsp;
+                        <div>{t("offer.modal.phone")}:&nbsp;
                             {createBoldText(
                                 employer !== undefined ? 
                                 employer.phone! : 
-                                t("studentOffer.modal.orgNotFound")
+                                t("offer.modal.orgNotFound")
                             )}
                         </div>
                     </div>
 
                     <hr/>
 
-                    <u><h4 className="my-3 text-center">{t("studentOffer.modal.offerDescription")}</h4></u>
+                    <u><h4 className="my-3 text-center">{t("offer.modal.offerDescription")}</h4></u>
                     <div style={{textAlign : "justify"}}>{offer.description}</div>
 
                     <hr/>
 
                     <div className="text-end">
                         <div>
-                            {t("studentOffer.modal.internDate.start")}:&nbsp;
+                            {t("offer.modal.internDate.start")}:&nbsp;
                             {createBoldText(formatDate(offer.internshipStartDate))}&nbsp;
-                            {t("studentOffer.modal.internDate.end")}:&nbsp;
+                            {t("offer.modal.internDate.end")}:&nbsp;
                             {createBoldText(formatDate(offer.internshipEndDate))}
                         </div>
-                        <div>{t("studentOffer.modal.offerEnd")}: {createBoldText(formatDate(offer.offerEndDate))}</div>
+                        <div>{t("offer.modal.offerEnd")}: {createBoldText(formatDate(offer.offerEndDate))}</div>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
-                    {employer === undefined && <div className="text-danger">{t("studentOffer.modal.empNotFound")}</div>}
-                    <Button className="btn-success" onClick={applyToOffer} disabled={employer === undefined}>{t("studentOffer.modal.apply")}</Button>
+                    {employer === undefined && <div className="text-danger">{t("offer.modal.empNotFound")}</div>}
+                    <Button className="btn-success" onClick={applyToOffer} disabled={employer === undefined}>{t("offer.modal.apply")}</Button>
                 </Modal.Footer>
             </Modal>
         </>

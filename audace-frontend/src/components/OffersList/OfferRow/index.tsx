@@ -8,7 +8,7 @@ interface Props {
     offer: Offer;
 }
 
-const StudentOffer = ({offer}: Props) => {
+const OfferRow = ({offer}: Props) => {
     const [show, setShow] = useState<boolean>(false);
     const handleClick = () => setShow(true);
     const handleClose = () => setShow(false);
@@ -25,4 +25,4 @@ const StudentOffer = ({offer}: Props) => {
     );
 };
 
-export default StudentOffer;
+export default OfferRow;

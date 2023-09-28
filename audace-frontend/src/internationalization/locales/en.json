@@ -32,7 +32,7 @@
       "studentId": "Please enter a valid student number"
     }
   },
-  "studentOffersList": {
+  "offersList": {
     "errors": {
       "departmentNotFound": "Department not found"
     },
@@ -42,7 +42,7 @@
     "noOffers": "No offers available",
     "viewTitle": "Available Offers"
   },
-  "studentOffer": {
+  "offer": {
     "modal": {
       "org": "Organization",
       "address": "Address",
@@ -57,5 +57,8 @@
         "end": "to"
       }
     }
+  },
+  "studentOffersList": {
+    "viewTitle": "Available Offers"
   }
 }
