@@ -1,5 +1,6 @@
 package com.equipe4.audace.controller;
 
+import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
@@ -17,9 +18,12 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ManagerController.class)
@@ -96,5 +100,14 @@ public class ManagerControllerTest {
                 .contentType(MediaType.APPLICATION_JSON);
 
         mvc.perform(request).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void getOffersByDepartment_happyPath() throws Exception {
+        List<OfferDTO> offerDTOList = List.of(mock(OfferDTO.class));
+        when(managerService.getOffersByDepartment(1L)).thenReturn(offerDTOList);
+
+        mvc.perform(get("/managers/offers/1"))
+                .andExpect(status().isOk());
     }
 }

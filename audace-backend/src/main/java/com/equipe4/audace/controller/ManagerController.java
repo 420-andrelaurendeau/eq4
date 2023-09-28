@@ -32,8 +32,8 @@ public class ManagerController extends GenericUserController<ManagerService>{
                 .orElseGet(() -> new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST));
     }
 
-    @GetMapping("/offers")
-    public ResponseEntity<List<OfferDTO>> getOffersByDepartmentMapped(@RequestParam Long departmentId) {
+    @GetMapping("/offers/{departmentId}")
+    public ResponseEntity<List<OfferDTO>> getOffersByDepartmentMapped(@PathVariable Long departmentId) {
         return ResponseEntity.ok(getOffersByDepartment(departmentId));
     }
 }
