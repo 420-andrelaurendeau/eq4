@@ -44,6 +44,14 @@ public class Offer {
         this.department = department;
     }
 
+    public boolean isOfferValid() {
+        return (title != null && !title.isEmpty()) && (description != null && !description.isEmpty()) && internshipStartDate != null && internshipEndDate != null && offerEndDate != null && employer != null && department != null;
+    }
+
+    public boolean isDateValid() {
+        return internshipStartDate.before(internshipEndDate) && internshipStartDate.before(offerEndDate);
+    }
+
     public OfferDTO toDto() {
         return new OfferDTO(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, employer.getId(), department.toDto());
     }

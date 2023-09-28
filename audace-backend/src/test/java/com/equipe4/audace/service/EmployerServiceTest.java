@@ -4,9 +4,9 @@ import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
-import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
+import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,6 +30,9 @@ public class EmployerServiceTest {
 
     @Mock
     private OfferRepository offerRepository;
+
+    @Mock
+    private DepartmentRepository departmentRepository;
 
     @InjectMocks
     private EmployerService employerService;
@@ -105,13 +108,16 @@ public class EmployerServiceTest {
         OfferDTO fakeOfferDto = new OfferDTO(3L,
                 "title",
                 "description",
-                new Date(startDate.toEpochDay()),
                 new Date(startDate.plusMonths(1).toEpochDay()),
                 new Date(startDate.plusMonths(2).toEpochDay()),
+                new Date(startDate.toEpochDay()),
                 fakeEmployerDto.getId(),
                 fakeDepartmentDto
         );
 
+        when(offerRepository.existsById(anyLong())).thenReturn(false);
+        when(employerRepository.existsById(anyLong())).thenReturn(true);
+        when(departmentRepository.existsById(anyLong())).thenReturn(true);
         when(employerRepository.findById(anyLong())).thenReturn(Optional.of(fakeEmployerDto.fromDTO()));
         when(offerRepository.save(any(Offer.class))).thenReturn(fakeOfferDto.fromDto(fakeEmployerDto.fromDTO()));
 
@@ -136,18 +142,157 @@ public class EmployerServiceTest {
     }
 
     @Test
-    void createOffer_employerNotFound() {
+    void createOffer_invalidOffer() {
+        // Arrange
+        DepartmentDTO fakeDepartmentDto = new DepartmentDTO(
+                1L,
+                "420-B0",
+                "Technique Informatique"
+        );
 
+        EmployerDTO fakeEmployerDto = new EmployerDTO(
+                2L,
+                "employer",
+                "employerman",
+                "email@gmail.com",
+                "password",
+                "organisation",
+                "position",
+                "address",
+                "phone",
+                "extension"
+        );
+
+        LocalDate startDate = LocalDate.now();
+        OfferDTO fakeOfferDto = new OfferDTO(1L,
+                "",
+                "",
+                new Date(startDate.toEpochDay()),
+                new Date(startDate.plusMonths(1).toEpochDay()),
+                new Date(startDate.plusMonths(2).toEpochDay()),
+                fakeEmployerDto.getId(),
+                fakeDepartmentDto
+        );
+
+        when(offerRepository.existsById(anyLong())).thenReturn(true);
+
+        // Act
+        Optional<OfferDTO> createdOffer = employerService.createOffer(fakeOfferDto);
+
+
+        // Assert
+        assertThat(createdOffer).isEmpty();
+        verify(offerRepository, never()).save(any(Offer.class));
+    }
+
+    @Test
+    void createOffer_employerNotFound() {
+        // Arrange
+        DepartmentDTO fakeDepartmentDto = new DepartmentDTO(
+                1L,
+                "420-B0",
+                "Technique Informatique"
+        );
+
+        LocalDate startDate = LocalDate.now();
+        OfferDTO fakeOfferDto = new OfferDTO(3L,
+                "title",
+                "description",
+                new Date(startDate.toEpochDay()),
+                new Date(startDate.plusMonths(1).toEpochDay()),
+                new Date(startDate.plusMonths(2).toEpochDay()),
+                2L,
+                fakeDepartmentDto
+        );
+
+        when(offerRepository.existsById(anyLong())).thenReturn(false);
+        when(employerRepository.existsById(anyLong())).thenReturn(false);
+
+        // Act
+        Optional<OfferDTO> createdOffer = employerService.createOffer(fakeOfferDto);
+
+        // Assert
+        assertThat(createdOffer).isEmpty();
+        verify(offerRepository, never()).save(any(Offer.class));
     }
 
     @Test
     void createOffer_departmentNotFound() {
+        // Arrange
+        EmployerDTO fakeEmployerDto = new EmployerDTO(
+                2L,
+                "employer",
+                "employerman",
+                "email@gmail.com",
+                "password",
+                "organisation",
+                "position",
+                "address",
+                "phone",
+                "extension"
+        );
 
+        when(offerRepository.existsById(anyLong())).thenReturn(false);
+
+        LocalDate startDate = LocalDate.now();
+        OfferDTO fakeOfferDto = new OfferDTO(3L,
+                "title",
+                "description",
+                new Date(startDate.toEpochDay()),
+                new Date(startDate.plusMonths(1).toEpochDay()),
+                new Date(startDate.plusMonths(2).toEpochDay()),
+                fakeEmployerDto.getId(),
+                null
+        );
+
+        // Act
+        Optional<OfferDTO> createdOffer = employerService.createOffer(fakeOfferDto);
+
+        // Assert
+        assertThat(createdOffer).isEmpty();
+        verify(offerRepository, never()).save(any(Offer.class));
     }
 
     @Test
     void createOffer_invalidDates() {
+        // Arrange
+        DepartmentDTO fakeDepartmentDto = new DepartmentDTO(
+                1L,
+                "420-B0",
+                "Technique Informatique"
+        );
 
+        EmployerDTO fakeEmployerDto = new EmployerDTO(
+                2L,
+                "employer",
+                "employerman",
+                "email@gmail.com",
+                "password",
+                "organisation",
+                "position",
+                "address",
+                "phone",
+                "extension"
+        );
+
+        LocalDate startDate = LocalDate.now();
+        OfferDTO fakeOfferDto = new OfferDTO(3L,
+                "title",
+                "description",
+                new Date(startDate.plusMonths(1).toEpochDay()),
+                new Date(startDate.toEpochDay()),
+                new Date(startDate.plusMonths(2).toEpochDay()),
+                fakeEmployerDto.getId(),
+                fakeDepartmentDto
+        );
+
+
+        // Act
+        Optional<OfferDTO> createdOffer = employerService.createOffer(fakeOfferDto);
+
+        // Assert
+        assertThat(createdOffer).isEmpty();
+        verify(offerRepository, never()).save(any(Offer.class));
     }
 
 }
