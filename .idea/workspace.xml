@@ -6,17 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/AudaceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/AudaceApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/EmployerDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/EmployerDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/model/Employer.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/model/Employer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/StudentDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/StudentDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/UserDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/model/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/model/Student.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/model/department/Department.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/model/department/Department.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/model/offer/Offer.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/model/offer/Offer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/service/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/service/StudentService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/StudentServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/StudentServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/UserList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/Login/UserList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/Login/UserList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/Login/UserList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/Signup/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/Signup/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/model/user.ts" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/model/user.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/views/StudentOfferView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/views/StudentOfferView/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

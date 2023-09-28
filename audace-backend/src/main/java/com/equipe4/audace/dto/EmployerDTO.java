@@ -17,6 +17,7 @@ public class EmployerDTO extends UserDTO {
     private String address;
     private String phone;
     private String extension;
+    private String type;
 
     public EmployerDTO(Employer employer) {
         this.id = employer.getId();
@@ -43,6 +44,7 @@ public class EmployerDTO extends UserDTO {
         this.address = address;
         this.phone = phone;
         this.extension = extension;
+        this.type = "employer";
     }
 
     public Employer fromDTO(){
@@ -58,4 +60,5 @@ public class EmployerDTO extends UserDTO {
                 .extension(extension)
                 .build();
     }
+
 }

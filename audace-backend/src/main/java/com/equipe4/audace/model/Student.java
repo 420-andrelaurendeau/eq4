@@ -31,6 +31,6 @@ public class Student extends User {
 
     @Override
     public StudentDTO toDTO() {
-        return new StudentDTO(this.id, this.firstName, this.lastName, this.email, this.address, this.phone, this.password, this.studentNumber, this.department.toDTO());
+        return new StudentDTO(this.id, this.firstName, this.lastName, this.email, this.address, this.phone, this.password, "student", this.studentNumber, this.department.toDTO());
     }
 }

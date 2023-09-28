@@ -19,6 +19,6 @@ public abstract class UserDTO {
     protected String phone;
     protected String email;
     protected String password;
-
+    protected String type;
     public abstract User fromDTO();
 }
