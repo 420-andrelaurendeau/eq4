@@ -1,5 +1,5 @@
 import { Container } from "react-bootstrap";
-import { Student } from "../../model/user";
+import { Student, UserType } from "../../model/user";
 import { Department } from "../../model/department";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
@@ -46,7 +46,7 @@ const StudentOfferView = ({student}: Props) => {
     return (
         <Container>
             <h1>{t("studentOffersList.viewTitle")}</h1>
-            <OffersList offers={offers} error={error}/>
+            <OffersList offers={offers} error={error} userType={UserType.Student}/>
         </Container>
     );
 };

@@ -1,5 +1,5 @@
 import { Container } from "react-bootstrap";
-import { Manager } from "../../model/user";
+import { Manager, UserType } from "../../model/user";
 import { Department } from "../../model/department";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
@@ -45,7 +45,7 @@ const ManagerOfferView = ({manager}: Props) => {
     return (
         <Container>
             <h1>{t("managerOffersList.viewTitle")}</h1>
-            <OffersList offers={offers} error={error}/>
+            <OffersList offers={offers} error={error} userType={UserType.Manager}/>
         </Container>
     );
 };

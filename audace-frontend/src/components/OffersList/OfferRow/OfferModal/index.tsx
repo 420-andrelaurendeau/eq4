@@ -1,25 +1,28 @@
 import { useEffect, useState } from "react";
 import { Offer } from "../../../../model/offer";
-import { Employer } from "../../../../model/user";
+import { Employer, UserType } from "../../../../model/user";
 import { Button, Modal } from "react-bootstrap";
 import { getEmployerById } from "../../../../services/userService";
 import { useTranslation } from "react-i18next";
 import { formatDate } from "../../../../services/formatService";
+import OfferButtons from "../OfferButtons";
 
 interface Props {
     offer: Offer;
     show: boolean;
     handleClose: () => void;
+    userType: UserType;
+    employer?: Employer;
+    setEmployer?: (employer: Employer) => void;
 }
 
-const OfferModal = ({offer, show, handleClose}: Props) => {
+const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer}: Props) => {
     const {t} = useTranslation();
-    const [employer, setEmployer] = useState<Employer | undefined>(undefined);
 
     useEffect(() => {
         getEmployerById(offer.employerId)
             .then((res) => {
-                setEmployer(res.data);
+                setEmployer!(res.data);
             })
             .catch((err) => {
                 console.log(err);
@@ -85,7 +88,7 @@ const OfferModal = ({offer, show, handleClose}: Props) => {
                 </Modal.Body>
                 <Modal.Footer>
                     {employer === undefined && <div className="text-danger">{t("offer.modal.empNotFound")}</div>}
-                    <Button className="btn-success" onClick={applyToOffer} disabled={employer === undefined}>{t("offer.modal.apply")}</Button>
+                    <OfferButtons userType={userType} disabled={employer === undefined}/>
                 </Modal.Footer>
             </Modal>
         </>
