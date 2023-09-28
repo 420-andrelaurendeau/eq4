@@ -127,7 +127,7 @@ public class OfferControllerTest {
     }
 
     @Test
-    public void givenUpdatedEmployee_whenUpdateEmployee_thenReturnUpdateEmployeeObject() throws Exception{
+    public void givenUpdatedOffer_whenUpdateOffer_thenReturnUpdateOfferObject() throws Exception{
         // given - precondition or setup
 
         Department department = new Department("GLO", "Génie logiciel");
