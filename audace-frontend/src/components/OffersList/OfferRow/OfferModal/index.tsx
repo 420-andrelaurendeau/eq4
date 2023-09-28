@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Offer } from "../../../../model/offer";
 import { Employer, UserType } from "../../../../model/user";
-import { Button, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { getEmployerById } from "../../../../services/userService";
 import { useTranslation } from "react-i18next";
 import { formatDate } from "../../../../services/formatService";

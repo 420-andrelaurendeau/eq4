@@ -59,9 +59,17 @@
     }
   },
   "studentOffersList": {
-    "viewTitle": "Available Offers"
+    "viewTitle": "Available Offers",
+    "applyButton": "Apply"
   },
   "managerOffersList": {
-    "viewTitle": "Available Offers"
+    "viewTitle": "Available Offers",
+    "acceptButton": "Accept",
+    "refuseButton": "Refuse"
+  },
+  "employerOffersList": {
+    "viewTitle": "Available Offers",
+    "editButton": "Edit",
+    "deleteButton": "Delete"
   }
 }
