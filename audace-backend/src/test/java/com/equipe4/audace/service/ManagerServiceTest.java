@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Date;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,17 +36,9 @@ public class ManagerServiceTest {
     }
 
     @Test
-    public void acceptOffer_InvalidId() { //TODO : Double check that it's fine
+    public void acceptOffer_InvalidId() {
         when(offerRepository.getReferenceById(1L)).thenThrow(EntityNotFoundException.class);
-        try {
-            managerService.acceptOffer(1L);
-        }
-        catch (EntityNotFoundException e) { //TODO : I think there's a better way to check that but I ain't sure
-            assert(true);
-        }
-        catch (Exception e) {
-            assert(false);
-        }
+        assertThrows(EntityNotFoundException.class, () -> managerService.acceptOffer(1L));
     }
 
     @Test
@@ -61,16 +54,8 @@ public class ManagerServiceTest {
     }
 
     @Test
-    public void refuseOffer_Invalid_Id() { //TODO : Double check that it's fine
+    public void refuseOffer_Invalid_Id() {
         when(offerRepository.getReferenceById(1L)).thenThrow(EntityNotFoundException.class);
-        try {
-            managerService.refuseOffer(1L);
-        }
-        catch (EntityNotFoundException e) { //TODO : I think there's a better way to check that but I ain't sure
-            assert(true);
-        }
-        catch (Exception e) {
-            assert(false);
-        }
+        assertThrows(EntityNotFoundException.class, () -> managerService.refuseOffer(1L));
     }
 }
