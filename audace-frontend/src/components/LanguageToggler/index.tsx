@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { LanguageContext, LanguageContextHolder } from "../contextsholders/languageContextHolder";
+import { LanguageContext, LanguageContextHolder } from "../../contextsholders/languageContextHolder";
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 

@@ -2,8 +2,9 @@ import axios from 'axios';
 
 const http = axios.create({
     baseURL: 'http://localhost:8080',
-    headers: { 'Content-type' : 'Application/JSON',
-                'Authorization' : ''}
+    headers: {
+        "Content-Type": "application/json"
+    }
 })
 
 export default http;
