@@ -17,16 +17,15 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
-public class StudentService {
+public class StudentService extends UserService {
     private final StudentRepository studentRepository;
-    private final OfferRepository offerRepository;
-    private final DepartmentRepository departmentRepository;
 
-    @Autowired
-    public StudentService(StudentRepository studentRepository, OfferRepository offerRepository, DepartmentRepository departmentRepository) {
+    public StudentService(
+            StudentRepository studentRepository,
+            OfferRepository offerRepository,
+            DepartmentRepository departmentRepository) {
+        super(offerRepository, departmentRepository);
         this.studentRepository = studentRepository;
-        this.offerRepository = offerRepository;
-        this.departmentRepository = departmentRepository;
     }
 
     @Transactional
@@ -48,14 +47,5 @@ public class StudentService {
         studentDTO.setDepartment(departmentOptional.get().toDto());
         Student student = studentRepository.save(studentDTO.fromDTO());
         return Optional.of(student.toDTO());
-    }
-
-    @Transactional
-    public List<OfferDTO> getOffersByDepartment(Long departmentId) {
-        Department department = departmentRepository.findById(departmentId)
-                .orElseThrow(() -> new NoSuchElementException("Department not found"));
-        List<Offer> offers = offerRepository.findAllByDepartment(department);
-
-        return offers.stream().map(Offer::toDto).toList();
     }
 }

@@ -17,7 +17,7 @@ public class Student extends User {
     @Column
     private String studentNumber;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Department department;
 
     public Student(Long id,

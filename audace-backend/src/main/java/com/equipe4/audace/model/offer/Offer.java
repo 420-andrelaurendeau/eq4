@@ -33,6 +33,15 @@ public class Offer {
     @ManyToOne
     private Employer employer;
 
+    private Status status;
+
+    public enum Status {
+        PENDING,
+        ACCEPTED,
+        REFUSED
+    }
+
+
     public Offer(String title, String description, Date internshipStartDate, Date internshipEndDate, Date offerEndDate, Employer employer, Department department) {
         this.title = title;
         this.description = description;
@@ -41,9 +50,10 @@ public class Offer {
         this.offerEndDate = offerEndDate;
         this.employer = employer;
         this.department = department;
+        status = Status.PENDING;
     }
 
     public OfferDTO toDto() {
-        return new OfferDTO(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, employer.getId(), department.toDto());
+        return new OfferDTO(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, employer.getId(), department.toDto(), status);
     }
 }
