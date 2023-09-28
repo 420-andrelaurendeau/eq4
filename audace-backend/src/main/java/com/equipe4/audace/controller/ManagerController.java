@@ -38,4 +38,10 @@ public class ManagerController {
                 .map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST));
     }
+
+    @GetMapping("/offers")
+    public ResponseEntity<Iterable<OfferDTO>> getOffersByDepartment(@RequestParam Long departmentId) {
+        logger.info("getOffersByDepartment");
+        return ResponseEntity.ok(managerService.getOffersByDepartment(departmentId));
+    }
 }

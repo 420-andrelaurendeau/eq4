@@ -36,15 +36,6 @@ public class StudentController {
     @GetMapping("/offers/{departmentId}")
     public ResponseEntity<List<OfferDTO>> getOffersByDepartment(@PathVariable Long departmentId) {
         logger.info("getOffersByDepartment");
-
-        List<OfferDTO> offers;
-
-        try {
-            offers = studentService.getOffersByDepartment(departmentId);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(offers);
+        return ResponseEntity.ok(studentService.getOffersByDepartment(departmentId));
     }
 }
