@@ -73,7 +73,7 @@ public class StudentServiceTest {
         List<OfferDTO> result = studentService.getOffersByDepartment(1L);
 
         assertThat(result.size()).isEqualTo(offers.size());
-        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDto).toList());
+        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
     }
 
     @Test

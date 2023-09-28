@@ -1,5 +1,6 @@
 package com.equipe4.audace.model;
 
+import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.UserDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

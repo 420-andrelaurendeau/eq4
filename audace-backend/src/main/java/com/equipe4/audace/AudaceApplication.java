@@ -27,7 +27,7 @@ public class AudaceApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Department department = departmentRepository.save(new Department("GLO", "Génie logiciel"));
 		Employer employer = new Employer(
-				null,
+				1L,
 				"employer",
 				"employerman",
 				"temp@gmail.com",

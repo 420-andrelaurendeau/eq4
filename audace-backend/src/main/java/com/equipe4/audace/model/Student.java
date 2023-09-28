@@ -1,7 +1,8 @@
 package com.equipe4.audace.model;
 
-import com.equipe4.audace.dto.UserDTO;
+import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.model.department.Department;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,6 +31,6 @@ public class Student extends User {
 
     @Override
     public StudentDTO toDTO() {
-        return new StudentDTO(this.id, this.firstName, this.lastName, this.email, this.address, this.phone, this.password, this.studentNumber, this.department.toDto());
+        return new StudentDTO(this.id, this.firstName, this.lastName, this.email, this.address, this.phone, this.password, this.studentNumber, this.department.toDTO());
     }
 }

@@ -1,11 +1,12 @@
 package com.equipe4.audace.dto;
 
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.User;
 import lombok.*;
 
 @Data
 @NoArgsConstructor
-public class EmployerDTO {
+public class EmployerDTO extends UserDTO {
     private Long id;
     private String firstName;
     private String lastName;
