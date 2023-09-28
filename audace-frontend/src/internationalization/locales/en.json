@@ -60,5 +60,8 @@
   },
   "studentOffersList": {
     "viewTitle": "Available Offers"
+  },
+  "managerOffersList": {
+    "viewTitle": "Available Offers"
   }
 }
