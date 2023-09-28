@@ -3,8 +3,8 @@ package com.equipe4.audace.service;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
-import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
+import com.equipe4.audace.repository.offer.OfferRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,10 +16,12 @@ import java.util.Optional;
 @Service
 public class EmployerService {
     private final EmployerRepository employerRepository;
+    private final OfferRepository offerRepository;
 
     @Autowired
-    public EmployerService(EmployerRepository employerRepository) {
+    public EmployerService(EmployerRepository employerRepository, OfferRepository offerRepository) {
         this.employerRepository = employerRepository;
+        this.offerRepository = offerRepository;
     }
 
     public Optional<EmployerDTO> createEmployer(EmployerDTO employerDTO){
@@ -38,9 +40,10 @@ public class EmployerService {
 
     @Transactional
     public Optional<OfferDTO> createOffer(OfferDTO offerDTO) {
+        if (offerDTO == null) return Optional.empty();
+        if (offerRepository.existsById(offerDTO.getId())) return Optional.empty();
+
         Employer employer = findEmployerById(offerDTO.getEmployerId());
-        employer.addOffer(offerDTO.fromDto(employer));
-        employerRepository.save(employer);
-        return Optional.of(offerDTO);
+        return Optional.of(offerRepository.save(offerDTO.fromDto(employer)).toDto());
     }
 }

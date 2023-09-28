@@ -1,6 +1,7 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
@@ -17,6 +18,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -80,9 +82,14 @@ public class EmployerServiceTest {
     @Test
     void createOffer_happyPath() {
         // Arrange
-        Department mockedDepartment = mock(Department.class);
-        EmployerDTO fakeEmployerDto = new EmployerDTO(
+        DepartmentDTO fakeDepartmentDto = new DepartmentDTO(
                 1L,
+                "420-B0",
+                "Technique Informatique"
+        );
+
+        EmployerDTO fakeEmployerDto = new EmployerDTO(
+                2L,
                 "employer",
                 "employerman",
                 "email@gmail.com",
@@ -93,40 +100,39 @@ public class EmployerServiceTest {
                 "phone",
                 "extension"
         );
-        Employer fakeEmployer = fakeEmployerDto.fromDTO();
 
         LocalDate startDate = LocalDate.now();
-        Offer fakeOffer = new Offer(
+        OfferDTO fakeOfferDto = new OfferDTO(3L,
                 "title",
                 "description",
                 new Date(startDate.toEpochDay()),
                 new Date(startDate.plusMonths(1).toEpochDay()),
                 new Date(startDate.plusMonths(2).toEpochDay()),
-                fakeEmployer,
-                mockedDepartment
+                fakeEmployerDto.getId(),
+                fakeDepartmentDto
         );
 
-        when(employerRepository.save(any(Employer.class))).thenReturn(fakeEmployer);
+        when(employerRepository.findById(anyLong())).thenReturn(Optional.of(fakeEmployerDto.fromDTO()));
+        when(offerRepository.save(any(Offer.class))).thenReturn(fakeOfferDto.fromDto(fakeEmployerDto.fromDTO()));
 
         // Act
-        EmployerDTO dto = employerService.createEmployer(fakeEmployerDto).orElse(null);
-        OfferDTO createdOffer = employerService.createOffer(fakeOffer.toDto()).orElse(null);
+        OfferDTO createdOffer = employerService.createOffer(fakeOfferDto).orElse(null);
 
         // Assert
         assertThat(createdOffer).isNotNull();
-        assertThat(employerService.findEmployerById(createdOffer.getEmployerId())).isEqualTo(fakeEmployer);
+        assertThat(createdOffer.getId()).isEqualTo(fakeOfferDto.getId());
 
-        verify(employerRepository, times(1)).save(any(Employer.class));
-    }
-
-    @Test
-    void createOffer_offerAlreadyExists() {
-
+        verify(offerRepository, times(1)).save(any(Offer.class));
     }
 
     @Test
     void createOffer_nullOffer() {
+        // Act
+        Optional<OfferDTO> createdOffer = employerService.createOffer(null);
 
+        // Assert
+        assertThat(createdOffer).isEmpty();
+        verify(offerRepository, never()).save(any(Offer.class));
     }
 
     @Test
