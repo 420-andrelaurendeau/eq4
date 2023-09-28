@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.RequestEntity.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(ManagerController.class) //TODO : Non fonctionnels, doit fix
+@WebMvcTest(ManagerController.class)
 public class ManagerControllerTest {
     @Autowired
     private MockMvc mvc;
