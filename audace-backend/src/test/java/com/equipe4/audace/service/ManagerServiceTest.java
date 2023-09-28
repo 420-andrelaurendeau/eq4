@@ -12,8 +12,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Date;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,7 +30,8 @@ public class ManagerServiceTest {
         Employer employer = new Employer();
         Department department = new Department();
         Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
-        when(offerRepository.getReferenceById(1L)).thenReturn(offer1);
+        when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
+        when(offerRepository.save(any())).thenReturn(offer1);
 
         managerService.acceptOffer(1L);
 
@@ -37,7 +40,7 @@ public class ManagerServiceTest {
 
     @Test
     public void acceptOffer_InvalidId() {
-        when(offerRepository.getReferenceById(1L)).thenThrow(EntityNotFoundException.class);
+        when(offerRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
         assertThrows(EntityNotFoundException.class, () -> managerService.acceptOffer(1L));
     }
 
@@ -46,7 +49,8 @@ public class ManagerServiceTest {
         Employer employer = new Employer();
         Department department = new Department();
         Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
-        when(offerRepository.getReferenceById(1L)).thenReturn(offer1);
+        when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
+        when(offerRepository.save(any())).thenReturn(offer1);
 
         managerService.refuseOffer(1L);
 
@@ -55,7 +59,7 @@ public class ManagerServiceTest {
 
     @Test
     public void refuseOffer_Invalid_Id() {
-        when(offerRepository.getReferenceById(1L)).thenThrow(EntityNotFoundException.class);
+        when(offerRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
         assertThrows(EntityNotFoundException.class, () -> managerService.refuseOffer(1L));
     }
 }

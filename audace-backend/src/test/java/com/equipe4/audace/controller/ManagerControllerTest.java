@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Date;
+import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.http.RequestEntity.post;
@@ -41,6 +42,7 @@ public class ManagerControllerTest {
         Employer employer = new Employer();
         Department department = new Department();
         Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
+        when(managerService.acceptOffer(1L)).thenReturn(Optional.of(offer1.toDto()));
 
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/managers/accept_offer/1")
@@ -55,6 +57,7 @@ public class ManagerControllerTest {
         Employer employer = new Employer();
         Department department = new Department();
         Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
+        when(managerService.refuseOffer(1L)).thenReturn(Optional.of(offer1.toDto()));
 
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/managers/refuse_offer/1")
@@ -64,14 +67,13 @@ public class ManagerControllerTest {
 
         mvc.perform(request).andExpect(status().isOk());
     }
-
     @Test
     public void acceptOffer_invalidId() throws Exception {
         Employer employer = new Employer();
         Department department = new Department();
         Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
 
-        when(managerService.acceptOffer(-25L)).thenThrow(IllegalArgumentException.class);
+        when(managerService.acceptOffer(-25L)).thenReturn(Optional.empty());
 
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/managers/accept_offer/-25")
@@ -87,7 +89,7 @@ public class ManagerControllerTest {
         Department department = new Department();
         Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
 
-        when(managerService.refuseOffer(-25L)).thenThrow(IllegalArgumentException.class);
+        when(managerService.refuseOffer(-25L)).thenReturn(Optional.empty());
 
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/managers/refuse_offer/-25")

@@ -2,6 +2,7 @@ package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.service.ManagerService;
+import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,22 +27,15 @@ public class ManagerController {
     @PostMapping("/accept_offer/{offerId}")
     public ResponseEntity<HttpStatus> acceptOffer(@PathVariable Long offerId) {
         logger.info("acceptOffer");
-        try {
-            managerService.acceptOffer(offerId);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return managerService.acceptOffer(offerId).map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST));
     }
 
     @PostMapping("/refuse_offer/{offerId}")
     public ResponseEntity<HttpStatus> refuseOffer(@PathVariable Long offerId) {
         logger.info("refuseOffer");
-        try {
-            managerService.refuseOffer(offerId);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return managerService.refuseOffer(offerId)
+                .map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST));
     }
 }
