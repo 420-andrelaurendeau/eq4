@@ -27,7 +27,7 @@ const UserList: React.FC = () => {
     return (
             <ul style={{ listStyleType: 'none' }}>
                 {users.map((user) => (
-                    <li key={user.id}>
+                    <li className={"pb-2"} key={user.id}>
                         <div className={"container-fluid mw-100"} style={{background: '#ccc', width: '35%', borderRadius: '5px'}}>
                             <div className="d-flex justify-content-between p-2">
                                 <div className="d-inline-block align-self-center">{user.email}</div>

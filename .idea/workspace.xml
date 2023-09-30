@@ -6,20 +6,21 @@
   <component name="ChangeListManager">
     <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/EmployerDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/EmployerDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/StudentDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/StudentDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/UserDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/model/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/model/Student.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/StudentServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/StudentServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/AudaceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/AudaceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/Login/UserList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/Login/UserList.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/Signup/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/Signup/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/model/user.ts" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/model/user.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/views/StudentOfferView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/views/StudentOfferView/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript JSX File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Merge.Settings">
     <option name="BRANCH" value="origin/main" />
@@ -30,6 +31,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 7
+}]]></component>
   <component name="ProjectId" id="2V4dPLCp6jcYVNm2zyJ4JKIWTtO" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -43,19 +47,24 @@
     "RequestMappingsPanelOrder1": "1",
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "EQ4-142-Login__Temporaire",
     "last_opened_file_path": "C:/Users/cbemo/Desktop/Projet/eq4/audace",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "MavenSettings",
+    "spring.configuration.checksum": "81b0bfba543f51b2eb085412d50e4b6b",
     "ts.external.directory.path": "C:\\Users\\psara\\OneDrive\\Bureau\\school\\session7\\projet\\eq4\\audace-frontend\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\psara\Bureau\school\session7\projet\eq4\audace-backend" />
       <recent name="C:\Users\psara\OneDrive\Bureau\school\session7\projet\eq4\audace-frontend\src\components\Login" />
     </key>
   </component>
@@ -69,6 +78,7 @@
       <updated>1694099260805</updated>
       <workItem from="1694099261839" duration="236000" />
       <workItem from="1694100419590" duration="29000" />
+      <workItem from="1696084720134" duration="2063000" />
     </task>
     <servers />
   </component>
