@@ -1,6 +1,7 @@
-import { Button } from "react-bootstrap";
 import { UserType } from "../../../../model/user";
-import { useTranslation } from "react-i18next";
+import EmployerButtons from "./EmployerButtons";
+import StudentButtons from "./StudentButtons";
+import ManagerButtons from "./ManagerButtons";
 
 interface Props {
     userType : UserType;
@@ -8,68 +9,20 @@ interface Props {
 }
 
 const OfferButtons = ({userType, disabled} : Props) => {
-    const {t} = useTranslation();
-
-    const applyButtonClick = (event : React.MouseEvent<HTMLElement>) => {
-        event.stopPropagation();
-    }
-
-    const acceptButtonClick = (event : React.MouseEvent<HTMLElement>) => {
-        event.stopPropagation();
-    }
-
-    const refuseButtonClick = (event : React.MouseEvent<HTMLElement>) => {
-        event.stopPropagation();
-    }
-
-    const editButtonClick = (event : React.MouseEvent<HTMLElement>) => {
-        event.stopPropagation();
-    }
-
-    const deleteButtonClick = (event : React.MouseEvent<HTMLElement>) => {
-        event.stopPropagation();
-    }
-
-    const studentRow = () => {//TODO : Check the style
-        return (
-            <>
-                <Button disabled={disabled} onClick={applyButtonClick}>{t("studentOffersList.applyButton")}</Button>
-            </>
-        )
-    }
-
-    const managerRow = () => {
-        return (
-            <>
-                <Button disabled={disabled} onClick={acceptButtonClick} className="btn-success me-2">{t("managerOffersList.acceptButton")}</Button>
-                <Button disabled={disabled} onClick={refuseButtonClick} className="btn-danger">{t("managerOffersList.refuseButton")}</Button>
-            </>
-        )
-    }
-
-    const employerRow = () => {
-        return (
-            <>
-                <Button disabled={disabled} onClick={editButtonClick} className="btn-warning me-2">{t("employerOffersList.editButton")}</Button>
-                <Button disabled={disabled} onClick={deleteButtonClick} className="btn-danger">{t("employerOffersList.deleteButton")}</Button>
-            </>
-        )
-    }
-
-    const changingRow = () => { //Name in progress
+    const selectButtons = () => {
         switch (userType) {
             case UserType.Student:
-                return studentRow();
+                return <StudentButtons disabled={disabled}/>;
             case UserType.Manager:
-                return managerRow();
+                return <ManagerButtons disabled={disabled}/>;
             case UserType.Employer:
-                return employerRow();
+                return <EmployerButtons disabled={disabled}/>;
         }        
     }
 
     return (
         <>
-            {changingRow()}
+            {selectButtons()}
         </>
     );
 }
