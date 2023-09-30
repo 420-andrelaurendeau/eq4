@@ -20,6 +20,7 @@ export const tempManager: Manager = {
     email: "",
     password: "",
     department: tempDepartment,
+    type: "manager"
 }
 
 interface Props {
