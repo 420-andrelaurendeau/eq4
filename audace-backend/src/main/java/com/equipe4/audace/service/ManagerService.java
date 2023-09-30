@@ -1,13 +1,14 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.offer.Offer.Status;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +16,11 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
-public class ManagerService extends UserService {
-    public ManagerService(OfferRepository offerRepository, DepartmentRepository departmentRepository) {
-        super(offerRepository, departmentRepository);
-    }
+@AllArgsConstructor
+public class ManagerService extends GenericUserService<Manager> {
+    private final OfferRepository offerRepository;
+    private final DepartmentRepository departmentRepository;
+
     @Transactional
     public Optional<OfferDTO> acceptOffer(Long offerId) {
         return setOfferStatus(offerId, Status.ACCEPTED);
@@ -32,7 +34,7 @@ public class ManagerService extends UserService {
     private Optional<OfferDTO> setOfferStatus(Long offerId, Status status) {
         Offer offer = offerRepository.findById(offerId).orElseThrow();
         offer.setStatus(status);
-        return Optional.of(offerRepository.save(offer).toDto());
+        return Optional.of(offerRepository.save(offer).toDTO());
     }
 
     @Transactional
@@ -41,6 +43,6 @@ public class ManagerService extends UserService {
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
         List<Offer> offers = offerRepository.findAllByDepartment(department);
 
-        return offers.stream().map(Offer::toDto).toList();
+        return offers.stream().map(Offer::toDTO).toList();
     }
 }

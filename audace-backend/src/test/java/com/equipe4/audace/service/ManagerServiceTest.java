@@ -106,7 +106,7 @@ public class ManagerServiceTest {
         List<OfferDTO> result = managerService.getOffersByDepartment(1L);
 
         assertThat(result.size()).isEqualTo(offers.size());
-        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDto).toList());
+        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
     }
 
     @Test

@@ -35,46 +35,6 @@ public class StudentServiceTest {
     private StudentService studentService;
 
     @Test
-    void createStudent() {
-        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
-
-        when(studentRepository.save(any())).thenReturn(studentDTO.fromDTO());
-
-        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(studentDTO.getDepartment().fromDto()));
-
-        Optional<StudentDTO> optionalStudentDTO = studentService.createStudent(studentDTO, "420");
-
-        assertThat(optionalStudentDTO).isPresent();
-    }
-
-    @Test
-    void createStudentNullStudent() {
-        assertThatThrownBy(() -> studentService.createStudent(null, null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Student cannot be null");
-    }
-
-    @Test
-    void createStudentAlreadyExists() {
-        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
-        when(studentRepository.findStudentByStudentNumberOrEmail(anyString(), anyString())).thenReturn(Optional.of(studentDTO.fromDTO()));
-
-        assertThatThrownBy(() -> studentService.createStudent(studentDTO, "420"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Student already exists");
-    }
-
-    @Test
-    void createStudentDepartmentInvalid() {
-        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
-        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> studentService.createStudent(studentDTO, "INVALIDE DUH"))
-                .isInstanceOf(NoSuchElementException.class)
-                .hasMessage("Department not found");
-    }
-
-    @Test
     void getOffersByDepartmentAndStatus_happyPath() {
         Department mockedDepartment = mock(Department.class);
         List<Offer> offers = new ArrayList<>();
@@ -143,7 +103,7 @@ public class StudentServiceTest {
 
         when(studentRepository.save(any())).thenReturn(studentDTO.fromDTO());
 
-        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(studentDTO.getDepartment().fromDto()));
+        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(studentDTO.getDepartment().toDto()));
 
         Optional<StudentDTO> optionalStudentDTO = studentService.createStudent(studentDTO, "420");
 

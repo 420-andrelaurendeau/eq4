@@ -16,17 +16,11 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 @Data
-public class UserService {
+public class UserService extends GenericUserService<User> {
     protected final OfferRepository offerRepository;
     protected final DepartmentRepository departmentRepository;
     //TODO : Spring Security Password
     private final UserRepository userRepository;
-
-    public UserService(OfferRepository offerRepository, DepartmentRepository departmentRepository, UserRepository userRepository) {
-        this.offerRepository = offerRepository;
-        this.departmentRepository = departmentRepository;
-        this.userRepository = userRepository;
-    }
 
     public void createUser(UserDTO userDTO) {}
 

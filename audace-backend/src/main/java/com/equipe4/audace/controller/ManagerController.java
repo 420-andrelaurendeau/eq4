@@ -1,6 +1,7 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.service.ManagerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import java.util.List;
 @RequestMapping("/managers")
 @CrossOrigin(origins = "http://localhost:3000")
 
-public class ManagerController extends GenericUserController<ManagerService>{
+public class ManagerController extends GenericUserController<Manager, ManagerService>{
     public ManagerController(ManagerService managerService) {
         super(managerService);
     }

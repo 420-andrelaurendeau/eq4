@@ -31,7 +31,7 @@ public class Manager extends User {
                 address,
                 phone,
                 password,
-                department.toDto()
+                department.toDTO()
         );
     }
 }

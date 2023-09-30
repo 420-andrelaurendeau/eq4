@@ -1,6 +1,7 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.service.EmployerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/employers")
-public class EmployerController extends GenericUserController<EmployerService>{
+public class EmployerController extends GenericUserController<Employer, EmployerService>{
     public EmployerController(EmployerService employerService) {
         super(employerService);
     }
