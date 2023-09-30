@@ -37,7 +37,7 @@ public class StudentControllerTest {
     @Test
     public void getOffersByDepartment_happyPath() throws Exception {
         List<OfferDTO> offerDTOList = List.of(mock(OfferDTO.class));
-        when(studentService.getOffersByDepartment(1L)).thenReturn(offerDTOList);
+        when(studentService.getAcceptedOffersByDepartment(1L)).thenReturn(offerDTOList);
 
         mvc.perform(get("/students/offers/1"))
                 .andExpect(status().isOk());

@@ -34,6 +34,6 @@ public class ManagerController extends GenericUserController<ManagerService>{
 
     @GetMapping("/offers/{departmentId}")
     public ResponseEntity<List<OfferDTO>> getOffersByDepartmentMapped(@PathVariable Long departmentId) {
-        return ResponseEntity.ok(getOffersByDepartment(departmentId));
+        return ResponseEntity.ok(service.getOffersByDepartment(departmentId));
     }
 }

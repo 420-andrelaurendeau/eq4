@@ -48,4 +48,13 @@ public class StudentService extends UserService {
         Student student = studentRepository.save(studentDTO.fromDTO());
         return Optional.of(student.toDTO());
     }
+
+    @Transactional
+    public List<OfferDTO> getAcceptedOffersByDepartment(Long departmentId) {
+        Department department = departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new NoSuchElementException("Department not found"));
+        List<Offer> offers = offerRepository.findAllByDepartmentAndStatus(department, Offer.Status.ACCEPTED);
+
+        return offers.stream().map(Offer::toDto).toList();
+    }
 }

@@ -27,6 +27,6 @@ public class StudentController extends GenericUserController<StudentService> {
 
     @GetMapping("/offers/{departmentId}")
     public ResponseEntity<List<OfferDTO>> getOffersByDepartmentMapped(@PathVariable Long departmentId) {
-        return ResponseEntity.ok(getOffersByDepartment(departmentId));
+        return ResponseEntity.ok(service.getAcceptedOffersByDepartment(departmentId));
     }
 }
