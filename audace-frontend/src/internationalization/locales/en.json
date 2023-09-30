@@ -41,5 +41,21 @@
     "internshipStartDate": "Start Date",
     "noOffers": "No offers available",
     "viewTitle": "Available Offers"
+  },
+  "studentOffer": {
+    "modal": {
+      "org": "Organization",
+      "address": "Address",
+      "phone": "Phone number",
+      "orgNotFound": "Organization not found",
+      "offerEnd": "Offer ends on",
+      "offerDescription": "Offer Description",
+      "empNotFound": "Employer not found!",
+      "apply": "Apply",
+      "internDate": {
+        "start": "From",
+        "end": "to"
+      }
+    }
   }
 }
