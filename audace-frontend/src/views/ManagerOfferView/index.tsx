@@ -3,9 +3,9 @@ import { Manager, UserType } from "../../model/user";
 import { Department } from "../../model/department";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
-import { getOffersByDepartment } from "../../services/offerService";
 import { Offer } from "../../model/offer";
 import OffersList from "../../components/OffersList";
+import { getManagerOffersByDepartment } from "../../services/offerService";
 
 // Temp until login works
 
@@ -32,7 +32,7 @@ const ManagerOfferView = ({manager}: Props) => {
     const {t} = useTranslation();
 
     useEffect(() => {
-        getOffersByDepartment(manager.department!.id!)
+        getManagerOffersByDepartment(manager.department!.id!)
         .then((res) => {
             setOffers(res.data);
         })

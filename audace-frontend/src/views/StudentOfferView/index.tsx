@@ -3,9 +3,9 @@ import { Student, UserType } from "../../model/user";
 import { Department } from "../../model/department";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
-import { getOffersByDepartment } from "../../services/offerService";
 import { Offer } from "../../model/offer";
 import OffersList from "../../components/OffersList";
+import { getStudentOffersByDepartment } from "../../services/offerService";
 
 // Temp until login works
 
@@ -33,7 +33,7 @@ const StudentOfferView = ({student}: Props) => {
     const {t} = useTranslation();
 
     useEffect(() => {
-        getOffersByDepartment(student.department!.id!)
+        getStudentOffersByDepartment(student.department!.id!)
         .then((res) => {
             setOffers(res.data);
         })
