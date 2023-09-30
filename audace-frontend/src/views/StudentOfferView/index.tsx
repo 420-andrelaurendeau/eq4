@@ -3,7 +3,7 @@ import { Student, UserType } from "../../model/user";
 import { Department } from "../../model/department";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
-import { Offer } from "../../model/offer";
+import { Offer, OfferStatus } from "../../model/offer";
 import OffersList from "../../components/OffersList";
 import { getStudentOffersByDepartment } from "../../services/offerService";
 
@@ -43,10 +43,20 @@ const StudentOfferView = ({student}: Props) => {
         })
     }, [student.department, t]);
 
+    const updateOffersState = (offer : Offer, offerStatus : OfferStatus) => {
+        const newOffers = offers.map((o) => {
+            if (o.id === offer.id) {
+                o.status = offerStatus;
+            }
+            return o;
+        });
+        setOffers(newOffers);
+    }
+
     return (
         <Container>
             <h1>{t("studentOffersList.viewTitle")}</h1>
-            <OffersList offers={offers} error={error} userType={UserType.Student}/>
+            <OffersList offers={offers} error={error} userType={UserType.Student} updateOffersState={updateOffersState}/>
         </Container>
     );
 };

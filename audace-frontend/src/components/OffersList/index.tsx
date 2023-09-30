@@ -1,4 +1,4 @@
-import { Offer } from "../../model/offer";
+import { Offer, OfferStatus } from "../../model/offer";
 import { Table } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import OfferRow from "./OfferRow";
@@ -8,9 +8,10 @@ interface Props {
     offers: Offer[];
     error: string;
     userType: UserType;
+    updateOffersState?: (offer : Offer, offerStatus : OfferStatus) => void;
 }
 
-const OffersList = ({offers, error, userType}: Props) => {
+const OffersList = ({offers, error, userType, updateOffersState}: Props) => {
     const {t} = useTranslation();
 
     return (
@@ -32,7 +33,7 @@ const OffersList = ({offers, error, userType}: Props) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {offers.map((offer) => {return <OfferRow key={offer.id} offer={offer} userType={userType} />})}
+                            {offers.map((offer) => {return <OfferRow key={offer.id} offer={offer} userType={userType} updateOffersState={updateOffersState}/>})}
                         </tbody>
                     </Table>
                     :
