@@ -12,7 +12,7 @@ interface Props {
     handleClose: () => void;
 }
 
-const OfferModal = ({offer, show, handleClose}: Props) => {
+const StudentOfferModal = ({offer, show, handleClose}: Props) => {
     const {t} = useTranslation();
     const [employer, setEmployer] = useState<Employer | undefined>(undefined);
 
@@ -76,11 +76,11 @@ const OfferModal = ({offer, show, handleClose}: Props) => {
                     <div className="text-end">
                         <div>
                             {t("studentOffer.modal.internDate.start")}:&nbsp;
-                            {createBoldText(formatDate(offer.internshipStartDate))}&nbsp;
+                            {createBoldText(offer.internshipStartDate)}&nbsp;
                             {t("studentOffer.modal.internDate.end")}:&nbsp;
-                            {createBoldText(formatDate(offer.internshipEndDate))}
+                            {createBoldText(offer.internshipEndDate)}
                         </div>
-                        <div>{t("studentOffer.modal.offerEnd")}: {createBoldText(formatDate(offer.offerEndDate))}</div>
+                        <div>{t("studentOffer.modal.offerEnd")}: {createBoldText(offer.offerEndDate)}</div>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
@@ -92,4 +92,4 @@ const OfferModal = ({offer, show, handleClose}: Props) => {
     );
 };
 
-export default OfferModal;
+export default StudentOfferModal;

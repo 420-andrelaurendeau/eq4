@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {useNavigate} from "react-router-dom";
-import {Navbar, NavbarBrand, NavItem, NavLink} from "reactstrap";
-function EmployerNavBar(){
+//import {Navbar, NavbarBrand, NavItem, NavLink} from "reactstrap";
+/*function EmployerNavBar(){
     const navigate = useNavigate();
     const handleNavigation = () => {
         navigate("/employers/");
@@ -14,4 +14,4 @@ function EmployerNavBar(){
         </NavItem>
     </Navbar>
 }
-export default EmployerNavBar;
+export default EmployerNavBar;*/

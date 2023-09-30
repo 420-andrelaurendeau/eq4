@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Offer } from "../../../model/offer";
-import OfferModal from "./OfferModal";
+import StudentOfferModal from "./StudentOfferModal";
 import './styles.css'
 import { formatDate } from "../../../services/formatService";
 
@@ -17,10 +17,10 @@ const StudentOffer = ({offer}: Props) => {
         <>
             <tr className="hovered" onClick={handleClick}>
                 <td>{offer.title}</td>
-                <td>{formatDate(offer.internshipStartDate)}</td>
-                <td>{formatDate(offer.internshipEndDate)}</td>
+                <td>{offer.internshipStartDate}</td>
+                <td>{offer.internshipEndDate}</td>
             </tr>
-            {show && <OfferModal offer={offer} show={show} handleClose={handleClose}/>}
+            {show && <StudentOfferModal offer={offer} show={show} handleClose={handleClose}/>}
         </>
     );
 };
