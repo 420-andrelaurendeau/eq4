@@ -74,7 +74,7 @@ const ManagerOfferView = ({manager}: Props) => {
     return (
         <Container>
             <h1>{t("managerOffersList.viewTitle")}</h1>
-            {offers.length > 0 ? <OffersList offers={offers} error={error} userType={UserType.Manager} updateOffersState={updateOffersState}/> : <p>No more pending offers</p>}
+            {offers.length > 0 ? <OffersList offers={offers} error={error} userType={UserType.Manager} updateOffersState={updateOffersState}/> : <p>{t("managerOffersList.noMorePendingOffers")}</p>}
             {offersAccepted.length > 0 ? <OffersList offers={offersAccepted} error={error} userType={UserType.Manager}/> : null}
             {offersRefused.length > 0 ? <OffersList offers={offersRefused} error={error} userType={UserType.Manager}/> : null}
         </Container>
