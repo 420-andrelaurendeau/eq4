@@ -29,10 +29,6 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer}:
             });
     }, [setEmployer, offer]);
 
-    const applyToOffer = () => {
-        // Not in this story's scope
-    };
-
     const createBoldText = (text: string) => {
         return <b>{text}</b>;
     };
