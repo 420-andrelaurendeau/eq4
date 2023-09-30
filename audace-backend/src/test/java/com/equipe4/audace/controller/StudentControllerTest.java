@@ -5,6 +5,7 @@ import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.StudentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ public class StudentControllerTest {
     private StudentRepository studentRepository;
     @MockBean
     private EmployerRepository employerRepository;
+    @MockBean
+    private EmployerService employerService;
 
     @Test
     public void getOffersByDepartment_happyPath() throws Exception {

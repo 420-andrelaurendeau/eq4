@@ -1,15 +1,12 @@
 package com.equipe4.audace.dto.offer;
 
-import com.equipe4.audace.dto.EmployerDTO;
-import com.equipe4.audace.dto.department.DepartmentDTO;
-import com.equipe4.audace.model.Employer;
-import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
-import jakarta.persistence.*;
-import lombok.*;
+import com.equipe4.audace.model.offer.Offer.Status;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -21,7 +18,7 @@ public class OfferDTO {
     private LocalDate internshipEndDate;
     private LocalDate offerEndDate;
     private int availablePlaces;
-    private boolean approved;
+    private Status status;
     private String departmentCode;
     private Long employerId;
 
@@ -34,13 +31,13 @@ public class OfferDTO {
         this.internshipEndDate = offer.getInternshipEndDate();
         this.offerEndDate = offer.getOfferEndDate();
         this.availablePlaces = offer.getAvailablePlaces();
-        this.approved = offer.isApproved();
+        this.status = offer.getStatus();
         this.departmentCode = offer.getDepartment().getCode();
         this.employerId = offer.getEmployer().getId();
     }
 
     @Builder(builderMethodName = "offerDTOBuilder")
-    public OfferDTO(Long id, String title, String description, LocalDate internshipStartDate, LocalDate internshipEndDate, LocalDate offerEndDate, int availablePlaces, boolean approved, String departmentCode, Long employerId) {
+    public OfferDTO(Long id, String title, String description, LocalDate internshipStartDate, LocalDate internshipEndDate, LocalDate offerEndDate, int availablePlaces, Status status, String departmentCode, Long employerId) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -48,7 +45,7 @@ public class OfferDTO {
         this.internshipEndDate = internshipEndDate;
         this.offerEndDate = offerEndDate;
         this.availablePlaces = availablePlaces;
-        this.approved = approved;
+        this.status = status;
         this.departmentCode = departmentCode;
         this.employerId = employerId;
     }

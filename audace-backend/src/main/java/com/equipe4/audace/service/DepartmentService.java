@@ -19,7 +19,7 @@ public class DepartmentService {
 
     public Department findDepartmentByCode(String departmentCode){
         Optional<Department> departmentOptional = departmentRepository.findByCode(departmentCode);
-        if (!departmentOptional.isEmpty()) throw new IllegalArgumentException("Department doesn't exists");
+        if (departmentOptional.isEmpty()) throw new IllegalArgumentException("Department doesn't exists");
         return departmentOptional.get();
     }
 }

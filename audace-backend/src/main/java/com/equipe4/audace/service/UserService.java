@@ -27,6 +27,6 @@ public class UserService {
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
         List<Offer> offers = offerRepository.findAllByDepartment(department);
 
-        return offers.stream().map(Offer::toDto).toList();
+        return offers.stream().map(OfferDTO::new).toList();
     }
 }

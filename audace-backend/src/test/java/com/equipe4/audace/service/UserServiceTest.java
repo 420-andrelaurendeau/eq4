@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -35,29 +36,27 @@ public class UserServiceTest {
         Department mockedDepartment = mock(Department.class);
         List<Offer> offers = new ArrayList<>();
 
-        Employer fakeEmployer = new Employer(
-                1L,
-                "employer",
-                "employerman",
-                "email@gmail.com",
-                "password",
-                "organisation",
-                "position",
-                "address",
-                "phone",
-                "extension"
-        );
+        Employer fakeEmployer = Employer.employerBuilder()
+                .firstName("employer")
+                .lastName("employerman")
+                .email("email@gmail.com")
+                .organisation("organisation")
+                .password("password")
+                .position("position")
+                .address("address")
+                .extension("extension")
+                .phone("phone")
+                .build();
         fakeEmployer.setId(1L);
 
-        Offer fakeOffer = new Offer(
-                "title",
-                "description",
-                null,
-                null,
-                null,
-                fakeEmployer,
-                mockedDepartment
-        );
+        Offer fakeOffer = Offer.offerBuilder()
+                .title("title").description("description")
+                .internshipStartDate(LocalDate.now())
+                .internshipEndDate(LocalDate.now())
+                .offerEndDate(LocalDate.now())
+                .employer(fakeEmployer)
+                .department(mockedDepartment)
+                .build();
         fakeEmployer.getOffers().add(fakeOffer);
 
         for (int i = 0; i < 3; i++)
@@ -69,7 +68,7 @@ public class UserServiceTest {
         List<OfferDTO> result = userService.getOffersByDepartment(1L);
 
         assertThat(result.size()).isEqualTo(offers.size());
-        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDto).toList());
+        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(OfferDTO::new).toList());
     }
 
     @Test

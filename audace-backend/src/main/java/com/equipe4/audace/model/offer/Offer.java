@@ -25,16 +25,24 @@ public class Offer {
     private LocalDate internshipEndDate;
     private LocalDate offerEndDate;
     private int availablePlaces;
-    private boolean approved;
 
     @ManyToOne
     @JoinColumn(name = "department_id")
+    @ToString.Exclude
     private Department department;
 
     @ManyToOne
     @JoinColumn(name = "employer_id")
     @ToString.Exclude
     private Employer employer;
+
+    private Status status;
+
+    public enum Status {
+        PENDING,
+        ACCEPTED,
+        REFUSED
+    }
 
 
     @Builder(builderMethodName = "offerBuilder")
@@ -45,15 +53,9 @@ public class Offer {
         this.internshipEndDate = internshipEndDate;
         this.offerEndDate = offerEndDate;
         this.availablePlaces = availablePlaces;
-        this.approved = false;
+        this.status = Status.PENDING;
         this.department = department;
         this.employer = employer;
     }
 
-
-
-
-    /*public OfferDTO toDto() {
-        return new OfferDTO(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, employer.getId(), department.toDto());
-    }*/
 }

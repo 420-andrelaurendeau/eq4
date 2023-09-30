@@ -25,26 +25,9 @@ public class OfferService {
         this.departmentService = departmentService;
     }
 
-    public Optional<OfferDTO> createOffer(OfferDTO offerDTO){
-        if(offerDTO == null) throw new IllegalArgumentException("Offer cannot be null");
 
-        Employer employer = employerService.findEmployerById(offerDTO.getEmployerId());
-        Department department = departmentService.findDepartmentByCode(offerDTO.getDepartmentCode());
 
-        Offer offer = offerDTO.fromDto();
-        offer.setEmployer(employer);
-        offer.setDepartment(department);
 
-        return Optional.of(new OfferDTO(offerRepository.save(offer)));
-    }
-    public Optional<OfferDTO> updateOffer(OfferDTO offerDTO){
-        Offer offer = findOfferById(offerDTO.getId());
-        return Optional.of(new OfferDTO(offerRepository.save(offer)));
-    }
-    public void deleteOffer(Long offerId){
-        Offer offer = findOfferById(offerId);
-        offerRepository.deleteById(offerId);
-    }
 
     public Offer findOfferById(Long offerId){
         Optional<Offer> offerOptional = offerRepository.findById(offerId);
@@ -55,9 +38,6 @@ public class OfferService {
         return offerRepository.findAll().stream().map(OfferDTO::new).toList();
     }
 
-    public List<OfferDTO> findAllOffersByEmployerId(Long employerId){
-        Employer employer = employerService.findEmployerById(employerId);
-        return offerRepository.findAllByEmployer(employer).stream().map(OfferDTO::new).toList();
-    }
+
 
 }

@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
 
@@ -29,7 +30,12 @@ public class ManagerServiceTest {
     public void acceptOffer() {
         Employer employer = new Employer();
         Department department = new Department();
-        Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
+        Offer offer1 = Offer.offerBuilder()
+                .title("Stage en génie logiciel").description("Stage en génie logiciel")
+                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
+                .availablePlaces(2)
+                .employer(employer).department(department)
+                .build();
         when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
         when(offerRepository.save(any())).thenReturn(offer1);
 
@@ -48,7 +54,12 @@ public class ManagerServiceTest {
     public void refuseOffer() {
         Employer employer = new Employer();
         Department department = new Department();
-        Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
+        Offer offer1 = Offer.offerBuilder()
+                .title("Stage en génie logiciel").description("Stage en génie logiciel")
+                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
+                .availablePlaces(2)
+                .employer(employer).department(department)
+                .build();
         when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
         when(offerRepository.save(any())).thenReturn(offer1);
 
