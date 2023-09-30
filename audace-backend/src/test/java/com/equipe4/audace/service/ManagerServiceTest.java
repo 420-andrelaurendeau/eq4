@@ -1,5 +1,6 @@
 package com.equipe4.audace.service;
 
+import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
@@ -12,9 +13,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Date;
-import java.util.Optional;
+import java.util.*;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -22,6 +24,8 @@ import static org.mockito.Mockito.*;
 public class ManagerServiceTest {
     @Mock
     private OfferRepository offerRepository;
+    @Mock
+    private DepartmentRepository departmentRepository;
     @InjectMocks
     private ManagerService managerService;
 
@@ -61,5 +65,68 @@ public class ManagerServiceTest {
     public void refuseOffer_Invalid_Id() {
         when(offerRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
         assertThrows(EntityNotFoundException.class, () -> managerService.refuseOffer(1L));
+    }
+
+    @Test
+    void getOffersByDepartment_happyPath() {
+        Department mockedDepartment = mock(Department.class);
+        List<Offer> offers = new ArrayList<>();
+
+        Employer fakeEmployer = new Employer(
+                1L,
+                "employer",
+                "employerman",
+                "email@gmail.com",
+                "password",
+                "organisation",
+                "position",
+                "address",
+                "phone",
+                "extension"
+        );
+        fakeEmployer.setId(1L);
+
+        Offer fakeOffer = new Offer(
+                "title",
+                "description",
+                null,
+                null,
+                null,
+                fakeEmployer,
+                mockedDepartment
+        );
+        fakeEmployer.getOffers().add(fakeOffer);
+
+        for (int i = 0; i < 3; i++)
+            offers.add(fakeOffer);
+
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
+        when(offerRepository.findAllByDepartment(mockedDepartment)).thenReturn(offers);
+
+        List<OfferDTO> result = managerService.getOffersByDepartment(1L);
+
+        assertThat(result.size()).isEqualTo(offers.size());
+        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
+    }
+
+    @Test
+    void getOffersByDepartment_departmentNotFound() {
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> managerService.getOffersByDepartment(1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Department not found");
+    }
+
+    @Test
+    void getOffersByDepartment_noOffers() {
+        Department mockedDepartment = mock(Department.class);
+
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
+        when(offerRepository.findAllByDepartment(mockedDepartment)).thenReturn(new ArrayList<>());
+
+        List<OfferDTO> result = managerService.getOffersByDepartment(1L);
+
+        assertThat(result.size()).isEqualTo(0);
     }
 }

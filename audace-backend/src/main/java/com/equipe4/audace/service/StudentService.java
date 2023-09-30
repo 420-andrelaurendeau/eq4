@@ -9,6 +9,7 @@ import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +18,11 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
-public class StudentService extends UserService {
+@AllArgsConstructor
+public class StudentService extends GenericUserService<Student> {
+    private final DepartmentRepository departmentRepository;
+    private final OfferRepository offerRepository;
     private final StudentRepository studentRepository;
-
-    public StudentService(
-            StudentRepository studentRepository,
-            OfferRepository offerRepository,
-            DepartmentRepository departmentRepository) {
-        super(offerRepository, departmentRepository);
-        this.studentRepository = studentRepository;
-    }
 
     @Transactional
     public Optional<StudentDTO> createStudent(StudentDTO studentDTO, String departmentCode) {
@@ -44,8 +40,17 @@ public class StudentService extends UserService {
         if (departmentOptional.isEmpty()) {
             throw new NoSuchElementException("Department not found");
         }
-        studentDTO.setDepartment(departmentOptional.get().toDto());
+        studentDTO.setDepartment(departmentOptional.get().toDTO());
         Student student = studentRepository.save(studentDTO.fromDTO());
         return Optional.of(student.toDTO());
+    }
+
+    @Transactional
+    public List<OfferDTO> getAcceptedOffersByDepartment(Long departmentId) {
+        Department department = departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new NoSuchElementException("Department not found"));
+        List<Offer> offers = offerRepository.findAllByDepartmentAndStatus(department, Offer.Status.ACCEPTED);
+
+        return offers.stream().map(Offer::toDTO).toList();
     }
 }

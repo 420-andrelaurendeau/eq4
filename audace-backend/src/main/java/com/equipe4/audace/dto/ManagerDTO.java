@@ -18,7 +18,7 @@ public class ManagerDTO extends UserDTO {
                       String phone,
                       String password,
                       DepartmentDTO department) {
-        super(id, firstName, lastName, address, phone, email, password);
+        super(id, firstName, lastName, email, address, phone, password, "MANAGER");
         this.department = department;
     }
 
@@ -32,7 +32,7 @@ public class ManagerDTO extends UserDTO {
                 password,
                 address,
                 phone,
-                department.fromDto()
+                department.toDto()
         );
     }
 }

@@ -5,6 +5,7 @@ import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
+import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.service.ManagerService;
@@ -38,13 +39,15 @@ public class ManagerControllerTest {
     private EmployerRepository employerRepository;
     @MockBean
     private DepartmentRepository departmentRepository;
+    @MockBean
+    private StudentRepository studentRepository;
 
     @Test
     public void acceptOffer() throws Exception {
         Employer employer = new Employer();
         Department department = new Department();
         Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
-        when(managerService.acceptOffer(1L)).thenReturn(Optional.of(offer1.toDto()));
+        when(managerService.acceptOffer(1L)).thenReturn(Optional.of(offer1.toDTO()));
 
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/managers/accept_offer/1")
@@ -59,7 +62,7 @@ public class ManagerControllerTest {
         Employer employer = new Employer();
         Department department = new Department();
         Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
-        when(managerService.refuseOffer(1L)).thenReturn(Optional.of(offer1.toDto()));
+        when(managerService.refuseOffer(1L)).thenReturn(Optional.of(offer1.toDTO()));
 
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/managers/refuse_offer/1")

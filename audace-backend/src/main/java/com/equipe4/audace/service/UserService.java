@@ -1,32 +1,40 @@
 package com.equipe4.audace.service;
 
-import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.department.Department;
-import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import com.equipe4.audace.dto.UserDTO;
+import com.equipe4.audace.model.User;
+import com.equipe4.audace.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 
 @Service
 @AllArgsConstructor
 @Data
-public class UserService {
+public class UserService extends GenericUserService<User> {
     protected final OfferRepository offerRepository;
     protected final DepartmentRepository departmentRepository;
+    //TODO : Spring Security Password
+    private final UserRepository userRepository;
 
-    @Transactional
-    public List<OfferDTO> getOffersByDepartment(Long departmentId) {
-        Department department = departmentRepository.findById(departmentId)
-                .orElseThrow(() -> new NoSuchElementException("Department not found"));
-        List<Offer> offers = offerRepository.findAllByDepartment(department);
+    public void createUser(UserDTO userDTO) {}
 
-        return offers.stream().map(Offer::toDto).toList();
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userRepository.findAll();
+
+        return users.stream()
+                .map(User::toDTO)
+                .toList();
+    }
+
+    public Optional<UserDTO> getUser(long id) {
+        Optional<User> user = userRepository.findById(id);
+
+        return user.map(User::toDTO);
     }
 }

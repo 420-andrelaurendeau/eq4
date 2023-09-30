@@ -2,14 +2,21 @@ package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
+import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.department.Department;
+import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
+import com.equipe4.audace.repository.offer.OfferRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -22,16 +29,81 @@ public class StudentServiceTest {
     private StudentRepository studentRepository;
     @Mock
     private DepartmentRepository departmentRepository;
+    @Mock
+    private OfferRepository offerRepository;
     @InjectMocks
     private StudentService studentService;
 
     @Test
+    void getOffersByDepartmentAndStatus_happyPath() {
+        Department mockedDepartment = mock(Department.class);
+        List<Offer> offers = new ArrayList<>();
+
+        Employer fakeEmployer = new Employer(
+                1L,
+                "employer",
+                "employerman",
+                "email@gmail.com",
+                "password",
+                "organisation",
+                "position",
+                "address",
+                "phone",
+                "extension"
+        );
+        fakeEmployer.setId(1L);
+
+        Offer fakeOffer = new Offer(
+                "title",
+                "description",
+                null,
+                null,
+                null,
+                fakeEmployer,
+                mockedDepartment
+        );
+        fakeEmployer.getOffers().add(fakeOffer);
+
+        for (int i = 0; i < 3; i++)
+            offers.add(fakeOffer);
+
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
+        when(offerRepository.findAllByDepartmentAndStatus(mockedDepartment, Offer.Status.ACCEPTED)).thenReturn(offers);
+
+        List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
+
+        assertThat(result.size()).isEqualTo(offers.size());
+        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
+    }
+
+    @Test
+    void getOffersByDepartmentAndStatus_departmentNotFound() {
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> studentService.getAcceptedOffersByDepartment(1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Department not found");
+    }
+
+    @Test
+    void getOffersByDepartmentAndStatus_noOffers() {
+        Department mockedDepartment = mock(Department.class);
+
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
+        when(offerRepository.findAllByDepartmentAndStatus(mockedDepartment, Offer.Status.ACCEPTED)).thenReturn(new ArrayList<>());
+
+        List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
+
+        assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
     void createStudent() {
-        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
+        StudentDTO studentDTO = new StudentDTO(1L,"student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "student", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
 
         when(studentRepository.save(any())).thenReturn(studentDTO.fromDTO());
 
-        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(studentDTO.getDepartment().fromDto()));
+        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(studentDTO.getDepartment().toDto()));
 
         Optional<StudentDTO> optionalStudentDTO = studentService.createStudent(studentDTO, "420");
 
@@ -47,7 +119,7 @@ public class StudentServiceTest {
 
     @Test
     void createStudentAlreadyExists() {
-        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
+        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "student", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
         when(studentRepository.findStudentByStudentNumberOrEmail(anyString(), anyString())).thenReturn(Optional.of(studentDTO.fromDTO()));
 
         assertThatThrownBy(() -> studentService.createStudent(studentDTO, "420"))
@@ -57,7 +129,7 @@ public class StudentServiceTest {
 
     @Test
     void createStudentDepartmentInvalid() {
-        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
+        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "student", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
         when(departmentRepository.findByCode(anyString())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> studentService.createStudent(studentDTO, "INVALIDE DUH"))

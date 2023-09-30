@@ -8,6 +8,9 @@ import { useTranslation } from "react-i18next";
 import SignupView from "./views/Signup";
 import { UserType } from "./model/user";
 import StudentOfferView, { tempStudent } from "./views/StudentOfferView";
+import UserList from "./components/Login/UserList";
+import StudentHomePage from "./components/StudentHomePage";
+import EmployerHomePage from "./components/EmployerHomePage";
 import ManagerOfferView, { tempManager } from "./views/ManagerOfferView";
 
 function App() {
@@ -52,6 +55,14 @@ function App() {
             </Routes>
           }>
           </Route>
+          <Route path="/users/*" element={
+            <Routes>
+              <Route path="" element={<UserList></UserList>}/>
+            </Routes>
+          }>
+          </Route>
+          <Route path="/student/:userId" element={<StudentHomePage></StudentHomePage>}></Route>
+          <Route path="/employer/:userId" element={<EmployerHomePage></EmployerHomePage>}></Route>
         </Routes>
       </Router>
     </>

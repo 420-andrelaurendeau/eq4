@@ -53,7 +53,7 @@ public class Offer {
         status = Status.PENDING;
     }
 
-    public OfferDTO toDto() {
-        return new OfferDTO(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, employer.getId(), department.toDto(), status);
+    public OfferDTO toDTO() {
+        return new OfferDTO(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, employer.getId(), department.toDTO(), status);
     }
 }
