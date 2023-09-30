@@ -1,11 +1,12 @@
 package com.equipe4.audace.dto;
 
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.User;
 import lombok.*;
 
 @Data
 @NoArgsConstructor
-public class EmployerDTO {
+public class EmployerDTO extends UserDTO {
     private Long id;
     private String firstName;
     private String lastName;
@@ -16,6 +17,7 @@ public class EmployerDTO {
     private String address;
     private String phone;
     private String extension;
+    private String type;
 
     public EmployerDTO(Employer employer) {
         this.id = employer.getId();
@@ -42,6 +44,7 @@ public class EmployerDTO {
         this.address = address;
         this.phone = phone;
         this.extension = extension;
+        this.type = "employer";
     }
 
     public Employer fromDTO(){
@@ -57,4 +60,5 @@ public class EmployerDTO {
                 .extension(extension)
                 .build();
     }
+
 }

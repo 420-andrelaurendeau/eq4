@@ -21,6 +21,7 @@ export const tempStudent: Student = {
     password: "",
     studentNumber: "1",
     department: tempDepartment,
+    type: "student"
 }
 
 interface Props {

@@ -44,7 +44,7 @@ public class StudentService extends UserService {
         if (departmentOptional.isEmpty()) {
             throw new NoSuchElementException("Department not found");
         }
-        studentDTO.setDepartment(departmentOptional.get().toDto());
+        studentDTO.setDepartment(departmentOptional.get().toDTO());
         Student student = studentRepository.save(studentDTO.fromDTO());
         return Optional.of(student.toDTO());
     }
@@ -55,6 +55,6 @@ public class StudentService extends UserService {
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
         List<Offer> offers = offerRepository.findAllByDepartmentAndStatus(department, Offer.Status.ACCEPTED);
 
-        return offers.stream().map(Offer::toDto).toList();
+        return offers.stream().map(Offer::toDTO).toList();
     }
 }
