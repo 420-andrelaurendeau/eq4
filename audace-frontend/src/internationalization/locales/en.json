@@ -41,5 +41,52 @@
     "internshipStartDate": "Start Date",
     "noOffers": "No offers available",
     "viewTitle": "Available Offers"
+  },
+  "studentOffer": {
+    "modal": {
+      "org": "Organization",
+      "address": "Address",
+      "phone": "Phone number",
+      "orgNotFound": "Organization not found",
+      "offerEnd": "Offer ends on",
+      "offerDescription": "Offer Description",
+      "empNotFound": "Employer not found!",
+      "apply": "Apply",
+      "internDate": {
+        "start": "From",
+        "end": "to"
+      }
+    }
+  },
+  "employerOffersList": {
+    "errors": {
+      "employerNotFound": "Employer not found"
+    },
+    "title": "Title",
+    "internshipEndDate": "End Date",
+    "internshipStartDate": "Start Date",
+    "noOffers": "No offers published",
+    "viewTitle": "Published Offers"
+  },
+  "employerOffer": {
+    "modal": {
+      "org": "Organization",
+      "address": "Address",
+      "phone": "Phone number",
+      "orgNotFound": "Organization not found",
+      "offerEnd": "Offer ends on",
+      "offerDescription": "Offer Description",
+      "offerAvailablePlaces": "Place(s) offered",
+      "empNotFound": "Employer not found!",
+      "internDate": {
+        "start": "From",
+        "end": "to"
+      },
+      "status": "Status",
+      "PENDING": "Pending",
+      "ACCEPTED": "Accepted",
+      "REFUSED": "Refused"
+
+    }
   }
 }

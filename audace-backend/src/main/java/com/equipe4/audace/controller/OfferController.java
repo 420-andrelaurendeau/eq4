@@ -30,22 +30,4 @@ public class OfferController {
         return offerService.findAllOffers();
     }
 
-    @PostMapping
-    public ResponseEntity<HttpStatus> createOffer(@RequestBody OfferDTO offerDTO){
-        logger.info("createOffer");
-        offerService.createOffer(offerDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-    @PutMapping
-    public ResponseEntity updateOffer(@RequestBody OfferDTO offerDTO){
-        logger.info("updateOffer");
-        OfferDTO updatedOffer = offerService.updateOffer(offerDTO).get();
-        return ResponseEntity.ok(updatedOffer);
-    }
-
-    @DeleteMapping
-    public ResponseEntity deleteOffer(@RequestParam("offerId") Long offerId){
-        offerService.deleteOffer(offerId);
-        return ResponseEntity.ok().build();
-    }
 }
