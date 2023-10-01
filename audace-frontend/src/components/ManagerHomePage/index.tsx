@@ -1,15 +1,20 @@
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ManagerHomePage = () => {
     const {userId} = useParams();
+    const navigate = useNavigate();
     const {t} = useTranslation();
+
+    const seeOffers = () => {
+        navigate(`/manager/${userId}/offers`);
+    }
 
     return (
         <div>
             <h1>Manager {userId}</h1>
-            <Button href={`/manager/${userId}/offers`}>{t("manager.seeOffersButton")}</Button>
+            <Button onClick={seeOffers}>{t("manager.seeOffersButton")}</Button>
         </div>
     );
 };
