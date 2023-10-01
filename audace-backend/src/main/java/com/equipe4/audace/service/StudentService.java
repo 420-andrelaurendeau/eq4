@@ -5,6 +5,7 @@ import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
+import com.equipe4.audace.model.offer.Offer.Status;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
@@ -49,7 +50,7 @@ public class StudentService extends GenericUserService<Student> {
     public List<OfferDTO> getAcceptedOffersByDepartment(Long departmentId) {
         Department department = departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
-        List<Offer> offers = offerRepository.findAllByDepartmentAndStatus(department, Offer.Status.ACCEPTED);
+        List<Offer> offers = offerRepository.findAllByDepartmentAndStatus(department, Status.ACCEPTED);
 
         return offers.stream().map(Offer::toDTO).toList();
     }
