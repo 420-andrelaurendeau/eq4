@@ -71,5 +71,8 @@
     "viewTitle": "Available Offers",
     "editButton": "Edit",
     "deleteButton": "Delete"
+  },
+  "student": {
+    "seeOffersButton": "See Offers"
   }
 }
