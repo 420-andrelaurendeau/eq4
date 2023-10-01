@@ -21,6 +21,9 @@ const UserList: React.FC = () => {
         } else if (user.type === "employer") {
             navigate(`/employer/${user.id}`);
         }
+        else if (user.type === "manager") {
+            navigate(`/manager/${user.id}`);
+        }
     };
 
 

@@ -1,39 +1,34 @@
 import { Container } from "react-bootstrap";
 import { Student, UserType } from "../../model/user";
-import { Department } from "../../model/department";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { Offer } from "../../model/offer";
 import OffersList from "../../components/OffersList";
 import { getStudentOffersByDepartment } from "../../services/offerService";
+import { useParams } from "react-router-dom";
+import { getStudentById } from "../../services/userService";
 
-// Temp until login works
-
-const tempDepartment: Department = {
-    id: 1,
-    name: "",
-    code: "",
-}
-
-export const tempStudent: Student = {
-    id: 1,
-    email: "",
-    password: "",
-    studentNumber: "1",
-    department: tempDepartment,
-    type: "student"
-}
-
-interface Props {
-    student: Student;
-}
-
-const StudentOfferView = ({student}: Props) => {
+const StudentOfferView = () => {
+    const [student, setStudent] = useState<Student>();
+    const {id} = useParams();
     const [offers, setOffers] = useState<Offer[]>([]);
     const [error, setError] = useState<string>("");
     const {t} = useTranslation();
 
     useEffect(() => {
+        getStudentById(parseInt(id!))
+            .then((res) => {
+                setStudent(res.data);
+            })
+            .catch((err) => {
+                console.log(err)
+                if (err.request.status === 404) setError(t("studentOffersList.errors.studentNotFound"));
+            })
+    }, [student, id, t]);
+
+    useEffect(() => {
+        if (student === undefined) return;
+
         getStudentOffersByDepartment(student.department!.id!)
         .then((res) => {
             setOffers(res.data);
@@ -42,7 +37,7 @@ const StudentOfferView = ({student}: Props) => {
             console.log(err)
             if (err.request.status === 404) setError(t("offersList.errors.departmentNotFound"));
         })
-    }, [student.department, t]);
+    }, [student, t]);
 
     return (
         <Container>
