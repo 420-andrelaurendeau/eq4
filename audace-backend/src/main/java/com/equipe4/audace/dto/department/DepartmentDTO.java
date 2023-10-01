@@ -23,7 +23,7 @@ public class DepartmentDTO {
         this.name = department.getName();
     }
 
-    public Department toDto() {
+    public Department fromDto() {
         return new Department(id, code, name);
     }
 }

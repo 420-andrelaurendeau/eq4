@@ -32,7 +32,7 @@ public class ManagerDTO extends UserDTO {
                 password,
                 address,
                 phone,
-                department.toDto()
+                department.fromDto()
         );
     }
 }
