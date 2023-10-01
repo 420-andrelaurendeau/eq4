@@ -139,7 +139,7 @@ public class ManagerServiceTest {
     }
 
     @Test
-    public void findStudentById_happyPathTest() {
+    public void findManagerById_happyPathTest() {
         // Arrange
         Department department = new Department("yeete", "yaint");
         Manager manager = new Manager(
@@ -166,7 +166,7 @@ public class ManagerServiceTest {
     }
 
     @Test
-    public void findStudentById_notFoundTest() {
+    public void findManagerById_notFoundTest() {
         // Arrange
         when(managerRepository.findById(1L)).thenReturn(Optional.empty());
 

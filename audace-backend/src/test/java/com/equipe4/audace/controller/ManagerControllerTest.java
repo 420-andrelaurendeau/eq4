@@ -2,6 +2,7 @@ package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
@@ -26,7 +27,7 @@ import java.util.Optional;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(ManagerController.class)
 public class ManagerControllerTest {
@@ -115,5 +116,42 @@ public class ManagerControllerTest {
 
         mvc.perform(get("/managers/offers/1"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getManagerById_happyPath_test() throws Exception {
+        Department department = new Department("yeete", "yaint");
+        Manager manager = new Manager(
+                1L,
+                "manager",
+                "managerman",
+                "manager@email.com",
+                "password",
+                "yeete",
+                "1234567890",
+                department
+        );
+
+        when(managerService.getManagerById(1L)).thenReturn(Optional.of(manager.toDTO()));
+
+        mvc.perform(get("/managers/{id}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.firstName").value("manager"))
+                .andExpect(jsonPath("$.lastName").value("managerman"))
+                .andExpect(jsonPath("$.email").value(manager.getEmail()))
+                .andExpect(jsonPath("$.password").value(manager.getPassword()))
+                .andExpect(jsonPath("$.phone").value(manager.getPhone()))
+                .andExpect(jsonPath("$.department.id").value(manager.getDepartment().getId()))
+                .andExpect(jsonPath("$.department.name").value(manager.getDepartment().getName()));
+    }
+
+    @Test
+    public void getManagerById_invalidId_test() throws Exception {
+        when(managerService.getManagerById(-1L)).thenReturn(Optional.empty());
+
+        mvc.perform(get("/managers/{id}", -1L))
+                .andExpect(status().isNotFound());
     }
 }
