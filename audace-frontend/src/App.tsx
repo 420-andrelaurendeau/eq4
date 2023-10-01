@@ -12,6 +12,7 @@ import UserList from "./components/Login/UserList";
 import StudentHomePage from "./components/StudentHomePage";
 import EmployerHomePage from "./components/EmployerHomePage";
 import ManagerOfferView from "./views/ManagerOfferView";
+import ManagerHomePage from "./components/ManagerHomePage";
 
 function App() {
   const { t } = useTranslation();
@@ -63,6 +64,7 @@ function App() {
           </Route>
           <Route path="/student/:userId" element={<StudentHomePage></StudentHomePage>}></Route>
           <Route path="/employer/:userId" element={<EmployerHomePage></EmployerHomePage>}></Route>
+          <Route path="/manager/:userId" element={<ManagerHomePage />}></Route>
         </Routes>
       </Router>
     </>

@@ -77,5 +77,8 @@
   },
   "student": {
     "seeOffersButton": "See Offers"
+  },
+  "manager": {
+    "seeOffersButton": "See Offers"
   }
 }

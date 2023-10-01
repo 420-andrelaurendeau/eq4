@@ -77,5 +77,8 @@
   },
   "student": {
     "seeOffersButton": "Voir les offres"
+  },
+  "manager": {
+    "seeOffersButton": "Voir les offres"
   }
 }
