@@ -53,4 +53,8 @@ public class StudentService extends GenericUserService<Student> {
 
         return offers.stream().map(Offer::toDTO).toList();
     }
+
+    public Optional<Student> getStudentById(Long id) {
+        return studentRepository.findById(id);
+    }
 }

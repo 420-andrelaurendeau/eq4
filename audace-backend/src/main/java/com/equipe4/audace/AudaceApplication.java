@@ -1,10 +1,12 @@
 package com.equipe4.audace;
 
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
+import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
@@ -23,6 +25,8 @@ public class AudaceApplication implements CommandLineRunner {
 	private EmployerRepository employerRepository;
 	@Autowired
 	private StudentRepository studentRepository;
+	@Autowired
+	private ManagerRepository managerRepository;
 	public static void main(String[] args) {
 		SpringApplication.run(AudaceApplication.class, args);
 	}
@@ -55,5 +59,8 @@ public class AudaceApplication implements CommandLineRunner {
 
 		Student student = new Student(2L, "Kylian", "Mbappe", "kylian@live.fr", "123123", "34 de Montpellier", "4387654545", "2080350", department);
 		studentRepository.save(student);
+
+		Manager manager = new Manager(3L, "manager", "managerman", "manager@email.com", "password", "yeete", "1234567890", department);
+		managerRepository.save(manager);
 	}
 }

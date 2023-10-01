@@ -6,6 +6,7 @@ import com.equipe4.audace.service.ManagerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -16,6 +17,13 @@ import java.util.List;
 public class ManagerController extends GenericUserController<Manager, ManagerService>{
     public ManagerController(ManagerService managerService) {
         super(managerService);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Manager> getManagerById(@PathVariable Long id) {
+       return service.getManagerById(id)
+               .map(ResponseEntity::ok)
+               .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/accept_offer/{offerId}")

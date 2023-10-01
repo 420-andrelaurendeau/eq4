@@ -3,6 +3,7 @@ package com.equipe4.audace.controller;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.repository.EmployerRepository;
+import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.service.EmployerService;
@@ -37,6 +38,8 @@ public class EmployerControllerTest {
     private EmployerRepository employerRepository;
     @MockBean
     private StudentRepository studentRepository;
+    @MockBean
+    private ManagerRepository managerRepository;
 
     @Test
     public void getEmployerById_happyPath_test() throws Exception {

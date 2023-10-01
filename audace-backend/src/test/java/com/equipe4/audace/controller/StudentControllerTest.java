@@ -2,6 +2,7 @@ package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.repository.EmployerRepository;
+import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
@@ -33,6 +34,8 @@ public class StudentControllerTest {
     private StudentRepository studentRepository;
     @MockBean
     private EmployerRepository employerRepository;
+    @MockBean
+    private ManagerRepository managerRepository;
 
     @Test
     public void getOffersByDepartment_happyPath() throws Exception {

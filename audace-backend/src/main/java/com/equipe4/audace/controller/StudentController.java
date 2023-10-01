@@ -7,6 +7,7 @@ import com.equipe4.audace.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -16,6 +17,13 @@ import java.util.List;
 public class StudentController extends GenericUserController<Student, StudentService> {
     public StudentController(StudentService studentService) {
         super(studentService);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Student> getStudentById(@PathVariable Long id) {
+        return service.getStudentById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/signup/{departmentCode}")
