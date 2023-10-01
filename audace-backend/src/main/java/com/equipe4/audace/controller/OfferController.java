@@ -34,9 +34,20 @@ public class OfferController {
     @PostMapping
     public ResponseEntity<OfferDTO> createOffer(@RequestBody OfferDTO offerDTO){
         logger.info("createOffer");
-        offerService.createOffer(offerDTO);
-        return offerService.createOffer(offerDTO).map(offer -> ResponseEntity.status(HttpStatus.CREATED).body(offerDTO))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        try {
+            OfferDTO createdOffer = offerService.createOffer(offerDTO).get();
+            return ResponseEntity.ok(createdOffer);
+        } catch (IllegalArgumentException e){
+            if (e.getMessage().equals("Offer cannot be null")) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            else if (e.getMessage().equals("Offer already exists")) return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            else if (e.getMessage().equals("Employer not found")) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            else if (e.getMessage().equals("Department not found")) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            else if (e.getMessage().equals("Offer is not valid")) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            else if (e.getMessage().equals("Offer dates are not valid")) return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            else return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PutMapping

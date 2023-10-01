@@ -51,7 +51,13 @@ public class Offer {
         this.employer = employer;
     }
 
+    public boolean isOfferValid() {
+        return (title != null && !title.isEmpty()) && (description != null && !description.isEmpty()) && internshipStartDate != null && internshipEndDate != null && offerEndDate != null && employer != null && department != null;
+    }
 
+    public boolean isDateValid() {
+        return internshipStartDate.isBefore(internshipEndDate) && internshipStartDate.isBefore(offerEndDate);
+    }
 
 
     /*public OfferDTO toDto() {
