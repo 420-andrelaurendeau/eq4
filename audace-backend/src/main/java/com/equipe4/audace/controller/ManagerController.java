@@ -1,5 +1,6 @@
 package com.equipe4.audace.controller;
 
+import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.service.ManagerService;
@@ -20,7 +21,7 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Manager> getManagerById(@PathVariable Long id) {
+    public ResponseEntity<ManagerDTO> getManagerById(@PathVariable Long id) {
        return service.getManagerById(id)
                .map(ResponseEntity::ok)
                .orElseGet(() -> ResponseEntity.notFound().build());

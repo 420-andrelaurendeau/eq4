@@ -4,6 +4,7 @@ import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.StudentRepository;
@@ -135,5 +136,34 @@ public class StudentServiceTest {
         assertThatThrownBy(() -> studentService.createStudent(studentDTO, "INVALIDE DUH"))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Department not found");
+    }
+
+    @Test
+    public void findStudentById_happyPathTest() {
+        // Arrange
+        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "student", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
+        Student student = studentDTO.fromDTO();
+
+        when(studentRepository.findById(1L)).thenReturn(Optional.of(student));
+
+        // Act
+        StudentDTO result = studentService.getStudentById(1L).orElseThrow();
+
+        // Assert
+        assertThat(result.getFirstName()).isEqualTo("student");
+        assertThat(result.getLastName()).isEqualTo("studentMan");
+        assertThat(result.getEmail()).isEqualTo("email@gmail.com");
+    }
+
+    @Test
+    public void findStudentById_notFoundTest() {
+        // Arrange
+        when(studentRepository.findById(1L)).thenReturn(Optional.empty());
+
+        // Act
+        Optional<StudentDTO> result = studentService.getStudentById(1L);
+
+        // Assert
+        assertThat(result.isEmpty()).isTrue();
     }
 }

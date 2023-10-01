@@ -1,9 +1,15 @@
 package com.equipe4.audace.service;
 
+import com.equipe4.audace.dto.ManagerDTO;
+import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.Manager;
+import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
+import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -26,6 +32,8 @@ public class ManagerServiceTest {
     private OfferRepository offerRepository;
     @Mock
     private DepartmentRepository departmentRepository;
+    @Mock
+    private ManagerRepository managerRepository;
     @InjectMocks
     private ManagerService managerService;
 
@@ -128,5 +136,44 @@ public class ManagerServiceTest {
         List<OfferDTO> result = managerService.getOffersByDepartment(1L);
 
         assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void findStudentById_happyPathTest() {
+        // Arrange
+        Department department = new Department("yeete", "yaint");
+        Manager manager = new Manager(
+                3L,
+                "manager",
+                "managerman",
+                "manager@email.com",
+                "password",
+                "yeete",
+                "1234567890",
+                department
+        );
+
+
+        when(managerRepository.findById(1L)).thenReturn(Optional.of(manager));
+
+        // Act
+        ManagerDTO result = managerService.getManagerById(1L).orElseThrow();
+
+        // Assert
+        assertThat(result.getFirstName()).isEqualTo("manager");
+        assertThat(result.getLastName()).isEqualTo("managerman");
+        assertThat(result.getEmail()).isEqualTo("manager@email.com");
+    }
+
+    @Test
+    public void findStudentById_notFoundTest() {
+        // Arrange
+        when(managerRepository.findById(1L)).thenReturn(Optional.empty());
+
+        // Act
+        Optional<ManagerDTO> result = managerService.getManagerById(1L);
+
+        // Assert
+        assertThat(result.isEmpty()).isTrue();
     }
 }

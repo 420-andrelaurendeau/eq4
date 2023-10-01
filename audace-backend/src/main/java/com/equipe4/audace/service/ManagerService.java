@@ -1,5 +1,6 @@
 package com.equipe4.audace.service;
 
+import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.department.Department;
@@ -48,7 +49,7 @@ public class ManagerService extends GenericUserService<Manager> {
         return offers.stream().map(Offer::toDTO).toList();
     }
 
-    public Optional<Manager> getManagerById(Long id) {
-        return managerRepository.findById(id);
+    public Optional<ManagerDTO> getManagerById(Long id) {
+        return managerRepository.findById(id).map(Manager::toDTO);
     }
 }

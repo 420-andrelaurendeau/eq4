@@ -18,7 +18,7 @@ public class ManagerDTO extends UserDTO {
                       String phone,
                       String password,
                       DepartmentDTO department) {
-        super(id, firstName, lastName, email, address, phone, password, "manager");
+        super(id, firstName, lastName, address, phone, email, password, "manager");
         this.department = department;
     }
 
