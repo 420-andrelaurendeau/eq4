@@ -30,7 +30,8 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
     @PostMapping("/accept_offer/{offerId}")
     public ResponseEntity<HttpStatus> acceptOffer(@PathVariable Long offerId) {
         logger.info("acceptOffer");
-        return service.acceptOffer(offerId).map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
+        return service.acceptOffer(offerId)
+                .map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST));
     }
 
