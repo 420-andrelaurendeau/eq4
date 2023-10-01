@@ -65,7 +65,10 @@
   "managerOffersList": {
     "viewTitle": "Offres disponibles",
     "acceptButton": "Accepter",
-    "refuseButton": "Refuser"
+    "refuseButton": "Refuser",
+    "ACCEPTED" : "Accepté",
+    "REFUSED" : "Refusé",
+    "noMorePendingOffers" : "Il n'y a plus d'offres en attente"
   },
   "employerOffersList": {
     "viewTitle": "Offres disponibles",

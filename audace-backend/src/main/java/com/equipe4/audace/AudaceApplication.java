@@ -47,7 +47,7 @@ public class AudaceApplication implements CommandLineRunner {
 				"-123"
 		);
 
-		Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), new Date(), employer, department);
+		Offer offer1 = new Offer("Stage en génie spaget car c'est bon du spaget pour le dîner miam", "Stage en génie logiciel", new Date(), new Date(), new Date(), employer, department);
 		Offer offer4 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), new Date(), employer, department);
 		Offer offer2 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), new Date(), employer, department);
 		Offer offer3 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), new Date(), employer, department);

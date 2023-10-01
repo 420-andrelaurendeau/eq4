@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Offer } from "../../../../model/offer";
+import { Offer, OfferStatus } from "../../../../model/offer";
 import { Employer, UserType } from "../../../../model/user";
 import { Modal } from "react-bootstrap";
 import { getEmployerById } from "../../../../services/userService";
@@ -14,9 +14,10 @@ interface Props {
     userType: UserType;
     employer?: Employer;
     setEmployer?: (employer: Employer) => void;
+    updateOffersState?: (offer : Offer, offerStatus : OfferStatus) => void;
 }
 
-const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer}: Props) => {
+const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, updateOffersState}: Props) => {
     const {t} = useTranslation();
 
     useEffect(() => {
@@ -82,9 +83,9 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer}:
                         <div>{t("offer.modal.offerEnd")}: {createBoldText(formatDate(offer.offerEndDate))}</div>
                     </div>
                 </Modal.Body>
-                <Modal.Footer>
+                <Modal.Footer> 
                     {employer === undefined && <div className="text-danger">{t("offer.modal.empNotFound")}</div>}
-                    <OfferButtons userType={userType} disabled={employer === undefined}/>
+                    <OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState}/>
                 </Modal.Footer>
             </Modal>
         </>
