@@ -50,7 +50,6 @@ public class OfferService {
         offer.setEmployer(employer);
         offer.setDepartment(department);
 
-        if(!offer.isOfferValid()) throw new IllegalArgumentException("Offer is not valid");
         if(!offer.isDateValid()) throw new IllegalArgumentException("Offer dates are not valid");
 
         return Optional.of(new OfferDTO(offerRepository.save(offer)));

@@ -1,6 +1,5 @@
 package com.equipe4.audace.model.offer;
 
-import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
 import jakarta.persistence.*;
@@ -51,16 +50,7 @@ public class Offer {
         this.employer = employer;
     }
 
-    public boolean isOfferValid() {
-        return (title != null && !title.isEmpty()) && (description != null && !description.isEmpty()) && internshipStartDate != null && internshipEndDate != null && offerEndDate != null && employer != null && department != null;
-    }
-
     public boolean isDateValid() {
         return internshipStartDate.isBefore(internshipEndDate) && internshipStartDate.isBefore(offerEndDate);
     }
-
-
-    /*public OfferDTO toDto() {
-        return new OfferDTO(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, employer.getId(), department.toDto());
-    }*/
 }
