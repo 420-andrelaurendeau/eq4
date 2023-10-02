@@ -21,7 +21,8 @@ const StudentOffersList = ({student}: Props) => {
             setOffers(res.data);
         })
         .catch((err) => {
-            if (err.response.status === 404) setError(t("studentOffersList.errors.departmentNotFound"));
+            console.log(err)
+            if (err.request.status === 404) setError(t("studentOffersList.errors.departmentNotFound"));
         })
     }, [student.department, t]);
 

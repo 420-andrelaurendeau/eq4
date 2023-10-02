@@ -22,7 +22,7 @@ public class Employer extends User {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "employer", cascade = CascadeType.ALL)
-    List<Offer> offers = new ArrayList<>();
+    private List<Offer> offers = new ArrayList<>();
 
     @Builder(builderMethodName = "employerBuilder")
     public Employer(String firstName, String lastName, String email, String password, String organisation, String position, String address, String phone, String extension) {

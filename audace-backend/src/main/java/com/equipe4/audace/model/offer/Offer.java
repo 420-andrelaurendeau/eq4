@@ -1,5 +1,6 @@
 package com.equipe4.audace.model.offer;
 
+import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
 import jakarta.persistence.*;
@@ -24,7 +25,6 @@ public class Offer {
     private LocalDate internshipEndDate;
     private LocalDate offerEndDate;
     private int availablePlaces;
-    private boolean approved;
 
     @ManyToOne
     @JoinColumn(name = "department_id")
@@ -36,6 +36,14 @@ public class Offer {
     @ToString.Exclude
     private Employer employer;
 
+    private Status status;
+
+    public enum Status {
+        PENDING,
+        ACCEPTED,
+        REFUSED
+    }
+
 
     @Builder(builderMethodName = "offerBuilder")
     public Offer(String title, String description, LocalDate internshipStartDate, LocalDate internshipEndDate, LocalDate offerEndDate, int availablePlaces, Department department, Employer employer) {
@@ -45,12 +53,9 @@ public class Offer {
         this.internshipEndDate = internshipEndDate;
         this.offerEndDate = offerEndDate;
         this.availablePlaces = availablePlaces;
-        this.approved = false;
+        this.status = Status.PENDING;
         this.department = department;
         this.employer = employer;
     }
 
-    public boolean isDateValid() {
-        return internshipStartDate.isBefore(internshipEndDate) && internshipStartDate.isBefore(offerEndDate);
-    }
 }

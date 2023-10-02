@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import SignupView from "./views/Signup";
 import { UserType } from "./model/user";
 import StudentOfferView from "./views/StudentOfferView";
+import EmployerOffersList from "./components/Employer/EmployerOffersList";
 
 function App() {
   const { t } = useTranslation();
@@ -46,6 +47,11 @@ function App() {
             </Routes>
           }>
           </Route>
+          <Route path="/employers/*" element={
+            <Routes>
+              <Route path=":id/offers" element={<EmployerOffersList />}/>
+            </Routes>
+          } />
         </Routes>
       </Router>
     </>

@@ -9,18 +9,15 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 import lombok.Data;
-import lombok.ToString;
 
 @Entity
-@Inheritance
-@ToString(callSuper = true)
 @Data
 @NoArgsConstructor
 public class Student extends User {
     @Column
     private String studentNumber;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Department department;
 
     public Student(Long id,
