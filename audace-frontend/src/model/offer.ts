@@ -4,9 +4,11 @@ export interface Offer {
     id?: number;
     title: string;
     description: string;
-    internshipStartDate: Date;
-    internshipEndDate: Date;
-    offerEndDate: Date;
+    internshipStartDate: string;
+    internshipEndDate: string;
+    offerEndDate: string;
+    availablePlaces: number;
+    status: any;
     department: Department;
     employerId: number;
 }

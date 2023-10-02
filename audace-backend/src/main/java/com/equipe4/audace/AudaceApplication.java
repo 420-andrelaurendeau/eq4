@@ -50,49 +50,6 @@ public class AudaceApplication implements CommandLineRunner {
 				.employerId(1L).departmentCode("GLO")
 				.build());
 
-		/*Employer employer = employerRepository.save(new Employer(
-				"employer",
-				"employerman",
-				"temp@gmail.com",
-				"password",
-				"organisation",
-				"position",
-				"address",
-				"phone",
-				"extension"));
-		System.out.println(employer);
 
-		Offer offer1 = Offer.offerBuilder()
-				.title("Stage en génie logiciel").description("Stage en génie logiciel")
-				.internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
-				.employer(employer).department(department)
-				.build();
-
-
-
-		employer.getOffers().add(offer1);
-		employerRepository.save(employer);*/
-
-		/*Offer offer2 = offerService.createOffer(OfferDTO.offerDTOBuilder()
-				.title("Stage en génie logiciel").description("Stage en génie logiciel")
-				.internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
-				.employerId(employer.getId()).departmentCode(department.getCode())
-				.build()).get().fromDto();
-		Offer offer3 = offerService.createOffer(OfferDTO.offerDTOBuilder()
-				.title("Stage en logiciel").description("Stage en génie logiciel")
-				.internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
-				.employerId(employer.getId()).departmentCode(department.getCode())
-				.build()).get().fromDto();
-		Offer offer4 = offerService.createOffer(OfferDTO.offerDTOBuilder()
-				.title("Stage en génie").description("Stage en génie logiciel")
-				.internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
-				.employerId(employer.getId()).departmentCode(department.getCode())
-				.build()).get().fromDto();*/
-
-		//
-		//employer.getOffers().add(offer2);
-		//employer.getOffers().add(offer3);
-		//employer.getOffers().add(offer4);
-		//employerRepository.save(employer);
 	}
 }
