@@ -3,21 +3,26 @@ package com.equipe4.audace.controller;
 import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.model.User;
 import com.equipe4.audace.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
+@CrossOrigin(origins = "http://localhost:3000", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE }, allowedHeaders = { "Content-Type", "Authorization" })
 @RestController
 @RequestMapping("/users")
-public class UserController {
-    private Logger logger = LoggerFactory.getLogger(UserController.class);
-    private final UserService userService;
-
+public class UserController extends GenericUserController<User, UserService>{
     public UserController(UserService userService) {
-        this.userService = userService;
+        super(userService);
+    }
+
+    @GetMapping("")
+    public List<UserDTO> getAllUsers() {
+        return this.service.getAllUsers();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<UserDTO> getUser(@PathVariable long id) {
+        return service.getUser(id);
     }
 }

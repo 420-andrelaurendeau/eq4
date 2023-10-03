@@ -4,6 +4,7 @@ import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.StudentRepository;
@@ -28,14 +29,14 @@ public class StudentServiceTest {
     @Mock
     private StudentRepository studentRepository;
     @Mock
-    private OfferRepository offerRepository;
-    @Mock
     private DepartmentRepository departmentRepository;
+    @Mock
+    private OfferRepository offerRepository;
     @InjectMocks
     private StudentService studentService;
 
     @Test
-    void getOffersByDepartment_happyPath() {
+    void getOffersByDepartmentAndStatus_happyPath() {
         Department mockedDepartment = mock(Department.class);
         List<Offer> offers = new ArrayList<>();
 
@@ -68,38 +69,38 @@ public class StudentServiceTest {
             offers.add(fakeOffer);
 
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
-        when(offerRepository.findAllByDepartment(mockedDepartment)).thenReturn(offers);
+        when(offerRepository.findAllByDepartmentAndStatus(mockedDepartment, Offer.Status.ACCEPTED)).thenReturn(offers);
 
-        List<OfferDTO> result = studentService.getOffersByDepartment(1L);
+        List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
 
         assertThat(result.size()).isEqualTo(offers.size());
-        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDto).toList());
+        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
     }
 
     @Test
-    void getOffersByDepartment_departmentNotFound() {
+    void getOffersByDepartmentAndStatus_departmentNotFound() {
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> studentService.getOffersByDepartment(1L))
+        assertThatThrownBy(() -> studentService.getAcceptedOffersByDepartment(1L))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Department not found");
     }
 
     @Test
-    void getOffersByDepartment_noOffers() {
+    void getOffersByDepartmentAndStatus_noOffers() {
         Department mockedDepartment = mock(Department.class);
 
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
-        when(offerRepository.findAllByDepartment(mockedDepartment)).thenReturn(new ArrayList<>());
+        when(offerRepository.findAllByDepartmentAndStatus(mockedDepartment, Offer.Status.ACCEPTED)).thenReturn(new ArrayList<>());
 
-        List<OfferDTO> result = studentService.getOffersByDepartment(1L);
+        List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
 
         assertThat(result.size()).isEqualTo(0);
     }
 
     @Test
     void createStudent() {
-        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
+        StudentDTO studentDTO = new StudentDTO(1L,"student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "student", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
 
         when(studentRepository.save(any())).thenReturn(studentDTO.fromDTO());
 
@@ -119,7 +120,7 @@ public class StudentServiceTest {
 
     @Test
     void createStudentAlreadyExists() {
-        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
+        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "student", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
         when(studentRepository.findStudentByStudentNumberOrEmail(anyString(), anyString())).thenReturn(Optional.of(studentDTO.fromDTO()));
 
         assertThatThrownBy(() -> studentService.createStudent(studentDTO, "420"))
@@ -129,11 +130,40 @@ public class StudentServiceTest {
 
     @Test
     void createStudentDepartmentInvalid() {
-        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
+        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "student", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
         when(departmentRepository.findByCode(anyString())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> studentService.createStudent(studentDTO, "INVALIDE DUH"))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Department not found");
+    }
+
+    @Test
+    public void findStudentById_happyPathTest() {
+        // Arrange
+        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "student", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
+        Student student = studentDTO.fromDTO();
+
+        when(studentRepository.findById(1L)).thenReturn(Optional.of(student));
+
+        // Act
+        StudentDTO result = studentService.getStudentById(1L).orElseThrow();
+
+        // Assert
+        assertThat(result.getFirstName()).isEqualTo("student");
+        assertThat(result.getLastName()).isEqualTo("studentMan");
+        assertThat(result.getEmail()).isEqualTo("email@gmail.com");
+    }
+
+    @Test
+    public void findStudentById_notFoundTest() {
+        // Arrange
+        when(studentRepository.findById(1L)).thenReturn(Optional.empty());
+
+        // Act
+        Optional<StudentDTO> result = studentService.getStudentById(1L);
+
+        // Assert
+        assertThat(result.isEmpty()).isTrue();
     }
 }

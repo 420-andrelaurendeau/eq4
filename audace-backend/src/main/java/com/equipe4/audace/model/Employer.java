@@ -16,16 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Employer extends User {
-    @Column
     private String organisation;
-    @Column
     private String position;
-    @Column
     private String extension;
 
     @OneToMany(mappedBy = "employer", cascade = CascadeType.ALL)
@@ -47,5 +42,9 @@ public class Employer extends User {
         this.position = position;
         this.extension = extension;
         this.offers = new ArrayList<>();
+    }
+
+    public EmployerDTO toDTO() {
+        return new EmployerDTO(this.id, this.firstName, this.lastName, this.email, this.password, this.organisation, this.position, this.address, this.phone, this.extension);
     }
 }

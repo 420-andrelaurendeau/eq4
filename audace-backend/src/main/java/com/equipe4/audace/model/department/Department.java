@@ -24,7 +24,7 @@ public class Department {
         this.name = name;
     }
 
-    public DepartmentDTO toDto() {
+    public DepartmentDTO toDTO() {
         return new DepartmentDTO(id, code, name);
     }
 }
