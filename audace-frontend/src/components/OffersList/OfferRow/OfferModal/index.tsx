@@ -21,6 +21,8 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
     const {t} = useTranslation();
 
     useEffect(() => {
+        if (employer !== undefined) return;
+
         getEmployerById(offer.employerId)
             .then((res) => {
                 setEmployer!(res.data);
@@ -28,7 +30,7 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
             .catch((err) => {
                 console.log(err);
             });
-    }, [setEmployer, offer]);
+    }, [setEmployer, offer, employer]);
 
     const createBoldText = (text: string) => {
         return <b>{text}</b>;
