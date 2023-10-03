@@ -17,6 +17,7 @@
     "passwordConfirmation": "Confirmez votre mot de passe",
     "studentId": "Matricule",
     "signup": "S'inscrire",
+    "signupEmployer": "Inscription employeur",
     "errors": {
       "organisation": "SVP entrez un nom d'organisation valide",
       "position": "la fonction occupée ne peut pas être vide",

@@ -19,7 +19,7 @@ function App() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav>
-            <Nav.Link href="/signup/employer">{t("signup.signup")}</Nav.Link>
+            <Nav.Link href="/signup/employer">{t("signup.signupEmployer")}</Nav.Link>
           </Nav>
           <LanguageToggler />
         </Navbar.Collapse>

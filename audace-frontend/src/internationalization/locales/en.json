@@ -17,6 +17,7 @@
     "passwordConfirmation": "Confirm Your Password",
     "studentId": "Student number",
     "signup": "Sign Up",
+    "signupEmployer": "Employer Sign Up",
     "errors": {
       "organisation": "Please enter a valid organisation name",
       "position": "Position cannot be empty",
