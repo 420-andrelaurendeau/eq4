@@ -47,6 +47,10 @@ public class ManagerControllerTest {
     private DepartmentRepository departmentRepository;
     @MockBean
     private EmployerService employerService;
+    @MockBean
+    private ManagerRepository managerRepository;
+    @MockBean
+    private StudentRepository studentRepository;
 
     @Test
     public void acceptOffer() throws Exception {

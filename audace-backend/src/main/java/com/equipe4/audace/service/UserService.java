@@ -7,7 +7,6 @@ import lombok.Data;
 import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.model.User;
 import com.equipe4.audace.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
