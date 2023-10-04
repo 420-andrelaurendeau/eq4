@@ -25,11 +25,7 @@ public class UserService extends GenericUserService<User> {
     public void createUser(UserDTO userDTO) {}
 
     public List<UserDTO> getAllUsers() {
-        List<User> users = userRepository.findAll();
-
-        return users.stream()
-                .map(User::toDTO)
-                .toList();
+        return userRepository.findAll().stream().map(User::toDTO).toList();
     }
 
     public Optional<UserDTO> getUser(long id) {

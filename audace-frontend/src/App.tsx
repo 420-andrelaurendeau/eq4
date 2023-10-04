@@ -8,9 +8,9 @@ import { useTranslation } from "react-i18next";
 import SignupView from "./views/Signup";
 import { UserType } from "./model/user";
 import StudentOfferView from "./views/StudentOfferView";
-import UserList from "./components/Login/UserList";
 import StudentHomePage from "./components/StudentHomePage";
 import EmployerHomePage from "./components/EmployerHomePage";
+import UserList from "./components/Login";
 import ManagerOfferView from "./views/ManagerOfferView";
 import ManagerHomePage from "./components/ManagerHomePage";
 
