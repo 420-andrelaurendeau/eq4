@@ -1,5 +1,6 @@
 {
   "langCode": "en",
+  "signin": "Sign In",
   "signup": {
     "employerFormTitle": "Employer Registration",
     "studentFormTitle": "Student Registration",
