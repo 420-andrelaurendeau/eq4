@@ -49,4 +49,8 @@ public class Employer extends User {
                 .extension(extension)
                 .build();
     }
+
+    public EmployerDTO toDTO() {
+        return new EmployerDTO(this.id, this.firstName, this.lastName, this.email, this.password, this.organisation, this.position, this.address, this.phone, this.extension);
+    }
 }

@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
         @Type(value = EmployerDTO.class, name = "employer"),
         @Type(value = ManagerDTO.class, name = "manager")
 })
+
 public abstract class UserDTO {
     protected Long id;
     protected String firstName;
@@ -31,5 +32,6 @@ public abstract class UserDTO {
     protected String phone;
     protected String email;
     protected String password;
+
     public abstract User fromDTO();
 }

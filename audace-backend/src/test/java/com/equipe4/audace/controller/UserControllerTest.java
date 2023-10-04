@@ -7,6 +7,8 @@ import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.service.EmployerService;
+import com.equipe4.audace.repository.StudentRepository;
+import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -4,12 +4,16 @@ import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.service.StudentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/students")
@@ -36,6 +40,34 @@ public class StudentController extends GenericUserController<Student, StudentSer
 
     @GetMapping("/offers/{departmentId}")
     public ResponseEntity<List<OfferDTO>> getOffersByDepartment(@PathVariable Long departmentId) {
-        return ResponseEntity.ok(service.getAcceptedOffersByDepartment(departmentId));
+        logger.info("getOffersByDepartment");
+
+        List<OfferDTO> offers;
+
+        try {
+            offers = studentService.getOffersByDepartment(departmentId);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(offers);
+    }
+
+    @PostMapping("/upload/{studentId}")
+    public ResponseEntity<HttpStatus> uploadCv(@PathVariable Long studentId, @RequestParam("file") MultipartFile file) {
+        logger.info("uploadCv");
+
+        try {
+            studentService.saveCv(file, studentId);
+        } catch (NoSuchElementException e) {
+            logger.error(e.getMessage());
+            if (e.getMessage().equals("Student not found")) {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

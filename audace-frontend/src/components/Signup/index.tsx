@@ -1,25 +1,19 @@
-import { useState } from "react";
-import { Button, Row } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import { User } from "../../model/user";
-import { validateEmail, validatePassword } from "../../services/validationService";
-import { AxiosResponse } from "axios";
-import { useNavigate } from "react-router-dom";
-import FormInput from "./FormInput";
-import './styles.css'
+import {useState} from "react";
+import {Button, Col, Form, Row} from "react-bootstrap";
+import {useTranslation} from "react-i18next";
+import {User} from "../../model/user";
+import {validateEmail, validatePassword} from "../../services/validationService";
 
 interface Props {
-    handleSubmit: (user: User) => Promise<AxiosResponse>;
+    handleSubmit: (user: User) => void;
     extension?: string;
     setExtension?: (extension: string) => void;
-    errors: string[];
     setErrors: (errors: string[]) => void;
     validateExtraFormValues?: (errorsToDisplay: string[]) => boolean;
 }
 
-const Signup = ({handleSubmit, extension, setExtension, errors, setErrors, validateExtraFormValues}: Props) => {
+const Signup = ({handleSubmit, extension, setExtension, setErrors, validateExtraFormValues}: Props) => {
     const {t} = useTranslation();
-    const navigate = useNavigate();
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
     const [address, setAddress] = useState<string>("");
@@ -29,8 +23,6 @@ const Signup = ({handleSubmit, extension, setExtension, errors, setErrors, valid
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [passwordConfirmation, setPasswordConfirmation] = useState<string>("");
-    const [isDisabled, setIsDisabled] = useState<boolean>(false);
-    const [unexpectedError, setUnexpectedError] = useState<string>("");
 
     const submitForm = () => {
         if (!validateForm()) return;
@@ -44,24 +36,10 @@ const Signup = ({handleSubmit, extension, setExtension, errors, setErrors, valid
             phone: phone,
             email: email,
             password: password,
-            type: 'student'
+            type: 'student' // TODO : Filler line, to be removed
         };
 
-        sendRequest(user);
-    };
-
-    const sendRequest = (user: User) => {
-        setIsDisabled(true);
-
-        handleSubmit(user)
-            .then((_) => {
-                setUnexpectedError("");
-                navigate("/");
-            })
-            .catch((err) => {
-                setIsDisabled(false);
-                setUnexpectedError(err.status);
-            });
+        handleSubmit(user);
     };
 
     const validateForm = (): boolean => {
@@ -147,123 +125,112 @@ const Signup = ({handleSubmit, extension, setExtension, errors, setErrors, valid
     return (
         <>
             <Row>
-                <FormInput 
-                    label="signup.firstNameEntry"
+                <Form.Group as={Col} controlId="formBasicFirstName">
+                    <Form.Label>{t("signup.firstNameEntry")}</Form.Label>
+                    <Form.Control
+                    type="text"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
-                    errors={errors}
-                    formError="signup.errors.firstName"
-                    controlId="formBasicFirstName"
-                />
+                    />
+                </Form.Group>
 
-                <FormInput 
-                    label="signup.lastNameEntry"
+                <Form.Group as={Col} controlId="formBasicLastName">
+                    <Form.Label>{t("signup.lastNameEntry")}</Form.Label>
+                    <Form.Control
+                    type="text"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
-                    errors={errors}
-                    formError="signup.errors.lastName"
-                    controlId="formBasicLastName"
-                />
+                    />
+                </Form.Group>
             </Row>
             
             <Row>
-                <FormInput 
-                    label="signup.addressEntry"
+                <Form.Group as={Col} controlId="formBasicAddress">
+                    <Form.Label>{t("signup.addressEntry")}</Form.Label>
+                    <Form.Control
+                    type="text"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    errors={errors}
-                    formError="signup.errors.address"
-                    controlId="formBasicAddress"
-                />
+                    />
+                </Form.Group>
             </Row>
 
             <Row>
-                <FormInput 
-                    label="signup.cityEntry"
+                <Form.Group as={Col} controlId="formBasicCity">
+                    <Form.Label>{t("signup.cityEntry")}</Form.Label>
+                    <Form.Control
+                    type="text"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    errors={errors}
-                    formError="signup.errors.city"
-                    controlId="formBasicCity"
-                />
+                    />
+                </Form.Group>
 
-                <FormInput 
-                    label="signup.postalCodeEntry"
+                <Form.Group as={Col} controlId="formBasicPostalCode">
+                    <Form.Label>{t("signup.postalCodeEntry")}</Form.Label>
+                    <Form.Control
+                    type="text"
                     value={postalCode}
                     onChange={(e) => setPostalCode(e.target.value)}
-                    errors={errors}
-                    formError="signup.errors.postalCode"
-                    controlId="formBasicPostalCode"
-                />
+                    />
+                </Form.Group>
             </Row>
 
             <Row>
-                <FormInput 
-                    label="signup.phoneEntry"
+                <Form.Group as={Col} controlId="formBasicPhone">
+                    <Form.Label>{t("signup.phoneEntry")}</Form.Label>
+                    <Form.Control
+                    type="text"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    errors={errors}
-                    formError="signup.errors.phone"
-                    controlId="formBasicPhone"
-                    placeholder="e.g. 5141234567"
-                />
+                    placeholder="e.g. 123-456-7890"
+                    />
+                </Form.Group>
                     {extension !== undefined && setExtension !== undefined && (
-                        <FormInput 
-                            label="signup.extensionEntry"
+                        <Form.Group as={Col} controlId="formBasicExtension">
+                            <Form.Label>{t("signup.extensionEntry")}</Form.Label>
+                            <Form.Control
+                            type="text"
                             value={extension}
                             onChange={(e) => setExtension(e.target.value)}
-                            errors={errors}
-                            formError="signup.errors.extension"
-                            controlId="formBasicExtension"
-                        />
+                            />
+                        </Form.Group>
                     )}
             </Row>
 
             <Row>
-                <FormInput 
-                    label="signup.emailEntry"
+                <Form.Group as={Col} controlId="formBasicEmail">
+                    <Form.Label>{t("signup.emailEntry")}</Form.Label>
+                    <Form.Control
+                    type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    errors={errors}
-                    formError="signup.errors.email"
-                    controlId="formBasicEmail"
-                    type="email"
-                />
+                    />
+                </Form.Group>
             </Row>
 
             <Row>
-                <FormInput 
-                    label="signup.password"
+                <Form.Group as={Col} controlId="formBasicPassword">
+                    <Form.Label>{t("signup.password")}</Form.Label>
+                    <Form.Control
+                    type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    errors={errors}
-                    formError="signup.errors.password"
-                    controlId="formBasicPassword"
-                    type="password"
-                />
+                    />
+                </Form.Group>
 
-                <FormInput 
-                    label="signup.passwordConfirmation"
+                <Form.Group as={Col} controlId="formBasicPasswordConfirmation">
+                    <Form.Label>{t("signup.passwordConfirmation")}</Form.Label>
+                    <Form.Control
+                    type="password"
                     value={passwordConfirmation}
                     onChange={(e) => setPasswordConfirmation(e.target.value)}
-                    errors={errors}
-                    formError="signup.errors.passwordConfirmation"
-                    controlId="formBasicPasswordConfirmation"
-                    type="password"
-                />
+                    />
+                </Form.Group>
             </Row>
 
-            <Button 
-                variant="primary" 
-                className="mt-3" 
-                onClick={submitForm}
-                disabled={isDisabled}
-            >
+            <Button variant="primary" className="mt-3" onClick={submitForm}>
                 {t("signup.signup")}
             </Button>
-            {unexpectedError !== "" && (
-                <p className="unexpected-error">{unexpectedError}</p>
-            )}
         </>
     );
 }
