@@ -23,6 +23,8 @@ public class UserController extends GenericUserController<User, UserService>{
         return ResponseEntity.ok(service.getAllUsers());
     }
 
+
+}
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUser(@PathVariable long id) {
         Optional<UserDTO> userOptional = service.getUser(id);
