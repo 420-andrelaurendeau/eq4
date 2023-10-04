@@ -2,12 +2,16 @@ package com.equipe4.audace;
 
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.model.Manager;
+import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.service.EmployerService;
+import com.equipe4.audace.service.ManagerService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,16 +20,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.time.LocalDate;
 
 @SpringBootApplication
+@AllArgsConstructor
 public class AudaceApplication implements CommandLineRunner {
 	@Autowired
 	private DepartmentRepository departmentRepository;
 
 	private EmployerService employerService;
-
-	public AudaceApplication(DepartmentRepository departmentRepository, EmployerService employerService) {
-		this.departmentRepository = departmentRepository;
-		this.employerService = employerService;
-	}
+	private ManagerRepository managerRepository;
+	private StudentRepository studentRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AudaceApplication.class, args);
@@ -46,6 +48,8 @@ public class AudaceApplication implements CommandLineRunner {
 				.employerId(1L).departmentCode("GLO")
 				.build());
 
-
+		managerRepository.save(new Manager(2L, "Manager1", "Manager1", "manager@email.com", "123456eE", "adress", "phone",department));
+		studentRepository.save(new Student(3L, "Student1", "Student1", "student@email.com", "asdasd",
+				"adress", "phone", "yaint", department));
 	}
 }
