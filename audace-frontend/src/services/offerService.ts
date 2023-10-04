@@ -6,7 +6,7 @@ import {Employer} from "../model/user";
 export const getStudentOffersByDepartment = async (departmentId: number): Promise<AxiosResponse<Offer[]>> => {
     return http.get<Offer[]>(`/students/offers/${departmentId}`);
 }
-export const getAllOffersByEmployerId = async (employerId: any): Promise<AxiosResponse<Offer[]>> =>{
+export const getAllOffersByEmployerId = async (employerId: number): Promise<AxiosResponse<Offer[]>> =>{
     return http.get(`/employers/${employerId}/offers`);
 }
 
