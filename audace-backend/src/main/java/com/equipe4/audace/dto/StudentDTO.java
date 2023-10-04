@@ -2,6 +2,8 @@ package com.equipe4.audace.dto;
 
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.model.Student;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -23,13 +25,11 @@ public class StudentDTO extends UserDTO {
                       String address,
                       String phone,
                       String password,
-                      String type,
                       String studentNumber,
                       DepartmentDTO department) {
-        super(id, firstName, lastName, address, phone, email, password, type);
+        super(id, firstName, lastName, address, phone, email, password);
         this.studentNumber = studentNumber;
         this.department = department;
-        this.type = "student";
     }
 
 }

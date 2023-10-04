@@ -9,7 +9,6 @@ import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
-import com.equipe4.audace.repository.offer.OfferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
