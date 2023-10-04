@@ -8,8 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -31,5 +29,6 @@ public abstract class UserDTO {
     protected String phone;
     protected String email;
     protected String password;
+
     public abstract User fromDTO();
 }

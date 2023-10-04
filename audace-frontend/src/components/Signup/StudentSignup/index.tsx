@@ -17,6 +17,7 @@ const StudentSignup = () => {
     let student: Student = {
       ...user,
       studentNumber: studentId,
+      type: "student",
     }
 
     return studentSignup(student, depCode!);
