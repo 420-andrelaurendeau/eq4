@@ -1,10 +1,10 @@
-import { useEffect } from "react";
-import { Offer, OfferStatus } from "../../../../model/offer";
-import { Employer, UserType } from "../../../../model/user";
-import { Modal } from "react-bootstrap";
-import { getEmployerById } from "../../../../services/userService";
-import { useTranslation } from "react-i18next";
-import { formatDate } from "../../../../services/formatService";
+import {useEffect} from "react";
+import {Offer, OfferStatus} from "../../../../model/offer";
+import {Employer, UserType} from "../../../../model/user";
+import {Modal} from "react-bootstrap";
+import {getEmployerById} from "../../../../services/userService";
+import {useTranslation} from "react-i18next";
+import {formatDate} from "../../../../services/formatService";
 import OfferButtons from "../OfferButtons";
 
 interface Props {
@@ -17,11 +17,7 @@ interface Props {
     updateOffersState?: (offer : Offer, offerStatus : OfferStatus) => void;
 }
 
-<<<<<<<< HEAD:audace-frontend/src/components/StudentOffersList/StudentOffer/StudentOfferModal/index.tsx
-const StudentOfferModal = ({offer, show, handleClose}: Props) => {
-========
 const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, updateOffersState}: Props) => {
->>>>>>>> origin/EQ-4-13-Gestionnaire_voir_offres_stages:audace-frontend/src/components/OffersList/OfferRow/OfferModal/index.tsx
     const {t} = useTranslation();
 
     useEffect(() => {
@@ -49,25 +45,25 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
                 <Modal.Body>
                     <div className="text-end">
                         <div>{t("offer.modal.org")}: {
-                                createBoldText(
-                                    employer !== undefined ? 
-                                    employer.organisation! : 
+                            createBoldText(
+                                employer !== undefined ?
+                                    employer.organisation! :
                                     t("offer.modal.orgNotFound")
-                                )
-                            }
+                            )
+                        }
                         </div>
                         <div>{t("offer.modal.address")}:&nbsp;
                             {createBoldText(
-                                employer !== undefined ? 
-                                employer.address! : 
-                                t("offer.modal.orgNotFound")
+                                employer !== undefined ?
+                                    employer.address! :
+                                    t("offer.modal.orgNotFound")
                             )}
                         </div>
                         <div>{t("offer.modal.phone")}:&nbsp;
                             {createBoldText(
-                                employer !== undefined ? 
-                                employer.phone! : 
-                                t("offer.modal.orgNotFound")
+                                employer !== undefined ?
+                                    employer.phone! :
+                                    t("offer.modal.orgNotFound")
                             )}
                         </div>
                     </div>
@@ -81,24 +77,25 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
 
                     <div className="text-end">
                         <div>
-<<<<<<<< HEAD:audace-frontend/src/components/StudentOffersList/StudentOffer/StudentOfferModal/index.tsx
-                            {t("studentOffer.modal.internDate.start")}:&nbsp;
-                            {createBoldText(offer.internshipStartDate)}&nbsp;
-                            {t("studentOffer.modal.internDate.end")}:&nbsp;
-                            {createBoldText(offer.internshipEndDate)}
-                        </div>
-                        <div>{t("studentOffer.modal.offerEnd")}: {createBoldText(offer.offerEndDate)}</div>
-========
                             {t("offer.modal.internDate.start")}:&nbsp;
                             {createBoldText(formatDate(offer.internshipStartDate))}&nbsp;
                             {t("offer.modal.internDate.end")}:&nbsp;
                             {createBoldText(formatDate(offer.internshipEndDate))}
                         </div>
                         <div>{t("offer.modal.offerEnd")}: {createBoldText(formatDate(offer.offerEndDate))}</div>
->>>>>>>> origin/EQ-4-13-Gestionnaire_voir_offres_stages:audace-frontend/src/components/OffersList/OfferRow/OfferModal/index.tsx
+                        {userType === UserType.Employer &&
+                            <div>
+                                {t("employerOffersList.status")}:&nbsp;
+                                {offer.status === OfferStatus.ACCEPTED ? createBoldText(t("employerOffersList.ACCEPTED")):
+                                    (offer.status === OfferStatus.PENDING ? createBoldText(t("employerOffersList.PENDING")):
+                                        createBoldText(t("employerOffersList.REFUSED"))
+                                    )
+                                }
+                            </div>
+                        }
                     </div>
                 </Modal.Body>
-                <Modal.Footer> 
+                <Modal.Footer>
                     {employer === undefined && <div className="text-danger">{t("offer.modal.empNotFound")}</div>}
                     <OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState}/>
                 </Modal.Footer>
@@ -107,4 +104,4 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
     );
 };
 
-export default StudentOfferModal;
+export default OfferModal;

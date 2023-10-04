@@ -58,37 +58,6 @@
       }
     }
   },
-  "employerOffersList": {
-    "errors": {
-      "employerNotFound": "Aucun employé trouvé"
-    },
-    "title": "Titre",
-    "internshipEndDate": "Date de fin",
-    "internshipStartDate": "Date de début",
-    "noOffers": "Aucune offre publiée",
-    "viewTitle": "Offres publiées"
-  },
-  "employerOffer": {
-    "modal": {
-      "org": "Organisation",
-      "address": "Adresse",
-      "phone": "Téléphone",
-      "orgNotFound": "L'organisation n'a pas été trouvée",
-      "offerEnd": "L'offre se termine le",
-      "offerDescription": "Description de l'offre",
-      "offerAvailablePlaces": "Place(s) offertes",
-      "empNotFound": "L'employeur n'a pas été trouvé!",
-      "internDate": {
-        "start": "De",
-        "end": "à"
-      },
-      "status": "État",
-      "PENDING": "En attente",
-      "ACCEPTED": "Accepté",
-      "REFUSED": "Refusé"
-
-    }
-  },
   "studentOffersList": {
     "viewTitle": "Offres disponibles",
     "applyButton":"Appliquer"
@@ -103,6 +72,10 @@
   },
   "employerOffersList": {
     "viewTitle": "Offres disponibles",
+    "status": "État",
+    "PENDING": "En attente",
+    "ACCEPTED": "Accepté",
+    "REFUSED": "Refusé",
     "editButton": "Modifier",
     "deleteButton": "Supprimer"
   },
@@ -110,6 +83,12 @@
     "seeOffersButton": "Voir les offres"
   },
   "manager": {
+    "seeOffersButton": "Voir les offres"
+  },
+  "employer": {
+    "errors": {
+      "employerNotFound": "Aucun employeur trouvé"
+    },
     "seeOffersButton": "Voir les offres"
   }
 }
