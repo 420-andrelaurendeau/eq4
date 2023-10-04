@@ -1,11 +1,11 @@
 import { Container } from "react-bootstrap";
-import {Employer, Student, UserType} from "../../model/user";
+import {Employer, UserType} from "../../model/user";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
-import { Offer, OfferStatus } from "../../model/offer";
+import { Offer } from "../../model/offer";
 import OffersList from "../../components/OffersList";
 import { useParams } from "react-router-dom";
-import {getEmployerById, getStudentById} from "../../services/userService";
+import {getEmployerById,} from "../../services/userService";
 import {getAllOffersByEmployerId} from "../../services/offerService";
 
 const EmployerOfferView = () => {
@@ -16,6 +16,8 @@ const EmployerOfferView = () => {
     const {t} = useTranslation();
 
     useEffect(() => {
+        if (employer !== undefined) return;
+
         getEmployerById(parseInt(id!))
             .then((res) => {
                 setEmployer(res.data);
@@ -36,7 +38,7 @@ const EmployerOfferView = () => {
             .catch((err) => {
                 console.log(err)
             })
-    }, [employer, t]);
+    }, [employer]);
 
     return (
         <Container>
