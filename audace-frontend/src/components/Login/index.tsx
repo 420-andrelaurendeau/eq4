@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ListGroup, Button, Container } from 'react-bootstrap';
 import {getAllUsers} from "../../services/loginService";
 
-const Index: React.FC = () => {
+const UserList: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
     const navigate = useNavigate();
 
@@ -41,4 +41,4 @@ const Index: React.FC = () => {
     );
 }
 
-export default Index;
+export default UserList;

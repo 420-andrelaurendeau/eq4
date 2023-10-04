@@ -8,9 +8,9 @@ import { useTranslation } from "react-i18next";
 import SignupView from "./views/Signup";
 import { UserType } from "./model/user";
 import StudentOfferView from "./views/StudentOfferView";
-import Index from "./components/Login";
 import StudentHomePage from "./components/StudentHomePage";
 import EmployerHomePage from "./components/EmployerHomePage";
+import UserList from "./components/Login";
 
 function App() {
   const { t } = useTranslation();
@@ -51,7 +51,7 @@ function App() {
           </Route>
           <Route path="/users/*" element={
             <Routes>
-              <Route path="" element={<Index></Index>}/>
+              <Route path="" element={<UserList></UserList>}/>
             </Routes>
           }>
           </Route>
