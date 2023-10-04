@@ -1,6 +1,7 @@
 package com.equipe4.audace.dto;
 
 import com.equipe4.audace.model.Application;
+import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.cv.Cv;
 import lombok.Builder;
 import lombok.Data;
@@ -10,35 +11,28 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ApplicationDTO {
     private Long id;
-    private String studentFirstName;
-    private String studentLastName;
-    private String departmentName;
+    private Long studentId;
     private Long offerId;
-    private Cv cv;
-
+    private Long cvId;
 
     public ApplicationDTO(Application application) {
         this.id = application.getId();
-        this.studentFirstName = application.getStudent().getFirstName();
-        this.studentLastName = application.getStudent().getLastName();
-        this.departmentName = application.getStudent().getDepartment().getName();
+        this.studentId = application.getStudent().getId();
         this.offerId = application.getOffer().getId();
-        this.cv = application.getCv();
+        this.cvId = application.getCv().getId();
     }
 
     @Builder(builderMethodName = "applicationDTOBuilder")
-    public ApplicationDTO(Long id, String studentFirstName, String studentLastName, String departmentName, Long offerId, Cv cv) {
+    public ApplicationDTO(Long id, Long studentId, Long offerId, Long cvId) {
         this.id = id;
-        this.studentFirstName = studentFirstName;
-        this.studentLastName = studentLastName;
-        this.departmentName = departmentName;
+        this.studentId = studentId;
         this.offerId = offerId;
-        this.cv = cv;
+        this.cvId = cvId;
     }
 
     public Application fromDTO(){
         return Application.applicationBuilder()
-                .cv(cv)
+
                 .build();
     }
 }

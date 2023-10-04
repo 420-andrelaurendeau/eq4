@@ -35,10 +35,6 @@ public class EmployerController extends GenericUserController<Employer, Employer
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-
-
-
-
     @PostMapping
     public ResponseEntity<HttpStatus> createEmployer(@RequestBody EmployerDTO employerDTO){
         logger.info("createEmployer");

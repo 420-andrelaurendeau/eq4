@@ -1,12 +1,16 @@
 package com.equipe4.audace.service;
 
+import com.equipe4.audace.dto.ApplicationDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
+import com.equipe4.audace.model.Application;
+import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
+import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
@@ -29,6 +33,7 @@ public class StudentService extends GenericUserService<Student> {
     private final OfferRepository offerRepository;
     private final StudentRepository studentRepository;
     private final CvRepository cvRepository;
+    private final ApplicationRepository applicationRepository;
 
     @Transactional
     public Optional<StudentDTO> createStudent(StudentDTO studentDTO, String departmentCode) {
@@ -85,5 +90,16 @@ public class StudentService extends GenericUserService<Student> {
 
         Cv cv = new Cv(student, name, bytes);
         return Optional.of(cvRepository.save(cv).toDto());
+    }
+    public Optional<ApplicationDTO> createApplication(ApplicationDTO applicationDTO){
+        if(applicationDTO == null) throw new IllegalArgumentException("Application cannot be null");
+
+        Student student = studentRepository.findById(applicationDTO.getStudentId()).orElseThrow();
+        Cv cv = cvRepository.findById(applicationDTO.getCvId()).orElseThrow();
+        Offer offer = offerRepository.findById(applicationDTO.getOfferId()).orElseThrow();
+
+        Application application = new Application(student, cv, offer);
+
+        return Optional.of(new ApplicationDTO(applicationRepository.save(application)));
     }
 }

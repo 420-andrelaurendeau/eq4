@@ -36,6 +36,13 @@ public class Cv {
         this.content = content;
     }
 
+    public Cv(Long id, Student uploader, String name, byte[] content) {
+        this.id = id;
+        this.uploader = uploader;
+        this.name = name;
+        this.content = content;
+    }
+
     public CvDTO toDto() {
         return new CvDTO(id, name, content, uploader.getId());
     }
