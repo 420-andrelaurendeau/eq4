@@ -52,7 +52,18 @@ public class StudentController {
     @PostMapping("/upload/{studentId}")
     public ResponseEntity<HttpStatus> uploadCv(@PathVariable Long studentId, @RequestParam("file") MultipartFile file) {
         logger.info("uploadCv");
-        studentService.saveCv(file, studentId);
+
+        try {
+            studentService.saveCv(file, studentId);
+        } catch (NoSuchElementException e) {
+            logger.error(e.getMessage());
+            if (e.getMessage().equals("Student not found")) {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
