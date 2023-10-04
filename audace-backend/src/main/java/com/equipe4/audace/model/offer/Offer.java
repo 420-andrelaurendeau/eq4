@@ -1,12 +1,15 @@
 package com.equipe4.audace.model.offer;
 
 import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -35,6 +38,10 @@ public class Offer {
     @JoinColumn(name = "employer_id")
     @ToString.Exclude
     private Employer employer;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL)
+    private List<Application> applications = new ArrayList<>();
 
     private Status status;
 

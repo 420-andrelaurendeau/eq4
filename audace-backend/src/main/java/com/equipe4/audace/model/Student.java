@@ -3,9 +3,11 @@ package com.equipe4.audace.model;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
+import com.equipe4.audace.model.offer.Offer;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +19,15 @@ public class Student extends User {
     @Column
     private String studentNumber;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Department department;
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Cv> cvs;
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    private List<Application> applications = new ArrayList<>();
 
     public Student(Long id,
                    String firstname,
