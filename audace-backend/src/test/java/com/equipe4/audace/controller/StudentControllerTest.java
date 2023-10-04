@@ -61,8 +61,6 @@ public class StudentControllerTest {
     @MockBean
     private DepartmentRepository departmentRepository;
     @MockBean
-    private StudentRepository studentRepository;
-    @MockBean
     private EmployerRepository employerRepository;
     @MockBean
     private EmployerService employerService;
@@ -88,7 +86,7 @@ public class StudentControllerTest {
         List<OfferDTO> offerDTOList = List.of(mock(OfferDTO.class));
         when(studentService.getAcceptedOffersByDepartment(1L)).thenReturn(offerDTOList);
 
-        mvc.perform(get("/students/offers/1"))
+        mockMvc.perform(get("/students/offers/1"))
                 .andExpect(status().isOk());
     }
     @Test
@@ -125,7 +123,7 @@ public class StudentControllerTest {
 
         when(studentService.getStudentById(1L)).thenReturn(Optional.of(student.toDTO()));
 
-        mvc.perform(get("/students/1"))
+        mockMvc.perform(get("/students/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.firstName").value("student"))
@@ -143,7 +141,7 @@ public class StudentControllerTest {
     public void getStudentById_InvalidId() throws Exception {
         when(studentService.getStudentById(1L)).thenReturn(Optional.empty());
 
-        mvc.perform(get("/students/1"))
+        mockMvc.perform(get("/students/1"))
                 .andExpect(status().isNotFound());
     }
 }

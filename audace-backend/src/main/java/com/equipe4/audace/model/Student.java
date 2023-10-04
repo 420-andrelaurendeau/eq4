@@ -1,14 +1,14 @@
 package com.equipe4.audace.model;
 
 import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.*;
-import lombok.NoArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data

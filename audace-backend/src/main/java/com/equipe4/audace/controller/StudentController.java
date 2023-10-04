@@ -4,13 +4,10 @@ import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.service.StudentService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -45,7 +42,7 @@ public class StudentController extends GenericUserController<Student, StudentSer
         List<OfferDTO> offers;
 
         try {
-            offers = studentService.getOffersByDepartment(departmentId);
+            offers = service.getAcceptedOffersByDepartment(departmentId);
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
@@ -58,7 +55,7 @@ public class StudentController extends GenericUserController<Student, StudentSer
         logger.info("uploadCv");
 
         try {
-            studentService.saveCv(file, studentId);
+            service.saveCv(file, studentId);
         } catch (NoSuchElementException e) {
             logger.error(e.getMessage());
             if (e.getMessage().equals("Student not found")) {
