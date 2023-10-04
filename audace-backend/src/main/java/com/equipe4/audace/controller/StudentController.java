@@ -2,19 +2,28 @@ package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.model.Student;
 import com.equipe4.audace.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/students")
 @CrossOrigin(origins = "http://localhost:3000")
-public class StudentController extends GenericUserController<StudentService> {
+public class StudentController extends GenericUserController<Student, StudentService> {
     public StudentController(StudentService studentService) {
         super(studentService);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<StudentDTO> getStudentById(@PathVariable Long id) {
+        return service.getStudentById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/signup/{departmentCode}")
@@ -26,7 +35,7 @@ public class StudentController extends GenericUserController<StudentService> {
     }
 
     @GetMapping("/offers/{departmentId}")
-    public ResponseEntity<List<OfferDTO>> getOffersByDepartmentMapped(@PathVariable Long departmentId) {
-        return ResponseEntity.ok(getOffersByDepartment(departmentId));
+    public ResponseEntity<List<OfferDTO>> getOffersByDepartment(@PathVariable Long departmentId) {
+        return ResponseEntity.ok(service.getAcceptedOffersByDepartment(departmentId));
     }
 }

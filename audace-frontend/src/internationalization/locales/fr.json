@@ -32,7 +32,7 @@
       "studentId": "SVP entrez une matricule valide"
     }
   },
-  "studentOffersList": {
+  "offersList": {
     "errors": {
       "departmentNotFound": "Aucun département trouvé"
     },
@@ -42,7 +42,7 @@
     "noOffers": "Aucun offre disponible",
     "viewTitle": "Offres disponibles"
   },
-  "studentOffer": {
+  "offer": {
     "modal": {
       "org": "Organisation",
       "address": "Adresse",
@@ -58,35 +58,37 @@
       }
     }
   },
-  "employerOffersList": {
-    "errors": {
-      "employerNotFound": "Aucun employé trouvé"
-    },
-    "title": "Titre",
-    "internshipEndDate": "Date de fin",
-    "internshipStartDate": "Date de début",
-    "noOffers": "Aucune offre publiée",
-    "viewTitle": "Offres publiées"
+  "studentOffersList": {
+    "viewTitle": "Offres disponibles",
+    "applyButton":"Appliquer"
   },
-  "employerOffer": {
-    "modal": {
-      "org": "Organisation",
-      "address": "Adresse",
-      "phone": "Téléphone",
-      "orgNotFound": "L'organisation n'a pas été trouvée",
-      "offerEnd": "L'offre se termine le",
-      "offerDescription": "Description de l'offre",
-      "offerAvailablePlaces": "Place(s) offertes",
-      "empNotFound": "L'employeur n'a pas été trouvé!",
-      "internDate": {
-        "start": "De",
-        "end": "à"
-      },
-      "status": "État",
-      "PENDING": "En attente",
-      "ACCEPTED": "Accepté",
-      "REFUSED": "Refusé"
-
-    }
+  "managerOffersList": {
+    "viewTitle": "Offres disponibles",
+    "acceptButton": "Accepter",
+    "refuseButton": "Refuser",
+    "ACCEPTED" : "Accepté",
+    "REFUSED" : "Refusé",
+    "noMorePendingOffers" : "Il n'y a plus d'offres en attente"
+  },
+  "employerOffersList": {
+    "viewTitle": "Offres disponibles",
+    "status": "État",
+    "PENDING": "En attente",
+    "ACCEPTED": "Accepté",
+    "REFUSED": "Refusé",
+    "editButton": "Modifier",
+    "deleteButton": "Supprimer"
+  },
+  "student": {
+    "seeOffersButton": "Voir les offres"
+  },
+  "manager": {
+    "seeOffersButton": "Voir les offres"
+  },
+  "employer": {
+    "errors": {
+      "employerNotFound": "Aucun employeur trouvé"
+    },
+    "seeOffersButton": "Voir les offres"
   }
 }

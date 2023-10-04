@@ -4,11 +4,16 @@ export interface Offer {
     id?: number;
     title: string;
     description: string;
-    internshipStartDate: string;
-    internshipEndDate: string;
-    offerEndDate: string;
-    availablePlaces: number;
-    status: any;
+    internshipStartDate: Date;
+    internshipEndDate: Date;
+    offerEndDate: Date;
     department: Department;
     employerId: number;
+    status: OfferStatus;
+}
+
+export enum OfferStatus {
+    PENDING = "PENDING",
+    ACCEPTED = "ACCEPTED",
+    REFUSED = "REFUSED"
 }

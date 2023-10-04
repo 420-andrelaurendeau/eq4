@@ -8,7 +8,12 @@ import { useTranslation } from "react-i18next";
 import SignupView from "./views/Signup";
 import { UserType } from "./model/user";
 import StudentOfferView from "./views/StudentOfferView";
-import EmployerOffersList from "./components/Employer/EmployerOffersList";
+import StudentHomePage from "./components/StudentHomePage";
+import EmployerHomePage from "./components/EmployerHomePage";
+import UserList from "./components/Login";
+import ManagerOfferView from "./views/ManagerOfferView";
+import ManagerHomePage from "./components/ManagerHomePage";
+import EmployerOfferView from "./views/EmployerOfferView";
 
 function App() {
   const { t } = useTranslation();
@@ -37,9 +42,19 @@ function App() {
           />
           <Route path="/student/*" element={
             <Routes>
-              <Route path="offers" element={<StudentOfferView />}/>
+              <Route path=":id/offers" element={<StudentOfferView />}/>
             </Routes>
           } />
+          <Route path="/manager/*" element={
+            <Routes>
+              <Route path=":id/offers" element={<ManagerOfferView />}/>
+            </Routes>
+          } />
+          <Route path="/employer/*" element={
+            <Routes>
+              <Route path=":id/offers" element={<EmployerOfferView/>}/>
+            </Routes>
+          }/>
           <Route path="/signup/*" element={
             <Routes>
               <Route path="employer" element={<SignupView userType={UserType.Employer} />}/>
@@ -47,11 +62,17 @@ function App() {
             </Routes>
           }>
           </Route>
-          <Route path="/employers/*" element={
+          <Route path="/users/*" element={
             <Routes>
-              <Route path=":id/offers" element={<EmployerOffersList />}/>
+              <Route path="" element={<UserList></UserList>}/>
             </Routes>
-          } />
+          }>
+          </Route>
+          <Route path="/student/:userId" element={<StudentHomePage></StudentHomePage>}></Route>
+          <Route path="/employer/:userId" element={<EmployerHomePage></EmployerHomePage>}>
+
+          </Route>
+          <Route path="/manager/:userId" element={<ManagerHomePage />}></Route>
         </Routes>
       </Router>
     </>

@@ -32,7 +32,7 @@
       "studentId": "Please enter a valid student number"
     }
   },
-  "studentOffersList": {
+  "offersList": {
     "errors": {
       "departmentNotFound": "Department not found"
     },
@@ -42,7 +42,7 @@
     "noOffers": "No offers available",
     "viewTitle": "Available Offers"
   },
-  "studentOffer": {
+  "offer": {
     "modal": {
       "org": "Organization",
       "address": "Address",
@@ -58,35 +58,37 @@
       }
     }
   },
+  "studentOffersList": {
+    "viewTitle": "Available Offers",
+    "applyButton": "Apply"
+  },
+  "managerOffersList": {
+    "viewTitle": "Available Offers",
+    "acceptButton": "Accept",
+    "refuseButton": "Refuse",
+    "ACCEPTED" : "Accepted",
+    "REFUSED" : "Refused",
+    "noMorePendingOffers" : "There is no more pending offers"
+  },
   "employerOffersList": {
+    "viewTitle": "Available Offers",
+    "status": "Status",
+    "PENDING": "Pending",
+    "ACCEPTED": "Accepted",
+    "REFUSED": "Refused",
+    "editButton": "Edit",
+    "deleteButton": "Delete"
+  },
+  "student": {
+    "seeOffersButton": "See Offers"
+  },
+  "manager": {
+    "seeOffersButton": "See Offers"
+  },
+  "employer": {
     "errors": {
       "employerNotFound": "Employer not found"
     },
-    "title": "Title",
-    "internshipEndDate": "End Date",
-    "internshipStartDate": "Start Date",
-    "noOffers": "No offers published",
-    "viewTitle": "Published Offers"
-  },
-  "employerOffer": {
-    "modal": {
-      "org": "Organization",
-      "address": "Address",
-      "phone": "Phone number",
-      "orgNotFound": "Organization not found",
-      "offerEnd": "Offer ends on",
-      "offerDescription": "Offer Description",
-      "offerAvailablePlaces": "Place(s) offered",
-      "empNotFound": "Employer not found!",
-      "internDate": {
-        "start": "From",
-        "end": "to"
-      },
-      "status": "Status",
-      "PENDING": "Pending",
-      "ACCEPTED": "Accepted",
-      "REFUSED": "Refused"
-
-    }
+    "seeOffersButton": "See Offers"
   }
 }

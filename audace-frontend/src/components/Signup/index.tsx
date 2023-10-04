@@ -43,7 +43,8 @@ const Signup = ({handleSubmit, extension, setExtension, errors, setErrors, valid
             address: `${address}, ${city}, ${postalCode}`,
             phone: phone,
             email: email,
-            password: password
+            password: password,
+            type: 'student'
         };
 
         sendRequest(user);

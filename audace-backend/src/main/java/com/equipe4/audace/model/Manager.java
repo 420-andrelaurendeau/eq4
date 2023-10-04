@@ -2,12 +2,16 @@ package com.equipe4.audace.model;
 
 import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.model.department.Department;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@Entity
 public class Manager extends User {
+    @ManyToOne
     private Department department;
 
     public Manager(Long id,
@@ -22,6 +26,7 @@ public class Manager extends User {
         this.department = department;
     }
 
+    @Override
     public ManagerDTO toDTO() {
         return new ManagerDTO(
                 id,
@@ -31,7 +36,7 @@ public class Manager extends User {
                 address,
                 phone,
                 password,
-                department.toDto()
+                department.toDTO()
         );
     }
 }
