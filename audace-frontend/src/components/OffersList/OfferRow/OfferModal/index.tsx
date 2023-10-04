@@ -86,11 +86,7 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
                         {userType === UserType.Employer &&
                             <div>
                                 {t("employerOffersList.status")}:&nbsp;
-                                {offer.status === OfferStatus.ACCEPTED ? createBoldText(t("employerOffersList.ACCEPTED")):
-                                    (offer.status === OfferStatus.PENDING ? createBoldText(t("employerOffersList.PENDING")):
-                                        createBoldText(t("employerOffersList.REFUSED"))
-                                    )
-                                }
+                                {createBoldText(t(`employerOffersList.${offer.status}`))}
                             </div>
                         }
                     </div>
