@@ -2,7 +2,6 @@ package com.equipe4.audace.controller;
 
 import com.equipe4.audace.model.User;
 import com.equipe4.audace.service.GenericUserService;
-import com.equipe4.audace.service.UserService;
 
 import java.util.logging.Logger;
 
