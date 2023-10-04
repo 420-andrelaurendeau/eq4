@@ -32,7 +32,7 @@
       "studentId": "SVP entrez une matricule valide"
     }
   },
-  "studentOffersList": {
+  "offersList": {
     "errors": {
       "departmentNotFound": "Aucun département trouvé"
     },
@@ -42,7 +42,7 @@
     "noOffers": "Aucun offre disponible",
     "viewTitle": "Offres disponibles"
   },
-  "studentOffer": {
+  "offer": {
     "modal": {
       "org": "Organisation",
       "address": "Adresse",
@@ -88,5 +88,28 @@
       "REFUSED": "Refusé"
 
     }
+  },
+  "studentOffersList": {
+    "viewTitle": "Offres disponibles",
+    "applyButton":"Appliquer"
+  },
+  "managerOffersList": {
+    "viewTitle": "Offres disponibles",
+    "acceptButton": "Accepter",
+    "refuseButton": "Refuser",
+    "ACCEPTED" : "Accepté",
+    "REFUSED" : "Refusé",
+    "noMorePendingOffers" : "Il n'y a plus d'offres en attente"
+  },
+  "employerOffersList": {
+    "viewTitle": "Offres disponibles",
+    "editButton": "Modifier",
+    "deleteButton": "Supprimer"
+  },
+  "student": {
+    "seeOffersButton": "Voir les offres"
+  },
+  "manager": {
+    "seeOffersButton": "Voir les offres"
   }
 }

@@ -32,7 +32,7 @@
       "studentId": "Please enter a valid student number"
     }
   },
-  "studentOffersList": {
+  "offersList": {
     "errors": {
       "departmentNotFound": "Department not found"
     },
@@ -42,7 +42,7 @@
     "noOffers": "No offers available",
     "viewTitle": "Available Offers"
   },
-  "studentOffer": {
+  "offer": {
     "modal": {
       "org": "Organization",
       "address": "Address",
@@ -88,5 +88,28 @@
       "REFUSED": "Refused"
 
     }
+  },
+  "studentOffersList": {
+    "viewTitle": "Available Offers",
+    "applyButton": "Apply"
+  },
+  "managerOffersList": {
+    "viewTitle": "Available Offers",
+    "acceptButton": "Accept",
+    "refuseButton": "Refuse",
+    "ACCEPTED" : "Accepted",
+    "REFUSED" : "Refused",
+    "noMorePendingOffers" : "There is no more pending offers"
+  },
+  "employerOffersList": {
+    "viewTitle": "Available Offers",
+    "editButton": "Edit",
+    "deleteButton": "Delete"
+  },
+  "student": {
+    "seeOffersButton": "See Offers"
+  },
+  "manager": {
+    "seeOffersButton": "See Offers"
   }
 }

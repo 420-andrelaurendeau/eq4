@@ -1,10 +1,13 @@
 package com.equipe4.audace.controller;
 
+import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.service.ManagerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -12,15 +15,23 @@ import java.util.List;
 @RequestMapping("/managers")
 @CrossOrigin(origins = "http://localhost:3000")
 
-public class ManagerController extends GenericUserController<ManagerService>{
+public class ManagerController extends GenericUserController<Manager, ManagerService>{
     public ManagerController(ManagerService managerService) {
         super(managerService);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ManagerDTO> getManagerById(@PathVariable Long id) {
+       return service.getManagerById(id)
+               .map(ResponseEntity::ok)
+               .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/accept_offer/{offerId}")
     public ResponseEntity<HttpStatus> acceptOffer(@PathVariable Long offerId) {
         logger.info("acceptOffer");
-        return service.acceptOffer(offerId).map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
+        return service.acceptOffer(offerId)
+                .map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST));
     }
 
@@ -32,8 +43,8 @@ public class ManagerController extends GenericUserController<ManagerService>{
                 .orElseGet(() -> new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST));
     }
 
-    @GetMapping("/offers")
-    public ResponseEntity<List<OfferDTO>> getOffersByDepartmentMapped(@RequestParam Long departmentId) {
-        return ResponseEntity.ok(getOffersByDepartment(departmentId));
+    @GetMapping("/offers/{departmentId}")
+    public ResponseEntity<List<OfferDTO>> getOffersByDepartment(@PathVariable Long departmentId) {
+        return ResponseEntity.ok(service.getOffersByDepartment(departmentId));
     }
 }
