@@ -17,7 +17,6 @@ public class EmployerDTO extends UserDTO {
     private String address;
     private String phone;
     private String extension;
-    private String type;
 
     public EmployerDTO(Employer employer) {
         this.id = employer.getId();

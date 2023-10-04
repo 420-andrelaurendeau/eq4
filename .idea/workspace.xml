@@ -5,16 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/EmployerDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/EmployerDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/StudentDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/StudentDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/UserDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/model/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/model/Student.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/StudentServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/StudentServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/DataService/service.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/Login/UserList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/Login/UserList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/controller/UserControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/controller/UserControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/UserServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/UserServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,6 +73,46 @@
       <recent name="C:\Users\psara\OneDrive\Bureau\school\session7\projet\eq4\audace-frontend\src\components\Login" />
     </key>
   </component>
+  <component name="RunManager">
+    <configuration name="UserControllerTest.testGetAllUsers" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="audace" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.equipe4.audace.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.equipe4.audace.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.controller.UserControllerTest" />
+      <option name="METHOD_NAME" value="testGetAllUsers" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserControllerTest.testGetUserNotFound" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="audace" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.equipe4.audace.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.equipe4.audace.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.controller.UserControllerTest" />
+      <option name="METHOD_NAME" value="testGetUserNotFound" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.UserControllerTest.testGetAllUsers" />
+        <item itemvalue="JUnit.UserControllerTest.testGetUserNotFound" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -88,7 +124,7 @@
       <workItem from="1694099261839" duration="236000" />
       <workItem from="1694100419590" duration="29000" />
       <workItem from="1696084720134" duration="2512000" />
-      <workItem from="1696378856181" duration="6861000" />
+      <workItem from="1696378856181" duration="15486000" />
     </task>
     <servers />
   </component>

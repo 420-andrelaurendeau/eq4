@@ -5,41 +5,37 @@ import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.User;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.repository.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
+import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 import java.util.List;
 import java.util.Optional;
 
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
-
     @InjectMocks
     private UserService userService;
 
     @Mock
     private UserRepository userRepository;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
     void testGetAllUsers() {
-        // Mock the userRepository behavior
         List<User> users = List.of(
                 new Student(4L, "peterson", "sara", "lesun@live.com", "password", "100 rue Lapierre", "4387253891", "2080351", new Department()),
                 new Employer()
         );
         when(userRepository.findAll()).thenReturn(users);
-        List<UserDTO> userDTOs = userService.getAllUsers();
 
+        Optional<List<UserDTO>> userDTOsOptional = userService.getAllUsers();
+
+        assertTrue(userDTOsOptional.isPresent());
+        List<UserDTO> userDTOs = userDTOsOptional.get();
         assertEquals(users.size(), userDTOs.size());
     }
 

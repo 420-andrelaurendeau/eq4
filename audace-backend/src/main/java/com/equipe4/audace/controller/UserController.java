@@ -25,8 +25,15 @@ public class UserController {
     }
 
     @GetMapping("")
-    public List<UserDTO> getAllUsers() {
-        return this.userService.getAllUsers();
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        Optional<List<UserDTO>> usersOptional = userService.getAllUsers();
+
+        if (usersOptional.isPresent()) {
+            List<UserDTO> usersDTO = usersOptional.get();
+            return ResponseEntity.ok(usersDTO);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @GetMapping("/{id}")

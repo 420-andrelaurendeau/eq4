@@ -19,12 +19,18 @@ public class UserService {
 
     public void createUser(UserDTO userDTO) {}
 
-    public List<UserDTO> getAllUsers() {
+    public Optional<List<UserDTO>> getAllUsers() {
         List<User> users = userRepository.findAll();
 
-        return users.stream()
+        if (users.isEmpty()) {
+            return Optional.empty();
+        }
+
+        List<UserDTO> userDTOs = users.stream()
                 .map(User::toDTO)
                 .toList();
+
+        return Optional.of(userDTOs);
     }
 
     public Optional<UserDTO> getUser(long id) {
