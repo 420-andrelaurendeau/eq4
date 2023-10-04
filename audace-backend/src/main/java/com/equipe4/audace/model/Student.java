@@ -59,6 +59,7 @@ public class Student extends User {
         this.cvs = cvs;
     }
 
+    @Override
     public StudentDTO toDTO() {
         return new StudentDTO(
                 id,
@@ -69,7 +70,7 @@ public class Student extends User {
                 phone,
                 password,
                 studentNumber,
-                department.toDto(),
+                department.toDTO(),
                 cvs.stream().map(Cv::toDto).toList()
         );
     }

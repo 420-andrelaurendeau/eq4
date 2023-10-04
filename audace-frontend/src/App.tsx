@@ -1,30 +1,21 @@
 import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Nav, Navbar } from "react-bootstrap";
-import LanguageToggler from "./components/LanguageToggler";
-import { useTranslation } from "react-i18next";
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import SignupView from "./views/Signup";
 import { UserType } from "./model/user";
 import StudentOfferView from "./views/StudentOfferView";
+import StudentHomePage from "./components/StudentHomePage";
+import EmployerHomePage from "./components/EmployerHomePage";
+import UserList from "./components/Login";
+import AppHeader from "./components/AppHeader";
 
 function App() {
-  const { t } = useTranslation();
 
   return (
-    <>
-      <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="/">Audace</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav>
-            <Nav.Link href="/signup/employer">{t("signup.signup")}</Nav.Link>
-          </Nav>
-          <LanguageToggler />
-        </Navbar.Collapse>
-      </Navbar>
       <Router>
+      <>
+        <AppHeader />
         <Routes>
           <Route
             path="/"
@@ -46,9 +37,17 @@ function App() {
             </Routes>
           }>
           </Route>
+          <Route path="/users/*" element={
+            <Routes>
+              <Route path="" element={<UserList></UserList>}/>
+            </Routes>
+          }>
+          </Route>
+          <Route path="/student/:userId" element={<StudentHomePage></StudentHomePage>}></Route>
+          <Route path="/employer/:userId" element={<EmployerHomePage></EmployerHomePage>}></Route>
         </Routes>
-      </Router>
     </>
+      </Router>
   );
 }
 

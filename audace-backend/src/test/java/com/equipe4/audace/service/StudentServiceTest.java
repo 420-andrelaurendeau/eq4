@@ -5,7 +5,6 @@ import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
-import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
@@ -84,7 +83,7 @@ public class StudentServiceTest {
         List<OfferDTO> result = studentService.getOffersByDepartment(1L);
 
         assertThat(result.size()).isEqualTo(offers.size());
-        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDto).toList());
+        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
     }
 
     @Test
@@ -110,7 +109,7 @@ public class StudentServiceTest {
 
     @Test
     void createStudent() {
-        StudentDTO studentDTO = createStudentDTO();
+        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"), new ArrayList<>());
 
         when(studentRepository.save(any())).thenReturn(studentDTO.fromDTO());
 

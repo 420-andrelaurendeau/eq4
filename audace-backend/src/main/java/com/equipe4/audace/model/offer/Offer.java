@@ -44,7 +44,7 @@ public class Offer {
         this.department = department;
     }
 
-    public OfferDTO toDto() {
-        return new OfferDTO(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, employer.getId(), department.toDto());
+    public OfferDTO toDTO() {
+        return new OfferDTO(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, employer.getId(), department.toDTO());
     }
 }
