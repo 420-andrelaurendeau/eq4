@@ -22,9 +22,9 @@ public class EmployerController extends GenericUserController<Employer, Employer
     }
 
     @GetMapping
-    public List<EmployerDTO> getAllEmployers(){
+    public ResponseEntity<List<EmployerDTO>> getAllEmployers(){
         logger.info("getAllEmployers");
-        return service.findAllEmployers();
+        return ResponseEntity.ok(service.findAllEmployers());
     }
 
     @GetMapping("/{id}")
