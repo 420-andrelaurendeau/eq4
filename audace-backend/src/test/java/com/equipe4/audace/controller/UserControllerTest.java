@@ -46,7 +46,7 @@ class UserControllerTest {
                 new EmployerDTO(1L, "peterson", "sara", "lesun@live.com", "password", "RocaFella Records", "artist", "3 York St", "4387253892", "slat"),
                 new EmployerDTO(2L, "addison", "sara", "lesun@live.com", "password", "RocaFella Records", "artist", "3 York St", "4387253892", "slat")
         );
-        when(userService.getAllUsers()).thenReturn(Optional.of(userDTOs));
+        when(userService.getAllUsers()).thenReturn(userDTOs);
 
         mockMvc.perform(get("/users"))
                 .andExpect(status().isOk())

@@ -32,10 +32,7 @@ class UserServiceTest {
         );
         when(userRepository.findAll()).thenReturn(users);
 
-        Optional<List<UserDTO>> userDTOsOptional = userService.getAllUsers();
-
-        assertTrue(userDTOsOptional.isPresent());
-        List<UserDTO> userDTOs = userDTOsOptional.get();
+        List<UserDTO> userDTOs = userService.getAllUsers();
         assertEquals(users.size(), userDTOs.size());
     }
 
