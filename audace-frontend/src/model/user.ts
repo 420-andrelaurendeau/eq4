@@ -9,6 +9,7 @@ export interface User {
     phone?: string;
     address?: string;
     password: string;
+    type: string;
 }
 
 export interface Student extends User{

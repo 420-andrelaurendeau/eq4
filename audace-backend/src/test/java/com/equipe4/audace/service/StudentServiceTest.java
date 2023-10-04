@@ -73,7 +73,7 @@ public class StudentServiceTest {
         List<OfferDTO> result = studentService.getOffersByDepartment(1L);
 
         assertThat(result.size()).isEqualTo(offers.size());
-        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDto).toList());
+        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
     }
 
     @Test
@@ -99,7 +99,7 @@ public class StudentServiceTest {
 
     @Test
     void createStudent() {
-        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
+        StudentDTO studentDTO = new StudentDTO(1L,"student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"));
 
         when(studentRepository.save(any())).thenReturn(studentDTO.fromDTO());
 

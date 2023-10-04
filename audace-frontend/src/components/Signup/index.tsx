@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import { User } from "../../model/user";
-import { validateEmail, validatePassword } from "../../services/validationService";
+import {useState} from "react";
+import {Button, Col, Form, Row} from "react-bootstrap";
+import {useTranslation} from "react-i18next";
+import {User} from "../../model/user";
+import {validateEmail, validatePassword} from "../../services/validationService";
 
 interface Props {
     handleSubmit: (user: User) => void;
@@ -35,7 +35,8 @@ const Signup = ({handleSubmit, extension, setExtension, setErrors, validateExtra
             address: `${address}, ${city}, ${postalCode}`,
             phone: phone,
             email: email,
-            password: password
+            password: password,
+            type: 'student' // TODO : Filler line, to be removed
         };
 
         handleSubmit(user);

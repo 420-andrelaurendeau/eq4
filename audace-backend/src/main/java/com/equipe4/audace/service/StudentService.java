@@ -45,7 +45,7 @@ public class StudentService {
         if (departmentOptional.isEmpty()) {
             throw new NoSuchElementException("Department not found");
         }
-        studentDTO.setDepartment(departmentOptional.get().toDto());
+        studentDTO.setDepartment(departmentOptional.get().toDTO());
         Student student = studentRepository.save(studentDTO.fromDTO());
         return Optional.of(student.toDTO());
     }
@@ -56,6 +56,6 @@ public class StudentService {
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
         List<Offer> offers = offerRepository.findAllByDepartment(department);
 
-        return offers.stream().map(Offer::toDto).toList();
+        return offers.stream().map(Offer::toDTO).toList();
     }
 }
