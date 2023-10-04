@@ -20,7 +20,8 @@ import java.util.stream.Collectors;
 )
 @JsonSubTypes({
         @Type(value = StudentDTO.class, name = "student"),
-        @Type(value = EmployerDTO.class, name = "employer")
+        @Type(value = EmployerDTO.class, name = "employer"),
+        @Type(value = ManagerDTO.class, name = "manager")
 })
 public abstract class UserDTO {
     protected Long id;
