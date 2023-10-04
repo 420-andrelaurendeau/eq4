@@ -1,18 +1,18 @@
-
 import React, { useEffect, useState } from 'react';
-import service from "../../DataService/service";
-import {User, UserType} from "../../model/user";
-import {Link, useNavigate} from "react-router-dom";
+import { User } from "../../model/user";
+import { useNavigate } from "react-router-dom";
+import { ListGroup, Button, Container } from 'react-bootstrap';
+import {getAllUsers} from "../../services/loginService";
 
 const UserList: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        service.getAllUsers()
+        getAllUsers()
             .then(response => {
-                setUsers(response.data)
-            })
+                setUsers(response.data);
+            });
     }, []);
 
     const handleSignInClick = (user: User) => {
@@ -23,22 +23,22 @@ const UserList: React.FC = () => {
         }
     };
 
-
     return (
-            <ul style={{ listStyleType: 'none' }}>
-                {users.map((user) => (
-                    <li className={"pb-2"} key={user.id}>
-                        <div className={"container-fluid mw-100"} style={{background: '#ccc', width: '35%', borderRadius: '5px'}}>
-                            <div className="d-flex justify-content-between p-2">
-                                <div className="d-inline-block align-self-center">{user.email}</div>
-                                <div className="d-inline-block btn btn-success fw-bold" onClick={() => handleSignInClick(user)}>Sign in</div>
-                            </div>
+        <ListGroup>
+            {users.map((user) => (
+                <ListGroup.Item key={user.id}>
+                    <Container fluid style={{ background: '#ccc', width: '35%', borderRadius: '5px' }}>
+                        <div className="d-flex justify-content-between p-2">
+                            <div className="d-inline-block align-self-center">{user.email}</div>
+                            <Button variant="success" className="fw-bold" onClick={() => handleSignInClick(user)}>
+                                Sign in
+                            </Button>
                         </div>
-                    </li>
-                ))}
-            </ul>
+                    </Container>
+                </ListGroup.Item>
+            ))}
+        </ListGroup>
     );
-};
+}
 
 export default UserList;
-
