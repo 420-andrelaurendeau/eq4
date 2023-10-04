@@ -5,12 +5,10 @@ import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
-import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,7 +44,7 @@ public class EmployerService extends GenericUserService<Employer> {
         Employer employer = employerRepository.findById(offerDTO.getEmployerId()).orElseThrow();
         Department department = departmentRepository.findByCode(offerDTO.getDepartmentCode()).orElseThrow();
 
-        Offer offer = offerDTO.fromDto();
+        Offer offer = offerDTO.fromDTO();
         offer.setEmployer(employer);
         offer.setDepartment(department);
 

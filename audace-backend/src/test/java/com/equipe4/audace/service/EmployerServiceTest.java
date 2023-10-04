@@ -3,16 +3,23 @@ package com.equipe4.audace.service;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
+import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.department.Department;
+import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
+import com.equipe4.audace.repository.department.DepartmentRepository;
+import com.equipe4.audace.repository.offer.OfferRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,6 +30,10 @@ import static org.mockito.Mockito.*;
 public class EmployerServiceTest {
     @Mock
     public EmployerRepository employerRepository;
+    @Mock
+    private OfferRepository offerRepository;
+    @Mock
+    private DepartmentRepository departmentRepository;
 
     @InjectMocks
     private EmployerService employerService;
@@ -118,5 +129,183 @@ public class EmployerServiceTest {
 
         // Assert
         assertThat(employerDTO.isEmpty()).isTrue();
+    }
+
+    @Test
+    public void createOffer_HappyPath(){
+        Department mockedDepartment = new Department("GLO", "Génie logiciel");
+        Employer fakeEmployer = new Employer(
+                "employer",
+                "employerman",
+                "email@gmail.com",
+                "password",
+                "organisation",
+                "position",
+                "address",
+                "phone",
+                "extension"
+        );
+        fakeEmployer.setId(1L);
+
+        Offer offer = Offer.offerBuilder()
+                .title("Stage en génie logiciel").description("Stage en génie logiciel")
+                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
+                .availablePlaces(3).employer(fakeEmployer).department(mockedDepartment)
+                .build();
+        OfferDTO offerDTO = new OfferDTO(offer);
+
+        when(offerRepository.save(any(Offer.class))).thenReturn(offer);
+        when(employerRepository.findById(anyLong())).thenReturn(Optional.of(fakeEmployer));
+        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(mockedDepartment));
+
+        OfferDTO dto = employerService.createOffer(offerDTO).get();
+
+        assertThat(dto.equals(offerDTO));
+        verify(offerRepository, times(1)).save(offer);
+    }
+    @Test
+    void getOffers_HappyPath() {
+        Department mockedDepartment = new Department("GLO", "Génie logiciel");;
+        Employer fakeEmployer = new Employer(
+                "employer",
+                "employerman",
+                "email@gmail.com",
+                "password",
+                "organisation",
+                "position",
+                "address",
+                "phone",
+                "extension"
+        );
+        fakeEmployer.setId(1L);
+
+        List<Offer> offers = new ArrayList<>();
+        Offer offer1 = Offer.offerBuilder()
+                .title("Stage en génie logiciel").description("Stage en génie logiciel")
+                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
+                .availablePlaces(3).employer(fakeEmployer).department(mockedDepartment)
+                .build();
+        Offer offer2 = Offer.offerBuilder()
+                .title("Stage en génie logiciel").description("Stage en génie logiciel")
+                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
+                .availablePlaces(3).employer(fakeEmployer).department(mockedDepartment)
+                .build();
+        offers.add(offer1);
+        offers.add(offer2);
+
+        when(employerRepository.findById(anyLong())).thenReturn(Optional.of(fakeEmployer));
+        when(offerRepository.findAllByEmployer(any(Employer.class))).thenReturn(offers);
+
+        List<OfferDTO> offerDTOList = employerService.findAllOffersByEmployerId(fakeEmployer.getId());
+
+        assertThat(offerDTOList.size()).isEqualTo(2);
+        verify(offerRepository, times(1)).findAllByEmployer(fakeEmployer);
+    }
+
+    @Test
+    public void deleteOffer_HappyPath(){
+        Department mockedDepartment = mock(Department.class);
+        Employer fakeEmployer = new Employer(
+                "employer",
+                "employerman",
+                "email@gmail.com",
+                "password",
+                "organisation",
+                "position",
+                "address",
+                "phone",
+                "extension"
+        );
+        fakeEmployer.setId(1L);
+
+        Offer offer1 = Offer.offerBuilder()
+                .title("Stage en génie logiciel").description("Stage en génie logiciel")
+                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
+                .availablePlaces(3).employer(fakeEmployer).department(mockedDepartment)
+                .build();
+        offer1.setId(1L);
+        when(offerRepository.findById(offer1.getId())).thenReturn(Optional.of(offer1));
+
+        employerService.deleteOffer(offer1.getId());
+
+        verify(offerRepository).deleteById(offer1.getId());
+    }
+
+    @Test
+    public void deleteOffer_OfferDontExists() {
+        when(offerRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> employerService.deleteOffer(1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("No value present");
+    }
+
+    @Test
+    public void updateOffer_HappyPath() {
+        Department mockedDepartment = new Department("GLO", "Génie logiciel");
+        Employer fakeEmployer = new Employer(
+                "employer",
+                "employerman",
+                "email@gmail.com",
+                "password",
+                "organisation",
+                "position",
+                "address",
+                "phone",
+                "extension"
+        );
+        fakeEmployer.setId(1L);
+
+        Offer offer = Offer.offerBuilder()
+                .title("Stage en génie logiciel").description("Stage en génie logiciel")
+                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
+                .availablePlaces(3).employer(fakeEmployer).department(mockedDepartment)
+                .build();
+        offer.setId(1L);
+
+        when(offerRepository.save(any(Offer.class))).thenReturn(offer);
+        when(employerRepository.findById(anyLong())).thenReturn(Optional.of(fakeEmployer));
+        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(mockedDepartment));
+        when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
+
+        OfferDTO originalOffer = employerService.createOffer(new OfferDTO(offer)).get();
+
+        offer.setAvailablePlaces(2);
+
+        OfferDTO updatedOffer = employerService.updateOffer(new OfferDTO(offer)).get();
+
+        verify(offerRepository).save(offer);
+        verify(offerRepository).findById(offer.getId());
+        assertThat(originalOffer.getAvailablePlaces()).isEqualTo(3);
+        assertThat(updatedOffer.getAvailablePlaces()).isEqualTo(2);
+    }
+    @Test()
+    public void updateOffer_OfferDontExists() {
+        Department mockedDepartment = new Department("GLO", "Génie logiciel");
+        Employer fakeEmployer = new Employer(
+                "employer",
+                "employerman",
+                "email@gmail.com",
+                "password",
+                "organisation",
+                "position",
+                "address",
+                "phone",
+                "extension"
+        );
+        fakeEmployer.setId(1L);
+
+        Offer offer = Offer.offerBuilder()
+                .title("Stage en génie logiciel").description("Stage en génie logiciel")
+                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
+                .availablePlaces(3).employer(fakeEmployer).department(mockedDepartment)
+                .build();
+        offer.setId(1L);
+
+        when(offerRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> employerService.updateOffer(new OfferDTO(offer)))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("No value present");
     }
 }

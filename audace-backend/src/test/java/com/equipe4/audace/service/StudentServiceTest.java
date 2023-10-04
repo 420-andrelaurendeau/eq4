@@ -1,9 +1,11 @@
 package com.equipe4.audace.service;
 
+import com.equipe4.audace.dto.ApplicationDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
@@ -13,6 +15,7 @@ import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
+import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
@@ -47,6 +50,8 @@ public class StudentServiceTest {
     private DepartmentRepository departmentRepository;
     @Mock
     private CvRepository cvRepository;
+    @Mock
+    private ApplicationRepository applicationRepository;
     @InjectMocks
     private StudentService studentService;
 
@@ -276,5 +281,53 @@ public class StudentServiceTest {
         public byte[] getBytes() throws IOException {
             throw new IOException();
         }
+    }
+
+    @Test
+    public void createApplication_HappyPath(){
+        Department department = new Department("GLO", "Génie logiciel");
+        Employer employer = Employer.employerBuilder()
+                .firstName("Employer1").lastName("Employer1").email("employer1@gmail.com").password("123456eE")
+                .organisation("Organisation1").position("Position1").phone("123-456-7890").extension("12345")
+                .address("Class Service, Javatown, Qc H8N1C1")
+                .build();
+        employer.setId(1L);
+        Student student = new Student(
+                1L,
+                "student",
+                "studentman",
+                "email@email.com",
+                "password",
+                "address",
+                "phone",
+                "matricule",
+                department
+        );
+        Cv cv = new Cv();
+        cv.setId(1L);
+
+        Offer offer = Offer.offerBuilder()
+                .title("Stage en génie logiciel").description("Stage en génie logiciel")
+                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
+                .availablePlaces(3).employer(employer).department(department)
+                .build();
+        offer.setId(1L);
+        Application application = Application.applicationBuilder()
+                .student(student)
+                .cv(cv)
+                .offer(offer)
+                .build();
+        ApplicationDTO applicationDTO = new ApplicationDTO(application);
+
+        when(applicationRepository.save(any(Application.class))).thenReturn(application);
+        when(studentRepository.findById(anyLong())).thenReturn(Optional.of(student));
+        when(cvRepository.findById(anyLong())).thenReturn(Optional.of(cv));
+        when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
+
+
+        ApplicationDTO dto = studentService.createApplication(applicationDTO).get();
+
+        assertThat(dto.equals(applicationDTO));
+        verify(applicationRepository, times(1)).save(application);
     }
 }
