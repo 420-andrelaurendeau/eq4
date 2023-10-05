@@ -41,5 +41,10 @@
     "internshipStartDate": "Date de début",
     "noOffers": "Aucun offre disponible",
     "viewTitle": "Offres disponibles"
+  },
+  "upload": {
+    "CvFormTitle": "Téléverser votre CV",
+    "file": "Séléctionner un fichier",
+    "submit": "Téléverser"
   }
 }

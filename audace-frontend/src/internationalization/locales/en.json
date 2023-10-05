@@ -41,5 +41,10 @@
     "internshipStartDate": "Start Date",
     "noOffers": "No offers available",
     "viewTitle": "Available Offers"
+  },
+  "upload": {
+    "CvFormTitle": "Upload CV",
+    "file": "Upload File",
+    "submit": "Submit"
   }
 }
