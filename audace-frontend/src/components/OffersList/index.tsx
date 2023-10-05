@@ -17,27 +17,27 @@ const OffersList = ({offers, error, userType, updateOffersState}: Props) => {
     return (
         <>
             {
-                error !== ""
+                error !== "" 
+                ? 
+                <p>{error}</p> 
+                : 
+                offers.length > 0
                     ?
-                    <p>{error}</p>
-                    :
-                    offers.length > 0
-                        ?
-                        <Table striped bordered hover size="sm">
-                            <thead>
+                    <Table striped bordered hover size="sm">
+                        <thead>
                             <tr>
                                 <th>{t("offersList.title")}</th>
                                 <th>{t("offersList.internshipStartDate")}</th>
                                 <th>{t("offersList.internshipEndDate")}</th>
                                 <th></th>
                             </tr>
-                            </thead>
-                            <tbody>
+                        </thead>
+                        <tbody>
                             {offers.map((offer) => {return <OfferRow key={offer.id} offer={offer} userType={userType} updateOffersState={updateOffersState}/>})}
-                            </tbody>
-                        </Table>
-                        :
-                        <p>{t("offersList.noOffers")}</p>
+                        </tbody>
+                    </Table>
+                    :
+                    <p>{t("offersList.noOffers")}</p>
             }
         </>
     )

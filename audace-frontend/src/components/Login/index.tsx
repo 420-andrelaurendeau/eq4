@@ -16,10 +16,13 @@ const UserList: React.FC = () => {
     }, []);
 
     const handleSignInClick = (user: User) => {
+        sessionStorage.setItem('user', JSON.stringify(user));
         if (user.type === "student") {
             navigate(`/student/${user.id}`);
         } else if (user.type === "employer") {
             navigate(`/employer/${user.id}`);
+        } else if (user.type === "manager") {
+            navigate(`/manager/${user.id}`);
         }
     };
 
