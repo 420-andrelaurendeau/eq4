@@ -13,14 +13,13 @@ import lombok.NoArgsConstructor;
 import lombok.Data;
 
 @Entity
-@Inheritance
 @Data
 @NoArgsConstructor
 public class Student extends User {
     @Column
     private String studentNumber;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Department department;
 
     public Student(Long id, String firstname, String lastname, String email, String password, String address, String phone, String studentNumber, Department department) {

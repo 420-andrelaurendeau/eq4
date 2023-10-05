@@ -20,6 +20,8 @@ const UserList: React.FC = () => {
             navigate(`/student/${user.id}`);
         } else if (user.type === "employer") {
             navigate(`/employer/${user.id}`);
+        } else if (user.type === "manager") {
+            navigate(`/manager/${user.id}`);
         }
     };
 

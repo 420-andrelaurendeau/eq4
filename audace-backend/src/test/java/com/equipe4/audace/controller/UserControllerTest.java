@@ -3,6 +3,7 @@ package com.equipe4.audace.controller;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.repository.EmployerRepository;
+import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.service.UserService;
@@ -39,6 +40,9 @@ class UserControllerTest {
 
     @MockBean
     private StudentRepository studentRepository;
+
+    @MockBean
+    private ManagerRepository managerRepository;
 
     @Test
     void testGetAllUsers() throws Exception {

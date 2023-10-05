@@ -8,8 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor
@@ -20,7 +18,8 @@ import java.util.stream.Collectors;
 )
 @JsonSubTypes({
         @Type(value = StudentDTO.class, name = "student"),
-        @Type(value = EmployerDTO.class, name = "employer")
+        @Type(value = EmployerDTO.class, name = "employer"),
+        @Type(value = ManagerDTO.class, name = "manager")
 })
 public abstract class UserDTO {
     protected Long id;
@@ -30,5 +29,6 @@ public abstract class UserDTO {
     protected String phone;
     protected String email;
     protected String password;
+
     public abstract User fromDTO();
 }
