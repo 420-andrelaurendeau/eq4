@@ -6,11 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/AudaceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/AudaceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/EmployerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/EmployerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/OfferRow/OfferButtons/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/OfferRow/OfferButtons/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/StudentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/StudentController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/OfferRow/OfferModal/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/OfferRow/OfferModal/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/OfferRow/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/OfferRow/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-frontend/src/views/StudentOfferView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/views/StudentOfferView/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -160,7 +157,8 @@
       <workItem from="1696436107481" duration="4796000" />
       <workItem from="1696499936429" duration="417000" />
       <workItem from="1696500373919" duration="1332000" />
-      <workItem from="1696508259713" duration="3798000" />
+      <workItem from="1696508259713" duration="4199000" />
+      <workItem from="1696538083385" duration="1923000" />
     </task>
     <servers />
   </component>

@@ -38,17 +38,7 @@ public class StudentController extends GenericUserController<Student, StudentSer
 
     @GetMapping("/offers/{departmentId}")
     public ResponseEntity<List<OfferDTO>> getOffersByDepartment(@PathVariable Long departmentId) {
-        logger.info("getOffersByDepartment");
-
-        List<OfferDTO> offers;
-
-        try {
-            offers = service.getAcceptedOffersByDepartment(departmentId);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(offers);
+        return ResponseEntity.ok(service.getAcceptedOffersByDepartment(departmentId));
     }
 
     @PostMapping("/upload/{studentId}")
