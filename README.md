@@ -3,11 +3,24 @@
 - Communication entre ceux assignés au backend et frontend d'une story pour décider de l'API chaque fois qu'une story est commencée.
 
 # Définition de DONE
-- Respecte les normes de l'équipe
-- Code vérifiée par un pair (peer programming ou code review)
-- S'agence au projet existant
-- Interface utilisateur intuitive
+- Le code compile
+- 80% de coverage dans le test
+- Le code est vérifiée par un pair (peer programming ou code review)
+- La branche est à jour depuis main
 - Code granulaire
+
+### Frontend:
+- Typage complet
+- Navigation minimale
+- Texte, pas d'icones
+- 
+
+### Backend:
+- 
+
+### Normes de l'équipe:
+- Le code est cohérent entre les programmeurs
+- 
 
 # eq4
 meilleur que l'équipe 3
