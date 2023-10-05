@@ -9,4 +9,11 @@ export interface Offer {
     offerEndDate: Date;
     department: Department;
     employerId: number;
+    status: OfferStatus;
+}
+
+export enum OfferStatus {
+    PENDING = "PENDING",
+    ACCEPTED = "ACCEPTED",
+    REFUSED = "REFUSED"
 }

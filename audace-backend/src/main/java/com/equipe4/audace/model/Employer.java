@@ -1,5 +1,6 @@
 package com.equipe4.audace.model;
 
+import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.model.offer.Offer;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -11,10 +12,8 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
 public class Employer extends User {
-
     private String organisation;
     private String position;
     private String extension;
@@ -29,5 +28,9 @@ public class Employer extends User {
         this.organisation = organisation;
         this.position = position;
         this.extension = extension;
+    }
+
+    public EmployerDTO toDTO() {
+        return new EmployerDTO(this.id, this.firstName, this.lastName, this.email, this.password, this.organisation, this.position, this.address, this.phone, this.extension);
     }
 }

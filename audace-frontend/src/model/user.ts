@@ -9,6 +9,7 @@ export interface User {
     phone?: string;
     address?: string;
     password: string;
+    type?: string;
 }
 
 export interface Student extends User{
@@ -23,7 +24,12 @@ export interface Employer extends User{
     offers: Offer[];
 }
 
+export interface Manager extends User {
+    department: Department;
+}
+
 export enum UserType {
     Student,
-    Employer
+    Employer,
+    Manager
 }

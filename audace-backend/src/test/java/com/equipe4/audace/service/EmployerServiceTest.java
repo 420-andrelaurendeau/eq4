@@ -88,4 +88,35 @@ public class EmployerServiceTest {
         assertThat(employerDTOList.size()).isEqualTo(2);
         verify(employerRepository, times(1)).findAll();
     }
+
+    @Test
+    public void findEmployerById_happyPathTest() {
+        // Arrange
+        Employer employer = Employer.employerBuilder()
+                .firstName("Employer1").lastName("Employer1").email("employer1@gmail.com").password("123456eE")
+                .organisation("Organisation1").position("Position1").phone("123-456-7890").extension("12345")
+                .address("Class Service, Javatown, Qc H8N1C1").build();
+
+        when(employerRepository.findById(1L)).thenReturn(Optional.of(employer));
+
+        // Act
+        EmployerDTO employerDTO = employerService.findEmployerById(1L).orElseThrow();
+
+        // Assert
+        assertThat(employerDTO.getFirstName()).isEqualTo("Employer1");
+        assertThat(employerDTO.getLastName()).isEqualTo("Employer1");
+        assertThat(employerDTO.getEmail()).isEqualTo("employer1@gmail.com");
+    }
+
+    @Test
+    public void findEmployerById_notFoundTest() {
+        // Arrange
+        when(employerRepository.findById(1L)).thenReturn(Optional.empty());
+
+        // Act
+        Optional<EmployerDTO> employerDTO = employerService.findEmployerById(1L);
+
+        // Assert
+        assertThat(employerDTO.isEmpty()).isTrue();
+    }
 }
