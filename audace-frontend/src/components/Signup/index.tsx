@@ -44,6 +44,7 @@ const Signup = ({handleSubmit, extension, setExtension, errors, setErrors, valid
             phone: phone,
             email: email,
             password: password,
+            type: 'student'
         };
 
         sendRequest(user);
