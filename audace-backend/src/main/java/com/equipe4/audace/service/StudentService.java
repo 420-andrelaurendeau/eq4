@@ -75,7 +75,7 @@ public class StudentService {
 
         try {
             bytes = file.getBytes();
-            name = file.getName();
+            name = file.getOriginalFilename();
         } catch (IOException e) {
             throw new IllegalArgumentException("File cannot be read");
         }
