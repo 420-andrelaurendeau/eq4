@@ -1,26 +1,32 @@
 # Points d'action
+## Sprint 1
 - Faire une daily chaque samedi à 10:00 A.M.
 - Communication entre ceux assignés au backend et frontend d'une story pour décider de l'API chaque fois qu'une story est commencée.
+## Sprint 2
+- Écrire l'équivalent de la daily après avoir travaillé dans le canal discord approprié
+- Informer les personnes concernées avec les roles discord après avoir fait des changements
 
 # Définition de DONE
 - Le code compile
 - 80% de coverage dans le test
 - Le code est vérifiée par un pair (peer programming ou code review)
 - La branche est à jour depuis main
-- Code granulaire
 
 ### Frontend:
-- Typage complet
+- Typage complet et logique (pas de any)
 - Navigation minimale
 - Texte, pas d'icones
-- 
 
 ### Backend:
-- 
+- Pas de classes modèles dans le controller
+- Service prend DTO et retourne DTO (Wrapped dans un Optional ou Collection)
 
 ### Normes de l'équipe:
 - Le code est cohérent entre les programmeurs
-- 
+- DRY
+- Respect des normes de la langue de prog
+- Pas de code obsolete
+- Pas d'imports non-utilisés
 
 # eq4
 meilleur que l'équipe 3
