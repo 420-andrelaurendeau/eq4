@@ -61,15 +61,15 @@
   },
   "studentOffersList": {
     "viewTitle": "Offres disponibles",
-    "applyButton":"Appliquer"
+    "applyButton": "Appliquer"
   },
   "managerOffersList": {
     "viewTitle": "Offres disponibles",
     "acceptButton": "Accepter",
     "refuseButton": "Refuser",
-    "ACCEPTED" : "Accepté",
-    "REFUSED" : "Refusé",
-    "noMorePendingOffers" : "Il n'y a plus d'offres en attente"
+    "ACCEPTED": "Accepté",
+    "REFUSED": "Refusé",
+    "noMorePendingOffers": "Il n'y a plus d'offres en attente"
   },
   "employerOffersList": {
     "viewTitle": "Offres disponibles",
@@ -81,5 +81,11 @@
   },
   "manager": {
     "seeOffersButton": "Voir les offres"
+  },
+  "upload": {
+    "CvFormTitle": "Téléverser votre CV",
+    "file": "Séléctionner un fichier",
+    "submit": "Téléverser",
+    "success": "Votre CV a été téléversé avec succès"
   }
 }

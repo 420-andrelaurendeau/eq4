@@ -81,5 +81,11 @@
   },
   "manager": {
     "seeOffersButton": "See Offers"
+  },
+  "upload": {
+    "CvFormTitle": "Upload CV",
+    "file": "Upload File",
+    "submit": "Submit",
+    "success": "Your CV has been uploaded successfully"
   }
 }
