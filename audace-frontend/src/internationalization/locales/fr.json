@@ -1,5 +1,6 @@
 {
   "langCode": "fr",
+  "signin": "Se connecter",
   "signup": {
     "employerFormTitle": "Inscription Employeur",
     "studentFormTitle": "Inscription Étudiant",

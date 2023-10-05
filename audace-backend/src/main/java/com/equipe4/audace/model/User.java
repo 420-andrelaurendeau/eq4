@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 //@Table(name = "AUDACE_USER") -> Ne permets pas la creation des tables Student et Employer
 public abstract class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQUENCE_USER")
     @SequenceGenerator(name = "SEQUENCE_USER", sequenceName = "USER_SEC", allocationSize = 1)
     protected Long id;
     protected String firstName;

@@ -20,6 +20,7 @@ const EmployerSignup = () => {
       position: position,
       extension: extension,
       offers: [],
+      type: "employer",
     };
 
     return employerSignup(employer);
