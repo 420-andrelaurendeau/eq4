@@ -28,6 +28,7 @@ const StudentOfferView = () => {
 
     useEffect(() => {
         if (student === undefined) return;
+        if (offers.length !== 0) return;
 
         getStudentOffersByDepartment(student.department!.id!)
         .then((res) => {

@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { Offer, OfferStatus } from "../../../../model/offer";
 import { Employer, UserType } from "../../../../model/user";
-import { Modal } from "react-bootstrap";
+import {Button, Modal} from "react-bootstrap";
 import { getEmployerById } from "../../../../services/userService";
 import { useTranslation } from "react-i18next";
 import { formatDate } from "../../../../services/formatService";
 import OfferButtons from "../OfferButtons";
+import { apply } from "../../../../services/studentApplicationService"
+import { useParams} from "react-router";
 
 interface Props {
     offer: Offer;
@@ -19,6 +21,8 @@ interface Props {
 
 const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, updateOffersState}: Props) => {
     const {t} = useTranslation();
+    const { id: studentIdFromURL } = useParams();
+    const studentId = parseInt(studentIdFromURL!, 10);
 
     useEffect(() => {
         if (employer !== undefined) return;
@@ -34,6 +38,23 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
 
     const createBoldText = (text: string) => {
         return <b>{text}</b>;
+    };
+
+    const handleApply = () => {
+        const applicationData = {
+            id: 1000,
+            studentId: studentId,
+            offerId: offer.id,
+            cvId:100,
+        };
+
+        apply(applicationData)
+            .then((response) => {
+                console.log("Application submitted successfully");
+            })
+            .catch((error) => {
+                console.error("Error submitting application:", error);
+            });
     };
 
     return (
@@ -87,7 +108,8 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
                 </Modal.Body>
                 <Modal.Footer> 
                     {employer === undefined && <div className="text-danger">{t("offer.modal.empNotFound")}</div>}
-                    <OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState}/>
+                    <Button onClick={() => handleApply()}>Apply</Button>
+                    {/*<OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState}/>*/}
                 </Modal.Footer>
             </Modal>
         </>

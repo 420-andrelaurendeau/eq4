@@ -10,13 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/employers")
 public class EmployerController extends GenericUserController<Employer, EmployerService>{
-
-
     public EmployerController(EmployerService employerService) {
         super(employerService);
     }
