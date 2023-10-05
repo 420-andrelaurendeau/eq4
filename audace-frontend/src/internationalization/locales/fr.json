@@ -45,6 +45,7 @@
   "upload": {
     "CvFormTitle": "Téléverser votre CV",
     "file": "Séléctionner un fichier",
-    "submit": "Téléverser"
+    "submit": "Téléverser",
+    "success": "Votre CV a été téléversé avec succès"
   }
 }

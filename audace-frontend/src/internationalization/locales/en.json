@@ -45,6 +45,7 @@
   "upload": {
     "CvFormTitle": "Upload CV",
     "file": "Upload File",
-    "submit": "Submit"
+    "submit": "Submit",
+    "success": "Your CV has been uploaded successfully"
   }
 }
