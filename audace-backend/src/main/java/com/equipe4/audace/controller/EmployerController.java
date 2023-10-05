@@ -56,7 +56,7 @@ public class EmployerController extends GenericUserController<Employer, Employer
     @PutMapping("/{id}/offers")
     public ResponseEntity<OfferDTO> updateOffer(@RequestBody OfferDTO offerDTO){
         logger.info("updateOffer");
-        OfferDTO updatedOffer = service.updateOffer(offerDTO).get();
+        OfferDTO updatedOffer = service.updateOffer(offerDTO).orElseThrow();
         return ResponseEntity.ok(updatedOffer);
     }
 
