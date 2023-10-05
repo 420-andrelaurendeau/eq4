@@ -15,14 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Inheritance
 @Data
 @NoArgsConstructor
 public class Student extends User {
     @Column
     private String studentNumber;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Department department;
 
     @OneToMany(cascade = CascadeType.ALL)

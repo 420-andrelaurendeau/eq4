@@ -21,7 +21,7 @@ function AppHeader() {
                     <Button onClick={() => handleClick("/signup/employer")} variant="light">{t("signup.signup")}</Button>
                 </Nav>
                 <Nav style={{ paddingRight: '1rem' }}>
-                    <Button onClick={() => handleClick("/users")} variant="light">Sign In</Button>
+                    <Button onClick={() => handleClick("/users")} variant="light">{t("signin")}</Button>
                 </Nav>
                 <LanguageToggler />
             </Navbar.Collapse>

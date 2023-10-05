@@ -5,7 +5,7 @@ import { Student, User } from "../../../model/user";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
 import Signup from "..";
-import FormError from "../../FormError";
+import FormInput from "../FormInput";
 
 const StudentSignup = () => {
   const {t} = useTranslation();
@@ -14,19 +14,18 @@ const StudentSignup = () => {
   const [errors, setErrors] = useState<string[]>([]);
 
   const handleSubmit = (user: User) => {
-    if (!depCode) return;
-
     let student: Student = {
       ...user,
       studentNumber: studentId,
+      type: "student",
     }
 
-    studentSignup(student, depCode)
-      .then((res) => {})
-      .catch((err) => {});
+    return studentSignup(student, depCode!);
   };
 
   const validateForm = (errors: string[]): boolean => {
+    if (!depCode) return false;
+
     let isFormValid = true;
     let errorsToDisplay: string[] = [];
 
@@ -49,23 +48,22 @@ const StudentSignup = () => {
     <>
       <h3>{t("signup.studentFormTitle")}</h3>
       <Form>
-        <Form.Group controlId="formBasicStudentId">
-          <Form.Label>{t("signup.studentId")}</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter student ID"
-            value={studentId}
-            onChange={(e) => setStudentId(e.target.value)}
-          />
-        </Form.Group>
+        <FormInput 
+          label="signup.studentId"
+          value={studentId}
+          onChange={(e) => setStudentId(e.target.value)}
+          errors={errors}
+          formError="signup.errors.studentId"
+          controlId="formBasicStudentId"
+        />
 
         <Signup
           handleSubmit={handleSubmit}
+          errors={errors}
           setErrors={setErrors}
           validateExtraFormValues={validateForm}
         />
       </Form>
-      <FormError errors={errors} />
     </>
   );
 };

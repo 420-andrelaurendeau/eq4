@@ -3,10 +3,7 @@ package com.equipe4.audace.model.offer;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +20,8 @@ public class Offer {
     private Long id;
 
     private String title;
+
+    @Column(length = 2048)
     private String description;
     private Date internshipStartDate;
     private Date internshipEndDate;
@@ -34,6 +33,15 @@ public class Offer {
     @ManyToOne
     private Employer employer;
 
+    private Status status;
+
+    public enum Status {
+        PENDING,
+        ACCEPTED,
+        REFUSED
+    }
+
+
     public Offer(String title, String description, Date internshipStartDate, Date internshipEndDate, Date offerEndDate, Employer employer, Department department) {
         this.title = title;
         this.description = description;
@@ -42,9 +50,10 @@ public class Offer {
         this.offerEndDate = offerEndDate;
         this.employer = employer;
         this.department = department;
+        status = Status.PENDING;
     }
 
     public OfferDTO toDTO() {
-        return new OfferDTO(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, employer.getId(), department.toDTO());
+        return new OfferDTO(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, employer.getId(), department.toDTO(), status);
     }
 }

@@ -1,5 +1,6 @@
 {
   "langCode": "fr",
+  "signin": "Se connecter",
   "signup": {
     "employerFormTitle": "Inscription Employeur",
     "studentFormTitle": "Inscription Étudiant",
@@ -32,7 +33,7 @@
       "studentId": "SVP entrez une matricule valide"
     }
   },
-  "studentOffersList": {
+  "offersList": {
     "errors": {
       "departmentNotFound": "Aucun département trouvé"
     },
@@ -41,6 +42,45 @@
     "internshipStartDate": "Date de début",
     "noOffers": "Aucun offre disponible",
     "viewTitle": "Offres disponibles"
+  },
+  "offer": {
+    "modal": {
+      "org": "Organisation",
+      "address": "Adresse",
+      "phone": "Téléphone",
+      "orgNotFound": "L'organisation n'a pas été trouvée",
+      "offerEnd": "L'offre se termine le",
+      "offerDescription": "Description de l'offre",
+      "empNotFound": "L'employeur n'a pas été trouvé!",
+      "apply": "Postuler",
+      "internDate": {
+        "start": "De",
+        "end": "à"
+      }
+    }
+  },
+  "studentOffersList": {
+    "viewTitle": "Offres disponibles",
+    "applyButton": "Appliquer"
+  },
+  "managerOffersList": {
+    "viewTitle": "Offres disponibles",
+    "acceptButton": "Accepter",
+    "refuseButton": "Refuser",
+    "ACCEPTED": "Accepté",
+    "REFUSED": "Refusé",
+    "noMorePendingOffers": "Il n'y a plus d'offres en attente"
+  },
+  "employerOffersList": {
+    "viewTitle": "Offres disponibles",
+    "editButton": "Modifier",
+    "deleteButton": "Supprimer"
+  },
+  "student": {
+    "seeOffersButton": "Voir les offres"
+  },
+  "manager": {
+    "seeOffersButton": "Voir les offres"
   },
   "upload": {
     "CvFormTitle": "Téléverser votre CV",
