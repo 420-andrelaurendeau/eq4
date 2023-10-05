@@ -47,7 +47,7 @@ public class EmployerServiceTest {
     public void createEmployer_NullEmployer(){
         assertThatThrownBy(() -> employerService.createEmployer(null))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Employer cannot be null");
+                .hasMessage("Invalid employer");
     }
     @Test
     void createEmployer_EmailAlreadyInUse() {
