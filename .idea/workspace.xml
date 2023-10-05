@@ -6,7 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/AudaceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/AudaceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/StudentDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/StudentDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +54,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;EQ4-142-Login__Temporaire&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;EQ4-24-Etudiant__postule__sur__offre&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/cbemo/Desktop/Projet/eq4/audace&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -137,6 +140,8 @@
       <workItem from="1696378856181" duration="15711000" />
       <workItem from="1696435669307" duration="14000" />
       <workItem from="1696436107481" duration="4796000" />
+      <workItem from="1696499936429" duration="417000" />
+      <workItem from="1696500373919" duration="1332000" />
     </task>
     <servers />
   </component>
