@@ -5,7 +5,6 @@ import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.dto.StudentDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
