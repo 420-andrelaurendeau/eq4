@@ -56,7 +56,7 @@ const Signup = ({handleSubmit, extension, setExtension, errors, setErrors, valid
         handleSubmit(user)
             .then((_) => {
                 setUnexpectedError("");
-                navigate("/");
+                navigate("/createdUser");
             })
             .catch((err) => {
                 setIsDisabled(false);

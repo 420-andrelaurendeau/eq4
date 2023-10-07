@@ -20,11 +20,21 @@ function App() {
           <AppHeader />
           <Routes>
             <Route
-              path="/"
+              path="/*"
               element={
-                <>
-                  <h1>OSE ÊTRE MEILLEUR</h1>
-                </>
+                <Routes>
+                  <Route index element={
+                    <>
+                      <h1>OSE ÊTRE MEILLEUR</h1>
+                    </>
+                  } />
+                  <Route path="createdUser" element={
+                    <>
+                      <h1>OSE ÊTRE MEILLEUR</h1>
+                      <h2>Utilisateur créé</h2>
+                    </>
+                  } />
+                </Routes>
               }
             />
             <Route path="/student/*" element={
