@@ -28,14 +28,6 @@ public class StudentController extends GenericUserController<Student, StudentSer
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/signup/{departmentCode}")
-    @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<HttpStatus> createStudent(@RequestBody StudentDTO studentDTO, @PathVariable String departmentCode) {
-        logger.info("createStudent");
-        service.createStudent(studentDTO, departmentCode);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
     @GetMapping("/offers/{departmentId}")
     public ResponseEntity<List<OfferDTO>> getOffersByDepartment(@PathVariable Long departmentId) {
         return ResponseEntity.ok(service.getAcceptedOffersByDepartment(departmentId));

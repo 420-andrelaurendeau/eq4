@@ -4,7 +4,6 @@ import com.equipe4.audace.controller.abstracts.GenericUserController;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.service.EmployerService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,12 +30,5 @@ public class EmployerController extends GenericUserController<Employer, Employer
         return service.findEmployerById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @PostMapping
-    public ResponseEntity<HttpStatus> createEmployer(@RequestBody EmployerDTO employerDTO){
-        logger.info("createEmployer");
-        service.createEmployer(employerDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

@@ -1,9 +1,13 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.LoggedController;
+import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.security.LoginRequest;
 import com.equipe4.audace.security.jwt.TimedJwt;
+import com.equipe4.audace.service.EmployerService;
+import com.equipe4.audace.service.StudentService;
 import com.equipe4.audace.service.auth.AuthService;
 import com.equipe4.audace.utils.JwtManipulator;
 import lombok.AllArgsConstructor;
@@ -19,6 +23,8 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AuthController extends LoggedController {
     private final AuthService authService;
+    private final EmployerService employerService;
+    private final StudentService studentService;
     private final JwtManipulator jwtManipulator;
 
     @PostMapping("/login")
@@ -33,5 +39,19 @@ public class AuthController extends LoggedController {
 
         TimedJwt jwt = jwtManipulator.generateToken(loggedUser.get().fromDTO());
         return ResponseEntity.ok(jwt);
+    }
+
+    @PostMapping("/signup/student/{departmentCode}")
+    public ResponseEntity<HttpStatus> signupStudent(@RequestBody StudentDTO studentDTO, @PathVariable String departmentCode) {
+        logger.info("createStudent");
+        studentService.createStudent(studentDTO, departmentCode);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping("/signup/employer")
+    public ResponseEntity<HttpStatus> createEmployer(@RequestBody EmployerDTO employerDTO){
+        logger.info("createEmployer");
+        employerService.createEmployer(employerDTO);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
