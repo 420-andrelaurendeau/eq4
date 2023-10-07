@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import {useEffect, useState} from "react";
 import { Offer, OfferStatus } from "../../../../model/offer";
 import { Employer, UserType } from "../../../../model/user";
 import {Button, Modal} from "react-bootstrap";
@@ -7,6 +7,8 @@ import { useTranslation } from "react-i18next";
 import { formatDate } from "../../../../services/formatService";
 import { apply } from "../../../../services/studentApplicationService"
 import { useParams} from "react-router";
+import axios from "axios";
+import Application from "../../../../model/application";
 
 interface Props {
     offer: Offer;
@@ -23,15 +25,19 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
     const { id: studentIdFromURL } = useParams();
     const studentId = parseInt(studentIdFromURL!, 10);
 
+    const [applicationMessage, setApplicationMessage] = useState("");
+    const [applicationMessageColor, setApplicationMessageColor] = useState("");
+
     useEffect(() => {
         if (employer !== undefined) return;
+        console.log("useEffect is being called again");
 
         getEmployerById(offer.employerId)
             .then((res) => {
                 setEmployer!(res.data);
             })
             .catch((err) => {
-                console.log(err);
+                console.log("getEmployerById error", err);
             });
     }, [setEmployer, offer, employer]);
 
@@ -40,19 +46,21 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
     };
 
     const handleApply = () => {
-        const applicationData = {
+        const applicationData: Application = {
             id: 1000,
             studentId: studentId,
             offerId: offer.id,
-            cvId:100,
+            cvId: 1,
         };
 
         apply(applicationData)
             .then((response) => {
-                console.log("Application submitted successfully");
+                setApplicationMessage("Application submitted successfully");
+                setApplicationMessageColor("green");
             })
             .catch((error) => {
-                console.error("Error submitting application:", error);
+                setApplicationMessage("Error submitting application: " + error.message);
+                setApplicationMessageColor("red");
             });
     };
 
@@ -66,23 +74,23 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
                     <div className="text-end">
                         <div>{t("offer.modal.org")}: {
                                 createBoldText(
-                                    employer !== undefined ? 
-                                    employer.organisation! : 
+                                    employer !== undefined ?
+                                    employer.organisation! :
                                     t("offer.modal.orgNotFound")
                                 )
                             }
                         </div>
                         <div>{t("offer.modal.address")}:&nbsp;
                             {createBoldText(
-                                employer !== undefined ? 
-                                employer.address! : 
+                                employer !== undefined ?
+                                employer.address! :
                                 t("offer.modal.orgNotFound")
                             )}
                         </div>
                         <div>{t("offer.modal.phone")}:&nbsp;
                             {createBoldText(
-                                employer !== undefined ? 
-                                employer.phone! : 
+                                employer !== undefined ?
+                                employer.phone! :
                                 t("offer.modal.orgNotFound")
                             )}
                         </div>
@@ -105,8 +113,11 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
                         <div>{t("offer.modal.offerEnd")}: {createBoldText(formatDate(offer.offerEndDate))}</div>
                     </div>
                 </Modal.Body>
-                <Modal.Footer> 
+                <Modal.Footer>
                     {employer === undefined && <div className="text-danger">{t("offer.modal.empNotFound")}</div>}
+                    {applicationMessage && (
+                        <div style={{ color: applicationMessageColor }}>{applicationMessage}</div>
+                    )}
                     <Button onClick={() => handleApply()}>Apply</Button>
                     {/*<OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState}/>*/}
                 </Modal.Footer>
