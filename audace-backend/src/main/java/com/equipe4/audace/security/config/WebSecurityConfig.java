@@ -40,10 +40,9 @@ public class WebSecurityConfig {
                 .requestMatchers("/managers/**").hasAnyRole(Roles.ADMIN.name(), Roles.MANAGER.name())
             );
 
-        Customizer<SessionManagementConfigurer<HttpSecurity>> statelessSession =
-                (sessionManagement) -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.sessionManagement((sessionManagement) ->
+                sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.sessionManagement(statelessSession);
         http.csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
