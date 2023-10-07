@@ -2,5 +2,8 @@ package com.equipe4.audace.security.config;
 
 public enum Roles {
     USER,
-    ADMIN
+    ADMIN,
+    STUDENT,
+    EMPLOYER,
+    MANAGER
 }
