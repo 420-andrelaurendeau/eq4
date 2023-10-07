@@ -5,7 +5,7 @@ import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.security.LoginRequest;
 import com.equipe4.audace.security.jwt.TimedJwt;
 import com.equipe4.audace.service.auth.AuthService;
-import com.equipe4.audace.service.auth.JwtService;
+import com.equipe4.audace.utils.JwtManipulator;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AuthController extends LoggedController {
     private final AuthService authService;
-    private final JwtService jwtService;
+    private final JwtManipulator jwtManipulator;
 
     @PostMapping("/login")
     public ResponseEntity<TimedJwt> login(@RequestBody LoginRequest loginRequest) {
@@ -31,7 +31,7 @@ public class AuthController extends LoggedController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        TimedJwt jwt = jwtService.generateToken(loggedUser.get().fromDTO());
+        TimedJwt jwt = jwtManipulator.generateToken(loggedUser.get().fromDTO());
         return ResponseEntity.ok(jwt);
     }
 }
