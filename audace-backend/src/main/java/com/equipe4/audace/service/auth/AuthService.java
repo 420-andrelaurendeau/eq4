@@ -1,4 +1,4 @@
-package com.equipe4.audace.service;
+package com.equipe4.audace.service.auth;
 
 import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.model.Student;

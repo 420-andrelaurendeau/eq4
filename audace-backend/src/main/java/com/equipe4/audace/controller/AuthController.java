@@ -3,7 +3,9 @@ package com.equipe4.audace.controller;
 import com.equipe4.audace.controller.abstracts.LoggedController;
 import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.security.LoginRequest;
-import com.equipe4.audace.service.AuthService;
+import com.equipe4.audace.security.jwt.TimedJwt;
+import com.equipe4.audace.service.auth.AuthService;
+import com.equipe4.audace.service.auth.JwtService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +19,10 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AuthController extends LoggedController {
     private final AuthService authService;
+    private final JwtService jwtService;
 
     @PostMapping("/login")
-    public ResponseEntity<HttpStatus> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<TimedJwt> login(@RequestBody LoginRequest loginRequest) {
         logger.info("login");
 
         Optional<UserDTO> loggedUser = authService.login(loginRequest);
@@ -28,12 +31,7 @@ public class AuthController extends LoggedController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping("")
-    public ResponseEntity<HttpStatus> doAThing() {
-        logger.info("doAThing");
-        return new ResponseEntity<>(HttpStatus.OK);
+        TimedJwt jwt = jwtService.generateToken(loggedUser.get().fromDTO());
+        return ResponseEntity.ok(jwt);
     }
 }
