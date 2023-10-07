@@ -1,4 +1,4 @@
-package com.equipe4.audace.service.auth;
+package com.equipe4.audace.utils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -10,18 +10,18 @@ import com.equipe4.audace.model.User;
 import com.equipe4.audace.security.jwt.TimedJwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
-@Service
-public class JwtService {
+@Component
+public class JwtManipulator {
     private final String issuer;
     private final Algorithm signingAlgorithm;
     private final long expirationMs;
 
     @Autowired
-    public JwtService(
+    public JwtManipulator(
             @Value("${jwt.issuer}") String issuer,
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.expirationMs}") int expirationMs
