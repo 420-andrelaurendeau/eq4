@@ -1,5 +1,6 @@
 package com.equipe4.audace.controller;
 
+import com.equipe4.audace.controller.abstracts.GenericUserController;
 import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.model.User;
 import com.equipe4.audace.service.UserService;
@@ -13,7 +14,7 @@ import java.util.Optional;
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/users")
-public class UserController extends GenericUserController<User, UserService>{
+public class UserController extends GenericUserController<User, UserService> {
     public UserController(UserService userService) {
         super(userService);
     }
