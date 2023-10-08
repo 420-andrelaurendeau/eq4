@@ -7,15 +7,19 @@ import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.User;
+import com.equipe4.audace.security.config.Roles;
 import com.equipe4.audace.security.jwt.TimedJwt;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Component
 public class JwtManipulator {
+    private final String JWT_PREFIX = "Bearer ";
     private final String issuer;
     private final Algorithm signingAlgorithm;
     private final long expirationMs;
@@ -46,15 +50,15 @@ public class JwtManipulator {
         );
     }
 
-    private String determineRole(User user) {
+    public String determineRole(User user) {
         if (user instanceof Student)
-            return "STUDENT";
+            return Roles.STUDENT.name();
         if (user instanceof Employer)
-            return "EMPLOYER";
+            return Roles.EMPLOYER.name();
         if (user instanceof Manager)
-            return "MANAGER";
+            return Roles.MANAGER.name();
 
-        return "USER";
+        return Roles.USER.name();
     }
 
     public DecodedJWT decodeToken(String token) {
@@ -62,5 +66,20 @@ public class JwtManipulator {
                 .withIssuer(issuer)
                 .build()
                 .verify(token);
+    }
+
+    public Optional<String> getJwt(HttpServletRequest request) {
+        String jwt = request.getHeader("Authorization");
+        if (!isValid(jwt))
+            return Optional.empty();
+
+        return Optional.of(jwt.substring(JWT_PREFIX.length()));
+    }
+
+    private boolean isValid(String jwt) {
+        if (jwt == null || jwt.isEmpty())
+            return false;
+
+        return jwt.length() > JWT_PREFIX.length() && jwt.startsWith(JWT_PREFIX);
     }
 }
