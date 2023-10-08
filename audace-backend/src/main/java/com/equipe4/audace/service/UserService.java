@@ -5,6 +5,7 @@ import com.equipe4.audace.model.User;
 import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 

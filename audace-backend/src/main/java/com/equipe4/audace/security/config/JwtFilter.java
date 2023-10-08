@@ -26,7 +26,7 @@ import java.util.Optional;
 
 @Component
 @AllArgsConstructor
-public class JwtTokenFilter extends OncePerRequestFilter {
+public class JwtFilter extends OncePerRequestFilter {
     private final JwtManipulator jwtManipulator;
     private final UserRepository userRepository;
 
