@@ -8,14 +8,17 @@ import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
+import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.service.ManagerService;
+import com.equipe4.audace.utils.JwtManipulator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -26,6 +29,7 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -33,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ManagerControllerTest {
     @Autowired
     private MockMvc mvc;
+
     @MockBean
     private ManagerService managerService;
     @MockBean
@@ -45,8 +50,13 @@ public class ManagerControllerTest {
     private StudentRepository studentRepository;
     @MockBean
     private ManagerRepository managerRepository;
+    @MockBean
+    private UserRepository userRepository;
+    @MockBean
+    private JwtManipulator jwtManipulator;
 
     @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void acceptOffer() throws Exception {
         Employer employer = new Employer();
         Department department = new Department();
@@ -54,7 +64,7 @@ public class ManagerControllerTest {
         when(managerService.acceptOffer(1L)).thenReturn(Optional.of(offer1.toDTO()));
 
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/managers/accept_offer/1")
+                .post("/managers/accept_offer/1").with(csrf())
                 .accept(MediaType.APPLICATION_JSON)
                 .content(offer1.toString())
                 .contentType(MediaType.APPLICATION_JSON);
@@ -62,6 +72,7 @@ public class ManagerControllerTest {
         mvc.perform(request).andExpect(status().isOk());
     }
     @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void refuseOffer() throws Exception {
         Employer employer = new Employer();
         Department department = new Department();
@@ -69,7 +80,7 @@ public class ManagerControllerTest {
         when(managerService.refuseOffer(1L)).thenReturn(Optional.of(offer1.toDTO()));
 
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/managers/refuse_offer/1")
+                .post("/managers/refuse_offer/1").with(csrf())
                 .accept(MediaType.APPLICATION_JSON)
                 .content(offer1.toString())
                 .contentType(MediaType.APPLICATION_JSON);
@@ -77,6 +88,7 @@ public class ManagerControllerTest {
         mvc.perform(request).andExpect(status().isOk());
     }
     @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void acceptOffer_invalidId() throws Exception {
         Employer employer = new Employer();
         Department department = new Department();
@@ -85,7 +97,7 @@ public class ManagerControllerTest {
         when(managerService.acceptOffer(-25L)).thenReturn(Optional.empty());
 
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/managers/accept_offer/-25")
+                .post("/managers/accept_offer/-25").with(csrf())
                 .accept(MediaType.APPLICATION_JSON)
                 .content(offer1.toString())
                 .contentType(MediaType.APPLICATION_JSON);
@@ -93,6 +105,7 @@ public class ManagerControllerTest {
         mvc.perform(request).andExpect(status().isBadRequest());
     }
     @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void refuseOffer_invalidId() throws Exception {
         Employer employer = new Employer();
         Department department = new Department();
@@ -101,7 +114,7 @@ public class ManagerControllerTest {
         when(managerService.refuseOffer(-25L)).thenReturn(Optional.empty());
 
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/managers/refuse_offer/-25")
+                .post("/managers/refuse_offer/-25").with(csrf())
                 .accept(MediaType.APPLICATION_JSON)
                 .content(offer1.toString())
                 .contentType(MediaType.APPLICATION_JSON);
@@ -110,6 +123,7 @@ public class ManagerControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void getOffersByDepartment_happyPath() throws Exception {
         List<OfferDTO> offerDTOList = List.of(mock(OfferDTO.class));
         when(managerService.getOffersByDepartment(1L)).thenReturn(offerDTOList);
@@ -119,6 +133,7 @@ public class ManagerControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void getManagerById_happyPath_test() throws Exception {
         Department department = new Department("yeete", "yaint");
         Manager manager = new Manager(
@@ -148,6 +163,7 @@ public class ManagerControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void getManagerById_invalidId_test() throws Exception {
         when(managerService.getManagerById(-1L)).thenReturn(Optional.empty());
 

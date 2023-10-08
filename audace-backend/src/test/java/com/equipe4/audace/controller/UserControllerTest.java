@@ -5,14 +5,17 @@ import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
+import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.service.UserService;
+import com.equipe4.audace.utils.JwtManipulator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 import java.util.Optional;
@@ -31,20 +34,21 @@ class UserControllerTest {
 
     @MockBean
     private UserService userService;
-
     @MockBean
     private DepartmentRepository departmentRepository;
-
     @MockBean
     private EmployerRepository employerRepository;
-
     @MockBean
     private StudentRepository studentRepository;
-
     @MockBean
     private ManagerRepository managerRepository;
+    @MockBean
+    private UserRepository userRepository;
+    @MockBean
+    private JwtManipulator jwtManipulator;
 
     @Test
+    @WithMockUser(username = "user")
     void testGetAllUsers() throws Exception {
         List<UserDTO> userDTOs = List.of(
                 new EmployerDTO(1L, "peterson", "sara", "lesun@live.com", "password", "RocaFella Records", "artist", "3 York St", "4387253892", "slat"),
@@ -57,6 +61,7 @@ class UserControllerTest {
                 .andExpect(jsonPath("$", hasSize(userDTOs.size())));
     }
     @Test
+    @WithMockUser(username = "user")
     void testGetUser() throws Exception {
         long userId = 1L;
         UserDTO userDTO = new EmployerDTO(userId, "peterson", "sara", "lesun@live.com", "password", "RocaFella Records", "artist", "3 York St", "4387253892", "slat");
@@ -74,6 +79,7 @@ class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "user")
     void testGetUserNotFound() throws Exception {
         when(userService.getUser(1L)).thenReturn(Optional.empty());
 
