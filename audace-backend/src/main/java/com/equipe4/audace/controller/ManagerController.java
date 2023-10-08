@@ -32,7 +32,7 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
         logger.info("acceptOffer");
         return service.acceptOffer(offerId)
                 .map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST));
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @PostMapping("/refuse_offer/{offerId}")
@@ -40,7 +40,7 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
         logger.info("refuseOffer");
         return service.refuseOffer(offerId)
                 .map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST));
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @GetMapping("/offers/{departmentId}")
