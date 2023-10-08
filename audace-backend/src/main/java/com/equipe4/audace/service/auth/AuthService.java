@@ -6,7 +6,7 @@ import com.equipe4.audace.model.security.Salt;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
-import com.equipe4.audace.security.LoginRequest;
+import com.equipe4.audace.security.login.LoginRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.crypto.bcrypt.BCrypt;

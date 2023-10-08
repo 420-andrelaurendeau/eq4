@@ -7,7 +7,7 @@ import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.User;
-import com.equipe4.audace.security.config.Roles;
+import com.equipe4.audace.security.config.Authorities;
 import com.equipe4.audace.security.jwt.TimedJwt;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class JwtManipulator {
                         .withIssuedAt(new Date())
                         .withClaim("id", user.getId())
                         .withClaim("email", user.getEmail())
-                        .withClaim("role", determineRole(user))
+                        .withClaim("authority", determineAuthority(user))
                         .withExpiresAt(new Date(new Date().getTime() + expirationMs))
                         .withIssuer(issuer)
                         .sign(signingAlgorithm),
@@ -50,15 +50,15 @@ public class JwtManipulator {
         );
     }
 
-    public String determineRole(User user) {
+    public String determineAuthority(User user) {
         if (user instanceof Student)
-            return Roles.STUDENT.name();
+            return Authorities.STUDENT.name();
         if (user instanceof Employer)
-            return Roles.EMPLOYER.name();
+            return Authorities.EMPLOYER.name();
         if (user instanceof Manager)
-            return Roles.MANAGER.name();
+            return Authorities.MANAGER.name();
 
-        return Roles.USER.name();
+        return Authorities.USER.name();
     }
 
     public DecodedJWT decodeToken(String token) {

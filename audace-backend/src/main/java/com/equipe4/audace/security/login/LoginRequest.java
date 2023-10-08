@@ -1,4 +1,4 @@
-package com.equipe4.audace.security;
+package com.equipe4.audace.security.login;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

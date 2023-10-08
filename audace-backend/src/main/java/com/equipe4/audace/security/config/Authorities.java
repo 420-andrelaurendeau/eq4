@@ -1,6 +1,6 @@
 package com.equipe4.audace.security.config;
 
-public enum Roles {
+public enum Authorities {
     USER,
     ADMIN,
     STUDENT,

@@ -39,19 +39,19 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             DecodedJWT decodedJWT = jwtManipulator.decodeToken(token);
             User user = userRepository.findByEmail(decodedJWT.getSubject()).orElseThrow();
 
-            String role = jwtManipulator.determineRole(user);
+            String authority = jwtManipulator.determineAuthority(user);
 
-            if (!isTokenValid(decodedJWT, role))
+            if (!isTokenValid(decodedJWT, authority))
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
 
             UserDetails userDetails = org.springframework.security.core.userdetails.User
                     .withUsername(user.getEmail())
                     .password(user.getPassword())
-                    .authorities(getAuthorities(role))
+                    .authorities(getAuthorities(authority))
                     .build();
 
-            List<GrantedAuthority> authorities = getAuthorities(role);
+            List<GrantedAuthority> authorities = getAuthorities(authority);
 
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -60,21 +60,21 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private boolean isTokenValid(DecodedJWT decodedJWT, String role) {
-        return !isTokenExpired(decodedJWT) && doesRoleMatch(decodedJWT, role);
+    private boolean isTokenValid(DecodedJWT decodedJWT, String authority) {
+        return !isTokenExpired(decodedJWT) && doesRoleMatch(decodedJWT, authority);
     }
 
     private boolean isTokenExpired(DecodedJWT decodedJWT) {
         return decodedJWT.getExpiresAt().before(new Date());
     }
 
-    private boolean doesRoleMatch(DecodedJWT decodedJWT, String role) {
-        return decodedJWT.getClaim("role").asString().equals(role);
+    private boolean doesRoleMatch(DecodedJWT decodedJWT, String authority) {
+        return decodedJWT.getClaim("authority").asString().equals(authority);
     }
 
-    private List<GrantedAuthority> getAuthorities(String role) {
+    private List<GrantedAuthority> getAuthorities(String authority) {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(role));
+        authorities.add(new SimpleGrantedAuthority(authority));
         return authorities;
     }
 }
