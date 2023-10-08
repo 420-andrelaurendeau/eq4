@@ -1,11 +1,12 @@
-import {AxiosResponse} from "axios";
+import { AxiosResponse } from "axios";
 import http from "../constants/http";
-import {User} from "../model/user";
+import { LoginRequest, TimedJwt } from "../model/auth";
 
-export const getAllUsers = async (): Promise<AxiosResponse<User[]>> =>  {
-    return http.get<User[]>('/users')
+export const login = async(loginRequest: LoginRequest): Promise<AxiosResponse<TimedJwt>> => {
+    return http.post("/auth/login", loginRequest);
 }
 
-export const getUser = async (id : number): Promise<AxiosResponse<User>> => {
-    return http.get<User>(`users/${id}`);
+export const authenticate = (timedJwt: TimedJwt) => {
+    localStorage.setItem("jwt", timedJwt.jwt);
+    localStorage.setItem("expiration", timedJwt.expiration.toString());
 }

@@ -8,9 +8,9 @@ import StudentOfferView from "./views/StudentOfferView";
 import ManagerOfferView from "./views/ManagerOfferView";
 import ManagerHomePage from "./components/ManagerHomePage";
 import AppHeader from "./components/AppHeader";
-import UserList from "./components/Login";
 import StudentHomePage from "./components/StudentHomePage";
 import EmployerHomePage from "./components/EmployerHomePage";
+import LoginView from "./views/LoginView";
 
 function App() {
 
@@ -46,7 +46,9 @@ function App() {
             </Route>
             <Route path="/users/*" element={
               <Routes>
-                <Route path="" element={<UserList></UserList>}/>
+                <Route index element={
+                  <LoginView />
+                }/>
               </Routes>
             }>
             </Route>

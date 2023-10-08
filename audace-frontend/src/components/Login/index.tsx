@@ -1,47 +1,85 @@
-import React, { useEffect, useState } from 'react';
-import { User } from "../../model/user";
-import { useNavigate } from "react-router-dom";
-import { ListGroup, Button, Container } from 'react-bootstrap';
-import {getAllUsers} from "../../services/loginService";
+import { useState } from "react";
+import { Button, Form } from "react-bootstrap";
+import FormInput from "../FormInput";
+import { LoginRequest } from "../../model/auth";
+import { authenticate, login } from "../../services/loginService";
 
-const UserList: React.FC = () => {
-    const [users, setUsers] = useState<User[]>([]);
-    const navigate = useNavigate();
+const LoginForm = () => {
+  const [identification, setIdentification] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [errors, setErrors] = useState<string[]>([]);
 
-    useEffect(() => {
-        getAllUsers()
-            .then(response => {
-                setUsers(response.data);
-            });
-    }, []);
+  const submitForm = () => {
+    if (!validateForm()) return;
 
-    const handleSignInClick = (user: User) => {
-        sessionStorage.setItem('user', JSON.stringify(user));
-        if (user.type === "student") {
-            navigate(`/student/${user.id}`);
-        } else if (user.type === "employer") {
-            navigate(`/employer/${user.id}`);
-        } else if (user.type === "manager") {
-            navigate(`/manager/${user.id}`);
-        }
+    let loginRequest: LoginRequest = {
+      identification: identification,
+      password: password,
     };
 
-    return (
-        <ListGroup>
-            {users.map((user) => (
-                <ListGroup.Item key={user.id}>
-                    <Container fluid style={{ background: '#ccc', width: '35%', borderRadius: '5px' }}>
-                        <div className="d-flex justify-content-between p-2">
-                            <div className="d-inline-block align-self-center">{user.email}</div>
-                            <Button variant="success" className="fw-bold" onClick={() => handleSignInClick(user)}>
-                                Sign in
-                            </Button>
-                        </div>
-                    </Container>
-                </ListGroup.Item>
-            ))}
-        </ListGroup>
-    );
-}
+    login(loginRequest)
+      .then((response) => {
+        authenticate(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-export default UserList;
+  const validateForm = (): boolean => {
+    let isFormValid = true;
+    let errorsToDisplay: string[] = [];
+
+    if (!validateIdentification(errorsToDisplay)) isFormValid = false;
+    if (!validatePassword(errorsToDisplay)) isFormValid = false;
+
+    setErrors(errorsToDisplay);
+
+    return isFormValid;
+  };
+
+  const validateIdentification = (errorsToDisplay: string[]): boolean => {
+    if (identification === "") {
+      errorsToDisplay.push("login.errors.emptyIdentification");
+      return false;
+    }
+
+    return true;
+  };
+
+  const validatePassword = (errorsToDisplay: string[]): boolean => {
+    if (password === "") {
+      errorsToDisplay.push("login.errors.emptyPassword");
+      return false;
+    }
+
+    return true;
+  };
+
+  return (
+    <>
+      <Form>
+        <FormInput
+          label="login.identification"
+          value={identification}
+          onChange={(e) => setIdentification(e.target.value)}
+          controlId="formBasicIdentification"
+          errors={errors}
+          formError={""}
+        />
+        <FormInput
+          label="login.password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          controlId="formBasicPassword"
+          errors={errors}
+          formError={""}
+          type="password"
+        />
+        <Button onClick={submitForm}>Submit</Button>
+      </Form>
+    </>
+  );
+};
+
+export default LoginForm;
