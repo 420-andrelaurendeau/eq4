@@ -10,6 +10,8 @@ import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.StudentService;
 import com.equipe4.audace.utils.JwtManipulator;
 import org.junit.jupiter.api.Test;
@@ -52,6 +54,10 @@ public class StudentControllerTest {
     private UserRepository userRepository;
     @MockBean
     private JwtManipulator jwtManipulator;
+    @MockBean
+    private SaltRepository saltRepository;
+    @MockBean
+    private EmployerService employerService;
 
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT"})

@@ -11,7 +11,10 @@ import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.ManagerService;
+import com.equipe4.audace.service.StudentService;
 import com.equipe4.audace.utils.JwtManipulator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +57,12 @@ public class ManagerControllerTest {
     private UserRepository userRepository;
     @MockBean
     private JwtManipulator jwtManipulator;
+    @MockBean
+    private StudentService studentService;
+    @MockBean
+    private SaltRepository saltRepository;
+    @MockBean
+    private EmployerService employerService;
 
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})

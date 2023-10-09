@@ -7,7 +7,9 @@ import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
+import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.service.EmployerService;
+import com.equipe4.audace.service.StudentService;
 import com.equipe4.audace.utils.JwtManipulator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +19,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
@@ -25,6 +28,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.mockito.Mockito.*;
 
+@ActiveProfiles("test")
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(EmployerController.class)
 public class EmployerControllerTest {
@@ -45,27 +49,31 @@ public class EmployerControllerTest {
     private UserRepository userRepository;
     @MockBean
     private JwtManipulator jwtManipulator;
+    @MockBean
+    private StudentService studentService;
+    @MockBean
+    private SaltRepository saltRepository;
 
     @Test
-    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    @WithMockUser(username = "admin", authorities = {"ADMIN", "USER"})
     public void getEmployerById_happyPath_test_asAdmin() throws Exception {
         getEmployerById_happyPath_test();
     }
 
     @Test
-    @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
+    @WithMockUser(username = "employer", authorities = {"EMPLOYER", "USER"})
     public void getEmployerById_happyPath_test_asEmployer() throws Exception {
         getEmployerById_happyPath_test();
     }
 
     @Test
-    @WithMockUser(username = "manager", authorities = {"MANAGER"})
+    @WithMockUser(username = "manager", authorities = {"MANAGER", "USER"})
     public void getEmployerById_happyPath_test_asManager() throws Exception {
         getEmployerById_happyPath_test();
     }
 
     @Test
-    @WithMockUser(username = "student", authorities = {"STUDENT"})
+    @WithMockUser(username = "student", authorities = {"STUDENT", "USER"})
     public void getEmployerById_happyPath_test_asStudent() throws Exception {
         getEmployerById_happyPath_test();
     }

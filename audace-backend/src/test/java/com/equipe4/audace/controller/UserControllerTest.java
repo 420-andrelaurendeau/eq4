@@ -7,6 +7,9 @@ import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
+import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.service.EmployerService;
+import com.equipe4.audace.service.StudentService;
 import com.equipe4.audace.service.UserService;
 import com.equipe4.audace.utils.JwtManipulator;
 import org.junit.jupiter.api.Test;
@@ -25,6 +28,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(UserController.class)
 class UserControllerTest {
@@ -46,6 +50,12 @@ class UserControllerTest {
     private UserRepository userRepository;
     @MockBean
     private JwtManipulator jwtManipulator;
+    @MockBean
+    private StudentService studentService;
+    @MockBean
+    private SaltRepository saltRepository;
+    @MockBean
+    private EmployerService employerService;
 
     @Test
     @WithMockUser(username = "user")

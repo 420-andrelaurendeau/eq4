@@ -21,6 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 
 @SpringBootApplication
 @AllArgsConstructor
@@ -52,7 +53,13 @@ public class AudaceApplication implements CommandLineRunner {
 				"-123"
 		);
 
-		EmployerDTO empDto = employerService.createEmployer(employer.toDTO()).orElseThrow();
+		Optional<EmployerDTO> optionalEmpDto = employerService.createEmployer(employer.toDTO());
+
+		if (optionalEmpDto.isEmpty()) {
+			return;
+		}
+
+		EmployerDTO empDto = optionalEmpDto.orElseThrow();
 		employer = employerRepository.findById(empDto.getId()).orElseThrow();
 
 		Offer offer1 = new Offer("Stage en génie spaget car c'est bon du spaget pour le dîner miam", "Stage en génie logiciel", new Date(), new Date(), new Date(), employer, department);
