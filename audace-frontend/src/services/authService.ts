@@ -40,3 +40,10 @@ export const getAuthority = (): string | null => {
 
   return (jwtDecode(jwt) as DecodedJwt).authority;
 };
+
+export const getUserId = (): string | null => {
+  const jwt = localStorage.getItem(JWT);
+  if (!jwt) return null;
+
+  return (jwtDecode(jwt) as DecodedJwt).id;
+}

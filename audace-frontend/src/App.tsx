@@ -4,17 +4,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignupView from "./views/Signup";
 import { UserType } from "./model/user";
-import StudentOfferView from "./views/StudentOfferView";
 import ManagerOfferView from "./views/ManagerOfferView";
 import ManagerHomePage from "./components/ManagerHomePage";
 import AppHeader from "./components/AppHeader";
-import StudentHomePage from "./components/StudentHomePage";
 import EmployerHomePage from "./components/EmployerHomePage";
 import LoginView from "./views/LoginView";
 import AuthorizedRoute from "./components/AuthorizedRoute";
 import { Authority } from "./model/auth";
 import ConnectedRoute from "./components/ConnectedRoute";
 import PageNotFoundView from "./views/PageNotFoundView";
+import StudentView from "./views/StudentView";
 
 function App() {
   return (
@@ -57,8 +56,7 @@ function App() {
           element={
             <AuthorizedRoute requiredAuthority={Authority.STUDENT}>
               <Routes>
-                <Route path=":userId" element={<StudentHomePage />} />
-                <Route path=":id/offers" element={<StudentOfferView />} />
+                <Route index element={<StudentView />} />
               </Routes>
             </AuthorizedRoute>
           }
