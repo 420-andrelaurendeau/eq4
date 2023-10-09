@@ -96,5 +96,6 @@
       "emptyPassword": "SVP entrez votre mot de passe",
       "invalidCredentials": "Courriel, matricule ou mot de passe invalide"
     }
-  }
+  },
+  "logout": "Se déconnecter"
 }

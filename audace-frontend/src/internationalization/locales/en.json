@@ -96,5 +96,6 @@
       "emptyPassword": "Please enter your password",
       "invalidCredentials": "Email, student number or password is invalid"
     }
-  }
+  },
+  "logout": "Log out"
 }
