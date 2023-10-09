@@ -44,14 +44,16 @@ public class AuthController extends LoggedController {
     @PostMapping("/signup/student/{departmentCode}")
     public ResponseEntity<HttpStatus> signupStudent(@RequestBody StudentDTO studentDTO, @PathVariable String departmentCode) {
         logger.info("createStudent");
-        studentService.createStudent(studentDTO, departmentCode);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return studentService.createStudent(studentDTO, departmentCode)
+                .map(student -> new ResponseEntity<HttpStatus>(HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @PostMapping("/signup/employer")
     public ResponseEntity<HttpStatus> createEmployer(@RequestBody EmployerDTO employerDTO){
         logger.info("createEmployer");
-        employerService.createEmployer(employerDTO);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return employerService.createEmployer(employerDTO)
+                .map(employer -> new ResponseEntity<HttpStatus>(HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 }
