@@ -1,47 +1,144 @@
-import React, { useEffect, useState } from 'react';
-import { User } from "../../model/user";
+import { useState } from "react";
+import { Button, Form } from "react-bootstrap";
+import FormInput from "../FormInput";
+import { LoginRequest } from "../../model/auth";
+import {
+  authenticate,
+  getUserId,
+  login,
+  logout,
+} from "../../services/authService";
 import { useNavigate } from "react-router-dom";
-import { ListGroup, Button, Container } from 'react-bootstrap';
-import {getAllUsers} from "../../services/loginService";
+import { useTranslation } from "react-i18next";
+import { getUserById } from "../../services/userService";
 
-const UserList: React.FC = () => {
-    const [users, setUsers] = useState<User[]>([]);
-    const navigate = useNavigate();
+const LoginForm = () => {
+  const { t } = useTranslation();
+  const [identification, setIdentification] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [errors, setErrors] = useState<string[]>([]);
+  const [areCredentialsValid, setAreCredentialsValid] = useState<boolean>(true);
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        getAllUsers()
-            .then(response => {
-                setUsers(response.data);
-            });
-    }, []);
+  const submitForm = () => {
+    if (!validateForm()) return;
 
-    const handleSignInClick = (user: User) => {
-        sessionStorage.setItem('user', JSON.stringify(user));
-        if (user.type === "student") {
-            navigate(`/student/${user.id}`);
-        } else if (user.type === "employer") {
-            navigate(`/employer/${user.id}`);
-        } else if (user.type === "manager") {
-            navigate(`/manager/${user.id}`);
-        }
+    setIsDisabled(true);
+
+    let loginRequest: LoginRequest = {
+      identification: identification,
+      password: password,
     };
 
-    return (
-        <ListGroup>
-            {users.map((user) => (
-                <ListGroup.Item key={user.id}>
-                    <Container fluid style={{ background: '#ccc', width: '35%', borderRadius: '5px' }}>
-                        <div className="d-flex justify-content-between p-2">
-                            <div className="d-inline-block align-self-center">{user.email}</div>
-                            <Button variant="success" className="fw-bold" onClick={() => handleSignInClick(user)}>
-                                Sign in
-                            </Button>
-                        </div>
-                    </Container>
-                </ListGroup.Item>
-            ))}
-        </ListGroup>
-    );
-}
+    login(loginRequest)
+      .then((response) => {
+        authenticate(response.data);
 
-export default UserList;
+        const id = getUserId();
+
+        if (id == null) {
+          logout();
+          navigate("/pageNotFound");
+          return;
+        }
+
+        getUserById(parseInt(id))
+          .then((res) => {
+            navigateToUserTypeHomePage(res.data.type!);
+          })
+          .catch((err) => {
+            console.log(err);
+            logout();
+            navigate("/pageNotFound");
+          });
+      })
+      .catch((error) => {
+        if (error.response.status === 401 || error.response.status === 403)
+          setAreCredentialsValid(false);
+
+        setIsDisabled(false);
+      });
+  };
+
+  const navigateToUserTypeHomePage = (userType: string) => {
+    switch (userType) {
+      case "student":
+        navigate("/student");
+        break;
+      case "manager":
+        navigate("/manager");
+        break;
+      case "employer":
+        navigate("/employer");
+        break;
+      default:
+        navigate("/pageNotFound");
+        break;
+    }
+  };
+
+  const validateForm = (): boolean => {
+    let isFormValid = true;
+    let errorsToDisplay: string[] = [];
+
+    if (!validateIdentification(errorsToDisplay)) isFormValid = false;
+    if (!validatePassword(errorsToDisplay)) isFormValid = false;
+
+    setErrors(errorsToDisplay);
+
+    return isFormValid;
+  };
+
+  const validateIdentification = (errorsToDisplay: string[]): boolean => {
+    if (identification === "") {
+      errorsToDisplay.push("login.errors.emptyIdentification");
+      return false;
+    }
+
+    return true;
+  };
+
+  const validatePassword = (errorsToDisplay: string[]): boolean => {
+    if (password === "") {
+      errorsToDisplay.push("login.errors.emptyPassword");
+      return false;
+    }
+
+    return true;
+  };
+
+  return (
+    <>
+      <Form>
+        <FormInput
+          label="login.identification"
+          value={identification}
+          onChange={(e) => setIdentification(e.target.value)}
+          controlId="formBasicIdentification"
+          errors={errors}
+          formError={"login.errors.emptyIdentification"}
+        />
+        <FormInput
+          label="login.password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          controlId="formBasicPassword"
+          errors={errors}
+          formError={"login.errors.emptyPassword"}
+          type="password"
+        />
+        <Button onClick={submitForm} disabled={isDisabled}>
+          {t("signin")}
+        </Button>
+        {!areCredentialsValid && (
+          <p className="invalid-credentials">
+            {t("login.errors.invalidCredentials")}
+          </p>
+        )}
+      </Form>
+    </>
+  );
+};
+
+export default LoginForm;

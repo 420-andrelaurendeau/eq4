@@ -1,5 +1,6 @@
 package com.equipe4.audace.controller;
 
+import com.equipe4.audace.controller.abstracts.GenericUserController;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Student;
@@ -25,14 +26,6 @@ public class StudentController extends GenericUserController<Student, StudentSer
         return service.getStudentById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @PostMapping("/signup/{departmentCode}")
-    @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<HttpStatus> createStudent(@RequestBody StudentDTO studentDTO, @PathVariable String departmentCode) {
-        logger.info("createStudent");
-        service.createStudent(studentDTO, departmentCode);
-        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping("/offers/{departmentId}")

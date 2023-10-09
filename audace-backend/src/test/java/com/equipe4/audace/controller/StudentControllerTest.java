@@ -1,6 +1,5 @@
 package com.equipe4.audace.controller;
 
-import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.department.Department;
@@ -8,20 +7,20 @@ import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.dto.cv.CvDTO;
-import com.equipe4.audace.repository.EmployerRepository;
-import com.equipe4.audace.repository.StudentRepository;
-import com.equipe4.audace.repository.cv.CvRepository;
+import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.StudentService;
+import com.equipe4.audace.utils.JwtManipulator;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 
@@ -30,6 +29,7 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -50,8 +50,17 @@ public class StudentControllerTest {
     private EmployerRepository employerRepository;
     @MockBean
     private ManagerRepository managerRepository;
+    @MockBean
+    private UserRepository userRepository;
+    @MockBean
+    private JwtManipulator jwtManipulator;
+    @MockBean
+    private SaltRepository saltRepository;
+    @MockBean
+    private EmployerService employerService;
 
     @Test
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
     public void getOffersByDepartment_happyPath() throws Exception {
         List<OfferDTO> offerDTOList = List.of(mock(OfferDTO.class));
         when(studentService.getAcceptedOffersByDepartment(1L)).thenReturn(offerDTOList);
@@ -61,6 +70,7 @@ public class StudentControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
     public void getStudentById_happyPath() throws Exception {
         Department department = new Department("dep", "artment");
         Student student = new Student(
@@ -92,6 +102,7 @@ public class StudentControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
     public void getStudentById_InvalidId() throws Exception {
         when(studentService.getStudentById(1L)).thenReturn(Optional.empty());
 
@@ -100,6 +111,7 @@ public class StudentControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
     void uploadCv_happyPath() throws Exception {
         MockMultipartFile file = createMockFile();
         when(studentService.saveCv(file, 1L)).thenReturn(Optional.of(mock(CvDTO.class)));
@@ -107,16 +119,18 @@ public class StudentControllerTest {
         mvc.perform(
                 multipart("/students/upload/1")
                         .file(file)
-                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .contentType(MediaType.MULTIPART_FORM_DATA).with(csrf())
         ).andExpect(status().isCreated());
     }
 
     @Test
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
     void uploadCv_noFile() throws Exception {
         mvc.perform(
                 multipart("/students/upload/1")
-                        .contentType(MediaType.MULTIPART_FORM_DATA)
-        ).andExpect(status().isBadRequest());
+                        .contentType(MediaType.MULTIPART_FORM_DATA).with(csrf())
+        )
+        .andExpect(status().isBadRequest());
     }
 
     private MockMultipartFile createMockFile() {

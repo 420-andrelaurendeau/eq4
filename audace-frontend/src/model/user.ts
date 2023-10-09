@@ -1,3 +1,4 @@
+import { CV } from "./cv";
 import { Department } from "./department";
 import { Offer } from "./offer";
 
@@ -15,6 +16,7 @@ export interface User {
 export interface Student extends User{
     studentNumber: string;
     department?: Department;
+    cvs: CV[];
 }
 
 export interface Employer extends User{

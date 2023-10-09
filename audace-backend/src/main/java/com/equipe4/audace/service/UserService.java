@@ -1,23 +1,23 @@
 package com.equipe4.audace.service;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.model.User;
 import com.equipe4.audace.repository.UserRepository;
+import com.equipe4.audace.repository.security.SaltRepository;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
-@Data
 public class UserService extends GenericUserService<User> {
-    //TODO : Spring Security Password
     private final UserRepository userRepository;
 
-    public List<UserDTO> getAllUsers() {
-        return userRepository.findAll().stream().map(User::toDTO).toList();
+    public UserService(
+            SaltRepository saltRepository,
+            UserRepository userRepository
+    ) {
+        super(saltRepository);
+        this.userRepository = userRepository;
     }
 
     public Optional<UserDTO> getUser(long id) {

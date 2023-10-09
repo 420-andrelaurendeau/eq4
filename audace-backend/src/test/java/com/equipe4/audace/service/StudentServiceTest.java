@@ -9,10 +9,12 @@ import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
+import com.equipe4.audace.model.security.Salt;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.repository.security.SaltRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -42,6 +44,8 @@ public class StudentServiceTest {
     private DepartmentRepository departmentRepository;
     @Mock
     private CvRepository cvRepository;
+    @Mock
+    private SaltRepository saltRepository;
     @InjectMocks
     private StudentService studentService;
 
@@ -113,8 +117,8 @@ public class StudentServiceTest {
         StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"), new ArrayList<>());
 
         when(studentRepository.save(any())).thenReturn(studentDTO.fromDTO());
-
         when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(studentDTO.getDepartment().fromDto()));
+        when(saltRepository.save(any())).thenReturn(mock(Salt.class));
 
         Optional<StudentDTO> optionalStudentDTO = studentService.createStudent(studentDTO, "420");
 
