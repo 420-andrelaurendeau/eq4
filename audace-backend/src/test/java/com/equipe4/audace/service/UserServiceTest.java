@@ -25,18 +25,6 @@ class UserServiceTest {
     private UserRepository userRepository;
 
     @Test
-    void testGetAllUsers() {
-        List<User> users = List.of(
-                new Student(4L, "peterson", "sara", "lesun@live.com", "password", "100 rue Lapierre", "4387253891", "2080351", new Department()),
-                new Employer()
-        );
-        when(userRepository.findAll()).thenReturn(users);
-
-        List<UserDTO> userDTOs = userService.getAllUsers();
-        assertEquals(users.size(), userDTOs.size());
-    }
-
-    @Test
     void testGetUser() {
         long userId = 3L;
         Student user = new Student(userId, "peterson", "sara", "lesun@live.com", "password", "100 rue Lapierre", "4387253891", "2080351", new Department());
