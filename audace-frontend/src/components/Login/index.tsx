@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import FormInput from "../FormInput";
 import { LoginRequest } from "../../model/auth";
-import { authenticate, login } from "../../services/authService";
+import { authenticate, getUserId, login, logout } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { getUserById } from "../../services/userService";
+import { User } from "../../model/user";
 
 const LoginForm = () => {
   const { t } = useTranslation();
@@ -28,6 +30,29 @@ const LoginForm = () => {
     login(loginRequest)
       .then((response) => {
         authenticate(response.data);
+
+        const id = getUserId();
+
+        if (id == null) {
+          logout();
+          navigate("/pageNotFound");
+          return;
+        }
+
+        getUserById(parseInt(id))
+          .then((res) => {
+            let user: User = res.data;
+            if (user.type === "student") navigate("/student");
+            else if (user.type === "manager") navigate("/manager");
+            else if (user.type === "employer") navigate("/employer");
+            else navigate("/pageNotFound");
+          })
+          .catch((err) => {
+            console.log(err);
+            logout();
+            navigate("/pageNotFound");
+          });
+
         navigate("/");
       })
       .catch((error) => {
