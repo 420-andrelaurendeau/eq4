@@ -38,8 +38,6 @@ export const getAuthorities = (): Authority[] | null => {
   const jwt = localStorage.getItem(JWT);
   if (!jwt) return null;
 
-  console.log(jwtDecode(jwt));
-
   return (jwtDecode(jwt) as DecodedJwt).authorities;
 };
 
@@ -48,4 +46,4 @@ export const getUserId = (): string | null => {
   if (!jwt) return null;
 
   return (jwtDecode(jwt) as DecodedJwt).id;
-}
+};
