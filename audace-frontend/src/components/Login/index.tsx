@@ -11,7 +11,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getUserById } from "../../services/userService";
-import { User } from "../../model/user";
 
 const LoginForm = () => {
   const { t } = useTranslation();
@@ -46,19 +45,13 @@ const LoginForm = () => {
 
         getUserById(parseInt(id))
           .then((res) => {
-            let user: User = res.data;
-            if (user.type === "student") navigate("/student");
-            else if (user.type === "manager") navigate("/manager");
-            else if (user.type === "employer") navigate("/employer");
-            else navigate("/pageNotFound");
+            navigateToUserTypeHomePage(res.data.type!);
           })
           .catch((err) => {
             console.log(err);
             logout();
             navigate("/pageNotFound");
           });
-
-        navigate("/");
       })
       .catch((error) => {
         if (error.response.status === 401 || error.response.status === 403)
@@ -66,6 +59,23 @@ const LoginForm = () => {
 
         setIsDisabled(false);
       });
+  };
+
+  const navigateToUserTypeHomePage = (userType: string) => {
+    switch (userType) {
+      case "student":
+        navigate("/student");
+        break;
+      case "manager":
+        navigate("/manager");
+        break;
+      case "employer":
+        navigate("/employer");
+        break;
+      default:
+        navigate("/pageNotFound");
+        break;
+    }
   };
 
   const validateForm = (): boolean => {
