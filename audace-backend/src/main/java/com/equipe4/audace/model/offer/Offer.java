@@ -65,4 +65,19 @@ public class Offer {
         this.employer = employer;
     }
 
+    public OfferDTO toDTO(){
+        return OfferDTO.offerDTOBuilder()
+                .id(id)
+                .title(title)
+                .description(description)
+                .internshipStartDate(internshipStartDate)
+                .internshipEndDate(internshipEndDate)
+                .offerEndDate(offerEndDate)
+                .availablePlaces(availablePlaces)
+                .status(status)
+                .departmentCode(department.getCode())
+                .employerId(employer.getId())
+                .build();
+    }
+
 }

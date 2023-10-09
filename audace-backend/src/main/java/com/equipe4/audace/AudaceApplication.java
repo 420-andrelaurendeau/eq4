@@ -60,28 +60,77 @@ public class AudaceApplication implements CommandLineRunner {
 				.employerId(1L).departmentCode("GLO")
 				.build());
 
-		Student student = new Student(2L, "Kylian", "Mbappe", "kylian@live.fr", "123123", "34 de Montpellier", "4387654545", "2080350", department);
+		Student student = Student.studentBuilder()
+				.firstname("Kylian")
+				.lastname("Mbappe")
+				.email("kylian@live.fr")
+				.password("123123")
+				.address("34 de Montpellier")
+				.phone("4387654545")
+				.studentNumber("2080350")
+				.department(department)
+				.build();
+		student.setId(2L);
+
 		studentRepository.save(student);
 
-		Employer employer = new Employer(
-				"employer",
-				"employerman",
-				"temp@gmail.com",
-				"password",
-				"Temp Baklungel",
-				"Big Baklunger",
-				"123 Street Street",
-				"1234567890",
-				"-123"
-		);
-		Offer offer1 = new Offer("Stage en génie logiciel PROTOTYPE", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
+		Employer employer = Employer.employerBuilder()
+				.firstName("employer")
+				.lastName("employerman")
+				.email("temp@gmail.com")
+				.password("password")
+				.organisation("Temp Baklungel")
+				.position("Big Baklunger")
+				.address("123 Street Street")
+				.phone("1234567890")
+				.extension("-123")
+				.build();
+
+		Offer offer1 = Offer.offerBuilder()
+				.title("Stage en génie logiciel PROTOTYPE")
+				.description("Stage en génie logiciel")
+				.internshipStartDate(LocalDate.now())
+				.internshipEndDate(LocalDate.now())
+				.offerEndDate(LocalDate.now())
+				.availablePlaces(3)
+				.department(department)
+				.employer(employer)
+				.build();
 		offer1.setStatus(Offer.Status.ACCEPTED);
 
-		Offer offer2 = new Offer("Stage en génie logiciel chez Roc-a-Fella Records", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
+		Offer offer2 = Offer.offerBuilder()
+				.title("Stage en génie logiciel chez Roc-a-Fella Records")
+				.description("Stage en génie logiciel")
+				.internshipStartDate(LocalDate.now())
+				.internshipEndDate(LocalDate.now())
+				.offerEndDate(LocalDate.now())
+				.availablePlaces(3)
+				.department(department)
+				.employer(employer)
+				.build();
 		offer2.setStatus(Offer.Status.ACCEPTED);
 
-		Offer offer3 = new Offer("Stage en génie logiciel chez Google", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
-		Offer offer4 = new Offer("Stage en génie logiciel chez Microsoft", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
+		Offer offer3 = Offer.offerBuilder()
+				.title("Stage en génie logiciel chez Google")
+				.description("Stage en génie logiciel")
+				.internshipStartDate(LocalDate.now())
+				.internshipEndDate(LocalDate.now())
+				.offerEndDate(LocalDate.now())
+				.availablePlaces(3)
+				.department(department)
+				.employer(employer)
+				.build();
+		Offer offer4 = Offer.offerBuilder()
+				.title("Stage en génie logiciel chez Microsoft")
+				.description("Stage en génie logiciel")
+				.internshipStartDate(LocalDate.now())
+				.internshipEndDate(LocalDate.now())
+				.offerEndDate(LocalDate.now())
+				.availablePlaces(3)
+				.department(department)
+				.employer(employer)
+				.build();
+
 		employer.getOffers().add(offer1);
 		employer.getOffers().add(offer2);
 		employer.getOffers().add(offer3);
@@ -89,7 +138,12 @@ public class AudaceApplication implements CommandLineRunner {
 		employerRepository.save(employer);
 
 		byte[] content = new byte[10];
-		Cv cv = new Cv(100L, student, "cv.pdf", content);
+		Cv cv = Cv.cvBuilder()
+				.student(student)
+				.fileName("cv.pdf")
+				.content(content)
+				.build();
+		cv.setId(100L);
 		cvRepository.save(cv);
 	}
 }

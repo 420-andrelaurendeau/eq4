@@ -22,20 +22,6 @@ public class OfferDTO {
     private String departmentCode;
     private Long employerId;
 
-
-    public OfferDTO(Offer offer) {
-        this.id = offer.getId();
-        this.title = offer.getTitle();
-        this.description = offer.getDescription();
-        this.internshipStartDate = offer.getInternshipStartDate();
-        this.internshipEndDate = offer.getInternshipEndDate();
-        this.offerEndDate = offer.getOfferEndDate();
-        this.availablePlaces = offer.getAvailablePlaces();
-        this.status = offer.getStatus();
-        this.departmentCode = offer.getDepartment().getCode();
-        this.employerId = offer.getEmployer().getId();
-    }
-
     @Builder(builderMethodName = "offerDTOBuilder")
     public OfferDTO(Long id, String title, String description, LocalDate internshipStartDate, LocalDate internshipEndDate, LocalDate offerEndDate, int availablePlaces, Status status, String departmentCode, Long employerId) {
         this.id = id;

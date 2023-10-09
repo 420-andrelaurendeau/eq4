@@ -8,6 +8,7 @@ import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
+import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.service.EmployerService;
@@ -21,12 +22,10 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.any;
@@ -42,7 +41,6 @@ public class EmployerControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
-
     @MockBean
     private EmployerService employerService;
     @MockBean
@@ -55,6 +53,8 @@ public class EmployerControllerTest {
     private StudentRepository studentRepository;
     @MockBean
     private ManagerRepository managerRepository;
+    @MockBean
+    private CvRepository cvRepository;
 
     @Test
     public void getEmployerById_happyPath_test() throws Exception {
@@ -93,12 +93,11 @@ public class EmployerControllerTest {
                 .build();
         employer.setId(1L);
 
-        Offer offer = Offer.offerBuilder()
+        OfferDTO offerDTO = OfferDTO.offerDTOBuilder()
                 .title("Stage en génie logiciel").description("Stage en génie logiciel")
                 .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
-                .availablePlaces(3).employer(employer).department(department)
+                .availablePlaces(3).departmentCode(department.getCode()).employerId(employer.getId())
                 .build();
-        OfferDTO offerDTO = new OfferDTO(offer);
 
         when(employerService.createOffer(any(OfferDTO.class))).thenReturn(Optional.of(offerDTO));
 
@@ -172,7 +171,7 @@ public class EmployerControllerTest {
                 .availablePlaces(3).employer(employer).department(department)
                 .build();
         offerSaved.setId(1L);
-        OfferDTO offerDTOSaved = new OfferDTO(offerSaved);
+        OfferDTO offerDTOSaved = offerSaved.toDTO();
 
         Offer offerUpdated = Offer.offerBuilder()
                 .title("Stage en génie logiciel").description("Stage en génie logiciel")
@@ -180,7 +179,7 @@ public class EmployerControllerTest {
                 .availablePlaces(5).employer(employer).department(department)
                 .build();
         offerUpdated.setId(1L);
-        OfferDTO offerDTOUpdated = new OfferDTO(offerUpdated);
+        OfferDTO offerDTOUpdated = offerUpdated.toDTO();
 
 
         given(offerRepository.findById(offerDTOSaved.getId())).willReturn(Optional.of(offerSaved));

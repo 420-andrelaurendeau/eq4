@@ -1,7 +1,7 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.ApplicationDTO;
-import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Employer;
@@ -12,19 +12,12 @@ import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
+import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.StudentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-import com.equipe4.audace.dto.cv.CvDTO;
-import com.equipe4.audace.repository.EmployerRepository;
-import com.equipe4.audace.repository.StudentRepository;
-import com.equipe4.audace.repository.cv.CvRepository;
-import com.equipe4.audace.repository.department.DepartmentRepository;
-import com.equipe4.audace.repository.offer.OfferRepository;
-import com.equipe4.audace.service.StudentService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -32,29 +25,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.web.multipart.MultipartFile;
-
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(StudentController.class)
@@ -121,17 +103,17 @@ public class StudentControllerTest {
     @Test
     public void getStudentById_happyPath() throws Exception {
         Department department = new Department("dep", "artment");
-        Student student = new Student(
-                1L,
-                "student",
-                "studentman",
-                "email@email.com",
-                "password",
-                "address",
-                "phone",
-                "matricule",
-                department
-        );
+        Student student = Student.studentBuilder()
+                .firstname("student")
+                .lastname("studentman")
+                .email("email@email.com")
+                .password("password")
+                .address("address")
+                .phone("phone")
+                .studentNumber("matricule")
+                .department(department)
+                .build();
+        student.setId(1L);
 
         when(studentService.getStudentById(1L)).thenReturn(Optional.of(student.toDTO()));
 
@@ -145,8 +127,8 @@ public class StudentControllerTest {
                 .andExpect(jsonPath("$.address").value(student.getAddress()))
                 .andExpect(jsonPath("$.phone").value(student.getPhone()))
                 .andExpect(jsonPath("$.studentNumber").value(student.getStudentNumber()))
-                .andExpect(jsonPath("$.department.id").value(department.getId()))
-                .andExpect(jsonPath("$.department.name").value(department.getName()));
+                .andExpect(jsonPath("$.departmentDTO.id").value(department.getId()))
+                .andExpect(jsonPath("$.departmentDTO.name").value(department.getName()));
     }
 
     @Test
@@ -167,17 +149,18 @@ public class StudentControllerTest {
                 .address("Class Service, Javatown, Qc H8N1C1")
                 .build();
         employer.setId(1L);
-        Student student = new Student(
-                1L,
-                "student",
-                "studentman",
-                "email@email.com",
-                "password",
-                "address",
-                "phone",
-                "matricule",
-                department
-        );
+        Student student = Student.studentBuilder()
+                .firstname("student")
+                .lastname("studentman")
+                .email("email@email.com")
+                .password("password")
+                .address("address")
+                .phone("phone")
+                .studentNumber("matricule")
+                .department(department)
+                .build();
+        student.setId(1L);
+
         Cv cv = new Cv();
         cv.setId(1L);
 
@@ -192,7 +175,7 @@ public class StudentControllerTest {
                 .cv(cv)
                 .offer(offer)
                 .build();
-        ApplicationDTO applicationDTO = new ApplicationDTO(application);
+        ApplicationDTO applicationDTO = application.toDTO();
 
         when(studentService.createApplication(any(ApplicationDTO.class))).thenReturn(Optional.of(applicationDTO));
 

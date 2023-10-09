@@ -37,7 +37,7 @@ public class ManagerService extends GenericUserService<Manager> {
     private Optional<OfferDTO> setOfferStatus(Long offerId, Status status) {
         Offer offer = offerRepository.findById(offerId).orElseThrow();
         offer.setStatus(status);
-        return Optional.of(new OfferDTO(offerRepository.save(offer)));
+        return Optional.of(offerRepository.save(offer).toDTO());
     }
 
     @Transactional
@@ -46,7 +46,7 @@ public class ManagerService extends GenericUserService<Manager> {
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
         List<Offer> offers = offerRepository.findAllByDepartment(department);
 
-        return offers.stream().map(OfferDTO::new).toList();
+        return offers.stream().map(Offer::toDTO).toList();
     }
 
     public Optional<ManagerDTO> getManagerById(Long id) {

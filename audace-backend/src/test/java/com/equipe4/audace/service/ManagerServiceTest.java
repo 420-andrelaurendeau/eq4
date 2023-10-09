@@ -1,12 +1,9 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.ManagerDTO;
-import com.equipe4.audace.dto.StudentDTO;
-import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
-import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.ManagerRepository;
@@ -18,12 +15,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.*;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -121,7 +117,7 @@ public class ManagerServiceTest {
         List<OfferDTO> result = managerService.getOffersByDepartment(1L);
 
         assertThat(result.size()).isEqualTo(offers.size());
-        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(OfferDTO::new).toList());
+        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
     }
 
     @Test
@@ -149,17 +145,16 @@ public class ManagerServiceTest {
     public void findManagerById_happyPathTest() {
         // Arrange
         Department department = new Department("yeete", "yaint");
-        Manager manager = new Manager(
-                3L,
-                "manager",
-                "managerman",
-                "manager@email.com",
-                "password",
-                "yeete",
-                "1234567890",
-                department
-        );
-
+        Manager manager = Manager.managerBuilder()
+                .firstname("manager")
+                .lastname("managerman")
+                .email("manager@email.com")
+                .password("password")
+                .address("yeete")
+                .phone("1234567890")
+                .department(department)
+                .build();
+        manager.setId(1L); //3L?
 
         when(managerRepository.findById(1L)).thenReturn(Optional.of(manager));
 

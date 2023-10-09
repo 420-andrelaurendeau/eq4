@@ -12,7 +12,6 @@ import java.util.Optional;
 
 public interface OfferRepository extends JpaRepository<Offer, Long> {
     List<Offer> findAllByDepartment(Department department);
-
     List<Offer> findAllByEmployer(Employer employer);
     List<Offer> findAllByDepartmentAndStatus(Department department, Status status);
 }

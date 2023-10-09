@@ -1,5 +1,6 @@
 package com.equipe4.audace.model;
 
+import com.equipe4.audace.dto.ApplicationDTO;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.offer.Offer;
 import jakarta.persistence.*;
@@ -37,5 +38,14 @@ public class Application {
         this.student = student;
         this.cv = cv;
         this.offer = offer;
+    }
+
+    public ApplicationDTO toDTO(){
+        return ApplicationDTO.applicationDTOBuilder()
+                .id(id)
+                .studentId(student.getId())
+                .cvId(cv.getId())
+                .offerId(offer.getId())
+                .build();
     }
 }

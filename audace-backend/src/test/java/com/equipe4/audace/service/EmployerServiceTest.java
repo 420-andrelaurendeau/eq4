@@ -1,8 +1,6 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.EmployerDTO;
-import com.equipe4.audace.dto.StudentDTO;
-import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
@@ -15,13 +13,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
@@ -152,7 +148,7 @@ public class EmployerServiceTest {
                 .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
                 .availablePlaces(3).employer(fakeEmployer).department(mockedDepartment)
                 .build();
-        OfferDTO offerDTO = new OfferDTO(offer);
+        OfferDTO offerDTO = offer.toDTO();
 
         when(offerRepository.save(any(Offer.class))).thenReturn(offer);
         when(employerRepository.findById(anyLong())).thenReturn(Optional.of(fakeEmployer));
@@ -165,7 +161,7 @@ public class EmployerServiceTest {
     }
     @Test
     void getOffers_HappyPath() {
-        Department mockedDepartment = new Department("GLO", "Génie logiciel");;
+        Department mockedDepartment = new Department("GLO", "Génie logiciel");
         Employer fakeEmployer = new Employer(
                 "employer",
                 "employerman",
@@ -228,7 +224,7 @@ public class EmployerServiceTest {
 
         employerService.deleteOffer(offer1.getId());
 
-        verify(offerRepository).deleteById(offer1.getId());
+        verify(offerRepository).delete(offer1);
     }
 
     @Test
@@ -268,11 +264,11 @@ public class EmployerServiceTest {
         when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(mockedDepartment));
         when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
 
-        OfferDTO originalOffer = employerService.createOffer(new OfferDTO(offer)).get();
+        OfferDTO originalOffer = employerService.createOffer(offer.toDTO()).get();
 
         offer.setAvailablePlaces(2);
 
-        OfferDTO updatedOffer = employerService.updateOffer(new OfferDTO(offer)).get();
+        OfferDTO updatedOffer = employerService.updateOffer(offer.toDTO()).get();
 
         verify(offerRepository).save(offer);
         verify(offerRepository).findById(offer.getId());
@@ -304,7 +300,7 @@ public class EmployerServiceTest {
 
         when(offerRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> employerService.updateOffer(new OfferDTO(offer)))
+        assertThatThrownBy(() -> employerService.updateOffer(offer.toDTO()))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("No value present");
     }

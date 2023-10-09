@@ -6,10 +6,9 @@ import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
-import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
+import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
-import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.ManagerService;
 import org.junit.jupiter.api.Test;
@@ -22,16 +21,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(ManagerController.class)
 public class ManagerControllerTest {
@@ -40,13 +36,15 @@ public class ManagerControllerTest {
     @MockBean
     private ManagerService managerService;
     @MockBean
-    private OfferRepository offerRepository;
-    @MockBean
     private EmployerRepository employerRepository;
     @MockBean
     private DepartmentRepository departmentRepository;
     @MockBean
     private EmployerService employerService;
+    @MockBean
+    private StudentRepository studentRepository;
+    @MockBean
+    private CvRepository cvRepository;
 
     @Test
     public void acceptOffer() throws Exception {
@@ -57,7 +55,7 @@ public class ManagerControllerTest {
                 .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
                 .availablePlaces(3).employer(employer).department(department)
                 .build();
-        OfferDTO offerDTO1 = new OfferDTO(offer1);
+        OfferDTO offerDTO1 = offer1.toDTO();
         when(managerService.acceptOffer(1L)).thenReturn(Optional.of(offerDTO1));
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -77,7 +75,7 @@ public class ManagerControllerTest {
                 .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
                 .availablePlaces(3).employer(employer).department(department)
                 .build();
-        OfferDTO offerDTO1 = new OfferDTO(offer1);
+        OfferDTO offerDTO1 = offer1.toDTO();
         when(managerService.refuseOffer(1L)).thenReturn(Optional.of(offerDTO1));
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -141,16 +139,16 @@ public class ManagerControllerTest {
     @Test
     public void getManagerById_happyPath_test() throws Exception {
         Department department = new Department("yeete", "yaint");
-        Manager manager = new Manager(
-                1L,
-                "manager",
-                "managerman",
-                "manager@email.com",
-                "password",
-                "yeete",
-                "1234567890",
-                department
-        );
+        Manager manager = Manager.managerBuilder()
+                .firstname("manager")
+                .lastname("managerman")
+                .email("manager@email.com")
+                .password("password")
+                .phone("1234567890")
+                .address("yeete")
+                .department(department)
+                .build();
+        manager.setId(1L);
 
         when(managerService.getManagerById(1L)).thenReturn(Optional.of(manager.toDTO()));
 
@@ -163,8 +161,8 @@ public class ManagerControllerTest {
                 .andExpect(jsonPath("$.email").value(manager.getEmail()))
                 .andExpect(jsonPath("$.password").value(manager.getPassword()))
                 .andExpect(jsonPath("$.phone").value(manager.getPhone()))
-                .andExpect(jsonPath("$.department.id").value(manager.getDepartment().getId()))
-                .andExpect(jsonPath("$.department.name").value(manager.getDepartment().getName()));
+                .andExpect(jsonPath("$.departmentDTO.id").value(manager.getDepartment().getId()))
+                .andExpect(jsonPath("$.departmentDTO.name").value(manager.getDepartment().getName()));
     }
 
     @Test

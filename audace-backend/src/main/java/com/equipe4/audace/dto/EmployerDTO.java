@@ -1,47 +1,21 @@
 package com.equipe4.audace.dto;
 
 import com.equipe4.audace.model.Employer;
-import com.equipe4.audace.model.User;
 import lombok.*;
 
 @Data
 @NoArgsConstructor
 public class EmployerDTO extends UserDTO{
-    private Long id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String password;
     private String organisation;
     private String position;
-    private String address;
-    private String phone;
     private String extension;
 
-    public EmployerDTO(Employer employer) {
-        this.id = employer.getId();
-        this.firstName = employer.getFirstName();
-        this.lastName = employer.getLastName();
-        this.email = employer.getEmail();
-        this.password = employer.getPassword();
-        this.organisation = employer.getOrganisation();
-        this.position = employer.getPosition();
-        this.address = employer.getAddress();
-        this.phone = employer.getPhone();
-        this.extension = employer.getExtension();
-    }
 
     @Builder(builderMethodName = "employerDTOBuilder")
-    public EmployerDTO(Long id, String firstName, String lastName, String email, String password, String organisation, String position, String address, String phone, String extension) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
+    public EmployerDTO(Long id, String firstName, String lastName, String address, String phone, String email, String password, String organisation, String position, String extension) {
+        super(id, firstName, lastName, address, phone, email, password);
         this.organisation = organisation;
         this.position = position;
-        this.address = address;
-        this.phone = phone;
         this.extension = extension;
     }
 

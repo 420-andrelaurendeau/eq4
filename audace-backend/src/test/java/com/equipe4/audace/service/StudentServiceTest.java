@@ -10,11 +10,7 @@ import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
-import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Student;
-import com.equipe4.audace.model.department.Department;
-import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
@@ -28,15 +24,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-
 import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -88,7 +81,7 @@ public class StudentServiceTest {
         List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
 
         assertThat(result.size()).isEqualTo(offers.size());
-        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(OfferDTO::new).toList());
+        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
     }
 
     @Test
@@ -114,11 +107,27 @@ public class StudentServiceTest {
 
     @Test
     void createStudent() {
-        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"), new ArrayList<>());
+        DepartmentDTO departmentDTO = DepartmentDTO.departmentDTOBuilder()
+                .id(1L)
+                .code("GEN")
+                .name("Génie")
+                .build();
+
+        StudentDTO studentDTO = StudentDTO.studentDTOBuilder()
+                .id(1L)
+                .firstName("student")
+                .lastName("studentMan")
+                .email("email@gmail.com")
+                .password("password")
+                .address("adress")
+                .phone("1234567890")
+                .studentNumber("2212895")
+                .departmentDTO(departmentDTO)
+                .build();
 
         when(studentRepository.save(any())).thenReturn(studentDTO.fromDTO());
 
-        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(studentDTO.getDepartment().fromDto()));
+        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(studentDTO.getDepartmentDTO().fromDto()));
 
         Optional<StudentDTO> optionalStudentDTO = studentService.createStudent(studentDTO, "420");
 
@@ -157,7 +166,21 @@ public class StudentServiceTest {
     @Test
     public void findStudentById_happyPathTest() {
         // Arrange
-        StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"), new ArrayList<>());
+        DepartmentDTO departmentDTO = DepartmentDTO.departmentDTOBuilder()
+                .id(1L).code("GEN").name("Génie")
+                .build();
+        StudentDTO studentDTO = StudentDTO.studentDTOBuilder()
+                .id(1L)
+                .firstName("student")
+                .lastName("studentMan")
+                .email("email@gmail.com")
+                .password("password")
+                .address("adress")
+                .phone("1234567890")
+                .studentNumber("2212895")
+                .departmentDTO(departmentDTO)
+                .build();
+
         Student student = studentDTO.fromDTO();
 
         when(studentRepository.findById(1L)).thenReturn(Optional.of(student));
@@ -190,17 +213,22 @@ public class StudentServiceTest {
         when(studentRepository.findById(studentDTO.getId())).thenReturn(Optional.of(studentDTO.fromDTO()));
 
         byte[] bytes;
-        String name;
+        String fileName;
 
         try {
             bytes = file.getBytes();
-            name = file.getName();
+            fileName = file.getName();
         } catch (IOException e) {
             throw new RuntimeException("Failed to read file");
         }
 
-        Cv cv = new Cv(2L, studentDTO.fromDTO(), name, bytes);
-        CvDTO expected = cv.toDto();
+        Cv cv = Cv.cvBuilder()
+                .student(studentDTO.fromDTO())
+                .fileName(fileName)
+                .content(bytes)
+                .build();
+        cv.setId(2L);
+        CvDTO expected = cv.toDTO();
 
         when(cvRepository.save(any())).thenReturn(cv);
         CvDTO result = studentService.saveCv(file, studentDTO.getId()).get();
@@ -248,18 +276,20 @@ public class StudentServiceTest {
     }
 
     private StudentDTO createStudentDTO() {
-        return new StudentDTO(
-                1L,
-                "student",
-                "studentMan",
-                "email@gmail.com",
-                "adress",
-                "1234567890",
-                "password",
-                "2212895",
-                new DepartmentDTO(1L, "GEN", "Génie"),
-                new ArrayList<>()
-        );
+        DepartmentDTO departmentDTO = DepartmentDTO.departmentDTOBuilder()
+                .id(1L).code("GEN").name("Génie")
+                .build();
+        return StudentDTO.studentDTOBuilder()
+                .id(1L)
+                .firstName("student")
+                .lastName("studentMan")
+                .email("email@gmail.com")
+                .password("password")
+                .address("adress")
+                .phone("1234567890")
+                .studentNumber("2212895")
+                .departmentDTO(departmentDTO)
+                .build();
     }
 
     private MultipartFile createMockFile() {
@@ -292,17 +322,18 @@ public class StudentServiceTest {
                 .address("Class Service, Javatown, Qc H8N1C1")
                 .build();
         employer.setId(1L);
-        Student student = new Student(
-                1L,
-                "student",
-                "studentman",
-                "email@email.com",
-                "password",
-                "address",
-                "phone",
-                "matricule",
-                department
-        );
+        Student student = Student.studentBuilder()
+                .firstname("student")
+                .lastname("studentman")
+                .email("email@email.com")
+                .password("password")
+                .address("address")
+                .phone("phone")
+                .studentNumber("matricule")
+                .department(department)
+                .build();
+        student.setId(1L);
+
         Cv cv = new Cv();
         cv.setId(1L);
 
@@ -317,7 +348,7 @@ public class StudentServiceTest {
                 .cv(cv)
                 .offer(offer)
                 .build();
-        ApplicationDTO applicationDTO = new ApplicationDTO(application);
+        ApplicationDTO applicationDTO = application.toDTO();
 
         when(applicationRepository.save(any(Application.class))).thenReturn(application);
         when(studentRepository.findById(anyLong())).thenReturn(Optional.of(student));
@@ -327,7 +358,7 @@ public class StudentServiceTest {
 
         ApplicationDTO dto = studentService.createApplication(applicationDTO).get();
 
-        assertThat(dto.equals(applicationDTO));
+        assertThat(dto).isEqualTo(applicationDTO);
         verify(applicationRepository, times(1)).save(application);
     }
 }

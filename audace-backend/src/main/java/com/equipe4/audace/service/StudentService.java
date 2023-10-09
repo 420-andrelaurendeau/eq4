@@ -5,7 +5,6 @@ import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.model.Application;
-import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
@@ -40,8 +39,7 @@ public class StudentService extends GenericUserService<Student> {
         if (studentDTO == null) {
             throw new IllegalArgumentException("Student cannot be null");
         }
-        Optional<Student> studentOptional =
-                studentRepository.findStudentByStudentNumberOrEmail(studentDTO.getStudentNumber(), studentDTO.getEmail());
+        Optional<Student> studentOptional = studentRepository.findStudentByStudentNumberOrEmail(studentDTO.getStudentNumber(), studentDTO.getEmail());
 
         if (studentOptional.isPresent()) {
             throw new IllegalArgumentException("Student already exists");
@@ -51,18 +49,17 @@ public class StudentService extends GenericUserService<Student> {
         if (departmentOptional.isEmpty()) {
             throw new NoSuchElementException("Department not found");
         }
-        studentDTO.setDepartment(departmentOptional.get().toDTO());
+        studentDTO.setDepartmentDTO(departmentOptional.get().toDTO());
         Student student = studentRepository.save(studentDTO.fromDTO());
         return Optional.of(student.toDTO());
     }
 
     @Transactional
     public List<OfferDTO> getAcceptedOffersByDepartment(Long departmentId) {
-        Department department = departmentRepository.findById(departmentId)
-                .orElseThrow(() -> new NoSuchElementException("Department not found"));
+        Department department = departmentRepository.findById(departmentId).orElseThrow(() -> new NoSuchElementException("Department not found"));
         List<Offer> offers = offerRepository.findAllByDepartmentAndStatus(department, Status.ACCEPTED);
 
-        return offers.stream().map(OfferDTO::new).toList();
+        return offers.stream().map(Offer::toDTO).toList();
     }
 
     public Optional<StudentDTO> getStudentById(Long id) {
@@ -70,36 +67,35 @@ public class StudentService extends GenericUserService<Student> {
     }
 
     @Transactional
-    public Optional<CvDTO> saveCv(MultipartFile file, Long uploaderId) {
+    public Optional<CvDTO> saveCv(MultipartFile file, Long studentId) {
         if (file == null) {
             throw new IllegalArgumentException("File cannot be null");
         }
 
-        Student student = studentRepository.findById(uploaderId)
-                .orElseThrow(() -> new NoSuchElementException("Student not found"));
-
+        Student student = studentRepository.findById(studentId).orElseThrow(() -> new NoSuchElementException("Student not found"));
         byte[] bytes;
-        String name;
+        String fileName;
 
         try {
             bytes = file.getBytes();
-            name = file.getOriginalFilename();
+            fileName = file.getOriginalFilename();
         } catch (IOException e) {
             throw new IllegalArgumentException("File cannot be read");
         }
 
-        Cv cv = new Cv(student, name, bytes);
-        return Optional.of(cvRepository.save(cv).toDto());
+        Cv cv = new Cv(student, fileName, bytes);
+        return Optional.of(cvRepository.save(cv).toDTO());
     }
+
     public Optional<ApplicationDTO> createApplication(ApplicationDTO applicationDTO){
         if(applicationDTO == null) throw new IllegalArgumentException("Application cannot be null");
 
-        Student student = studentRepository.findById(applicationDTO.getStudentId()).orElseThrow();
-        Cv cv = cvRepository.findById(applicationDTO.getCvId()).orElseThrow();
-        Offer offer = offerRepository.findById(applicationDTO.getOfferId()).orElseThrow();
+        Student student = studentRepository.findById(applicationDTO.getStudentId()).orElseThrow(() -> new NoSuchElementException("Student not found"));
+        Cv cv = cvRepository.findById(applicationDTO.getCvId()).orElseThrow(() -> new NoSuchElementException("Cv not found"));
+        Offer offer = offerRepository.findById(applicationDTO.getOfferId()).orElseThrow(() -> new NoSuchElementException("Offer not found"));
 
         Application application = new Application(student, cv, offer);
 
-        return Optional.of(new ApplicationDTO(applicationRepository.save(application)));
+        return Optional.of(applicationRepository.save(application).toDTO());
     }
 }

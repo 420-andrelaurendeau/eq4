@@ -1,6 +1,7 @@
 package com.equipe4.audace.dto.department;
 
 import com.equipe4.audace.model.department.Department;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,19 +12,18 @@ public class DepartmentDTO {
     private String code;
     private String name;
 
+
+    @Builder(builderMethodName = "departmentDTOBuilder")
     public DepartmentDTO(Long id, String code, String name) {
         this.id = id;
         this.code = code;
         this.name = name;
     }
 
-    public DepartmentDTO(Department department) {
-        this.id = department.getId();
-        this.code = department.getCode();
-        this.name = department.getName();
-    }
-
     public Department fromDto() {
-        return new Department(id, code, name);
+        return Department.departmentBuilder()
+                .code(code)
+                .name(name)
+                .build();
     }
 }

@@ -1,7 +1,6 @@
 package com.equipe4.audace.model;
 
 import com.equipe4.audace.dto.EmployerDTO;
-import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.model.offer.Offer;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -36,6 +35,17 @@ public class Employer extends User {
 
     @Override
     public EmployerDTO toDTO() {
-        return new EmployerDTO(this.id, this.firstName, this.lastName, this.email, this.password, this.organisation, this.position, this.address, this.phone, this.extension);
+        return EmployerDTO.employerDTOBuilder()
+                .id(id)
+                .firstName(firstName)
+                .lastName(lastName)
+                .email(email)
+                .password(password)
+                .organisation(organisation)
+                .position(position)
+                .address(address)
+                .phone(phone)
+                .extension(extension)
+                .build();
     }
 }

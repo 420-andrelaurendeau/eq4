@@ -4,10 +4,7 @@ import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Student;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,32 +15,35 @@ import java.util.List;
 @Entity
 public class Cv {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cv_gen")
+    @SequenceGenerator(name = "cv_gen", sequenceName = "cv_sec", allocationSize = 1)
+    @Column(name = "cv_id")
     private Long id;
 
     @ManyToOne
-    private Student uploader;
-    private String name;
+    @JoinColumn(name = "student_id")
+    @ToString.Exclude
+    private Student student;
+    private String fileName;
     private byte[] content;
 
     @ToString.Exclude
     @OneToMany(mappedBy = "cv", cascade = CascadeType.ALL)
     private List<Application> applications = new ArrayList<>();
 
-    public Cv(Student uploader, String name, byte[] content) {
-        this.uploader = uploader;
-        this.name = name;
+    @Builder(builderMethodName = "cvBuilder")
+    public Cv(Student student, String fileName, byte[] content) {
+        this.student = student;
+        this.fileName = fileName;
         this.content = content;
     }
 
-    public Cv(Long id, Student uploader, String name, byte[] content) {
-        this.id = id;
-        this.uploader = uploader;
-        this.name = name;
-        this.content = content;
-    }
-
-    public CvDTO toDto() {
-        return new CvDTO(id, name, content, uploader.getId());
+    public CvDTO toDTO() {
+        return CvDTO.cvDTOBuilder()
+                .id(id)
+                .fileName(fileName)
+                .content(content)
+                .studentId(student.getId())
+                .build();
     }
 }
