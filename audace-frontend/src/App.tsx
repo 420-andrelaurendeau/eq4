@@ -13,6 +13,7 @@ import EmployerHomePage from "./components/EmployerHomePage";
 import LoginView from "./views/LoginView";
 import AuthorizedRoute from "./components/AuthorizedRoute";
 import { Authority } from "./model/auth";
+import ConnectedRoute from "./components/ConnectedRoute";
 
 function App() {
   return (
@@ -45,7 +46,9 @@ function App() {
         <Route
           path="/login"
           element={
-            <LoginView />
+            <ConnectedRoute isConnectedRoute={false}>
+              <LoginView />
+            </ConnectedRoute>
           }
         />
         <Route
@@ -64,10 +67,7 @@ function App() {
           element={
             <AuthorizedRoute requiredAuthority={Authority.MANAGER}>
               <Routes>
-                <Route
-                  path="/manager/:userId"
-                  element={<ManagerHomePage />}
-                />
+                <Route path="/manager/:userId" element={<ManagerHomePage />} />
                 <Route path=":id/offers" element={<ManagerOfferView />} />
               </Routes>
             </AuthorizedRoute>
