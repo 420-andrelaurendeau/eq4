@@ -2,7 +2,12 @@ import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import FormInput from "../FormInput";
 import { LoginRequest } from "../../model/auth";
-import { authenticate, getUserId, login, logout } from "../../services/authService";
+import {
+  authenticate,
+  getUserId,
+  login,
+  logout,
+} from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getUserById } from "../../services/userService";
