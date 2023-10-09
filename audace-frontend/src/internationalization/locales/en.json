@@ -87,5 +87,13 @@
     "file": "Upload File",
     "submit": "Submit",
     "success": "Your CV has been uploaded successfully"
+  },
+  "login": {
+    "identification": "Email or Student Number",
+    "password": "Password",
+    "errors": {
+      "emptyIdentification": "Please enter your email or student number",
+      "emptyPassword": "Please enter your password"
+    }
   }
 }

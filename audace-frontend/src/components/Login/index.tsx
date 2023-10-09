@@ -4,8 +4,10 @@ import FormInput from "../FormInput";
 import { LoginRequest } from "../../model/auth";
 import { authenticate, login } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const LoginForm = () => {
+  const {t} = useTranslation();
   const [identification, setIdentification] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errors, setErrors] = useState<string[]>([]);
@@ -68,7 +70,7 @@ const LoginForm = () => {
           onChange={(e) => setIdentification(e.target.value)}
           controlId="formBasicIdentification"
           errors={errors}
-          formError={""}
+          formError={"login.errors.emptyIdentification"}
         />
         <FormInput
           label="login.password"
@@ -76,10 +78,10 @@ const LoginForm = () => {
           onChange={(e) => setPassword(e.target.value)}
           controlId="formBasicPassword"
           errors={errors}
-          formError={""}
+          formError={"login.errors.emptyPassword"}
           type="password"
         />
-        <Button onClick={submitForm}>Submit</Button>
+        <Button onClick={submitForm}>{t("signin")}</Button>
       </Form>
     </>
   );

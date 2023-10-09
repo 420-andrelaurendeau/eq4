@@ -87,5 +87,13 @@
     "file": "Séléctionner un fichier",
     "submit": "Téléverser",
     "success": "Votre CV a été téléversé avec succès"
+  },
+  "login": {
+    "identification": "Courriel ou matricule",
+    "password": "Mot de passe",
+    "errors": {
+      "emptyIdentification": "SVP entrez votre courriel ou votre matricule",
+      "emptyPassword": "SVP entrez votre mot de passe"
+    }
   }
 }
