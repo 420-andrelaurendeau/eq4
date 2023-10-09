@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
 import http from "../constants/http";
-import { DecodedJwt, LoginRequest, TimedJwt } from "../model/auth";
+import { Authority, DecodedJwt, LoginRequest, TimedJwt } from "../model/auth";
 import { JWT, JWT_EXPIRES_AT } from "../constants/jwtConsts";
 import jwtDecode from "jwt-decode";
 
@@ -34,11 +34,13 @@ export const logout = () => {
   localStorage.removeItem(JWT_EXPIRES_AT);
 };
 
-export const getAuthority = (): string | null => {
+export const getAuthorities = (): Authority[] | null => {
   const jwt = localStorage.getItem(JWT);
   if (!jwt) return null;
 
-  return (jwtDecode(jwt) as DecodedJwt).authority;
+  console.log(jwtDecode(jwt));
+
+  return (jwtDecode(jwt) as DecodedJwt).authorities;
 };
 
 export const getUserId = (): string | null => {

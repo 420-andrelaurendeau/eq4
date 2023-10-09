@@ -67,7 +67,7 @@ function App() {
           element={
             <AuthorizedRoute requiredAuthority={Authority.MANAGER}>
               <Routes>
-                <Route path="/manager/:userId" element={<ManagerHomePage />} />
+                <Route path="/:userId" element={<ManagerHomePage />} />
                 <Route path=":id/offers" element={<ManagerOfferView />} />
               </Routes>
             </AuthorizedRoute>

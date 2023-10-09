@@ -14,7 +14,7 @@ export interface DecodedJwt {
   exp: number;
   id: string;
   email: string;
-  authority: string;
+  authorities: Authority[];
   iss: string;
 }
 
@@ -22,4 +22,5 @@ export enum Authority {
     STUDENT = "STUDENT",
     EMPLOYER = "EMPLOYER",
     MANAGER = "MANAGER",
+    USER = "USER",
 }

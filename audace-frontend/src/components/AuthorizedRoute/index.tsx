@@ -1,10 +1,11 @@
 import { PropsWithChildren, useEffect, useState } from "react";
-import { getAuthority } from "../../services/authService";
+import { getAuthorities } from "../../services/authService";
 import ConnectedRoute from "../ConnectedRoute";
 import PageNotFoundView from "../../views/PageNotFoundView";
+import { Authority } from "../../model/auth";
 
 interface Props {
-  requiredAuthority: string;
+  requiredAuthority: Authority;
 }
 
 const AuthorizedRoute = ({
@@ -14,11 +15,20 @@ const AuthorizedRoute = ({
   const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
 
   useEffect(() => {
-    let userAuthority = getAuthority();
+    let userAuthorities = getAuthorities();
 
-    if (!userAuthority) return;
+    if (!userAuthorities || userAuthorities.length === 0) return;
 
-    setIsAuthorized(userAuthority === requiredAuthority);
+    const requiredAuthorities = [Authority.USER, requiredAuthority];
+
+    requiredAuthorities.forEach((requiredAuthority) => {
+      if (!userAuthorities?.includes(requiredAuthority)) {
+        setIsAuthorized(false);
+        return;
+      }
+    });
+
+    setIsAuthorized(true);
   }, [requiredAuthority]);
 
   return isAuthorized ? (
