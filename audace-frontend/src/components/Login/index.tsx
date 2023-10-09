@@ -37,7 +37,6 @@ const LoginForm = () => {
         authenticate(response.data);
 
         const id = getUserId();
-        console.log(id)
 
         if (id == null) {
           logout();
@@ -48,7 +47,6 @@ const LoginForm = () => {
         getUserById(parseInt(id))
           .then((res) => {
             let user: User = res.data;
-            console.log(user)
             if (user.type === "student") navigate("/student");
             else if (user.type === "manager") navigate("/manager");
             else if (user.type === "employer") navigate("/employer");
