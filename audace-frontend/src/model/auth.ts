@@ -17,3 +17,9 @@ export interface DecodedJwt {
   authority: string;
   iss: string;
 }
+
+export enum Authority {
+    STUDENT = "STUDENT",
+    EMPLOYER = "EMPLOYER",
+    MANAGER = "MANAGER",
+}

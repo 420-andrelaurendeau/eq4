@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignupView from "./views/Signup";
 import { UserType } from "./model/user";
 import StudentOfferView from "./views/StudentOfferView";
@@ -11,51 +11,73 @@ import AppHeader from "./components/AppHeader";
 import StudentHomePage from "./components/StudentHomePage";
 import EmployerHomePage from "./components/EmployerHomePage";
 import LoginView from "./views/LoginView";
+import AuthorizedRoute from "./components/AuthorizedRoute";
+import { Authority } from "./model/auth";
 
 function App() {
-
   return (
-      <Router>
-        <>
-          <AppHeader />
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <>
-                  <h1>OSE ÊTRE MEILLEUR</h1>
-                </>
-              }
-            />
-            <Route path="/student/*" element={
+    <Router>
+      <>
+        <AppHeader />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <h1>OSE ÊTRE MEILLEUR</h1>
+              </>
+            }
+          />
+          <Route
+            path="/signup/*"
+            element={
               <Routes>
-                <Route path=":id/offers" element={<StudentOfferView />}/>
+                <Route
+                  path="employer"
+                  element={<SignupView userType={UserType.Employer} />}
+                />
+                <Route
+                  path="student/:depCode"
+                  element={<SignupView userType={UserType.Student} />}
+                />
               </Routes>
-            } />
-            <Route path="/manager/*" element={
+            }
+          />
+          <Route
+            path="/login/*"
+            element={
               <Routes>
-                <Route path=":id/offers" element={<ManagerOfferView />}/>
+                <Route index element={<LoginView />} />
               </Routes>
-            } />
-            <Route path="/signup/*" element={
-              <Routes>
-                <Route path="employer" element={<SignupView userType={UserType.Employer} />}/>
-                <Route path="student/:depCode" element={<SignupView userType={UserType.Student} />}/>
-              </Routes>
-            }>
-            </Route>
-            <Route path="/users/*" element={
-              <Routes>
-                <Route index element={
-                  <LoginView />
-                }/>
-              </Routes>
-            }>
-            </Route>
-            <Route path="/student/:userId" element={<StudentHomePage />}></Route>
-            <Route path="/employer/:userId" element={<EmployerHomePage />}></Route>
-            <Route path="/manager/:userId" element={<ManagerHomePage />}></Route>
-          </Routes>
+            }
+          />
+          <Route
+            path="/student/*"
+            element={
+              <AuthorizedRoute requiredAuthority={Authority.STUDENT}>
+                <Routes>
+                  <Route path=":userId" element={<StudentHomePage />} />
+                  <Route path=":id/offers" element={<StudentOfferView />} />
+                </Routes>
+              </AuthorizedRoute>
+            }
+          />
+          <Route
+            path="/manager/*"
+            element={
+              <AuthorizedRoute requiredAuthority={Authority.MANAGER}>
+                <Routes>
+                  <Route
+                    path="/manager/:userId"
+                    element={<ManagerHomePage />}
+                  />
+                  <Route path=":id/offers" element={<ManagerOfferView />} />
+                </Routes>
+              </AuthorizedRoute>
+            }
+          />
+          <Route path="/employer/:userId" element={<EmployerHomePage />} />
+        </Routes>
       </>
     </Router>
   );

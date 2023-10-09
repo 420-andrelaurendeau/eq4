@@ -29,7 +29,7 @@ function AppHeader() {
         </Nav>
         {!isConnected() && (
           <Nav>
-            <Button onClick={() => handleClick("/users")} variant="light">
+            <Button onClick={() => handleClick("/login")} variant="light">
               {t("signin")}
             </Button>
           </Nav>
