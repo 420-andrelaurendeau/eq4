@@ -36,8 +36,7 @@ public class WebSecurityConfig {
         http.sessionManagement((sessionManagement) ->
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.cors(cors -> {corsConfigurationSource();});
-
+        http.cors(cors -> corsConfigurationSource());
         http.csrf(AbstractHttpConfigurer::disable);
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
