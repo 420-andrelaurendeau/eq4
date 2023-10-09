@@ -11,7 +11,7 @@ const FileUploader = () => {
     const [successMessage, setSuccessMessage] = useState<string>("");
 
     useEffect(() => {
-        setStudentId(JSON.parse(sessionStorage.getItem("user")!).id);
+        // setStudentId(JSON.parse(sessionStorage.getItem("user")!).id);
     }, []);
 
     const validateForm = () => {

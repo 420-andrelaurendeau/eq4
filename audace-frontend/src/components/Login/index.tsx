@@ -2,12 +2,14 @@ import { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import FormInput from "../FormInput";
 import { LoginRequest } from "../../model/auth";
-import { authenticate, login } from "../../services/loginService";
+import { authenticate, login } from "../../services/authService";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const [identification, setIdentification] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errors, setErrors] = useState<string[]>([]);
+  const navigate = useNavigate();
 
   const submitForm = () => {
     if (!validateForm()) return;
@@ -20,6 +22,7 @@ const LoginForm = () => {
     login(loginRequest)
       .then((response) => {
         authenticate(response.data);
+        navigate("/");
       })
       .catch((error) => {
         console.log(error);
