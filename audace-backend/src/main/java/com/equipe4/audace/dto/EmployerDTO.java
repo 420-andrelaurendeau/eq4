@@ -47,6 +47,7 @@ public class EmployerDTO extends UserDTO {
 
     public Employer fromDTO(){
         return Employer.employerBuilder()
+                .id(id)
                 .firstName(firstName)
                 .lastName(lastName)
                 .email(email)
