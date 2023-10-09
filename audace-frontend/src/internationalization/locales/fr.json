@@ -93,7 +93,8 @@
     "password": "Mot de passe",
     "errors": {
       "emptyIdentification": "SVP entrez votre courriel ou votre matricule",
-      "emptyPassword": "SVP entrez votre mot de passe"
+      "emptyPassword": "SVP entrez votre mot de passe",
+      "invalidCredentials": "Courriel, matricule ou mot de passe invalide"
     }
   }
 }

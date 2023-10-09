@@ -7,14 +7,18 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const LoginForm = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [identification, setIdentification] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errors, setErrors] = useState<string[]>([]);
+  const [areCredentialsValid, setAreCredentialsValid] = useState<boolean>(true);
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const submitForm = () => {
     if (!validateForm()) return;
+
+    setIsDisabled(true);
 
     let loginRequest: LoginRequest = {
       identification: identification,
@@ -27,7 +31,9 @@ const LoginForm = () => {
         navigate("/");
       })
       .catch((error) => {
-        console.log(error);
+        if (error.response.status === 401) setAreCredentialsValid(false);
+
+        setIsDisabled(false);
       });
   };
 
@@ -81,7 +87,14 @@ const LoginForm = () => {
           formError={"login.errors.emptyPassword"}
           type="password"
         />
-        <Button onClick={submitForm}>{t("signin")}</Button>
+        <Button onClick={submitForm} disabled={isDisabled}>
+          {t("signin")}
+        </Button>
+        {!areCredentialsValid && (
+          <p className="invalid-credentials">
+            {t("login.errors.invalidCredentials")}
+          </p>
+        )}
       </Form>
     </>
   );

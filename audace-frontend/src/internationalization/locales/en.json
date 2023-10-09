@@ -67,9 +67,9 @@
     "viewTitle": "Available Offers",
     "acceptButton": "Accept",
     "refuseButton": "Refuse",
-    "ACCEPTED" : "Accepted",
-    "REFUSED" : "Refused",
-    "noMorePendingOffers" : "There is no more pending offers"
+    "ACCEPTED": "Accepted",
+    "REFUSED": "Refused",
+    "noMorePendingOffers": "There is no more pending offers"
   },
   "employerOffersList": {
     "viewTitle": "Available Offers",
@@ -93,7 +93,8 @@
     "password": "Password",
     "errors": {
       "emptyIdentification": "Please enter your email or student number",
-      "emptyPassword": "Please enter your password"
+      "emptyPassword": "Please enter your password",
+      "invalidCredentials": "Email, student number or password is invalid"
     }
   }
 }
