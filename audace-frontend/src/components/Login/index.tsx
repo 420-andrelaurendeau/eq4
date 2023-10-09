@@ -31,7 +31,8 @@ const LoginForm = () => {
         navigate("/");
       })
       .catch((error) => {
-        if (error.response.status === 401) setAreCredentialsValid(false);
+        if (error.response.status === 401 || error.response.status === 403)
+          setAreCredentialsValid(false);
 
         setIsDisabled(false);
       });
