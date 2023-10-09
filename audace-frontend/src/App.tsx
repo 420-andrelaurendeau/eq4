@@ -5,7 +5,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignupView from "./views/Signup";
 import { UserType } from "./model/user";
 import AppHeader from "./components/AppHeader";
-import EmployerHomePage from "./components/EmployerHomePage";
 import LoginView from "./views/LoginView";
 import AuthorizedRoute from "./components/AuthorizedRoute";
 import { Authority } from "./model/auth";
@@ -14,6 +13,7 @@ import PageNotFoundView from "./views/PageNotFoundView";
 import StudentView from "./views/StudentView";
 import ManagerView from "./views/ManagerView";
 import ManagerOfferView from "./views/ManagerOfferView";
+import EmployerView from "./views/EmployerView";
 
 function App() {
   return (
@@ -74,7 +74,17 @@ function App() {
             </AuthorizedRoute>
           }
         />
-        <Route path="/employer/:userId" element={<EmployerHomePage />} />
+        <Route
+          path="/employer/*"
+          element={
+            <AuthorizedRoute requiredAuthority={Authority.EMPLOYER}>
+              <Routes>
+                <Route index element={<EmployerView />} />
+                <Route path="*" element={<PageNotFoundView />} />
+              </Routes>
+            </AuthorizedRoute>
+          }
+        />
         <Route path="*" element={<PageNotFoundView />} />
       </Routes>
     </Router>
