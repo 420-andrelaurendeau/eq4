@@ -23,7 +23,7 @@ const FileUploader = ({ student }: Props) => {
 
     uploadFile(student.id!, file!)
       .then((_) => {
-        setSuccessMessage(t("upload.success"));
+        setSuccessMessage("upload.success");
       })
       .catch((err) => {
         console.log(err);
@@ -50,7 +50,7 @@ const FileUploader = ({ student }: Props) => {
           {t("upload.submit")}
         </Button>
         {successMessage !== "" && (
-          <p className="successMessage">{successMessage}</p>
+          <p className="successMessage">{t(successMessage)}</p>
         )}
       </Form>
     </>

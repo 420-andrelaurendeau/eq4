@@ -57,6 +57,7 @@ function App() {
             <AuthorizedRoute requiredAuthority={Authority.STUDENT}>
               <Routes>
                 <Route index element={<StudentView />} />
+                <Route path="*" element={<PageNotFoundView />} />
               </Routes>
             </AuthorizedRoute>
           }
