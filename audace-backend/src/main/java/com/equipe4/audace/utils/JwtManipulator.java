@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -42,7 +44,7 @@ public class JwtManipulator {
                         .withIssuedAt(new Date())
                         .withClaim("id", user.getId())
                         .withClaim("email", user.getEmail())
-                        .withClaim("authority", determineAuthority(user))
+                        .withClaim("authorities", determineAuthorities(user))
                         .withExpiresAt(new Date(new Date().getTime() + expirationMs))
                         .withIssuer(issuer)
                         .sign(signingAlgorithm),
@@ -59,6 +61,21 @@ public class JwtManipulator {
             return Authorities.MANAGER.name();
 
         return Authorities.USER.name();
+    }
+
+    public List<String> determineAuthorities(User user) {
+        List<String> authorities = new ArrayList<>();
+
+        if (user instanceof Student)
+            authorities.add(Authorities.STUDENT.name());
+        if (user instanceof Employer)
+            authorities.add(Authorities.EMPLOYER.name());
+        if (user instanceof Manager)
+            authorities.add(Authorities.MANAGER.name());
+
+        authorities.add(Authorities.USER.name());
+
+        return authorities;
     }
 
     public DecodedJWT decodeToken(String token) {

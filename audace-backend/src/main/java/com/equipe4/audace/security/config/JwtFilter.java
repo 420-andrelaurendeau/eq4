@@ -19,10 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 @AllArgsConstructor
@@ -39,42 +36,42 @@ public class JwtFilter extends OncePerRequestFilter {
             DecodedJWT decodedJWT = jwtManipulator.decodeToken(token);
             User user = userRepository.findByEmail(decodedJWT.getSubject()).orElseThrow();
 
-            String authority = jwtManipulator.determineAuthority(user);
+            List<String> authorities = jwtManipulator.determineAuthorities(user);
 
-            if (!isTokenValid(decodedJWT, authority))
+            if (!isTokenValid(decodedJWT, authorities))
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 
+            List<GrantedAuthority> grantedAuthorities = convertAuthorities(authorities);
 
             UserDetails userDetails = org.springframework.security.core.userdetails.User
                     .withUsername(user.getEmail())
                     .password(user.getPassword())
-                    .authorities(getAuthorities(authority))
+                    .authorities(grantedAuthorities)
                     .build();
 
-            List<GrantedAuthority> authorities = getAuthorities(authority);
-
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, grantedAuthorities);
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
         filterChain.doFilter(request, response);
     }
 
-    private boolean isTokenValid(DecodedJWT decodedJWT, String authority) {
-        return !isTokenExpired(decodedJWT) && doesRoleMatch(decodedJWT, authority);
+    private boolean isTokenValid(DecodedJWT decodedJWT, List<String> authorities) {
+        return !isTokenExpired(decodedJWT) && doRolesMatch(decodedJWT, authorities);
     }
 
     private boolean isTokenExpired(DecodedJWT decodedJWT) {
         return decodedJWT.getExpiresAt().before(new Date());
     }
 
-    private boolean doesRoleMatch(DecodedJWT decodedJWT, String authority) {
-        return decodedJWT.getClaim("authority").asString().equals(authority);
+    private boolean doRolesMatch(DecodedJWT decodedJWT, List<String> authorities) {
+        return new HashSet<>(decodedJWT.getClaim("authorities").asList(String.class)).containsAll(authorities);
     }
 
-    private List<GrantedAuthority> getAuthorities(String authority) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(authority));
-        return authorities;
+    private List<GrantedAuthority> convertAuthorities(List<String> authorities) {
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        for (String authority : authorities)
+            grantedAuthorities.add(new SimpleGrantedAuthority(authority));
+        return grantedAuthorities;
     }
 }
