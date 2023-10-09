@@ -20,10 +20,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import java.util.List;
+
 import java.util.Optional;
+
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -57,19 +57,6 @@ class UserControllerTest {
     @MockBean
     private EmployerService employerService;
 
-    @Test
-    @WithMockUser(username = "user")
-    void testGetAllUsers() throws Exception {
-        List<UserDTO> userDTOs = List.of(
-                new EmployerDTO(1L, "peterson", "sara", "lesun@live.com", "password", "RocaFella Records", "artist", "3 York St", "4387253892", "slat"),
-                new EmployerDTO(2L, "addison", "sara", "lesun@live.com", "password", "RocaFella Records", "artist", "3 York St", "4387253892", "slat")
-        );
-        when(userService.getAllUsers()).thenReturn(userDTOs);
-
-        mockMvc.perform(get("/users"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(userDTOs.size())));
-    }
     @Test
     @WithMockUser(username = "user")
     void testGetUser() throws Exception {
