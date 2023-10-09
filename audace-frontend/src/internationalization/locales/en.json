@@ -97,5 +97,6 @@
       "invalidCredentials": "Email, student number or password is invalid"
     }
   },
-  "logout": "Log out"
+  "logout": "Log out",
+  "pageNotFound": "Error 404: Page Not Found"
 }

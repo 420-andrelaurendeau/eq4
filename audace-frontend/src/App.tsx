@@ -14,6 +14,7 @@ import LoginView from "./views/LoginView";
 import AuthorizedRoute from "./components/AuthorizedRoute";
 import { Authority } from "./model/auth";
 import ConnectedRoute from "./components/ConnectedRoute";
+import PageNotFoundView from "./views/PageNotFoundView";
 
 function App() {
   return (
@@ -74,6 +75,7 @@ function App() {
           }
         />
         <Route path="/employer/:userId" element={<EmployerHomePage />} />
+        <Route path="*" element={<PageNotFoundView />} />
       </Routes>
     </Router>
   );

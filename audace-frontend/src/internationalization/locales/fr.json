@@ -97,5 +97,6 @@
       "invalidCredentials": "Courriel, matricule ou mot de passe invalide"
     }
   },
-  "logout": "Se déconnecter"
+  "logout": "Se déconnecter",
+  "pageNotFound": "Erreur 404: Page pas trouvée"
 }

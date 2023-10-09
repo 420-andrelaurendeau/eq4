@@ -1,6 +1,7 @@
 import { PropsWithChildren, useEffect, useState } from "react";
 import { getAuthority } from "../../services/authService";
 import ConnectedRoute from "../ConnectedRoute";
+import PageNotFoundView from "../../views/PageNotFoundView";
 
 interface Props {
   requiredAuthority: string;
@@ -23,7 +24,7 @@ const AuthorizedRoute = ({
   return isAuthorized ? (
     <ConnectedRoute isConnectedRoute={true}>{children}</ConnectedRoute>
   ) : (
-    <></>
+    <PageNotFoundView />
   );
 };
 
