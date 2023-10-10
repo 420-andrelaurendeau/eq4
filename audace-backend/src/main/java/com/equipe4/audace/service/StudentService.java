@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Service
 @AllArgsConstructor
@@ -98,4 +99,19 @@ public class StudentService extends GenericUserService<Student> {
 
         return Optional.of(applicationRepository.save(application).toDTO());
     }
+
+    public List<CvDTO> getCvsByStudent(Long studentId) {
+        if (studentId == null) {
+            throw new IllegalArgumentException("Student ID cannot be null");
+        }
+
+        List<Cv> cvs = cvRepository.findAllByStudentId(studentId);
+
+        if (cvs.isEmpty()) {
+            throw new NoSuchElementException("No CVs found for student ID: " + studentId);
+        }
+
+        return cvs.stream().map(Cv::toDTO).toList();
+    }
+
 }
