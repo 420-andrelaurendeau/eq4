@@ -192,4 +192,13 @@ public class StudentControllerTest {
                 .andExpect(jsonPath("$.cvId", is(applicationDTO.getCvId().intValue())))
                 .andExpect(jsonPath("$.offerId", is(applicationDTO.getOfferId().intValue())));
     }
+
+    @Test
+    void getCvsByStudent() throws Exception {
+        List<CvDTO> cvDTOList = List.of(mock(CvDTO.class));
+        when(studentService.getCvsByStudent(1L)).thenReturn(cvDTOList);
+
+        mockMvc.perform(get("/students/cvs/1"))
+                .andExpect(status().isOk());
+    }
 }
