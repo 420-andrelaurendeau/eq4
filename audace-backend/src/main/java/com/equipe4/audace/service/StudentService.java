@@ -104,7 +104,6 @@ public class StudentService extends GenericUserService<Student> {
         if (studentId == null) {
             throw new IllegalArgumentException("Student ID cannot be null");
         }
-
         List<Cv> cvs = cvRepository.findAllByStudentId(studentId);
 
         if (cvs.isEmpty()) {

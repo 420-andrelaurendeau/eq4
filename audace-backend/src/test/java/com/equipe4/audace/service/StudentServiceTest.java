@@ -301,6 +301,35 @@ public class StudentServiceTest {
         );
     }
 
+    @Test
+    void getCvsByStudent() {
+        StudentDTO studentDTO = createStudentDTO();
+        Student student = studentDTO.fromDTO();
+
+        Cv cv1 = Cv.cvBuilder()
+                .student(student)
+                .fileName("cv1")
+                .content("cv1".getBytes())
+                .build();
+        cv1.setId(1L);
+        Cv cv2 = Cv.cvBuilder()
+                .student(student)
+                .fileName("cv2")
+                .content("cv2".getBytes())
+                .build();
+        cv2.setId(2L);
+
+        List<Cv> cvs = new ArrayList<>();
+        cvs.add(cv1);
+        cvs.add(cv2);
+
+        when(cvRepository.findAllByStudentId(studentDTO.getId())).thenReturn(cvs);
+        List<CvDTO> result = studentService.getCvsByStudent(studentDTO.getId());
+
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result).containsExactlyInAnyOrderElementsOf(cvs.stream().map(Cv::toDTO).toList());
+    }
+
     private static class CustomMockMultipartFile extends MockMultipartFile {
         public CustomMockMultipartFile(String name, String originalFilename, String contentType, byte[] content) {
             super(name, originalFilename, contentType, content);

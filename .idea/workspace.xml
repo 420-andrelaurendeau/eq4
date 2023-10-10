@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/StudentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/StudentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/repository/cv/CvRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/repository/cv/CvRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/service/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/service/StudentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/StudentServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/StudentServiceTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,10 +75,11 @@
       <recent name="" />
     </key>
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="com.equipe4.audace.service" />
       <recent name="com.equipe4.audace.controller" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.StudentControllerTest.getCvsByStudent">
+  <component name="RunManager" selected="JUnit.StudentServiceTest">
     <configuration name="StudentControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="audace" />
       <extension name="coverage">
@@ -111,33 +111,32 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserControllerTest.testGetAllUsers" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="StudentServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="audace" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.equipe4.audace.controller.*" />
+          <option name="PATTERN" value="com.equipe4.audace.service.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.equipe4.audace.controller" />
-      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.controller.UserControllerTest" />
-      <option name="METHOD_NAME" value="testGetAllUsers" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="com.equipe4.audace.service" />
+      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.service.StudentServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="UserControllerTest.testGetUserNotFound" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="StudentServiceTest.getCvsByStudent" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="audace" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.equipe4.audace.controller.*" />
+          <option name="PATTERN" value="com.equipe4.audace.service.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.equipe4.audace.controller" />
-      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.controller.UserControllerTest" />
-      <option name="METHOD_NAME" value="testGetUserNotFound" />
+      <option name="PACKAGE_NAME" value="com.equipe4.audace.service" />
+      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.service.StudentServiceTest" />
+      <option name="METHOD_NAME" value="getCvsByStudent" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -158,11 +157,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.StudentServiceTest" />
+        <item itemvalue="JUnit.StudentControllerTest" />
+        <item itemvalue="JUnit.StudentServiceTest.getCvsByStudent" />
         <item itemvalue="JUnit.StudentControllerTest.getCvsByStudent" />
         <item itemvalue="Spring Boot.AudaceApplication" />
-        <item itemvalue="JUnit.StudentControllerTest" />
-        <item itemvalue="JUnit.UserControllerTest.testGetAllUsers" />
-        <item itemvalue="JUnit.UserControllerTest.testGetUserNotFound" />
       </list>
     </recent_temporary>
   </component>
@@ -186,11 +185,22 @@
       <workItem from="1696538083385" duration="4419000" />
       <workItem from="1696707165272" duration="3715000" />
       <workItem from="1696965040418" duration="79000" />
-      <workItem from="1696965215193" duration="3155000" />
+      <workItem from="1696965215193" duration="4257000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/service/StudentService.java</url>
+          <line>109</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
