@@ -34,13 +34,21 @@ public class JwtFilter extends OncePerRequestFilter {
         if (jwt.isPresent()) {
             String token = jwt.get();
             DecodedJWT decodedJWT = jwtManipulator.decodeToken(token);
-            User user = userRepository.findByEmail(decodedJWT.getSubject()).orElseThrow();
+            Optional<User> optionalUser = userRepository.findByEmail(decodedJWT.getSubject());
+
+            User user;
+
+            if (optionalUser.isPresent()) {
+                user = optionalUser.get();
+            } else {
+                handleInvalidToken(request, response, filterChain);
+                return;
+            }
 
             List<String> authorities = jwtManipulator.determineAuthorities(user);
 
             if (!isTokenValid(decodedJWT, authorities)) {
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                filterChain.doFilter(request, response);
+                handleInvalidToken(request, response, filterChain);
                 return;
             }
 
@@ -69,6 +77,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private boolean doAuthoritiesMatch(DecodedJWT decodedJWT, List<String> authorities) {
         return new HashSet<>(decodedJWT.getClaim("authorities").asList(String.class)).containsAll(authorities);
+    }
+
+    private void handleInvalidToken(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        filterChain.doFilter(request, response);
     }
 
     private List<GrantedAuthority> convertAuthorities(List<String> authorities) {
