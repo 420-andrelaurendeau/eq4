@@ -43,7 +43,7 @@ export const expireSession = () => {
   localStorage.setItem(SESSION_EXPIRED_AT, Date.now().toString());
 };
 
-export const clearConnection = () => {
+const clearConnection = () => {
   localStorage.removeItem(JWT);
   localStorage.removeItem(JWT_EXPIRES_AT);
 };
