@@ -20,25 +20,28 @@ function AppHeader() {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav>
-          <Button
-            onClick={() => handleClick("/signup/employer")}
-            variant="light"
-          >
-            {t("signup.signup")}
-          </Button>
+          {!isConnected() ? (
+            <>
+              <Button
+                onClick={() => handleClick("/signup/employer")}
+                variant="light"
+              >
+                {t("signup.signup")}
+              </Button>
+              <Nav>
+                <Button onClick={() => handleClick("/login")} variant="light">
+                  {t("signin")}
+                </Button>
+              </Nav>
+            </>
+          ) : (
+            <>
+              <Nav>
+                <LogoutButton />
+              </Nav>
+            </>
+          )}
         </Nav>
-        {!isConnected() && (
-          <Nav>
-            <Button onClick={() => handleClick("/login")} variant="light">
-              {t("signin")}
-            </Button>
-          </Nav>
-        )}
-        {isConnected() && (
-          <Nav>
-            <LogoutButton />
-          </Nav>
-        )}
         <LanguageToggler />
       </Navbar.Collapse>
     </Navbar>
