@@ -1,7 +1,12 @@
 import { AxiosResponse } from "axios";
 import http from "../constants/http";
 import { Authority, DecodedJwt, LoginRequest, TimedJwt } from "../model/auth";
-import { JWT, JWT_EXPIRES_AT } from "../constants/jwtConsts";
+import {
+  JWT,
+  JWT_EXPIRES_AT,
+  SESSION_EXPIRED_AT,
+  TIME_BEFORE_EXPIRE_ISNT_RECENT,
+} from "../constants/jwtConsts";
 import jwtDecode from "jwt-decode";
 
 export const login = async (
@@ -30,6 +35,15 @@ export const getJwt = (): string | null => {
 };
 
 export const logout = () => {
+  clearConnection();
+};
+
+export const expireSession = () => {
+  clearConnection();
+  localStorage.setItem(SESSION_EXPIRED_AT, Date.now().toString());
+};
+
+export const clearConnection = () => {
   localStorage.removeItem(JWT);
   localStorage.removeItem(JWT_EXPIRES_AT);
 };
@@ -46,4 +60,11 @@ export const getUserId = (): string | null => {
   if (!jwt) return null;
 
   return (jwtDecode(jwt) as DecodedJwt).id;
+};
+
+export const hasSessionExpiredRecently = (): boolean => {
+  return (
+    Date.now() - parseInt(localStorage.getItem(SESSION_EXPIRED_AT) || "0") <
+    TIME_BEFORE_EXPIRE_ISNT_RECENT
+  );
 };

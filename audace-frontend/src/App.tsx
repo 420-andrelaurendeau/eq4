@@ -44,10 +44,14 @@ function App() {
           }
         />
         <Route
-          path="/login"
+          path="/login/*"
           element={
             <ConnectedRoute isConnectedRoute={false}>
-              <LoginView />
+              <Routes>
+                <Route index element={<LoginView />} />
+                <Route path="disconnected" element={<LoginView />} />
+                <Route path="*" element={<PageNotFoundView />} />
+              </Routes>
             </ConnectedRoute>
           }
         />
