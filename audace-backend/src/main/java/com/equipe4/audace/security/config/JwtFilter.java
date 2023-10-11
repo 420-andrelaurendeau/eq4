@@ -38,8 +38,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
             List<String> authorities = jwtManipulator.determineAuthorities(user);
 
-            if (!isTokenValid(decodedJWT, authorities))
+            if (!isTokenValid(decodedJWT, authorities)) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                filterChain.doFilter(request, response);
+                return;
+            }
 
             List<GrantedAuthority> grantedAuthorities = convertAuthorities(authorities);
 
@@ -57,14 +60,14 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     private boolean isTokenValid(DecodedJWT decodedJWT, List<String> authorities) {
-        return !isTokenExpired(decodedJWT) && doRolesMatch(decodedJWT, authorities);
+        return !isTokenExpired(decodedJWT) && doAuthoritiesMatch(decodedJWT, authorities);
     }
 
     private boolean isTokenExpired(DecodedJWT decodedJWT) {
         return decodedJWT.getExpiresAt().before(new Date());
     }
 
-    private boolean doRolesMatch(DecodedJWT decodedJWT, List<String> authorities) {
+    private boolean doAuthoritiesMatch(DecodedJWT decodedJWT, List<String> authorities) {
         return new HashSet<>(decodedJWT.getClaim("authorities").asList(String.class)).containsAll(authorities);
     }
 

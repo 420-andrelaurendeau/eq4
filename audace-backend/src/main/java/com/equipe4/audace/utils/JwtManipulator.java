@@ -52,17 +52,6 @@ public class JwtManipulator {
         );
     }
 
-    public String determineAuthority(User user) {
-        if (user instanceof Student)
-            return Authorities.STUDENT.name();
-        if (user instanceof Employer)
-            return Authorities.EMPLOYER.name();
-        if (user instanceof Manager)
-            return Authorities.MANAGER.name();
-
-        return Authorities.USER.name();
-    }
-
     public List<String> determineAuthorities(User user) {
         List<String> authorities = new ArrayList<>();
 
