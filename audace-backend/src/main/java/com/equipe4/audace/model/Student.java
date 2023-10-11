@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class Student extends User {
-    @Column
+    @Column(unique = true)
     private String studentNumber;
 
     @ManyToOne

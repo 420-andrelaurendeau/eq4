@@ -27,7 +27,7 @@ public class AuthService {
         Optional<User> optionalUser = userRepository.findByEmail(identification);
 
         if (optionalUser.isEmpty())
-            optionalUser = studentRepository.findByStudentNumber(identification).map((student -> student));
+            optionalUser = studentRepository.findByStudentNumber(identification).map(student -> student);
 
         User user = optionalUser.orElseThrow();
         Salt salt = saltRepository.findByUser(user).orElseThrow();

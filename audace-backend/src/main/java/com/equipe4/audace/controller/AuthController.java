@@ -42,7 +42,7 @@ public class AuthController extends LoggedController {
     }
 
     @PostMapping("/signup/student/{departmentCode}")
-    public ResponseEntity<HttpStatus> signupStudent(@RequestBody StudentDTO studentDTO, @PathVariable String departmentCode) {
+    public ResponseEntity<HttpStatus> createStudent(@RequestBody StudentDTO studentDTO, @PathVariable String departmentCode) {
         logger.info("createStudent");
         return studentService.createStudent(studentDTO, departmentCode)
                 .map(student -> new ResponseEntity<HttpStatus>(HttpStatus.CREATED))

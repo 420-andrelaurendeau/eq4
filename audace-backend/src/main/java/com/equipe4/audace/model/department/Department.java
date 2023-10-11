@@ -1,6 +1,7 @@
 package com.equipe4.audace.model.department;
 
 import com.equipe4.audace.dto.department.DepartmentDTO;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -16,6 +17,7 @@ public class Department {
     @Id
     @GeneratedValue
     private Long id;
+    @Column(unique = true)
     private String code;
     private String name;
 
