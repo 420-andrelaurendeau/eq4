@@ -94,7 +94,8 @@
     "errors": {
       "emptyIdentification": "Please enter your email or student number",
       "emptyPassword": "Please enter your password",
-      "invalidCredentials": "Email, student number or password is invalid"
+      "invalidCredentials": "Email, student number or password is invalid",
+      "sessionExpired": "Your session has expired, please log in again"
     }
   },
   "logout": "Log out",
