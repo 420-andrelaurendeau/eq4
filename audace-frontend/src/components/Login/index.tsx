@@ -26,10 +26,6 @@ const LoginForm = () => {
   const [showExpiredSessionNotif, setShowExpiredSessionNotif] = useState<boolean>(false);
 
   const isSessionProperlyExpired = useCallback(() => {
-    console.log(location.pathname)
-    console.log(isConnected())
-    console.log(hasSessionExpiredRecently())
-
     return (
       location.pathname === "/login/disconnected" &&
       !isConnected() &&
