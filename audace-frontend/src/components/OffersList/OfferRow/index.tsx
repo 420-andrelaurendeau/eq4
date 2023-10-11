@@ -6,7 +6,6 @@ import { formatDate } from "../../../services/formatService";
 import { Employer, UserType } from "../../../model/user";
 import OfferButtons from "./OfferButtons";
 
-
 interface Props {
     offer: Offer;
     userType: UserType;

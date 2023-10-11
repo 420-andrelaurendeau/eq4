@@ -1,14 +1,14 @@
 import {useEffect, useState} from "react";
 import { Offer, OfferStatus } from "../../../../model/offer";
-import { Employer, UserType } from "../../../../model/user";
+import { Employer, Student, UserType } from "../../../../model/user";
 import {Button, Modal} from "react-bootstrap";
 import { getEmployerById } from "../../../../services/userService";
 import { useTranslation } from "react-i18next";
 import { formatDate } from "../../../../services/formatService";
 import { apply } from "../../../../services/studentApplicationService"
 import { useParams} from "react-router";
-import axios from "axios";
 import Application from "../../../../model/application";
+import { CV } from "../../../../model/cv";
 
 interface Props {
     offer: Offer;
@@ -30,9 +30,8 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
 
     useEffect(() => {
         if (employer !== undefined) return;
-        console.log("useEffect is being called again");
 
-        getEmployerById(offer.employerId)
+        getEmployerById(offer.employer.id!)
             .then((res) => {
                 setEmployer!(res.data);
             })
@@ -46,11 +45,30 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
     };
 
     const handleApply = () => {
+        const tempStudent: Student = {
+            id: studentId,
+            email: "",
+            password: "",
+            firstName: "",
+            lastName: "",
+            type: "student",
+            phone: "",
+            address: "",
+            studentNumber: "",
+        }
+
+        const tempCV: CV = {
+            id: 1,
+            student: tempStudent,
+            fileName: "CV",
+            content: "test",
+        }
+
         const applicationData: Application = {
             id: 1000,
-            studentId: studentId,
-            offerId: offer.id,
-            cvId: 1,
+            student: tempStudent,
+            offer: offer,
+            cv: tempCV,
         };
 
         apply(applicationData)
