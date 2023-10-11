@@ -4,7 +4,10 @@ import com.equipe4.audace.dto.ApplicationDTO;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.offer.Offer;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
@@ -31,14 +34,6 @@ public class Application {
     @JoinColumn(name = "offer_id")
     @ToString.Exclude
     private Offer offer;
-
-
-    @Builder(builderMethodName = "applicationBuilder")
-    public Application(Student student, Cv cv, Offer offer) {
-        this.student = student;
-        this.cv = cv;
-        this.offer = offer;
-    }
 
     public ApplicationDTO toDTO(){
         return ApplicationDTO.applicationDTOBuilder()

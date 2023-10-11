@@ -5,7 +5,10 @@ import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -49,20 +52,6 @@ public class Offer {
         PENDING,
         ACCEPTED,
         REFUSED
-    }
-
-
-    @Builder(builderMethodName = "offerBuilder")
-    public Offer(String title, String description, LocalDate internshipStartDate, LocalDate internshipEndDate, LocalDate offerEndDate, int availablePlaces, Department department, Employer employer) {
-        this.title = title;
-        this.description = description;
-        this.internshipStartDate = internshipStartDate;
-        this.internshipEndDate = internshipEndDate;
-        this.offerEndDate = offerEndDate;
-        this.availablePlaces = availablePlaces;
-        this.status = Status.PENDING;
-        this.department = department;
-        this.employer = employer;
     }
 
     public OfferDTO toDTO(){

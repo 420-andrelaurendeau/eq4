@@ -4,7 +4,9 @@ import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.model.department.Department;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @ToString(callSuper = true)
@@ -14,9 +16,17 @@ public class Manager extends User {
     @ManyToOne
     private Department department;
 
-    @Builder(builderMethodName = "managerBuilder")
-    public Manager(String firstname, String lastname, String email, String password, String address, String phone, Department department) {
-        super(firstname, lastname, email, password, address, phone);
+    public Manager(
+            Long id,
+            String firstname,
+            String lastname,
+            String email,
+            String password,
+            String address,
+            String phone,
+            Department department
+    ) {
+        super(id, firstname, lastname, email, password, address, phone);
         this.department = department;
     }
 

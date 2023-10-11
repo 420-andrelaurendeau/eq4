@@ -4,10 +4,13 @@ import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @ToString(callSuper = true)
 @Entity
 @Data
@@ -27,9 +30,18 @@ public class Student extends User {
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<Application> applications = new ArrayList<>();
 
-    @Builder(builderMethodName = "studentBuilder")
-    public Student(String firstname, String lastname, String email, String password, String address, String phone, String studentNumber, Department department) {
-        super(firstname, lastname, email, password, address, phone);
+    public Student(
+            Long id,
+            String firstname,
+            String lastname,
+            String email,
+            String password,
+            String address,
+            String phone,
+            String studentNumber,
+            Department department
+    ) {
+        super(id, firstname, lastname, email, password, address, phone);
         this.studentNumber = studentNumber;
         this.department = department;
     }
