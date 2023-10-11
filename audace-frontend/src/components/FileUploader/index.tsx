@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import { Button, Form, FormControl } from "react-bootstrap";
+import { Alert, Button, Form, FormControl } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { uploadFile } from "../../services/fileService";
-import "./styles.css";
 import { Student } from "../../model/user";
 
 interface Props {
@@ -33,7 +32,7 @@ const FileUploader = ({ student }: Props) => {
   return (
     <>
       <h3>{t("upload.CvFormTitle")}</h3>
-      <Form>
+      <Form className="my-3">
         <Form.Group controlId="formBasicCvFile">
           <Form.Label>{t("upload.file")}</Form.Label>
           <FormControl
@@ -49,10 +48,10 @@ const FileUploader = ({ student }: Props) => {
         <Button variant="primary" className="mt-3" onClick={submitForm}>
           {t("upload.submit")}
         </Button>
-        {successMessage !== "" && (
-          <p className="successMessage">{t(successMessage)}</p>
-        )}
       </Form>
+      {successMessage !== "" && (
+        <Alert variant="success">{t(successMessage)}</Alert>
+      )}
     </>
   );
 };
