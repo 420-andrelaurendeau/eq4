@@ -3,11 +3,13 @@ package com.equipe4.audace;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
+import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
@@ -31,7 +33,10 @@ public class AudaceApplication implements CommandLineRunner {
 	private EmployerRepository employerRepository;
 	@Autowired
 	private CvRepository cvRepository;
+	@Autowired
 	private EmployerService employerService;
+	@Autowired
+	private ManagerRepository managerRepository;
 
 
 	public AudaceApplication(DepartmentRepository departmentRepository, EmployerService employerService) {
@@ -154,7 +159,9 @@ public class AudaceApplication implements CommandLineRunner {
 		employer.getOffers().add(offer4);
 		employerRepository.save(employer);
 
-		byte[] content = new byte[10];
+		String cvContent = "cv content for fun";
+		byte[] content = cvContent.getBytes();
+
 		Cv cv = new Cv(
 				null,
 				student,
@@ -162,5 +169,17 @@ public class AudaceApplication implements CommandLineRunner {
 				"cv.pdf"
 		);
 		cvRepository.save(cv);
+
+		Manager manager = new Manager(
+				null,
+				"manager",
+				"managerman",
+				"manager@email.com",
+				"password",
+				"123 Street Street",
+				"1234567890",
+				department
+		);
+		managerRepository.save(manager);
 	}
 }

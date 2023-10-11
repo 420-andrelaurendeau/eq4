@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class StudentDTO extends UserDTO {
     //TODO : Spring Validation
     private String studentNumber;
-    private DepartmentDTO departmentDTO;
+    private DepartmentDTO department;
 
     public StudentDTO(
             Long id,
@@ -21,11 +21,11 @@ public class StudentDTO extends UserDTO {
             String phone,
             String password,
             String studentNumber,
-            DepartmentDTO departmentDTO
+            DepartmentDTO department
     ) {
         super(id, firstName, lastName, address, phone, email, password);
         this.studentNumber = studentNumber;
-        this.departmentDTO = departmentDTO;
+        this.department = department;
     }
 
     public Student fromDTO() {
@@ -38,7 +38,7 @@ public class StudentDTO extends UserDTO {
                 address,
                 phone,
                 studentNumber,
-                departmentDTO.fromDTO()
+                department.fromDTO()
         );
     }
 }

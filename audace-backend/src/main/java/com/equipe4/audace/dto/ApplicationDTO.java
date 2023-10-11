@@ -13,18 +13,18 @@ import lombok.NoArgsConstructor;
 public class ApplicationDTO {
     //TODO: Modify to add necesary properties for displaying in list
     private Long id;
-    private StudentDTO studentDTO;
-    private OfferDTO offerDTO;
-    private CvDTO cvDTO;
+    private StudentDTO student;
+    private OfferDTO offer;
+    private CvDTO cv;
 
 
     //TODO: Modify to add necesary properties for displaying in list
     public Application fromDTO(){
         return new Application(
                 id,
-                studentDTO.fromDTO(),
-                cvDTO.fromDTO(),
-                offerDTO.fromDTO()
+                student.fromDTO(),
+                cv.fromDTO(),
+                offer.fromDTO()
         );
     }
 }

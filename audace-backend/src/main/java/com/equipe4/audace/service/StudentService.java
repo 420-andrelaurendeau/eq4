@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.function.Function;
 
 @Service
 @AllArgsConstructor
@@ -50,7 +49,7 @@ public class StudentService extends GenericUserService<Student> {
         if (departmentOptional.isEmpty()) {
             throw new NoSuchElementException("Department not found");
         }
-        studentDTO.setDepartmentDTO(departmentOptional.get().toDTO());
+        studentDTO.setDepartment(departmentOptional.get().toDTO());
         Student student = studentRepository.save(studentDTO.fromDTO());
         return Optional.of(student.toDTO());
     }
@@ -91,9 +90,9 @@ public class StudentService extends GenericUserService<Student> {
     public Optional<ApplicationDTO> createApplication(ApplicationDTO applicationDTO){
         if(applicationDTO == null) throw new IllegalArgumentException("Application cannot be null");
 
-        Long studentId = applicationDTO.getStudentDTO().getId();
-        Long cvId = applicationDTO.getCvDTO().getId();
-        Long offerId = applicationDTO.getOfferDTO().getId();
+        Long studentId = applicationDTO.getStudent().getId();
+        Long cvId = applicationDTO.getCv().getId();
+        Long offerId = applicationDTO.getOffer().getId();
 
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new NoSuchElementException("Student not found"));
         Cv cv = cvRepository.findById(cvId).orElseThrow(() -> new NoSuchElementException("Cv not found"));

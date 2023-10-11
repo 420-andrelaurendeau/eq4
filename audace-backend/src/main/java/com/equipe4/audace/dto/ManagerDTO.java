@@ -7,7 +7,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 public class ManagerDTO extends UserDTO {
-    private DepartmentDTO departmentDTO;
+    private DepartmentDTO department;
 
     public ManagerDTO(
             Long id,
@@ -17,10 +17,10 @@ public class ManagerDTO extends UserDTO {
             String address,
             String phone,
             String password,
-            DepartmentDTO departmentDTO
+            DepartmentDTO department
     ) {
         super(id, firstName, lastName, address, phone, email, password);
-        this.departmentDTO = departmentDTO;
+        this.department = department;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ManagerDTO extends UserDTO {
                 password,
                 address,
                 phone,
-                departmentDTO.fromDTO()
+                department.fromDTO()
         );
     }
 }

@@ -1,7 +1,6 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.ApplicationDTO;
-import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
@@ -125,7 +124,7 @@ public class StudentServiceTest {
 
         when(studentRepository.save(any())).thenReturn(studentDTO.fromDTO());
 
-        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(studentDTO.getDepartmentDTO().fromDTO()));
+        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(studentDTO.getDepartment().fromDTO()));
 
         Optional<StudentDTO> optionalStudentDTO = studentService.createStudent(studentDTO, "420");
 
