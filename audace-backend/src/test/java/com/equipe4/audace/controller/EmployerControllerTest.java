@@ -22,10 +22,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.any;
@@ -58,10 +60,7 @@ public class EmployerControllerTest {
 
     @Test
     public void getEmployerById_happyPath_test() throws Exception {
-        EmployerDTO employerDTO = EmployerDTO.employerDTOBuilder().id(1L)
-                .firstName("Employer1").lastName("Employer1").email("employer1@gmail.com").password("123456eE")
-                .organisation("Organisation1").position("Position1").phone("123-456-7890").extension("12345")
-                .address("Class Service, Javatown, Qc H8N1C1").build();
+        EmployerDTO employerDTO = createEmployerDTO();
 
         when(employerService.findEmployerById(1L)).thenReturn(Optional.of(employerDTO));
 
@@ -85,19 +84,10 @@ public class EmployerControllerTest {
     @Test
     public void givenOfferObject_whenCreateOffer_thenReturnSavedOffer() throws Exception{
         // given - precondition or setup
-        Department department = new Department("GLO", "Génie logiciel");
-        Employer employer = Employer.employerBuilder()
-                .firstName("Employer1").lastName("Employer1").email("employer1@gmail.com").password("123456eE")
-                .organisation("Organisation1").position("Position1").phone("123-456-7890").extension("12345")
-                .address("Class Service, Javatown, Qc H8N1C1")
-                .build();
-        employer.setId(1L);
+        Department department = new Department(1L, "GLO", "Génie logiciel");
+        Employer employer = createEmployerDTO().fromDTO();
 
-        OfferDTO offerDTO = OfferDTO.offerDTOBuilder()
-                .title("Stage en génie logiciel").description("Stage en génie logiciel")
-                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
-                .availablePlaces(3).departmentCode(department.getCode()).employerId(employer.getId())
-                .build();
+        OfferDTO offerDTO = createOffer(employer, department).toDTO();
 
         when(employerService.createOffer(any(OfferDTO.class))).thenReturn(Optional.of(offerDTO));
 
@@ -109,38 +99,23 @@ public class EmployerControllerTest {
         // then - verify the result or output using assert statements
         response.andDo(print()).
                 andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", is(offerDTO.getId())))
+                .andExpect(jsonPath("$.id").value(offerDTO.getId()))
                 .andExpect(jsonPath("$.title", is(offerDTO.getTitle())))
                 .andExpect(jsonPath("$.description", is(offerDTO.getDescription())))
                 .andExpect(jsonPath("$.internshipStartDate", is(offerDTO.getInternshipStartDate().toString())))
                 .andExpect(jsonPath("$.internshipEndDate", is(offerDTO.getInternshipEndDate().toString())))
                 .andExpect(jsonPath("$.offerEndDate", is(offerDTO.getOfferEndDate().toString())))
-                .andExpect(jsonPath("$.availablePlaces", is(offerDTO.getAvailablePlaces())))
-                .andExpect(jsonPath("$.employerId", is(offerDTO.getEmployerId().intValue())))
-                .andExpect(jsonPath("$.departmentCode", is(offerDTO.getDepartmentCode())));
+                .andExpect(jsonPath("$.availablePlaces", is(offerDTO.getAvailablePlaces())));
     }
     @Test
     public void givenListOfOffers_whenGetAllOffers_thenReturnOffersList() throws Exception{
         // given - precondition or setup
-        Department department = new Department("GLO", "Génie logiciel");
-        Employer employer = Employer.employerBuilder()
-                .firstName("Employer1").lastName("Employer1").email("employer1@gmail.com").password("123456eE")
-                .organisation("Organisation1").position("Position1").phone("123-456-7890").extension("12345")
-                .address("Class Service, Javatown, Qc H8N1C1")
-                .build();
-        employer.setId(1L);
+        Department department = new Department(1L, "GLO", "Génie logiciel");
+        Employer employer = createEmployerDTO().fromDTO();
 
         List<OfferDTO> listOfOffers = new ArrayList<>();
-        listOfOffers.add(OfferDTO.offerDTOBuilder()
-                .title("Stage en génie logiciel").description("Stage en génie logiciel")
-                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
-                .availablePlaces(3).employerId(employer.getId()).departmentCode(department.getCode())
-                .build());
-        listOfOffers.add(OfferDTO.offerDTOBuilder()
-                .title("Stage en génie logiciel").description("Stage en génie logiciel")
-                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
-                .availablePlaces(5).employerId(employer.getId()).departmentCode(department.getCode())
-                .build());
+        listOfOffers.add(createOffer(employer, department).toDTO());
+        listOfOffers.add(createOffer(employer, department).toDTO());
         given(employerService.findAllOffersByEmployerId(employer.getId())).willReturn(listOfOffers);
 
         // when -  action or the behaviour that we are going test
@@ -157,30 +132,24 @@ public class EmployerControllerTest {
     public void givenUpdatedOffer_whenUpdateOffer_thenReturnUpdateOfferObject() throws Exception{
         // given - precondition or setup
 
-        Department department = new Department("GLO", "Génie logiciel");
-        Employer employer = Employer.employerBuilder()
-                .firstName("Employer1").lastName("Employer1").email("employer1@gmail.com").password("123456eE")
-                .organisation("Organisation1").position("Position1").phone("123-456-7890").extension("12345")
-                .address("Class Service, Javatown, Qc H8N1C1")
-                .build();
-        employer.setId(1L);
+        Department department = new Department(1L, "GLO", "Génie logiciel");
+        Employer employer = createEmployerDTO().fromDTO();
 
-        Offer offerSaved = Offer.offerBuilder()
-                .title("Stage en génie logiciel").description("Stage en génie logiciel")
-                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
-                .availablePlaces(3).employer(employer).department(department)
-                .build();
-        offerSaved.setId(1L);
+        Offer offerSaved = createOffer(employer, department);
         OfferDTO offerDTOSaved = offerSaved.toDTO();
 
-        Offer offerUpdated = Offer.offerBuilder()
-                .title("Stage en génie logiciel").description("Stage en génie logiciel")
-                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
-                .availablePlaces(5).employer(employer).department(department)
-                .build();
-        offerUpdated.setId(1L);
+        Offer offerUpdated = new Offer(
+                offerDTOSaved.getId(),
+                "Stage en génie logiciel Updated",
+                "Stage en génie logiciel Updated",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                3,
+                department,
+                employer
+        );
         OfferDTO offerDTOUpdated = offerUpdated.toDTO();
-
 
         given(offerRepository.findById(offerDTOSaved.getId())).willReturn(Optional.of(offerSaved));
         given(employerService.updateOffer(any(OfferDTO.class))).willReturn(Optional.of(offerDTOUpdated));
@@ -189,7 +158,6 @@ public class EmployerControllerTest {
         ResultActions response = mockMvc.perform(put("/employers/{id}/offers", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(offerDTOUpdated)));
-
 
         // then - verify the output
         response.andExpect(status().isOk())
@@ -200,9 +168,35 @@ public class EmployerControllerTest {
                 .andExpect(jsonPath("$.internshipStartDate", is(offerDTOUpdated.getInternshipStartDate().toString())))
                 .andExpect(jsonPath("$.internshipEndDate", is(offerDTOUpdated.getInternshipEndDate().toString())))
                 .andExpect(jsonPath("$.offerEndDate", is(offerDTOUpdated.getOfferEndDate().toString())))
-                .andExpect(jsonPath("$.availablePlaces", is(offerDTOUpdated.getAvailablePlaces())))
-                .andExpect(jsonPath("$.employerId", is(offerDTOUpdated.getEmployerId().intValue())))
-                .andExpect(jsonPath("$.departmentCode", is(offerDTOUpdated.getDepartmentCode())));
+                .andExpect(jsonPath("$.availablePlaces", is(offerDTOUpdated.getAvailablePlaces())));
     }
 
+    private EmployerDTO createEmployerDTO() {
+        return new EmployerDTO(
+                1L,
+                "Employer1",
+                "Employer1",
+                "employer1@gmail.com",
+                "123456eE",
+                "Organisation1",
+                "Position1",
+                "Class Service, Javatown, Qc H8N1C1",
+                "123-456-7890",
+                "12345"
+        );
+    }
+
+    private Offer createOffer(Employer employer, Department department) {
+        return new Offer(
+                1L,
+                "Stage en génie logiciel",
+                "Stage en génie logiciel",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                3,
+                department,
+                employer
+        );
+    }
 }

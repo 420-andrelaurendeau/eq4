@@ -1,31 +1,27 @@
 package com.equipe4.audace.dto.cv;
 
+import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.model.cv.Cv;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 public class CvDTO {
     private Long id;
     private String fileName;
     private byte[] content;
-    private Long studentId;
+    private StudentDTO student;
 
-
-    @Builder(builderMethodName = "cvDTOBuilder")
-    public CvDTO(Long id, String fileName, byte[] content, Long studentId) {
-        this.id = id;
-        this.fileName = fileName;
-        this.content = content;
-        this.studentId = studentId;
-    }
-
-    public Cv fromDto() {
-        return Cv.cvBuilder()
-                .fileName(fileName)
-                .content(content)
-                .build();
+    public Cv fromDTO() {
+        return new Cv(
+                id,
+                student.fromDTO(),
+                content,
+                fileName
+        );
     }
 }

@@ -84,18 +84,22 @@ public class StudentService extends GenericUserService<Student> {
             throw new IllegalArgumentException("File cannot be read");
         }
 
-        Cv cv = new Cv(student, fileName, bytes);
+        Cv cv = new Cv(null, student, bytes, fileName);
         return Optional.of(cvRepository.save(cv).toDTO());
     }
 
     public Optional<ApplicationDTO> createApplication(ApplicationDTO applicationDTO){
         if(applicationDTO == null) throw new IllegalArgumentException("Application cannot be null");
 
-        Student student = studentRepository.findById(applicationDTO.getStudentId()).orElseThrow(() -> new NoSuchElementException("Student not found"));
-        Cv cv = cvRepository.findById(applicationDTO.getCvId()).orElseThrow(() -> new NoSuchElementException("Cv not found"));
-        Offer offer = offerRepository.findById(applicationDTO.getOfferId()).orElseThrow(() -> new NoSuchElementException("Offer not found"));
+        Long studentId = applicationDTO.getStudentDTO().getId();
+        Long cvId = applicationDTO.getCvDTO().getId();
+        Long offerId = applicationDTO.getOfferDTO().getId();
 
-        Application application = new Application(student, cv, offer);
+        Student student = studentRepository.findById(studentId).orElseThrow(() -> new NoSuchElementException("Student not found"));
+        Cv cv = cvRepository.findById(cvId).orElseThrow(() -> new NoSuchElementException("Cv not found"));
+        Offer offer = offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
+
+        Application application = new Application(null, student, cv, offer);
 
         return Optional.of(applicationRepository.save(application).toDTO());
     }

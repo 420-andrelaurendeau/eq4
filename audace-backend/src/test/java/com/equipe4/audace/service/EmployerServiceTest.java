@@ -37,10 +37,18 @@ public class EmployerServiceTest {
     @Test
     public void createEmployer_HappyPath(){
         // Arrange
-        EmployerDTO employerDTO = EmployerDTO.employerDTOBuilder().id(1L)
-                .firstName("Employer1").lastName("Employer1").email("employer1@gmail.com").password("123456eE")
-                .organisation("Organisation1").position("Position1").phone("123-456-7890").extension("12345")
-                .address("Class Service, Javatown, Qc H8N1C1").build();
+        EmployerDTO employerDTO = new EmployerDTO(
+                1L,
+                "Employer1",
+                "Employer1",
+                "asd@email.com",
+                "password",
+                "Organisation1",
+                "Position1",
+                "123-456-7890",
+                "12345",
+                "Class Service, Javatown, Qc H8N1C1"
+        );
         when(employerRepository.save(any(Employer.class))).thenReturn(employerDTO.fromDTO());
 
         // Act
@@ -59,10 +67,18 @@ public class EmployerServiceTest {
     @Test
     void createEmployer_EmailAlreadyInUse() {
         // Arrange
-        EmployerDTO employerDTO = EmployerDTO.employerDTOBuilder().id(1L)
-                .firstName("Employer1").lastName("Employer1").email("employer1@gmail.com").password("123456eE")
-                .organisation("Organisation1").position("Position1").phone("123-456-7890").extension("12345")
-                .address("Class Service, Javatown, Qc H8N1C1").build();
+        EmployerDTO employerDTO = new EmployerDTO(
+                1L,
+                "Employer1",
+                "Employer1",
+                "asd@email.com",
+                "password",
+                "Organisation1",
+                "Position1",
+                "123-456-7890",
+                "12345",
+                "Class Service, Javatown, Qc H8N1C1"
+        );
         when(employerRepository.findByEmail(anyString())).thenReturn(Optional.of(employerDTO.fromDTO()));
 
         assertThatThrownBy(() -> employerService.createEmployer(employerDTO))
@@ -75,14 +91,30 @@ public class EmployerServiceTest {
     public void findAllEmployersTest(){
         // Arrange
         List<Employer> employers = new ArrayList<>();
-        Employer employer1 = Employer.employerBuilder()
-                .firstName("Employer1").lastName("Employer1").email("employer1@gmail.com").password("123456eE")
-                .organisation("Organisation1").position("Position1").phone("123-456-7890").extension("12345")
-                .address("Class Service, Javatown, Qc H8N1C1").build();
-        Employer employer2 = Employer.employerBuilder()
-                .firstName("Employer2").lastName("Employer2").email("employer2@gmail.com").password("Abcdef78")
-                .organisation("Organisation2").position("Position2").phone("234-567-8910").extension("23456")
-                .address("Commit, Javatown, Qc, H8N1C2").build();
+        Employer employer1 = new Employer(
+                1L,
+                "Employer1",
+                "Employer1",
+                "asd@email.com",
+                "password",
+                "Organisation1",
+                "Position1",
+                "123-456-7890",
+                "12345",
+                "Class Service, Javatown, Qc H8N1C1"
+        );
+        Employer employer2 = new Employer(
+                2L,
+                "Employer1",
+                "Employer1",
+                "asd@email.com",
+                "password",
+                "Organisation1",
+                "Position1",
+                "123-456-7890",
+                "12345",
+                "Class Service, Javatown, Qc H8N1C1"
+        );
 
         employers.add(employer1);
         employers.add(employer2);
@@ -99,10 +131,18 @@ public class EmployerServiceTest {
     @Test
     public void findEmployerById_happyPathTest() {
         // Arrange
-        Employer employer = Employer.employerBuilder()
-                .firstName("Employer1").lastName("Employer1").email("employer1@gmail.com").password("123456eE")
-                .organisation("Organisation1").position("Position1").phone("123-456-7890").extension("12345")
-                .address("Class Service, Javatown, Qc H8N1C1").build();
+        Employer employer = new Employer(
+                1L,
+                "Employer1",
+                "Employer1",
+                "employer1@gmail.com",
+                "password",
+                "Organisation1",
+                "Position1",
+                "123-456-7890",
+                "12345",
+                "Class Service, Javatown, Qc H8N1C1"
+        );
 
         when(employerRepository.findById(1L)).thenReturn(Optional.of(employer));
 
@@ -129,30 +169,35 @@ public class EmployerServiceTest {
 
     @Test
     public void createOffer_HappyPath(){
-        Department mockedDepartment = new Department("GLO", "Génie logiciel");
+        Department mockedDepartment = new Department(1L, "GLO", "Génie logiciel");
         Employer fakeEmployer = new Employer(
-                "employer",
-                "employerman",
-                "email@gmail.com",
+                1L,
+                "Employer1",
+                "Employer1",
+                "asd@email.com",
                 "password",
-                "organisation",
-                "position",
-                "address",
-                "phone",
-                "extension"
+                "Organisation1",
+                "Position1",
+                "123-456-7890",
+                "12345",
+                "Class Service, Javatown, Qc H8N1C1"
         );
         fakeEmployer.setId(1L);
 
-        Offer offer = Offer.offerBuilder()
-                .title("Stage en génie logiciel").description("Stage en génie logiciel")
-                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
-                .availablePlaces(3).employer(fakeEmployer).department(mockedDepartment)
-                .build();
+        Offer offer = new Offer(
+                1L,
+                "Stage en génie logiciel",
+                "Stage en génie logiciel",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                3,
+                mockedDepartment,
+                fakeEmployer
+        );
         OfferDTO offerDTO = offer.toDTO();
 
         when(offerRepository.save(any(Offer.class))).thenReturn(offer);
-        when(employerRepository.findById(anyLong())).thenReturn(Optional.of(fakeEmployer));
-        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(mockedDepartment));
 
         OfferDTO dto = employerService.createOffer(offerDTO).get();
 
@@ -161,31 +206,44 @@ public class EmployerServiceTest {
     }
     @Test
     void getOffers_HappyPath() {
-        Department mockedDepartment = new Department("GLO", "Génie logiciel");
+        Department mockedDepartment = new Department(1L, "GLO", "Génie logiciel");
         Employer fakeEmployer = new Employer(
-                "employer",
-                "employerman",
-                "email@gmail.com",
+                1L,
+                "Employer1",
+                "Employer1",
+                "asd@email.com",
                 "password",
-                "organisation",
-                "position",
-                "address",
-                "phone",
-                "extension"
+                "Organisation1",
+                "Position1",
+                "123-456-7890",
+                "12345",
+                "Class Service, Javatown, Qc H8N1C1"
         );
         fakeEmployer.setId(1L);
 
         List<Offer> offers = new ArrayList<>();
-        Offer offer1 = Offer.offerBuilder()
-                .title("Stage en génie logiciel").description("Stage en génie logiciel")
-                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
-                .availablePlaces(3).employer(fakeEmployer).department(mockedDepartment)
-                .build();
-        Offer offer2 = Offer.offerBuilder()
-                .title("Stage en génie logiciel").description("Stage en génie logiciel")
-                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
-                .availablePlaces(3).employer(fakeEmployer).department(mockedDepartment)
-                .build();
+        Offer offer1 = new Offer(
+                1L,
+                "Stage en génie logiciel",
+                "Stage en génie logiciel",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                3,
+                mockedDepartment,
+                fakeEmployer
+        );
+        Offer offer2 = new Offer(
+                2L,
+                "Stage en génie logiciel",
+                "Stage en génie logiciel",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                3,
+                mockedDepartment,
+                fakeEmployer
+        );
         offers.add(offer1);
         offers.add(offer2);
 
@@ -202,24 +260,29 @@ public class EmployerServiceTest {
     public void deleteOffer_HappyPath(){
         Department mockedDepartment = mock(Department.class);
         Employer fakeEmployer = new Employer(
-                "employer",
-                "employerman",
-                "email@gmail.com",
+                1L,
+                "Employer1",
+                "Employer1",
+                "asd@email.com",
                 "password",
-                "organisation",
-                "position",
-                "address",
-                "phone",
-                "extension"
+                "Organisation1",
+                "Position1",
+                "123-456-7890",
+                "12345",
+                "Class Service, Javatown, Qc H8N1C1"
         );
-        fakeEmployer.setId(1L);
 
-        Offer offer1 = Offer.offerBuilder()
-                .title("Stage en génie logiciel").description("Stage en génie logiciel")
-                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
-                .availablePlaces(3).employer(fakeEmployer).department(mockedDepartment)
-                .build();
-        offer1.setId(1L);
+        Offer offer1 = new Offer(
+                1L,
+                "Stage en génie logiciel",
+                "Stage en génie logiciel",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                3,
+                mockedDepartment,
+                fakeEmployer
+        );
         when(offerRepository.findById(offer1.getId())).thenReturn(Optional.of(offer1));
 
         employerService.deleteOffer(offer1.getId());
@@ -238,30 +301,33 @@ public class EmployerServiceTest {
 
     @Test
     public void updateOffer_HappyPath() {
-        Department mockedDepartment = new Department("GLO", "Génie logiciel");
+        Department mockedDepartment = new Department(1L, "GLO", "Génie logiciel");
         Employer fakeEmployer = new Employer(
-                "employer",
-                "employerman",
-                "email@gmail.com",
+                1L,
+                "Employer1",
+                "Employer1",
+                "asd@email.com",
                 "password",
-                "organisation",
-                "position",
-                "address",
-                "phone",
-                "extension"
+                "Organisation1",
+                "Position1",
+                "123-456-7890",
+                "12345",
+                "Class Service, Javatown, Qc H8N1C1"
         );
-        fakeEmployer.setId(1L);
 
-        Offer offer = Offer.offerBuilder()
-                .title("Stage en génie logiciel").description("Stage en génie logiciel")
-                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
-                .availablePlaces(3).employer(fakeEmployer).department(mockedDepartment)
-                .build();
-        offer.setId(1L);
+        Offer offer = new Offer(
+                1L,
+                "Stage en génie logiciel",
+                "Stage en génie logiciel",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                3,
+                mockedDepartment,
+                fakeEmployer
+        );
 
         when(offerRepository.save(any(Offer.class))).thenReturn(offer);
-        when(employerRepository.findById(anyLong())).thenReturn(Optional.of(fakeEmployer));
-        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(mockedDepartment));
         when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
 
         OfferDTO originalOffer = employerService.createOffer(offer.toDTO()).get();
@@ -277,26 +343,31 @@ public class EmployerServiceTest {
     }
     @Test()
     public void updateOffer_OfferDontExists() {
-        Department mockedDepartment = new Department("GLO", "Génie logiciel");
+        Department mockedDepartment = new Department(1L, "GLO", "Génie logiciel");
         Employer fakeEmployer = new Employer(
-                "employer",
-                "employerman",
-                "email@gmail.com",
+                1L,
+                "Employer1",
+                "Employer1",
+                "asd@email.com",
                 "password",
-                "organisation",
-                "position",
-                "address",
-                "phone",
-                "extension"
+                "Organisation1",
+                "Position1",
+                "123-456-7890",
+                "12345",
+                "Class Service, Javatown, Qc H8N1C1"
         );
-        fakeEmployer.setId(1L);
 
-        Offer offer = Offer.offerBuilder()
-                .title("Stage en génie logiciel").description("Stage en génie logiciel")
-                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
-                .availablePlaces(3).employer(fakeEmployer).department(mockedDepartment)
-                .build();
-        offer.setId(1L);
+        Offer offer = new Offer(
+                1L,
+                "Stage en génie logiciel",
+                "Stage en génie logiciel",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                3,
+                mockedDepartment,
+                fakeEmployer
+        );
 
         when(offerRepository.findById(anyLong())).thenReturn(Optional.empty());
 

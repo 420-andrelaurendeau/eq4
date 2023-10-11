@@ -36,11 +36,11 @@ public class Application {
     private Offer offer;
 
     public ApplicationDTO toDTO(){
-        return ApplicationDTO.applicationDTOBuilder()
-                .id(id)
-                .studentId(student.getId())
-                .cvId(cv.getId())
-                .offerId(offer.getId())
-                .build();
+        return new ApplicationDTO(
+                id,
+                student.toDTO(),
+                offer.toDTO(),
+                cv.toDTO()
+        );
     }
 }

@@ -48,16 +48,16 @@ public class Student extends User {
 
     @Override
     public StudentDTO toDTO() {
-        return StudentDTO.studentDTOBuilder()
-                .id(id)
-                .firstName(firstName)
-                .lastName(lastName)
-                .email(email)
-                .password(password)
-                .address(address)
-                .phone(phone)
-                .studentNumber(studentNumber)
-                .departmentDTO(department.toDTO())
-                .build();
+        return new StudentDTO(
+                id,
+                firstName,
+                lastName,
+                email,
+                address,
+                phone,
+                password,
+                studentNumber,
+                department.toDTO()
+        );
     }
 }

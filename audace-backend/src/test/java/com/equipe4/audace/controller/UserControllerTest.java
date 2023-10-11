@@ -48,14 +48,30 @@ class UserControllerTest {
 
     @Test
     void testGetAllUsers() throws Exception {
-        EmployerDTO employerDTO1 = EmployerDTO.employerDTOBuilder()
-                .id(1L).firstName("peterson").lastName("sara").email("lesun@live.com").password("password").address("3 York St").phone("4387253892")
-                .organisation("RocaFella Records").extension("slat").position("artist")
-                .build();
-        EmployerDTO employerDTO2 = EmployerDTO.employerDTOBuilder()
-                .id(2L).firstName("addison").lastName("sara").email("lesun@live.com").password("password").address("3 York St").phone("4387253892")
-                .organisation("RocaFella Records").extension("slat").position("artist")
-                .build();
+        EmployerDTO employerDTO1 = new EmployerDTO(
+                1L,
+                "Employer1",
+                "Employer1",
+                "asd@email.com",
+                "password",
+                "Organisation1",
+                "Position1",
+                "123-456-7890",
+                "12345",
+                "Class Service, Javatown, Qc H8N1C1"
+        );
+        EmployerDTO employerDTO2 = new EmployerDTO(
+                1L,
+                "Employer1",
+                "Employer1",
+                "asd@email.com",
+                "password",
+                "Organisation1",
+                "Position1",
+                "123-456-7890",
+                "12345",
+                "Class Service, Javatown, Qc H8N1C1"
+        );
         List<UserDTO> userDTOs = List.of(employerDTO1, employerDTO2);
         when(userService.getAllUsers()).thenReturn(userDTOs);
 

@@ -1,6 +1,7 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.ApplicationDTO;
+import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
@@ -53,27 +54,24 @@ public class StudentServiceTest {
         Department mockedDepartment = mock(Department.class);
         List<Offer> offers = new ArrayList<>();
 
-        Employer fakeEmployer = Employer.employerBuilder()
-                .firstName("employer").lastName("employerman").email("email@gmail.com").password("password")
-                .organisation("organisation").position("position").phone("phone").extension("extension")
-                .address("address")
-                .build();
-        fakeEmployer.setId(1L);
+        Employer fakeEmployer = new Employer(
+                null,
+                "employer",
+                "employerMan",
+                "employer@email.com",
+                "password",
+                "organisation",
+                "position",
+                "123 Street Street",
+                "1234567890",
+                "-123"
+        );
 
-        Offer fakeOffer = Offer.offerBuilder()
-                .title("title")
-                .description("description")
-                .internshipStartDate(LocalDate.now())
-                .internshipEndDate(LocalDate.now())
-                .offerEndDate(LocalDate.now())
-                .availablePlaces(2)
-                .department(mockedDepartment)
-                .employer(fakeEmployer)
-                .build();
-        fakeEmployer.getOffers().add(fakeOffer);
+        Offer mockedOffer = mock(Offer.class);
+        fakeEmployer.getOffers().add(mockedOffer);
 
         for (int i = 0; i < 3; i++)
-            offers.add(fakeOffer);
+            offers.add(mockedOffer);
 
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
         when(offerRepository.findAllByDepartmentAndStatus(mockedDepartment, Offer.Status.ACCEPTED)).thenReturn(offers);
@@ -107,27 +105,27 @@ public class StudentServiceTest {
 
     @Test
     void createStudent() {
-        DepartmentDTO departmentDTO = DepartmentDTO.departmentDTOBuilder()
-                .id(1L)
-                .code("GEN")
-                .name("Génie")
-                .build();
+        DepartmentDTO departmentDTO = new DepartmentDTO(
+                1L,
+                "GEN",
+                "Génie"
+        );
 
-        StudentDTO studentDTO = StudentDTO.studentDTOBuilder()
-                .id(1L)
-                .firstName("student")
-                .lastName("studentMan")
-                .email("email@gmail.com")
-                .password("password")
-                .address("adress")
-                .phone("1234567890")
-                .studentNumber("2212895")
-                .departmentDTO(departmentDTO)
-                .build();
+        StudentDTO studentDTO = new StudentDTO(
+                1L,
+                "student",
+                "studentMan",
+                "password",
+                "123 Street street",
+                "1234567890",
+                "123456789",
+                "studentNumber",
+                departmentDTO
+        );
 
         when(studentRepository.save(any())).thenReturn(studentDTO.fromDTO());
 
-        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(studentDTO.getDepartmentDTO().fromDto()));
+        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(studentDTO.getDepartmentDTO().fromDTO()));
 
         Optional<StudentDTO> optionalStudentDTO = studentService.createStudent(studentDTO, "420");
 
@@ -166,22 +164,19 @@ public class StudentServiceTest {
     @Test
     public void findStudentById_happyPathTest() {
         // Arrange
-        DepartmentDTO departmentDTO = DepartmentDTO.departmentDTOBuilder()
-                .id(1L).code("GEN").name("Génie")
-                .build();
-        StudentDTO studentDTO = StudentDTO.studentDTOBuilder()
-                .id(1L)
-                .firstName("student")
-                .lastName("studentMan")
-                .email("email@gmail.com")
-                .password("password")
-                .address("adress")
-                .phone("1234567890")
-                .studentNumber("2212895")
-                .departmentDTO(departmentDTO)
-                .build();
+        Department department = new Department(1L, "GEN", "Génie");
 
-        Student student = studentDTO.fromDTO();
+        Student student = new Student(
+                1L,
+                "student",
+                "studentMan",
+                "email@email.com",
+                "password",
+                "123 Street Street",
+                "1234567890",
+                "123456789",
+                department
+        );
 
         when(studentRepository.findById(1L)).thenReturn(Optional.of(student));
 
@@ -191,7 +186,7 @@ public class StudentServiceTest {
         // Assert
         assertThat(result.getFirstName()).isEqualTo("student");
         assertThat(result.getLastName()).isEqualTo("studentMan");
-        assertThat(result.getEmail()).isEqualTo("email@gmail.com");
+        assertThat(result.getEmail()).isEqualTo("email@email.com");
     }
 
     @Test
@@ -222,12 +217,7 @@ public class StudentServiceTest {
             throw new RuntimeException("Failed to read file");
         }
 
-        Cv cv = Cv.cvBuilder()
-                .student(studentDTO.fromDTO())
-                .fileName(fileName)
-                .content(bytes)
-                .build();
-        cv.setId(2L);
+        Cv cv = new Cv(null, studentDTO.fromDTO(), bytes, fileName);
         CvDTO expected = cv.toDTO();
 
         when(cvRepository.save(any())).thenReturn(cv);
@@ -276,20 +266,22 @@ public class StudentServiceTest {
     }
 
     private StudentDTO createStudentDTO() {
-        DepartmentDTO departmentDTO = DepartmentDTO.departmentDTOBuilder()
-                .id(1L).code("GEN").name("Génie")
-                .build();
-        return StudentDTO.studentDTOBuilder()
-                .id(1L)
-                .firstName("student")
-                .lastName("studentMan")
-                .email("email@gmail.com")
-                .password("password")
-                .address("adress")
-                .phone("1234567890")
-                .studentNumber("2212895")
-                .departmentDTO(departmentDTO)
-                .build();
+        DepartmentDTO departmentDTO = new DepartmentDTO(
+                1L,
+                "GEN",
+                "Génie"
+        );
+        return new StudentDTO(
+                1L,
+                "student",
+                "studentMan",
+                "password",
+                "123 Street street",
+                "1234567890",
+                "123456789",
+                "studentNumber",
+                departmentDTO
+        );
     }
 
     private MultipartFile createMockFile() {
@@ -304,20 +296,8 @@ public class StudentServiceTest {
     @Test
     void getCvsByStudent() {
         StudentDTO studentDTO = createStudentDTO();
-        Student student = studentDTO.fromDTO();
-
-        Cv cv1 = Cv.cvBuilder()
-                .student(student)
-                .fileName("cv1")
-                .content("cv1".getBytes())
-                .build();
-        cv1.setId(1L);
-        Cv cv2 = Cv.cvBuilder()
-                .student(student)
-                .fileName("cv2")
-                .content("cv2".getBytes())
-                .build();
-        cv2.setId(2L);
+        Cv cv1 = mock(Cv.class);
+        Cv cv2 = mock(Cv.class);
 
         List<Cv> cvs = new ArrayList<>();
         cvs.add(cv1);
@@ -344,46 +324,38 @@ public class StudentServiceTest {
 
     @Test
     public void createApplication_HappyPath(){
-        Department department = new Department("GLO", "Génie logiciel");
-        Employer employer = Employer.employerBuilder()
-                .firstName("Employer1").lastName("Employer1").email("employer1@gmail.com").password("123456eE")
-                .organisation("Organisation1").position("Position1").phone("123-456-7890").extension("12345")
-                .address("Class Service, Javatown, Qc H8N1C1")
-                .build();
-        employer.setId(1L);
-        Student student = Student.studentBuilder()
-                .firstname("student")
-                .lastname("studentman")
-                .email("email@email.com")
-                .password("password")
-                .address("address")
-                .phone("phone")
-                .studentNumber("matricule")
-                .department(department)
-                .build();
-        student.setId(1L);
+        Department department = new Department(1L, "GEN", "Génie");
+        Student student = new Student(
+                1L,
+                "student",
+                "studentMan",
+                "email@email.com",
+                "password",
+                "123 Street Street",
+                "1234567890",
+                "123456789",
+                department
+        );
+        Cv cv = new Cv(1L, student, new byte[0], "fileName");
+        Offer offer = new Offer(
+                1L,
+                "title",
+                "description",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                0,
+                department,
+                mock(Employer.class)
+        );
+        Application application = new Application(null, student, cv, offer);
 
-        Cv cv = new Cv();
-        cv.setId(1L);
-
-        Offer offer = Offer.offerBuilder()
-                .title("Stage en génie logiciel").description("Stage en génie logiciel")
-                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
-                .availablePlaces(3).employer(employer).department(department)
-                .build();
-        offer.setId(1L);
-        Application application = Application.applicationBuilder()
-                .student(student)
-                .cv(cv)
-                .offer(offer)
-                .build();
         ApplicationDTO applicationDTO = application.toDTO();
 
         when(applicationRepository.save(any(Application.class))).thenReturn(application);
         when(studentRepository.findById(anyLong())).thenReturn(Optional.of(student));
         when(cvRepository.findById(anyLong())).thenReturn(Optional.of(cv));
         when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
-
 
         ApplicationDTO dto = studentService.createApplication(applicationDTO).get();
 

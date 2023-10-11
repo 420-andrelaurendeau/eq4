@@ -17,7 +17,6 @@ import java.util.List;
 @ToString(callSuper = true)
 @Entity
 public class Employer extends User {
-
     private String organisation;
     private String position;
     private String extension;
@@ -46,17 +45,17 @@ public class Employer extends User {
 
     @Override
     public EmployerDTO toDTO() {
-        return EmployerDTO.employerDTOBuilder()
-                .id(id)
-                .firstName(firstName)
-                .lastName(lastName)
-                .email(email)
-                .password(password)
-                .organisation(organisation)
-                .position(position)
-                .address(address)
-                .phone(phone)
-                .extension(extension)
-                .build();
+        return new EmployerDTO(
+                id,
+                firstName,
+                lastName,
+                email,
+                password,
+                organisation,
+                position,
+                address,
+                phone,
+                extension
+        );
     }
 }

@@ -4,7 +4,6 @@ import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Student;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -13,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Cv {
@@ -34,12 +32,19 @@ public class Cv {
     @OneToMany(mappedBy = "cv", cascade = CascadeType.ALL)
     private List<Application> applications = new ArrayList<>();
 
+    public Cv(Long id, Student student, byte[] content, String fileName) {
+        this.id = id;
+        this.student = student;
+        this.content = content;
+        this.fileName = fileName;
+    }
+
     public CvDTO toDTO() {
-        return CvDTO.cvDTOBuilder()
-                .id(id)
-                .fileName(fileName)
-                .content(content)
-                .studentId(student.getId())
-                .build();
+        return new CvDTO(
+                id,
+                fileName,
+                content,
+                student.toDTO()
+        );
     }
 }

@@ -32,15 +32,15 @@ public class Manager extends User {
 
     @Override
     public ManagerDTO toDTO() {
-        return ManagerDTO.managerDTOBuilder()
-                .id(id)
-                .firstName(firstName)
-                .lastName(lastName)
-                .email(email)
-                .password(password)
-                .address(address)
-                .phone(phone)
-                .departmentDTO(department.toDTO())
-                .build();
+        return new ManagerDTO(
+                id,
+                firstName,
+                lastName,
+                email,
+                address,
+                phone,
+                password,
+                department.toDTO()
+        );
     }
 }

@@ -3,7 +3,6 @@ package com.equipe4.audace.service;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
-import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
@@ -41,12 +40,8 @@ public class EmployerService extends GenericUserService<Employer> {
     public Optional<OfferDTO> createOffer(OfferDTO offerDTO){
         if(offerDTO == null) throw new IllegalArgumentException("Offer cannot be null");
 
-        Employer employer = employerRepository.findById(offerDTO.getEmployerId()).orElseThrow();
-        Department department = departmentRepository.findByCode(offerDTO.getDepartmentCode()).orElseThrow();
-
         Offer offer = offerDTO.fromDTO();
-        offer.setEmployer(employer);
-        offer.setDepartment(department);
+        offer.setStatus(Offer.Status.PENDING);
 
         return Optional.of(offerRepository.save(offer).toDTO());
     }

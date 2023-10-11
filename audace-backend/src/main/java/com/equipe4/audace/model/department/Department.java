@@ -20,10 +20,10 @@ public class Department {
     private String name;
 
     public DepartmentDTO toDTO() {
-        return DepartmentDTO.departmentDTOBuilder()
-                .id(id)
-                .code(code)
-                .name(name)
-                .build();
+        return new DepartmentDTO(
+                id,
+                code,
+                name
+        );
     }
 }

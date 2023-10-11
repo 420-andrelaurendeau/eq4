@@ -9,22 +9,31 @@ import lombok.*;
 public class ManagerDTO extends UserDTO {
     private DepartmentDTO departmentDTO;
 
-    @Builder(builderMethodName = "managerDTOBuilder")
-    public ManagerDTO(Long id, String firstName, String lastName, String email, String address, String phone, String password, DepartmentDTO departmentDTO) {
+    public ManagerDTO(
+            Long id,
+            String firstName,
+            String lastName,
+            String email,
+            String address,
+            String phone,
+            String password,
+            DepartmentDTO departmentDTO
+    ) {
         super(id, firstName, lastName, address, phone, email, password);
         this.departmentDTO = departmentDTO;
     }
 
     @Override
     public Manager fromDTO() {
-        return Manager.managerBuilder()
-                .firstname(firstName)
-                .lastname(lastName)
-                .email(email)
-                .password(password)
-                .address(address)
-                .phone(phone)
-                .department(departmentDTO.fromDto())
-                .build();
+        return new Manager(
+                id,
+                firstName,
+                lastName,
+                email,
+                password,
+                address,
+                phone,
+                departmentDTO.fromDTO()
+        );
     }
 }

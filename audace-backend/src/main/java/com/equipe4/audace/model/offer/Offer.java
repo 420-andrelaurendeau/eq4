@@ -16,7 +16,6 @@ import java.util.List;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class Offer {
     @Id
@@ -48,6 +47,29 @@ public class Offer {
 
     private Status status;
 
+    public Offer(
+            Long id,
+            String title,
+            String description,
+            LocalDate internshipStartDate,
+            LocalDate internshipEndDate,
+            LocalDate offerEndDate,
+            int availablePlaces,
+            Department department,
+            Employer employer
+    ) {
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.internshipStartDate = internshipStartDate;
+        this.internshipEndDate = internshipEndDate;
+        this.offerEndDate = offerEndDate;
+        this.availablePlaces = availablePlaces;
+        this.department = department;
+        this.employer = employer;
+        this.status = Status.PENDING;
+    }
+
     public enum Status {
         PENDING,
         ACCEPTED,
@@ -55,18 +77,18 @@ public class Offer {
     }
 
     public OfferDTO toDTO(){
-        return OfferDTO.offerDTOBuilder()
-                .id(id)
-                .title(title)
-                .description(description)
-                .internshipStartDate(internshipStartDate)
-                .internshipEndDate(internshipEndDate)
-                .offerEndDate(offerEndDate)
-                .availablePlaces(availablePlaces)
-                .status(status)
-                .departmentCode(department.getCode())
-                .employerId(employer.getId())
-                .build();
+        return new OfferDTO(
+                id,
+                title,
+                description,
+                internshipStartDate,
+                internshipEndDate,
+                offerEndDate,
+                availablePlaces,
+                status,
+                department.toDTO(),
+                employer.toDTO()
+        );
     }
 
 }

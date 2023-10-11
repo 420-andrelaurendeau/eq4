@@ -10,9 +10,18 @@ public class EmployerDTO extends UserDTO{
     private String position;
     private String extension;
 
-
-    @Builder(builderMethodName = "employerDTOBuilder")
-    public EmployerDTO(Long id, String firstName, String lastName, String address, String phone, String email, String password, String organisation, String position, String extension) {
+    public EmployerDTO(
+            Long id,
+            String firstName,
+            String lastName,
+            String email,
+            String password,
+            String organisation,
+            String position,
+            String address,
+            String phone,
+            String extension
+    ) {
         super(id, firstName, lastName, address, phone, email, password);
         this.organisation = organisation;
         this.position = position;
@@ -20,16 +29,17 @@ public class EmployerDTO extends UserDTO{
     }
 
     public Employer fromDTO(){
-        return Employer.employerBuilder()
-                .firstName(firstName)
-                .lastName(lastName)
-                .email(email)
-                .password(password)
-                .organisation(organisation)
-                .position(position)
-                .address(address)
-                .phone(phone)
-                .extension(extension)
-                .build();
+        return new Employer(
+                id,
+                firstName,
+                lastName,
+                email,
+                password,
+                organisation,
+                position,
+                address,
+                phone,
+                extension
+        );
     }
 }
