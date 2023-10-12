@@ -1,33 +1,40 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import SignupView from "./views/Signup";
 import { UserType } from "./model/user";
 import AppHeader from "./components/AppHeader";
 import LoginView from "./views/LoginView";
 import AuthorizedRoute from "./components/AuthorizedRoute";
-import { Authority } from "./model/auth";
 import ConnectedRoute from "./components/ConnectedRoute";
 import PageNotFoundView from "./views/PageNotFoundView";
 import StudentView from "./views/StudentView";
 import ManagerView from "./views/ManagerView";
 import ManagerOfferView from "./views/ManagerOfferView";
 import EmployerView from "./views/EmployerView";
+import { getAuthorities, isConnected } from "./services/authService";
+import { Authority } from "./model/auth";
 
 function App() {
+
+  const navigateTo = () => {
+    switch (getAuthorities()?.[0]) {
+      case Authority.STUDENT:
+        return <Navigate to="/student" />;
+      case Authority.MANAGER:
+        return <Navigate to="/manager" />;
+      case Authority.EMPLOYER:
+        return <Navigate to="/employer" />;
+      default:
+        return <Navigate to="/signup/employer" />;
+    }
+  }
+
   return (
     <Router>
       <AppHeader />
       <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <h1>OSE ÊTRE MEILLEUR</h1>
-            </>
-          }
-        />
         <Route
           path="/signup/*"
           element={
@@ -90,6 +97,7 @@ function App() {
           }
         />
         <Route path="*" element={<PageNotFoundView />} />
+        <Route path="/" element={navigateTo()} />
       </Routes>
     </Router>
   );
