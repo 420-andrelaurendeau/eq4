@@ -6,6 +6,7 @@ import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
+import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
@@ -38,6 +39,8 @@ public class ManagerControllerTest {
     private MockMvc mvc;
     @MockBean
     private ManagerService managerService;
+    @MockBean
+    private ManagerRepository managerRepository;
     @MockBean
     private EmployerRepository employerRepository;
     @MockBean
@@ -188,8 +191,8 @@ public class ManagerControllerTest {
                 .andExpect(jsonPath("$.email").value(manager.getEmail()))
                 .andExpect(jsonPath("$.password").value(manager.getPassword()))
                 .andExpect(jsonPath("$.phone").value(manager.getPhone()))
-                .andExpect(jsonPath("$.departmentDTO.id").value(manager.getDepartment().getId()))
-                .andExpect(jsonPath("$.departmentDTO.name").value(manager.getDepartment().getName()));
+                .andExpect(jsonPath("$.department.id").value(manager.getDepartment().getId()))
+                .andExpect(jsonPath("$.department.name").value(manager.getDepartment().getName()));
     }
 
     @Test

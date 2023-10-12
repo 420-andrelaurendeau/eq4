@@ -28,10 +28,11 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import static org.hamcrest.CoreMatchers.is;
+
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -128,8 +129,8 @@ public class StudentControllerTest {
                 .andExpect(jsonPath("$.address").value(student.getAddress()))
                 .andExpect(jsonPath("$.phone").value(student.getPhone()))
                 .andExpect(jsonPath("$.studentNumber").value(student.getStudentNumber()))
-                .andExpect(jsonPath("$.departmentDTO.id").value(department.getId()))
-                .andExpect(jsonPath("$.departmentDTO.name").value(department.getName()));
+                .andExpect(jsonPath("$.department.id").value(department.getId()))
+                .andExpect(jsonPath("$.department.name").value(department.getName()));
     }
 
     @Test
