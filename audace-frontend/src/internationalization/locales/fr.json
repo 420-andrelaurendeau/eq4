@@ -41,7 +41,9 @@
     "internshipEndDate": "Date de fin",
     "internshipStartDate": "Date de début",
     "noOffers": "Aucun offre disponible",
-    "viewTitle": "Offres disponibles"
+    "viewTitle": "Offres disponibles",
+    "viewMore": "Afficher plus"
+
   },
   "offer": {
     "modal": {

@@ -5,6 +5,8 @@ import './styles.css'
 import { formatDate } from "../../../services/formatService";
 import { Employer, UserType } from "../../../model/user";
 import OfferButtons from "./OfferButtons";
+import { Col } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 
 interface Props {
@@ -18,11 +20,19 @@ const OfferRow = ({offer, userType, updateOffersState}: Props) => {
     const handleClick = () => setShow(true);
     const handleClose = () => setShow(false);
     const [employer, setEmployer] = useState<Employer | undefined>(undefined);
+    const {t} = useTranslation();
 
     return (
         <>
             <tr className="hovered" onClick={handleClick}>
-                <td>{offer.title}</td>
+                <td>
+                    <Col>
+                        {offer.title}
+                    </Col>
+                    <Col className="text-muted small">
+                        <u>{t("offersList.viewMore")}</u>
+                    </Col>
+                </td>
                 <td>{formatDate(offer.internshipStartDate)}</td>
                 <td>{formatDate(offer.internshipEndDate)}</td>
                 <td className="text-end"><OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState}/></td>
