@@ -6,6 +6,7 @@ import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.UserRepository;
+import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.service.EmployerService;
@@ -32,10 +33,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(UserController.class)
 class UserControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private UserService userService;
     @MockBean
@@ -47,6 +46,10 @@ class UserControllerTest {
     @MockBean
     private ManagerRepository managerRepository;
     @MockBean
+    private EmployerService employerService;
+    @MockBean
+    private CvRepository cvRepository;
+    @MockBean
     private UserRepository userRepository;
     @MockBean
     private JwtManipulator jwtManipulator;
@@ -54,8 +57,6 @@ class UserControllerTest {
     private StudentService studentService;
     @MockBean
     private SaltRepository saltRepository;
-    @MockBean
-    private EmployerService employerService;
 
     @Test
     @WithMockUser(username = "user")
