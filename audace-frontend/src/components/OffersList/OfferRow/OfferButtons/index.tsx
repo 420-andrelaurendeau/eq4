@@ -19,7 +19,7 @@ const OfferButtons = ({userType, disabled, offer, updateOffersState} : Props) =>
             case UserType.Manager:
                 return <ManagerButtons disabled={disabled} offer={offer} updateOffersState={updateOffersState}/>;
             case UserType.Employer:
-                return <EmployerButtons disabled={disabled}/>;
+                return <EmployerButtons disabled={disabled} offer={offer}/>;
         }        
     }
 

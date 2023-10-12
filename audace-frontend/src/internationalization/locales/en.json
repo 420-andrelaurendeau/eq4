@@ -90,5 +90,36 @@
       "employerNotFound": "Employer not found"
     },
     "seeOffersButton": "See Offers"
+  },
+  "addOffer":{
+    "pageTitle" : "Add Offer",
+    "description" : "Description",
+    "title" : "Title",
+    "departmentCode" : "Department Code",
+    "startDate" : "Start date",
+    "endDate" : "End date",
+    "offerEndDate" : "Offer end date",
+    "submit" : "Submit",
+    "availablePlaces" : "Available places",
+    "errors": {
+      "titleRequired": "Title cannot be empty",
+      "descriptionRequired": "Description cannot be empty",
+      "departmentCodeRequired": "Department Code cannot be empty",
+      "startDateRequired": "Start date cannot be empty",
+      "endDateRequired": "End date cannot be empty",
+      "offerEndDateRequired": "Offer end date cannot be empty"
+    }
+  },
+  "editOffer":{
+    "pageTitle" : "Edit Offer",
+    "description" : "Description",
+    "title" : "Title",
+    "department" : "Department",
+    "startDate" : "Start date",
+    "endDate" : "End date",
+    "offerEndDate" : "Offer end date",
+    "submit" : "Submit"
   }
+
 }
+

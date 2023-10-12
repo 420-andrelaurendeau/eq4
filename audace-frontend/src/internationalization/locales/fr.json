@@ -90,5 +90,37 @@
       "employerNotFound": "Aucun employeur trouvé"
     },
     "seeOffersButton": "Voir les offres"
+  },
+  "addOffer": {
+    "pageTitle": "Ajout de Stage",
+    "description": "Description",
+    "title": "Titre",
+    "departmentCode": "Code de Departement",
+    "startDate": "Date de début",
+    "endDate": "Date de fin",
+    "offerEndDate": "Date de fin de l'offre",
+    "submit": "Ajouter",
+    "availablePlaces" : "Places disponible",
+    "errors": {
+      "titleRequired": "Le titre ne peut pas être vide",
+      "descriptionRequired": "La description ne peut pas être vide",
+      "departmentCodeRequired": "Le code de département ne peut pas être vide",
+      "startDateRequired": "La date de début ne peut pas être vide",
+      "endDateRequired": "La date de fin ne peut pas être vide",
+      "offerEndDateRequired": "La date de fin de l'offre ne peut pas être vide"
+    }
+  },
+  "editOffer": {
+    "pageTitle": "Modifier l'offre",
+    "description": "Description",
+    "title": "Titre",
+    "department": "Departement",
+    "startDate": "Date de début",
+    "endDate": "Date de fin",
+    "offerEndDate": "Date de fin de l'offre",
+    "submit": "Modifier"
   }
 }
+
+
+

@@ -65,10 +65,12 @@ public class EmployerController extends GenericUserController<Employer, Employer
         return ResponseEntity.ok(updatedOffer);
     }
 
-    @DeleteMapping("/{id}/offers")
-    public ResponseEntity<HttpStatus> deleteOffer(@RequestParam("offerId") Long offerId){
+    @DeleteMapping("/offers/{offerId}")
+    public ResponseEntity<HttpStatus> deleteOffer(@PathVariable("offerId") Long offerId){
+        logger.info("deleteOffer");
         service.deleteOffer(offerId);
         return ResponseEntity.ok().build();
+
     }
 
 

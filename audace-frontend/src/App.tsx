@@ -14,6 +14,8 @@ import UserList from "./components/Login";
 import ManagerOfferView from "./views/ManagerOfferView";
 import ManagerHomePage from "./components/ManagerHomePage";
 import EmployerOfferView from "./views/EmployerOfferView";
+import AddOffer from "./components/AddOffer";
+import EditOffer from "./components/EditOffer";
 
 function App() {
   const { t } = useTranslation();
@@ -53,6 +55,8 @@ function App() {
           <Route path="/employer/*" element={
             <Routes>
               <Route path=":id/offers" element={<EmployerOfferView/>}/>
+              <Route path=":id/addoffer" element={<AddOffer />}/>
+              <Route path=":id/editoffer/:offerId" element={<EditOffer />}/>
             </Routes>
           }/>
           <Route path="/signup/*" element={
