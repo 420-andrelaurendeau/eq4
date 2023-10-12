@@ -97,47 +97,6 @@ public class EmployerServiceTest {
     }
 
     @Test
-    public void findAllEmployersTest(){
-        // Arrange
-        List<Employer> employers = new ArrayList<>();
-        Employer employer1 = new Employer(
-                1L,
-                "Employer1",
-                "Employer1",
-                "asd@email.com",
-                "password",
-                "Organisation1",
-                "Position1",
-                "123-456-7890",
-                "12345",
-                "Class Service, Javatown, Qc H8N1C1"
-        );
-        Employer employer2 = new Employer(
-                2L,
-                "Employer1",
-                "Employer1",
-                "asd@email.com",
-                "password",
-                "Organisation1",
-                "Position1",
-                "123-456-7890",
-                "12345",
-                "Class Service, Javatown, Qc H8N1C1"
-        );
-
-        employers.add(employer1);
-        employers.add(employer2);
-        when(employerRepository.findAll()).thenReturn(employers);
-
-        // Act
-        List<EmployerDTO> employerDTOList = employerService.findAllEmployers();
-
-        // Assert
-        assertThat(employerDTOList.size()).isEqualTo(2);
-        verify(employerRepository, times(1)).findAll();
-    }
-
-    @Test
     public void findEmployerById_happyPathTest() {
         // Arrange
         Employer employer = new Employer(

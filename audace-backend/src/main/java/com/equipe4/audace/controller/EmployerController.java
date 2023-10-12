@@ -19,12 +19,6 @@ public class EmployerController extends GenericUserController<Employer, Employer
         super(employerService);
     }
 
-    @GetMapping
-    public List<EmployerDTO> getAllEmployers(){
-        logger.info("getAllEmployers");
-        return service.findAllEmployers();
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<EmployerDTO> getEmployerById(@PathVariable Long id){
         logger.info("getEmployerById");
