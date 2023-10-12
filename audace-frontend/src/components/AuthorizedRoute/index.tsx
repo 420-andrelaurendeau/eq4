@@ -21,12 +21,12 @@ const AuthorizedRoute = ({
 
     const requiredAuthorities = [Authority.USER, requiredAuthority];
 
-    requiredAuthorities.forEach((requiredAuthority) => {
-      if (!userAuthorities?.includes(requiredAuthority)) {
+    for (let i = 0; i < requiredAuthorities.length; i++) {
+      if (!userAuthorities?.includes(requiredAuthorities[i])) {
         setIsAuthorized(false);
         return;
       }
-    });
+    }
 
     setIsAuthorized(true);
   }, [requiredAuthority]);
