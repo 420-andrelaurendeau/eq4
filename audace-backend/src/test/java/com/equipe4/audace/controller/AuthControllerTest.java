@@ -3,7 +3,6 @@ package com.equipe4.audace.controller;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.UserDTO;
-import com.equipe4.audace.model.User;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
@@ -64,11 +63,9 @@ public class AuthControllerTest {
     @WithMockUser
     public void testLogin_happyPath() throws Exception {
         UserDTO mockedUserDTO = mock(UserDTO.class);
-        User mockedUser = mock(User.class);
 
         when(authService.login(any())).thenReturn(Optional.of(mockedUserDTO));
-        when(mockedUserDTO.fromDTO()).thenReturn(mockedUser);
-        when(jwtManipulator.generateToken(mockedUser)).thenReturn(mock(TimedJwt.class));
+        when(jwtManipulator.generateToken(mockedUserDTO)).thenReturn(mock(TimedJwt.class));
 
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/auth/login").with(csrf())
