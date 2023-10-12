@@ -14,11 +14,10 @@ function AppHeader() {
   };
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="light" expand="lg" sticky="top" className="mx-3">
       <Navbar.Brand href="/">Audace</Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
-        <Nav>
+      {/* <Navbar.Toggle aria-controls="basic-navbar-nav" /> */}
+      {/* <Navbar.Collapse id="basic-navbar-nav"> */}
           {!isConnected() ? (
             <>
               <Button
@@ -34,15 +33,13 @@ function AppHeader() {
               </Nav>
             </>
           ) : (
-            <>
-              <Nav>
-                <LogoutButton />
-              </Nav>
-            </>
+            <Nav>
+              <LogoutButton />
+            </Nav>
           )}
+        <Nav className="justify-content-end flex-grow-1">
+          <LanguageToggler />
         </Nav>
-        <LanguageToggler />
-      </Navbar.Collapse>
     </Navbar>
   );
 }

@@ -27,7 +27,7 @@ function App() {
       case Authority.EMPLOYER:
         return <Navigate to="/employer" />;
       default:
-        return <Navigate to="/signup/employer" />;
+        return <Navigate to="login" />;
     }
   }
 
