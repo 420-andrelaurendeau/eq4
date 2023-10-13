@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -36,6 +38,10 @@ public class Offer {
     @ToString.Exclude
     private Employer employer;
 
+    @ToString.Exclude
+    @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL)
+    private List<Application> applications = new ArrayList<>();
+
     private Status status;
 
     public enum Status {
@@ -57,7 +63,20 @@ public class Offer {
         this.employer = employer;
     }
 
-    public OfferDTO toDTO() {
-        return new OfferDTO(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, employer.getId(), department.toDTO(), status);
+
+    public OfferDTO toDTO(){
+        return new OfferDTO(
+                id,
+                title,
+                description,
+                internshipStartDate,
+                internshipEndDate,
+                offerEndDate,
+                availablePlaces,
+                status,
+                department.toDTO(),
+                employer.toDTO()
+        );
     }
+
 }

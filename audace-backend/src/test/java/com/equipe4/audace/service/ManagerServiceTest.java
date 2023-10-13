@@ -18,9 +18,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
+import java.time.LocalDate;
 import java.util.*;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -39,9 +38,19 @@ public class ManagerServiceTest {
 
     @Test
     public void acceptOffer() {
-        Employer employer = new Employer();
-        Department department = new Department();
-        Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
+        Employer employer = mock(Employer.class);
+        Department department = mock(Department.class);
+        Offer offer1 = new Offer(
+                1L,
+                "title",
+                "description",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                1,
+                department,
+                employer
+        );
         when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
         when(offerRepository.save(any())).thenReturn(offer1);
 
@@ -58,9 +67,19 @@ public class ManagerServiceTest {
 
     @Test
     public void refuseOffer() {
-        Employer employer = new Employer();
-        Department department = new Department();
-        Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
+        Employer employer = mock(Employer.class);
+        Department department = mock(Department.class);
+        Offer offer1 = new Offer(
+                1L,
+                "title",
+                "description",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                1,
+                department,
+                employer
+        );
         when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
         when(offerRepository.save(any())).thenReturn(offer1);
 
@@ -80,6 +99,7 @@ public class ManagerServiceTest {
         Department mockedDepartment = mock(Department.class);
         List<Offer> offers = new ArrayList<>();
 
+        Employer fakeEmployer = mock(Employer.class);
         Employer fakeEmployer = new Employer(
                 1L,
                 "employer",
@@ -92,16 +112,16 @@ public class ManagerServiceTest {
                 "phone",
                 "extension"
         );
-        fakeEmployer.setId(1L);
-
         Offer fakeOffer = new Offer(
+                1L,
                 "title",
                 "description",
-                null,
-                null,
-                null,
-                fakeEmployer,
-                mockedDepartment
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                1,
+                mockedDepartment,
+                fakeEmployer
         );
         fakeEmployer.getOffers().add(fakeOffer);
 
@@ -141,9 +161,9 @@ public class ManagerServiceTest {
     @Test
     public void findManagerById_happyPathTest() {
         // Arrange
-        Department department = new Department("yeete", "yaint");
+        Department department = mock(Department.class);
         Manager manager = new Manager(
-                3L,
+                1L,
                 "manager",
                 "managerman",
                 "manager@email.com",

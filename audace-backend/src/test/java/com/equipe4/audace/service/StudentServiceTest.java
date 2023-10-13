@@ -1,12 +1,20 @@
 package com.equipe4.audace.service;
 
+import com.equipe4.audace.dto.ApplicationDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
+import com.equipe4.audace.model.cv.Cv;
+import com.equipe4.audace.model.department.Department;
+import com.equipe4.audace.model.offer.Offer;
+import com.equipe4.audace.model.Student;
+import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.StudentRepository;
+import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import org.junit.jupiter.api.Test;
@@ -14,13 +22,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-
 import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -32,28 +43,32 @@ public class StudentServiceTest {
     private OfferRepository offerRepository;
     @Mock
     private DepartmentRepository departmentRepository;
+    @Mock
+    private CvRepository cvRepository;
     @InjectMocks
     private StudentService studentService;
 
     @Test
-    void getOffersByDepartment_happyPath() {
+    void getOffersByDepartmentAndStatus_happyPath() {{
         Department mockedDepartment = mock(Department.class);
         List<Offer> offers = new ArrayList<>();
 
         Employer fakeEmployer = new Employer(
+                null,
                 1L,
                 "employer",
-                "employerman",
-                "email@gmail.com",
+                "employerMan",
+                "employer@email.com",
                 "password",
                 "organisation",
                 "position",
-                "address",
-                "phone",
-                "extension"
+                "123 Street Street",
+                "1234567890",
+                "-123"
         );
-        fakeEmployer.setId(1L);
 
+        Offer mockedOffer = mock(Offer.class);
+        fakeEmployer.getOffers().add(mockedOffer);
         Offer fakeOffer = new Offer(
                 "title",
                 "description",
@@ -66,7 +81,7 @@ public class StudentServiceTest {
         fakeEmployer.getOffers().add(fakeOffer);
 
         for (int i = 0; i < 3; i++)
-            offers.add(fakeOffer);
+            offers.add(mockedOffer);
 
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
         when(offerRepository.findAllByDepartmentAndStatus(mockedDepartment, Offer.Status.ACCEPTED)).thenReturn(offers);
@@ -101,10 +116,29 @@ public class StudentServiceTest {
     @Test
     void createStudent() {
         StudentDTO studentDTO = new StudentDTO(1L, "student", "studentMan", "email@gmail.com", "adress", "1234567890", "password", "2212895", new DepartmentDTO(1L, "GEN", "Génie"), new ArrayList<>());
+        DepartmentDTO departmentDTO = new DepartmentDTO(
+                1L,
+                "GEN",
+                "Génie"
+        );
+
+        StudentDTO studentDTO = new StudentDTO(
+                1L,
+                "student",
+                "studentMan",
+                "password",
+                "123 Street street",
+                "1234567890",
+                "123456789",
+                "studentNumber",
+                departmentDTO
+        );
 
         when(studentRepository.save(any())).thenReturn(studentDTO.fromDTO());
         when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(studentDTO.getDepartment().fromDto()));
         when(saltRepository.save(any())).thenReturn(mock(Salt.class));
+
+        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(studentDTO.getDepartment().fromDTO()));
 
         Optional<StudentDTO> optionalStudentDTO = studentService.createStudent(studentDTO, "420");
 
@@ -145,6 +179,19 @@ public class StudentServiceTest {
         // Arrange
         StudentDTO studentDTO = createStudentDTO();
         Student student = studentDTO.fromDTO();
+        Department department = new Department(1L, "GEN", "Génie");
+
+        Student student = new Student(
+                1L,
+                "student",
+                "studentMan",
+                "email@email.com",
+                "password",
+                "123 Street Street",
+                "1234567890",
+                "123456789",
+                department
+        );
 
         when(studentRepository.findById(1L)).thenReturn(Optional.of(student));
 
@@ -154,7 +201,7 @@ public class StudentServiceTest {
         // Assert
         assertThat(result.getFirstName()).isEqualTo("student");
         assertThat(result.getLastName()).isEqualTo("studentMan");
-        assertThat(result.getEmail()).isEqualTo("email@gmail.com");
+        assertThat(result.getEmail()).isEqualTo("email@email.com");
     }
 
     @Test
@@ -177,17 +224,17 @@ public class StudentServiceTest {
         when(studentRepository.findById(studentDTO.getId())).thenReturn(Optional.of(studentDTO.fromDTO()));
 
         byte[] bytes;
-        String name;
+        String fileName;
 
         try {
             bytes = file.getBytes();
-            name = file.getName();
+            fileName = file.getName();
         } catch (IOException e) {
             throw new RuntimeException("Failed to read file");
         }
 
-        Cv cv = new Cv(2L, studentDTO.fromDTO(), name, bytes);
-        CvDTO expected = cv.toDto();
+        Cv cv = new Cv(null, studentDTO.fromDTO(), bytes, fileName);
+        CvDTO expected = cv.toDTO();
 
         when(cvRepository.save(any())).thenReturn(cv);
         CvDTO result = studentService.saveCv(file, studentDTO.getId()).get();
@@ -235,17 +282,21 @@ public class StudentServiceTest {
     }
 
     private StudentDTO createStudentDTO() {
+        DepartmentDTO departmentDTO = new DepartmentDTO(
+                1L,
+                "GEN",
+                "Génie"
+        );
         return new StudentDTO(
                 1L,
                 "student",
                 "studentMan",
-                "email@gmail.com",
-                "adress",
-                "1234567890",
                 "password",
-                "2212895",
-                new DepartmentDTO(1L, "GEN", "Génie"),
-                new ArrayList<>()
+                "123 Street street",
+                "1234567890",
+                "123456789",
+                "studentNumber",
+                departmentDTO
         );
     }
 
@@ -258,6 +309,23 @@ public class StudentServiceTest {
         );
     }
 
+    @Test
+    void getCvsByStudent() {
+        StudentDTO studentDTO = createStudentDTO();
+        Cv cv1 = mock(Cv.class);
+        Cv cv2 = mock(Cv.class);
+
+        List<Cv> cvs = new ArrayList<>();
+        cvs.add(cv1);
+        cvs.add(cv2);
+
+        when(cvRepository.findAllByStudentId(studentDTO.getId())).thenReturn(cvs);
+        List<CvDTO> result = studentService.getCvsByStudent(studentDTO.getId());
+
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result).containsExactlyInAnyOrderElementsOf(cvs.stream().map(Cv::toDTO).toList());
+    }
+
     private static class CustomMockMultipartFile extends MockMultipartFile {
         public CustomMockMultipartFile(String name, String originalFilename, String contentType, byte[] content) {
             super(name, originalFilename, contentType, content);
@@ -268,5 +336,46 @@ public class StudentServiceTest {
         public byte[] getBytes() throws IOException {
             throw new IOException();
         }
+    }
+
+    @Test
+    public void createApplication_HappyPath(){
+        Department department = new Department(1L, "GEN", "Génie");
+        Student student = new Student(
+                1L,
+                "student",
+                "studentMan",
+                "email@email.com",
+                "password",
+                "123 Street Street",
+                "1234567890",
+                "123456789",
+                department
+        );
+        Cv cv = new Cv(1L, student, new byte[0], "fileName");
+        Offer offer = new Offer(
+                1L,
+                "title",
+                "description",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                0,
+                department,
+                mock(Employer.class)
+        );
+        Application application = new Application(null, student, cv, offer);
+
+        ApplicationDTO applicationDTO = application.toDTO();
+
+        when(applicationRepository.save(any(Application.class))).thenReturn(application);
+        when(studentRepository.findById(anyLong())).thenReturn(Optional.of(student));
+        when(cvRepository.findById(anyLong())).thenReturn(Optional.of(cv));
+        when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
+
+        ApplicationDTO dto = studentService.createApplication(applicationDTO).get();
+
+        assertThat(dto).isEqualTo(applicationDTO);
+        verify(applicationRepository, times(1)).save(application);
     }
 }

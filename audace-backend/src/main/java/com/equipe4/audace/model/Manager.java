@@ -6,22 +6,26 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
+@ToString(callSuper = true)
 @NoArgsConstructor
 @Entity
 public class Manager extends User {
     @ManyToOne
     private Department department;
 
-    public Manager(Long id,
-                   String firstname,
-                   String lastname,
-                   String email,
-                   String password,
-                   String address,
-                   String phone,
-                   Department department) {
+    public Manager(
+            Long id,
+            String firstname,
+            String lastname,
+            String email,
+            String password,
+            String address,
+            String phone,
+            Department department
+    ) {
         super(id, firstname, lastname, email, password, address, phone);
         this.department = department;
     }
@@ -30,8 +34,8 @@ public class Manager extends User {
     public ManagerDTO toDTO() {
         return new ManagerDTO(
                 id,
-                getFirstName(),
-                getLastName(),
+                firstName,
+                lastName,
                 email,
                 address,
                 phone,

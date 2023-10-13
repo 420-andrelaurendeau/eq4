@@ -45,16 +45,19 @@ public class EmployerService extends GenericUserService<Employer> {
 
         if(employerOptional.isPresent()) throw new IllegalArgumentException("Email already in use");
 
-        return Optional.of(new EmployerDTO(employerRepository.save(employerDTO.fromDTO())));
+        return Optional.of(employerRepository.save(employerDTO.fromDTO()).toDTO());
+    }
+    public Optional<EmployerDTO> findEmployerById(Long employerId){
+        return employerRepository.findById(employerId).map(Employer::toDTO);
     }
 
     public List<EmployerDTO> findAllEmployers(){
-        return employerRepository.findAll().stream().map(EmployerDTO::new).toList();
+        return employerRepository.findAll().stream().map(Employer::toDTO).toList();
     }
-
     public Optional<EmployerDTO> findEmployerById(Long id){
         return employerRepository.findById(id).map(EmployerDTO::new);
     }
+
 
     public Optional<OfferDTO> createOffer(OfferDTO offerDTO){
         if(offerDTO == null) throw new IllegalArgumentException("Offer cannot be null");
@@ -62,25 +65,31 @@ public class EmployerService extends GenericUserService<Employer> {
         Employer employer = employerRepository.findById(offerDTO.getEmployerId()).orElseThrow();
         Department department = departmentRepository.findByCode(offerDTO.getDepartmentCode()).orElseThrow();
 
-        Offer offer = offerDTO.fromDto();
+        Offer offer = offerDTO.fromDTO();
         offer.setEmployer(employer);
         offer.setDepartment(department);
 
-        return Optional.of(new OfferDTO(offerRepository.save(offer)));
+
+        offer.setStatus(Offer.Status.PENDING);
+
+        return Optional.of(offerRepository.save(offer).toDTO());
     }
 
     public List<OfferDTO> findAllOffersByEmployerId(Long employerId){
         Employer employer = employerRepository.findById(employerId).orElseThrow();
-        return offerRepository.findAllByEmployer(employer).stream().map(OfferDTO::new).toList();
+        return offerRepository.findAllByEmployer(employer).stream().map(Offer::toDTO).toList();
     }
 
     public Optional<OfferDTO> updateOffer(OfferDTO offerDTO){
         Offer offer = offerRepository.findById(offerDTO.getId()).orElseThrow();
-        return Optional.of(new OfferDTO(offerRepository.save(offer)));
+        return Optional.of(offerRepository.save(offer).toDTO());
     }
 
     public void deleteOffer(Long offerId){
         Offer offer = offerRepository.findById(offerId).orElseThrow();
-        offerRepository.deleteById(offerId);
+        offerRepository.delete(offer);
     }
+
+
+
 }

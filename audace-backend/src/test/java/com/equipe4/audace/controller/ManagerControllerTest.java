@@ -8,6 +8,7 @@ import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
+import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
@@ -17,6 +18,8 @@ import com.equipe4.audace.service.ManagerService;
 import com.equipe4.audace.service.StudentService;
 import com.equipe4.audace.utils.JwtManipulator;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.service.EmployerService;
@@ -64,6 +67,8 @@ public class ManagerControllerTest {
     @MockBean
     private StudentRepository studentRepository;
     @MockBean
+    private CvRepository cvRepository;
+    @MockBean
     private ManagerRepository managerRepository;
     @MockBean
     private UserRepository userRepository;
@@ -81,8 +86,19 @@ public class ManagerControllerTest {
     public void acceptOffer() throws Exception {
         Employer employer = new Employer();
         Department department = new Department();
-        Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
-        when(managerService.acceptOffer(1L)).thenReturn(Optional.of(offer1.toDTO()));
+        Offer offer1 = new Offer(
+                1L,
+                "title",
+                "description",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                1,
+                department,
+                employer
+        );
+        OfferDTO offerDTO1 = offer1.toDTO();
+        when(managerService.acceptOffer(1L)).thenReturn(Optional.of(offerDTO1));
 
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/managers/accept_offer/1").with(csrf())
@@ -97,8 +113,19 @@ public class ManagerControllerTest {
     public void refuseOffer() throws Exception {
         Employer employer = new Employer();
         Department department = new Department();
-        Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
-        when(managerService.refuseOffer(1L)).thenReturn(Optional.of(offer1.toDTO()));
+        Offer offer1 = new Offer(
+                1L,
+                "title",
+                "description",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                1,
+                department,
+                employer
+        );
+        OfferDTO offerDTO1 = offer1.toDTO();
+        when(managerService.refuseOffer(1L)).thenReturn(Optional.of(offerDTO1));
 
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/managers/refuse_offer/1").with(csrf())
@@ -111,16 +138,26 @@ public class ManagerControllerTest {
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void acceptOffer_invalidId() throws Exception {
-        Employer employer = new Employer();
-        Department department = new Department();
-        Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
+        Employer employer = mock(Employer.class);
+        Department department = mock(Department.class);
+        Offer offer1 = new Offer(
+                1L,
+                "title",
+                "description",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                1,
+                department,
+                employer
+        );
 
         when(managerService.acceptOffer(-25L)).thenReturn(Optional.empty());
 
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/managers/accept_offer/-25").with(csrf())
                 .accept(MediaType.APPLICATION_JSON)
-                .content(offer1.toString())
+                .content(offer1.toDTO().toString())
                 .contentType(MediaType.APPLICATION_JSON);
 
         mvc.perform(request).andExpect(status().isBadRequest());
@@ -130,14 +167,24 @@ public class ManagerControllerTest {
     public void refuseOffer_invalidId() throws Exception {
         Employer employer = new Employer();
         Department department = new Department();
-        Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
+        Offer offer1 = new Offer(
+                1L,
+                "title",
+                "description",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                1,
+                department,
+                employer
+        );
 
         when(managerService.refuseOffer(-25L)).thenReturn(Optional.empty());
 
         RequestBuilder request = MockMvcRequestBuilders
                 .post("/managers/refuse_offer/-25").with(csrf())
                 .accept(MediaType.APPLICATION_JSON)
-                .content(offer1.toString())
+                .content(offer1.toDTO().toString())
                 .contentType(MediaType.APPLICATION_JSON);
 
         mvc.perform(request).andExpect(status().isBadRequest());
@@ -156,15 +203,15 @@ public class ManagerControllerTest {
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void getManagerById_happyPath_test() throws Exception {
-        Department department = new Department("yeete", "yaint");
+        Department department = new Department(1L, "yeete", "yaint");
         Manager manager = new Manager(
                 1L,
                 "manager",
                 "managerman",
-                "manager@email.com",
-                "password",
-                "yeete",
-                "1234567890",
+                "asd",
+                "ads",
+                "das",
+                "sda",
                 department
         );
 
@@ -174,8 +221,8 @@ public class ManagerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(1L))
-                .andExpect(jsonPath("$.firstName").value("manager"))
-                .andExpect(jsonPath("$.lastName").value("managerman"))
+                .andExpect(jsonPath("$.firstName").value(manager.getFirstName()))
+                .andExpect(jsonPath("$.lastName").value(manager.getLastName()))
                 .andExpect(jsonPath("$.email").value(manager.getEmail()))
                 .andExpect(jsonPath("$.password").value(manager.getPassword()))
                 .andExpect(jsonPath("$.phone").value(manager.getPhone()))

@@ -14,11 +14,20 @@ import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import org.springframework.stereotype.Service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
+@AllArgsConstructor
+@Data
 public class UserService extends GenericUserService<User> {
+    protected final OfferRepository offerRepository;
+    protected final DepartmentRepository departmentRepository;
+    //TODO : Spring Security Password
     private final UserRepository userRepository;
 
     public UserService(

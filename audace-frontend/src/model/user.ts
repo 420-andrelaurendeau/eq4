@@ -1,6 +1,5 @@
 import { CV } from "./cv";
 import { Department } from "./department";
-import { Offer } from "./offer";
 
 export interface User {
     id?: number;
@@ -27,7 +26,7 @@ export interface Employer extends User{
 }
 
 export interface Manager extends User {
-    department: Department;
+  department: Department;
 }
 
 export enum UserType {
