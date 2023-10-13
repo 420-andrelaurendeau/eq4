@@ -19,9 +19,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.Optional;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,12 +41,7 @@ public class ManagerServiceTest {
     public void acceptOffer() {
         Employer employer = new Employer();
         Department department = new Department();
-        Offer offer1 = Offer.offerBuilder()
-                .title("Stage en génie logiciel").description("Stage en génie logiciel")
-                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
-                .availablePlaces(2)
-                .employer(employer).department(department)
-                .build();
+        Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
         when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
         when(offerRepository.save(any())).thenReturn(offer1);
 
@@ -68,12 +60,7 @@ public class ManagerServiceTest {
     public void refuseOffer() {
         Employer employer = new Employer();
         Department department = new Department();
-        Offer offer1 = Offer.offerBuilder()
-                .title("Stage en génie logiciel").description("Stage en génie logiciel")
-                .internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
-                .availablePlaces(2)
-                .employer(employer).department(department)
-                .build();
+        Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
         when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
         when(offerRepository.save(any())).thenReturn(offer1);
 
@@ -93,23 +80,29 @@ public class ManagerServiceTest {
         Department mockedDepartment = mock(Department.class);
         List<Offer> offers = new ArrayList<>();
 
-        Employer fakeEmployer = Employer.employerBuilder()
-                .firstName("employer").lastName("employerman").email("email@gmail.com").password("password")
-                .organisation("organisation").position("position").phone("phone").extension("extension")
-                .address("address")
-                .build();
+        Employer fakeEmployer = new Employer(
+                1L,
+                "employer",
+                "employerman",
+                "email@gmail.com",
+                "password",
+                "organisation",
+                "position",
+                "address",
+                "phone",
+                "extension"
+        );
         fakeEmployer.setId(1L);
 
-        Offer fakeOffer = Offer.offerBuilder()
-                .title("title")
-                .description("description")
-                .internshipStartDate(LocalDate.now())
-                .internshipEndDate(LocalDate.now())
-                .offerEndDate(LocalDate.now())
-                .availablePlaces(2)
-                .department(mockedDepartment)
-                .employer(fakeEmployer)
-                .build();
+        Offer fakeOffer = new Offer(
+                "title",
+                "description",
+                null,
+                null,
+                null,
+                fakeEmployer,
+                mockedDepartment
+        );
         fakeEmployer.getOffers().add(fakeOffer);
 
         for (int i = 0; i < 3; i++)
@@ -121,7 +114,7 @@ public class ManagerServiceTest {
         List<OfferDTO> result = managerService.getOffersByDepartment(1L);
 
         assertThat(result.size()).isEqualTo(offers.size());
-        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(OfferDTO::new).toList());
+        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
     }
 
     @Test

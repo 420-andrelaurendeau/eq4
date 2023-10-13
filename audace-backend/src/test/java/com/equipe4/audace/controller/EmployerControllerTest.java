@@ -1,6 +1,23 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.repository.EmployerRepository;
+import com.equipe4.audace.repository.ManagerRepository;
+import com.equipe4.audace.repository.StudentRepository;
+import com.equipe4.audace.repository.UserRepository;
+import com.equipe4.audace.repository.department.DepartmentRepository;
+import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.service.EmployerService;
+import com.equipe4.audace.service.StudentService;
+import com.equipe4.audace.utils.JwtManipulator;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
@@ -12,13 +29,14 @@ import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.service.EmployerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Optional;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.Mockito.*;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -55,7 +73,38 @@ public class EmployerControllerTest {
     private StudentRepository studentRepository;
     @MockBean
     private ManagerRepository managerRepository;
+    @MockBean
+    private UserRepository userRepository;
+    @MockBean
+    private JwtManipulator jwtManipulator;
+    @MockBean
+    private StudentService studentService;
+    @MockBean
+    private SaltRepository saltRepository;
 
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN", "USER"})
+    public void getEmployerById_happyPath_test_asAdmin() throws Exception {
+        getEmployerById_happyPath_test();
+    }
+
+    @Test
+    @WithMockUser(username = "employer", authorities = {"EMPLOYER", "USER"})
+    public void getEmployerById_happyPath_test_asEmployer() throws Exception {
+        getEmployerById_happyPath_test();
+    }
+
+    @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER", "USER"})
+    public void getEmployerById_happyPath_test_asManager() throws Exception {
+        getEmployerById_happyPath_test();
+    }
+
+    @Test
+    @WithMockUser(username = "student", authorities = {"STUDENT", "USER"})
+    public void getEmployerById_happyPath_test_asStudent() throws Exception {
+        getEmployerById_happyPath_test();
+    }
     @Test
     public void getEmployerById_happyPath_test() throws Exception {
         EmployerDTO employerDTO = EmployerDTO.employerDTOBuilder().id(1L)
@@ -72,6 +121,29 @@ public class EmployerControllerTest {
                 .andExpect(jsonPath("$.firstName").value("Employer1"))
                 .andExpect(jsonPath("$.lastName").value("Employer1"))
                 .andExpect(jsonPath("$.email").value("employer1@gmail.com"));
+    }
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void getEmployerById_notFound_test_asAdmin() throws Exception {
+        getEmployerById_notFound_test();
+    }
+
+    @Test
+    @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
+    public void getEmployerById_notFound_test_asEmployer() throws Exception {
+        getEmployerById_notFound_test();
+    }
+
+    @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
+    public void getEmployerById_notFound_test_asManager() throws Exception {
+        getEmployerById_notFound_test();
+    }
+
+    @Test
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
+    public void getEmployerById_notFound_test_asStudent() throws Exception {
+        getEmployerById_notFound_test();
     }
 
     @Test
@@ -205,5 +277,4 @@ public class EmployerControllerTest {
                 .andExpect(jsonPath("$.employerId", is(offerDTOUpdated.getEmployerId().intValue())))
                 .andExpect(jsonPath("$.departmentCode", is(offerDTOUpdated.getDepartmentCode())));
     }
-
 }

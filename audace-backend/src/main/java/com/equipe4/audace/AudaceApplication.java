@@ -1,33 +1,37 @@
 package com.equipe4.audace;
 
 import com.equipe4.audace.dto.EmployerDTO;
-import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.department.Department;
+import com.equipe4.audace.model.offer.Offer;
+import com.equipe4.audace.model.security.Salt;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
-import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
+import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.service.EmployerService;
-import com.equipe4.audace.service.ManagerService;
+import com.equipe4.audace.service.StudentService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Optional;
 
 @SpringBootApplication
 @AllArgsConstructor
 public class AudaceApplication implements CommandLineRunner {
-	@Autowired
 	private DepartmentRepository departmentRepository;
-
-	private EmployerService employerService;
+	private EmployerRepository employerRepository;
 	private ManagerRepository managerRepository;
-	private StudentRepository studentRepository;
+	private EmployerService employerService;
+	private StudentService studentService;
+	private SaltRepository saltRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AudaceApplication.class, args);
@@ -36,20 +40,50 @@ public class AudaceApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		Department department = departmentRepository.save(new Department("GLO", "Génie logiciel"));
+		Employer employer = new Employer(
+				null,
+				"employer",
+				"employerman",
+				"temp@gmail.com",
+				"password",
+				"Temp Baklungel",
+				"Big Baklunger",
+				"123 Street Street",
+				"1234567890",
+				"-123"
+		);
 
-		employerService.createEmployer(EmployerDTO.employerDTOBuilder()
-				.firstName("Employer1").lastName("Employer1").email("employer1@gmail.com").password("123456eE")
-				.organisation("Organisation1").position("Position1").phone("123-456-7890").extension("12345")
-				.address("Class Service, Javatown, Qc H8N1C1").build());
+		Optional<EmployerDTO> optionalEmpDto = employerService.createEmployer(employer.toDTO());
 
-		employerService.createOffer(OfferDTO.offerDTOBuilder()
-				.title("Stage en génie logiciel").description("Stage en génie logiciel")
-				.internshipStartDate(LocalDate.now()).internshipEndDate(LocalDate.now()).offerEndDate(LocalDate.now())
-				.employerId(1L).departmentCode("GLO")
-				.build());
+		if (optionalEmpDto.isEmpty()) {
+			return;
+		}
 
-		managerRepository.save(new Manager(2L, "Manager1", "Manager1", "manager@email.com", "123456eE", "adress", "phone",department));
-		studentRepository.save(new Student(3L, "Student1", "Student1", "student@email.com", "asdasd",
-				"adress", "phone", "yaint", department));
+		EmployerDTO empDto = optionalEmpDto.orElseThrow();
+		employer = employerRepository.findById(empDto.getId()).orElseThrow();
+
+		Offer offer1 = new Offer("Stage en génie spaget car c'est bon du spaget pour le dîner miam", "Stage en génie logiciel", new Date(), new Date(), new Date(), employer, department);
+		offer1.setStatus(Offer.Status.ACCEPTED);
+		Offer offer4 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), new Date(), employer, department);
+		offer4.setStatus(Offer.Status.ACCEPTED);
+		Offer offer2 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), new Date(), employer, department);
+		Offer offer3 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), new Date(), employer, department);
+		employer.setOffers(new ArrayList<>());
+		employer.getOffers().add(offer1);
+		employer.getOffers().add(offer2);
+		employer.getOffers().add(offer3);
+		employer.getOffers().add(offer4);
+
+		employerRepository.save(employer);
+
+		Student student = new Student(2L, "Kylian", "Mbappe", "kylian@live.fr", "123123", "34 de Montpellier", "4387654545", "2080350", department);
+		studentService.createStudent(student.toDTO(), department.getCode());
+
+		Manager manager = new Manager(3L, "manager", "managerman", "manager@email.com", "password", "yeete", "1234567890", department);
+		String managerPassword = manager.getPassword();
+		String managerSalt = BCrypt.gensalt();
+		manager.setPassword(BCrypt.hashpw(managerPassword, managerSalt));
+		saltRepository.save(new Salt(null, manager, managerSalt));
+		managerRepository.save(manager);
 	}
 }

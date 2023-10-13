@@ -1,5 +1,6 @@
 package com.equipe4.audace.controller;
 
+import com.equipe4.audace.controller.abstracts.GenericUserController;
 import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Manager;
@@ -14,7 +15,7 @@ import java.util.List;
 @RequestMapping("/managers")
 @CrossOrigin(origins = "http://localhost:3000")
 
-public class ManagerController extends GenericUserController<Manager, ManagerService>{
+public class ManagerController extends GenericUserController<Manager, ManagerService> {
     public ManagerController(ManagerService managerService) {
         super(managerService);
     }
@@ -31,7 +32,7 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
         logger.info("acceptOffer");
         return service.acceptOffer(offerId)
                 .map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST));
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @PostMapping("/refuse_offer/{offerId}")
@@ -39,7 +40,7 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
         logger.info("refuseOffer");
         return service.refuseOffer(offerId)
                 .map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST));
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @GetMapping("/offers/{departmentId}")

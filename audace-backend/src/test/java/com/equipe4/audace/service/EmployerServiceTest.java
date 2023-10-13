@@ -4,7 +4,9 @@ import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.security.Salt;
 import com.equipe4.audace.repository.EmployerRepository;
+import com.equipe4.audace.repository.security.SaltRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,6 +26,9 @@ public class EmployerServiceTest {
     @Mock
     public EmployerRepository employerRepository;
 
+    @Mock
+    private SaltRepository saltRepository;
+
     @InjectMocks
     private EmployerService employerService;
 
@@ -35,6 +40,7 @@ public class EmployerServiceTest {
                 .organisation("Organisation1").position("Position1").phone("123-456-7890").extension("12345")
                 .address("Class Service, Javatown, Qc H8N1C1").build();
         when(employerRepository.save(any(Employer.class))).thenReturn(employerDTO.fromDTO());
+        when(saltRepository.save(any())).thenReturn(mock(Salt.class));
 
         // Act
         EmployerDTO dto = employerService.createEmployer(employerDTO).get();

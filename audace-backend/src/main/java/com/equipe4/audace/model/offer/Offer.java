@@ -18,8 +18,8 @@ public class Offer {
     @SequenceGenerator(name = "offer_gen", sequenceName = "offer_sec", allocationSize = 1)
     @Column(name = "offer_id")
     private Long id;
-
     private String title;
+    @Column(length = 2048)
     private String description;
     private LocalDate internshipStartDate;
     private LocalDate internshipEndDate;
@@ -45,8 +45,7 @@ public class Offer {
     }
 
 
-    @Builder(builderMethodName = "offerBuilder")
-    public Offer(String title, String description, LocalDate internshipStartDate, LocalDate internshipEndDate, LocalDate offerEndDate, int availablePlaces, Department department, Employer employer) {
+    public Offer(String title, String description, Date internshipStartDate, Date internshipEndDate, Date offerEndDate, Employer employer, Department department) {
         this.title = title;
         this.description = description;
         this.internshipStartDate = internshipStartDate;
@@ -58,4 +57,7 @@ public class Offer {
         this.employer = employer;
     }
 
+    public OfferDTO toDTO() {
+        return new OfferDTO(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, employer.getId(), department.toDTO(), status);
+    }
 }

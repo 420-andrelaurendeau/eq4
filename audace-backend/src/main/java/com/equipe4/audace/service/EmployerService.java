@@ -8,6 +8,7 @@ import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,22 @@ public class EmployerService extends GenericUserService<Employer> {
     private OfferRepository offerRepository;
     private DepartmentRepository departmentRepository;
 
+    public EmployerService(
+            SaltRepository saltRepository,
+            EmployerRepository employerRepository
+    ) {
+        super(saltRepository);
+        this.employerRepository = employerRepository;
+    }
+
+    @Transactional
+    public Optional<EmployerDTO> createEmployer(EmployerDTO employerDTO){
+        Employer employer = employerDTO.fromDTO();
+        hashAndSaltPassword(employer);
+
+        return Optional.of(employerRepository.save(employer)).map(Employer::toDTO);
+    }
+
     public Optional<EmployerDTO> createEmployer(EmployerDTO employerDTO){
         if (employerDTO == null) throw new IllegalArgumentException("Employer cannot be null");
 
@@ -31,12 +48,12 @@ public class EmployerService extends GenericUserService<Employer> {
         return Optional.of(new EmployerDTO(employerRepository.save(employerDTO.fromDTO())));
     }
 
-    public Optional<EmployerDTO> findEmployerById(Long employerId){
-        return employerRepository.findById(employerId).map(EmployerDTO::new);
-    }
-
     public List<EmployerDTO> findAllEmployers(){
         return employerRepository.findAll().stream().map(EmployerDTO::new).toList();
+    }
+
+    public Optional<EmployerDTO> findEmployerById(Long id){
+        return employerRepository.findById(id).map(EmployerDTO::new);
     }
 
     public Optional<OfferDTO> createOffer(OfferDTO offerDTO){

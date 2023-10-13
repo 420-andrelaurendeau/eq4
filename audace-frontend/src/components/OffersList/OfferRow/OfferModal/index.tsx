@@ -1,10 +1,10 @@
-import {useEffect} from "react";
-import {Offer, OfferStatus} from "../../../../model/offer";
-import {Employer, UserType} from "../../../../model/user";
-import {Modal} from "react-bootstrap";
-import {getEmployerById} from "../../../../services/userService";
-import {useTranslation} from "react-i18next";
-import {formatDate} from "../../../../services/formatService";
+import { useEffect } from "react";
+import { Offer, OfferStatus } from "../../../../model/offer";
+import { Employer, UserType } from "../../../../model/user";
+import { Modal } from "react-bootstrap";
+import { getEmployerById } from "../../../../services/userService";
+import { useTranslation } from "react-i18next";
+import { formatDate } from "../../../../services/formatService";
 import OfferButtons from "../OfferButtons";
 
 interface Props {
@@ -49,8 +49,8 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
                                 employer !== undefined ?
                                     employer.organisation! :
                                     t("offer.modal.orgNotFound")
-                            )
-                        }
+                                )
+                            }
                         </div>
                         <div>{t("offer.modal.address")}:&nbsp;
                             {createBoldText(

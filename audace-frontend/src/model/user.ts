@@ -1,3 +1,4 @@
+import { CV } from "./cv";
 import { Department } from "./department";
 import { Offer } from "./offer";
 
@@ -9,12 +10,13 @@ export interface User {
     phone?: string;
     address?: string;
     password: string;
-    type: string;
+    type?: string;
 }
 
 export interface Student extends User{
     studentNumber: string;
     department?: Department;
+    cvs: CV[];
 }
 
 export interface Employer extends User{
