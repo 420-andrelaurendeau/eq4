@@ -47,7 +47,8 @@ public class EmployerController extends GenericUserController<Employer, Employer
     @PostMapping("/{id}/offers")
     public ResponseEntity<OfferDTO> createOffer(@RequestBody OfferDTO offerDTO){
         logger.info("createOffer");
-        return service.createOffer(offerDTO).map(offer -> ResponseEntity.status(HttpStatus.CREATED).body(offerDTO))
+        return service.createOffer(offerDTO)
+                .map(offer -> ResponseEntity.status(HttpStatus.CREATED).body(offerDTO))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
@@ -58,8 +59,8 @@ public class EmployerController extends GenericUserController<Employer, Employer
         return ResponseEntity.ok(updatedOffer);
     }
 
-    @DeleteMapping("/{id}/offers/{offerId}")
-    public ResponseEntity<HttpStatus> deleteOffer(@PathVariable Long offerId, @PathVariable Long id){
+    @DeleteMapping("/{id}/offers")
+    public ResponseEntity<HttpStatus> deleteOffer(@RequestParam("offerId") Long offerId){
         service.deleteOffer(offerId);
         return ResponseEntity.ok().build();
     }

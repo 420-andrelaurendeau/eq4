@@ -22,31 +22,19 @@ import java.util.Optional;
 
 
 @Service
-@AllArgsConstructor
-@Data
 public class UserService extends GenericUserService<User> {
-    protected final OfferRepository offerRepository;
-    protected final DepartmentRepository departmentRepository;
-    //TODO : Spring Security Password
     private final UserRepository userRepository;
 
-    public UserService(
-            SaltRepository saltRepository,
-            UserRepository userRepository
-    ) {
+    public UserService(SaltRepository saltRepository, UserRepository userRepository) {
         super(saltRepository);
         this.userRepository = userRepository;
     }
-
-    public void createUser(UserDTO userDTO) {}
 
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll().stream().map(User::toDTO).toList();
     }
 
-    public Optional<UserDTO> getUser(long id) {
-        Optional<User> user = userRepository.findById(id);
-
-        return user.map(User::toDTO);
+    public Optional<UserDTO> getUser(Long id) {
+        return userRepository.findById(id).map(User::toDTO);
     }
 }

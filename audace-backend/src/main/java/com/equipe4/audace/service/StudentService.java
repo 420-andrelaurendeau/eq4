@@ -27,7 +27,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+
 public class StudentService extends GenericUserService<Student> {
     private final DepartmentRepository departmentRepository;
     private final OfferRepository offerRepository;
@@ -35,18 +35,13 @@ public class StudentService extends GenericUserService<Student> {
     private final CvRepository cvRepository;
     private final ApplicationRepository applicationRepository;
 
-    public StudentService(
-            SaltRepository saltRepository,
-            DepartmentRepository departmentRepository,
-            OfferRepository offerRepository,
-            StudentRepository studentRepository,
-            CvRepository cvRepository
-    ) {
+    public StudentService(SaltRepository saltRepository, DepartmentRepository departmentRepository, OfferRepository offerRepository, StudentRepository studentRepository, CvRepository cvRepository, ApplicationRepository applicationRepository) {
         super(saltRepository);
         this.departmentRepository = departmentRepository;
         this.offerRepository = offerRepository;
         this.studentRepository = studentRepository;
         this.cvRepository = cvRepository;
+        this.applicationRepository = applicationRepository;
     }
 
     @Transactional
@@ -101,8 +96,6 @@ public class StudentService extends GenericUserService<Student> {
             throw new IllegalArgumentException("File cannot be read");
         }
 
-        Cv cv = new Cv(student, name, bytes);
-        return Optional.of(cvRepository.save(cv).toDto());
         Cv cv = new Cv(null, student, bytes, fileName);
         return Optional.of(cvRepository.save(cv).toDTO());
     }

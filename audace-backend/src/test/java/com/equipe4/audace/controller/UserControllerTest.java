@@ -36,12 +36,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(UserController.class)
 class UserControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private UserService userService;
+    @MockBean
+    private EmployerService employerService;
+    @MockBean
+    private StudentService studentService;
     @MockBean
     private DepartmentRepository departmentRepository;
     @MockBean
@@ -51,45 +53,23 @@ class UserControllerTest {
     @MockBean
     private ManagerRepository managerRepository;
     @MockBean
-    private EmployerService employerService;
     private UserRepository userRepository;
     @MockBean
     private CvRepository cvRepository;
+    @MockBean
     private JwtManipulator jwtManipulator;
     @MockBean
-    private StudentService studentService;
-    @MockBean
     private SaltRepository saltRepository;
-    @MockBean
-    private EmployerService employerService;
+
 
     @Test
+    @WithMockUser(username = "user")
     void testGetAllUsers() throws Exception {
-        EmployerDTO employerDTO1 = new EmployerDTO(
-                1L,
-                "Employer1",
-                "Employer1",
-                "asd@email.com",
-                "password",
-                "Organisation1",
-                "Position1",
-                "123-456-7890",
-                "12345",
-                "Class Service, Javatown, Qc H8N1C1"
-        );
-        EmployerDTO employerDTO2 = new EmployerDTO(
-                1L,
-                "Employer1",
-                "Employer1",
-                "asd@email.com",
-                "password",
-                "Organisation1",
-                "Position1",
-                "123-456-7890",
-                "12345",
-                "Class Service, Javatown, Qc H8N1C1"
-        );
+        EmployerDTO employerDTO1 = new EmployerDTO(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
+        EmployerDTO employerDTO2 = new EmployerDTO(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
+
         List<UserDTO> userDTOs = List.of(employerDTO1, employerDTO2);
+
         when(userService.getAllUsers()).thenReturn(userDTOs);
 
         mockMvc.perform(get("/users"))

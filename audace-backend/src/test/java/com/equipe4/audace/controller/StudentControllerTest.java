@@ -12,11 +12,14 @@ import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
+import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.StudentService;
+import com.equipe4.audace.utils.JwtManipulator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,9 +55,10 @@ public class StudentControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
-
     @MockBean
     private StudentService studentService;
+    @MockBean
+    private EmployerService employerService;
     @MockBean
     private StudentRepository studentRepository;
     @MockBean
@@ -62,11 +66,7 @@ public class StudentControllerTest {
     @MockBean
     private DepartmentRepository departmentRepository;
     @MockBean
-    private StudentRepository studentRepository;
-    @MockBean
     private EmployerRepository employerRepository;
-    @MockBean
-    private EmployerService employerService;
     @MockBean
     private ManagerRepository managerRepository;
     @MockBean
@@ -76,22 +76,28 @@ public class StudentControllerTest {
     @MockBean
     private SaltRepository saltRepository;
     @MockBean
-    private EmployerService employerService;
-
-    @MockBean
     private CvRepository cvRepository;
 
     @Test
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
     void uploadCv_happyPath() throws Exception {
         MockMultipartFile file = createMockFile();
         when(studentService.saveCv(file, 1L)).thenReturn(Optional.of(mock(CvDTO.class)));
 
-        mockMvc.perform(
-                multipart("/students/upload/1")
+        mockMvc.perform(multipart("/students/upload/1")
                         .file(file)
-                        .contentType(MediaType.MULTIPART_FORM_DATA)
+                        .contentType(MediaType.MULTIPART_FORM_DATA).with(csrf())
         ).andExpect(status().isCreated());
     }
+
+    @Test
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
+    void uploadCv_noFile() throws Exception {
+        mockMvc.perform(multipart("/students/upload/1")
+                        .contentType(MediaType.MULTIPART_FORM_DATA).with(csrf())
+        ).andExpect(status().isBadRequest());
+    }
+
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT"})
     public void getOffersByDepartment_happyPath() throws Exception {
@@ -101,38 +107,12 @@ public class StudentControllerTest {
         mockMvc.perform(get("/students/offers/1"))
                 .andExpect(status().isOk());
     }
-    @Test
-    void uploadCv_noFile() throws Exception {
-        mockMvc.perform(
-                multipart("/students/upload/1")
-                        .contentType(MediaType.MULTIPART_FORM_DATA)
-        ).andExpect(status().isBadRequest());
-    }
-
-    private MockMultipartFile createMockFile() {
-        return new MockMultipartFile(
-                "file",
-                "test.txt",
-                MediaType.TEXT_PLAIN_VALUE,
-                "Hello, World!".getBytes()
-        );
-    }
 
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT"})
     public void getStudentById_happyPath() throws Exception {
         Department department = new Department(1L, "dep", "artment");
-        Student student = new Student(
-                1L,
-                "student",
-                "studentman",
-                "student@email.com",
-                "password",
-                "123 Street Street",
-                "1234567890",
-                "123456789",
-                department
-        );
+        Student student = new Student(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", department);
         student.setId(1L);
 
         when(studentService.getStudentById(1L)).thenReturn(Optional.of(student.toDTO()));
@@ -162,91 +142,25 @@ public class StudentControllerTest {
 
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT"})
-    void uploadCv_happyPath() throws Exception {
-        MockMultipartFile file = createMockFile();
-        when(studentService.saveCv(file, 1L)).thenReturn(Optional.of(mock(CvDTO.class)));
-
-        mvc.perform(
-                multipart("/students/upload/1")
-                        .file(file)
-                        .contentType(MediaType.MULTIPART_FORM_DATA).with(csrf())
-        ).andExpect(status().isCreated());
-    }
-
-    @Test
-    @WithMockUser(username = "student", authorities = {"STUDENT"})
-    void uploadCv_noFile() throws Exception {
-        mvc.perform(
-                multipart("/students/upload/1")
-                        .contentType(MediaType.MULTIPART_FORM_DATA).with(csrf())
-        )
-        .andExpect(status().isBadRequest());
-    }
-
-    private MockMultipartFile createMockFile() {
-        return new MockMultipartFile(
-                "file",
-                "test.txt",
-                MediaType.TEXT_PLAIN_VALUE,
-                "Hello, World!".getBytes()
-        );
-    }
-
-    @Test
     public void givenApplicationObject_whenCreateApplication_thenReturnSavedApplication() throws Exception{
         // given - precondition or setup
         Department department = new Department(1L, "GLO", "Génie logiciel");
-        Employer employer = new Employer(
-                1L,
-                "Employer1",
-                "Employer1",
-                "asd@email.com",
-                "password",
-                "Organisation1",
-                "Position1",
-                "123-456-7890",
-                "12345",
-                "Class Service, Javatown, Qc H8N1C1"
-        );
+        Employer employer = new Employer(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
 
-        Student student = new Student(
-                1L,
-                "student",
-                "studentman",
-                "student@email.com",
-                "password",
-                "123 Street Street",
-                "1234567890",
-                "123456789",
-                department
-        );
+        Student student = new Student(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", department);
 
         Cv cv = mock(Cv.class);
 
-        Offer offer = new Offer(
-                1L,
-                "Stage en génie logiciel",
-                "Stage en génie logiciel",
-                LocalDate.now(),
-                LocalDate.now(),
-                LocalDate.now(),
-                3,
-                department,
-                employer
-        );
+        Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, employer, department);
         offer.setId(1L);
-        Application application = new Application(
-                1L,
-                student,
-                cv,
-                offer
-        );
+        Application application = new Application(1L, student, cv, offer);
         ApplicationDTO applicationDTO = application.toDTO();
 
         when(studentService.createApplication(any(ApplicationDTO.class))).thenReturn(Optional.of(applicationDTO));
 
         // when - action or behaviour that we are going test
         ResultActions response = mockMvc.perform(post("/students/{id}/applications", 1L)
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(Optional.of(applicationDTO))));
 
@@ -257,11 +171,16 @@ public class StudentControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
     void getCvsByStudent() throws Exception {
         List<CvDTO> cvDTOList = List.of(mock(CvDTO.class));
         when(studentService.getCvsByStudent(1L)).thenReturn(cvDTOList);
 
         mockMvc.perform(get("/students/cvs/1"))
                 .andExpect(status().isOk());
+    }
+
+    private MockMultipartFile createMockFile() {
+        return new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "Hello, World!".getBytes());
     }
 }

@@ -1,7 +1,7 @@
 package com.equipe4.audace.dto.offer;
 
+import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
-import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.offer.Offer.Status;
 import lombok.AllArgsConstructor;
@@ -9,8 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import com.equipe4.audace.model.offer.Offer.Status;
-import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -24,10 +22,9 @@ public class OfferDTO {
     private LocalDate offerEndDate;
     private int availablePlaces;
     private Status status;
-    private String departmentCode;
-    private Long employerId;
     private DepartmentDTO department;
     private EmployerDTO employer;
+
 
 
     public Offer fromDTO() {
@@ -39,8 +36,8 @@ public class OfferDTO {
                 internshipEndDate,
                 offerEndDate,
                 availablePlaces,
-                department.fromDTO(),
-                employer.fromDTO()
+                employer.fromDTO(),
+                department.fromDTO()
         );
     }
 }

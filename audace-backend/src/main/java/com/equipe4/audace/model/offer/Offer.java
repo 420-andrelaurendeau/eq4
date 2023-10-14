@@ -1,14 +1,13 @@
 package com.equipe4.audace.model.offer;
 
 import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.*;
+import java.util.*;
 
 @Entity
 @Data
@@ -50,8 +49,8 @@ public class Offer {
         REFUSED
     }
 
-
-    public Offer(String title, String description, Date internshipStartDate, Date internshipEndDate, Date offerEndDate, Employer employer, Department department) {
+    public Offer(Long id, String title, String description, LocalDate internshipStartDate, LocalDate internshipEndDate, LocalDate offerEndDate, int availablePlaces, Employer employer, Department department) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.internshipStartDate = internshipStartDate;

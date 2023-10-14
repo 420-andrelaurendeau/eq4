@@ -40,23 +40,14 @@ public class ManagerServiceTest {
     public void acceptOffer() {
         Employer employer = mock(Employer.class);
         Department department = mock(Department.class);
-        Offer offer1 = new Offer(
-                1L,
-                "title",
-                "description",
-                LocalDate.now(),
-                LocalDate.now(),
-                LocalDate.now(),
-                1,
-                department,
-                employer
-        );
-        when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
-        when(offerRepository.save(any())).thenReturn(offer1);
+        Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, employer, department);
+
+        when(offerRepository.findById(1L)).thenReturn(Optional.of(offer));
+        when(offerRepository.save(any())).thenReturn(offer);
 
         managerService.acceptOffer(1L);
 
-        assert(offer1.getStatus() == Offer.Status.ACCEPTED);
+        assert(offer.getStatus() == Offer.Status.ACCEPTED);
     }
 
     @Test
@@ -69,23 +60,14 @@ public class ManagerServiceTest {
     public void refuseOffer() {
         Employer employer = mock(Employer.class);
         Department department = mock(Department.class);
-        Offer offer1 = new Offer(
-                1L,
-                "title",
-                "description",
-                LocalDate.now(),
-                LocalDate.now(),
-                LocalDate.now(),
-                1,
-                department,
-                employer
-        );
-        when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
-        when(offerRepository.save(any())).thenReturn(offer1);
+        Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, employer, department);
+
+        when(offerRepository.findById(1L)).thenReturn(Optional.of(offer));
+        when(offerRepository.save(any())).thenReturn(offer);
 
         managerService.refuseOffer(1L);
 
-        assert(offer1.getStatus() == Offer.Status.REFUSED);
+        assert(offer.getStatus() == Offer.Status.REFUSED);
     }
 
     @Test
@@ -99,30 +81,9 @@ public class ManagerServiceTest {
         Department mockedDepartment = mock(Department.class);
         List<Offer> offers = new ArrayList<>();
 
-        Employer fakeEmployer = mock(Employer.class);
-        Employer fakeEmployer = new Employer(
-                1L,
-                "employer",
-                "employerman",
-                "email@gmail.com",
-                "password",
-                "organisation",
-                "position",
-                "address",
-                "phone",
-                "extension"
-        );
-        Offer fakeOffer = new Offer(
-                1L,
-                "title",
-                "description",
-                LocalDate.now(),
-                LocalDate.now(),
-                LocalDate.now(),
-                1,
-                mockedDepartment,
-                fakeEmployer
-        );
+        Employer fakeEmployer = new Employer(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
+        Offer fakeOffer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, fakeEmployer, mockedDepartment);
+
         fakeEmployer.getOffers().add(fakeOffer);
 
         for (int i = 0; i < 3; i++)
@@ -162,17 +123,7 @@ public class ManagerServiceTest {
     public void findManagerById_happyPathTest() {
         // Arrange
         Department department = mock(Department.class);
-        Manager manager = new Manager(
-                1L,
-                "manager",
-                "managerman",
-                "manager@email.com",
-                "password",
-                "yeete",
-                "1234567890",
-                department
-        );
-
+        Manager manager = new Manager(1L, "manager", "managerman", "manager@email.com", "password", "yeete", "1234567890", department);
 
         when(managerRepository.findById(1L)).thenReturn(Optional.of(manager));
 
