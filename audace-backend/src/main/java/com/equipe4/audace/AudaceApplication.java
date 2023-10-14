@@ -76,7 +76,7 @@ public class AudaceApplication implements CommandLineRunner {
 						LocalDate.now(),
 						LocalDate.now(),
 						3,
-						Offer.Status.ACCEPTED,
+						Offer.OfferStatus.ACCEPTED,
 						department.toDTO(),
 						employerDTO
 				)
@@ -125,7 +125,7 @@ public class AudaceApplication implements CommandLineRunner {
 				department,
 				employer
 		);
-		offer2.setStatus(Offer.Status.ACCEPTED);
+		offer2.setOfferStatus(Offer.OfferStatus.ACCEPTED);
 
 		Offer offer3 = new Offer(
 				null,

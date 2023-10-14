@@ -56,7 +56,7 @@ public class ManagerServiceTest {
 
         managerService.acceptOffer(1L);
 
-        assert(offer1.getStatus() == Offer.Status.ACCEPTED);
+        assert(offer1.getOfferStatus() == Offer.OfferStatus.ACCEPTED);
     }
 
     @Test
@@ -85,7 +85,7 @@ public class ManagerServiceTest {
 
         managerService.refuseOffer(1L);
 
-        assert(offer1.getStatus() == Offer.Status.REFUSED);
+        assert(offer1.getOfferStatus() == Offer.OfferStatus.REFUSED);
     }
 
     @Test

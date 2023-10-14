@@ -5,7 +5,6 @@ import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -45,7 +44,7 @@ public class Offer {
     @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL)
     private List<Application> applications = new ArrayList<>();
 
-    private Status status;
+    private OfferStatus offerStatus;
 
     public Offer(
             Long id,
@@ -67,10 +66,10 @@ public class Offer {
         this.availablePlaces = availablePlaces;
         this.department = department;
         this.employer = employer;
-        this.status = Status.PENDING;
+        this.offerStatus = OfferStatus.PENDING;
     }
 
-    public enum Status {
+    public enum OfferStatus {
         PENDING,
         ACCEPTED,
         REFUSED
@@ -85,7 +84,7 @@ public class Offer {
                 internshipEndDate,
                 offerEndDate,
                 availablePlaces,
-                status,
+                offerStatus,
                 department.toDTO(),
                 employer.toDTO()
         );

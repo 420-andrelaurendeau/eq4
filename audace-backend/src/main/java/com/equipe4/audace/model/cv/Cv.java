@@ -27,6 +27,13 @@ public class Cv {
     private Student student;
     private String fileName;
     private byte[] content;
+    private CvStatus cvStatus;
+
+    public enum CvStatus {
+        PENDING,
+        ACCEPTED,
+        REFUSED
+    }
 
     @ToString.Exclude
     @OneToMany(mappedBy = "cv", cascade = CascadeType.ALL)
@@ -37,6 +44,7 @@ public class Cv {
         this.student = student;
         this.content = content;
         this.fileName = fileName;
+        this.cvStatus = CvStatus.PENDING;
     }
 
     public CvDTO toDTO() {
@@ -44,7 +52,8 @@ public class Cv {
                 id,
                 fileName,
                 content,
-                student.toDTO()
+                student.toDTO(),
+                cvStatus
         );
     }
 }

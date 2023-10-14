@@ -46,11 +46,11 @@ const ManagerOfferView = () => {
         let refusedOffers = [];
         let offers = [];
         for (let i = 0; i < res.data.length; i = i + 1) {
-          if (res.data[i].status === "ACCEPTED") {
+          if (res.data[i].offerStatus === "ACCEPTED") {
             acceptedOffers.push(res.data[i]);
-          } else if (res.data[i].status === "REFUSED") {
+          } else if (res.data[i].offerStatus === "REFUSED") {
             refusedOffers.push(res.data[i]);
-          } else if (res.data[i].status === "PENDING") {
+          } else if (res.data[i].offerStatus === "PENDING") {
             offers.push(res.data[i]);
           }
         }
@@ -67,7 +67,7 @@ const ManagerOfferView = () => {
 
   const updateOffersState = (offer: Offer, offerStatus: OfferStatus) => {
     let newOffers = offers.filter((o) => o.id !== offer.id);
-    offer.status = offerStatus;
+    offer.offerStatus = offerStatus;
     setOffers(newOffers);
     if (offerStatus === "ACCEPTED") {
       setOffersAccepted([...offersAccepted, offer]);

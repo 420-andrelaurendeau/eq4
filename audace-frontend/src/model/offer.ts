@@ -11,11 +11,11 @@ export interface Offer {
   availablePlaces: number;
   department: Department;
   employer: Employer;
-  status: OfferStatus;
+  offerStatus: OfferStatus;
 }
 
 export enum OfferStatus {
-  PENDING = "PENDING",
-  ACCEPTED = "ACCEPTED",
-  REFUSED = "REFUSED",
+    PENDING = "PENDING",
+    ACCEPTED = "ACCEPTED",
+    REFUSED = "REFUSED"
 }
