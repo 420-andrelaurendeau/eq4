@@ -1,12 +1,12 @@
 import { Container } from "react-bootstrap";
-import { Manager, UserType } from "../../model/user";
+import { Manager, UserType } from "../../../model/user";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
-import { Offer, OfferStatus } from "../../model/offer";
-import OffersList from "../../components/OffersList";
-import { getManagerOffersByDepartment } from "../../services/offerService";
-import { getManagerById } from "../../services/userService";
-import { getUserId } from "../../services/authService";
+import { Offer, OfferStatus } from "../../../model/offer";
+import OffersList from "../../../components/OffersList";
+import { getManagerOffersByDepartment } from "../../../services/offerService";
+import { getManagerById } from "../../../services/userService";
+import { getUserId } from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
 
 const ManagerOfferView = () => {

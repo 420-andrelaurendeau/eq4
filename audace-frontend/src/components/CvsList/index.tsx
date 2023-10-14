@@ -22,12 +22,12 @@ const CvsList = ({cvs, error, userType, updateCvsState}: Props) => {
                 <p>{error}</p> 
                 : 
                 cvs.length > 0
-                    ? //TODO : YOU KNOW WHAT THIS IS!!! GIVE IT UP FOR I18NNNNNNNN!!!!!!!!!!!!!!!!!!
+                    ?
                     <Table striped bordered hover size="sm">
                         <thead>
                             <tr>
+                                <th>{t("cvsList.studentName")}</th>
                                 <th>{t("cvsList.name")}</th>
-                                <th>{t("cvsList.viewButton")}</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -36,7 +36,7 @@ const CvsList = ({cvs, error, userType, updateCvsState}: Props) => {
                         </tbody>
                     </Table>
                     :
-                    <p>{t("cvsList.noCvs")}</p>//TODO : I18N
+                    <p>{t("cvsList.noCvs")}</p>
             }
         </>
     )

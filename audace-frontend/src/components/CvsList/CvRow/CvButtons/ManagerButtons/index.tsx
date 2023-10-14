@@ -33,8 +33,8 @@ const ManagerButtons = ({disabled, cv, updateCvsState}: Props) => {
     return (
         <>
             {cv.cvStatus === CVStatus.PENDING ?
-            (<><Button disabled={disabled} onClick={acceptButtonClick} className="btn-success me-2">{t("managerOffersList.acceptButton")}</Button>
-            <Button disabled={disabled} onClick={refuseButtonClick} className="btn-danger">{t("managerOffersList.refuseButton")}</Button></>) : <p>{t("managerOffersList." + cv.cvStatus)}</p>}
+            (<><Button disabled={disabled} onClick={acceptButtonClick} className="btn-success me-2">{t("managerCvsList.acceptButton")}</Button>
+            <Button disabled={disabled} onClick={refuseButtonClick} className="btn-danger">{t("managerCvsList.refuseButton")}</Button></>) : <p>{t("managerCvsList." + cv.cvStatus)}</p>}
         </>
     );
 };

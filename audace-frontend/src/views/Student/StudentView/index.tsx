@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
-import { getStudentById } from "../../services/userService";
+import { getStudentById } from "../../../services/userService";
 import { useTranslation } from "react-i18next";
-import { Student, UserType } from "../../model/user";
-import { Offer } from "../../model/offer";
-import { getStudentOffersByDepartment } from "../../services/offerService";
-import OffersList from "../../components/OffersList";
-import { getUserId } from "../../services/authService";
+import { Student, UserType } from "../../../model/user";
+import { Offer } from "../../../model/offer";
+import { getStudentOffersByDepartment } from "../../../services/offerService";
+import OffersList from "../../../components/OffersList";
+import { getUserId } from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
-import FileUploader from "../../components/FileUploader";
+import FileUploader from "../../../components/FileUploader";
 
 const StudentView = () => {
   const [student, setStudent] = useState<Student>();

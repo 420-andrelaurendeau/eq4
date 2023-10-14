@@ -31,7 +31,6 @@ import java.util.Optional;
 public class AudaceApplication implements CommandLineRunner {
 	private DepartmentRepository departmentRepository;
 	private EmployerRepository employerRepository;
-	private CvRepository cvRepository;
 	private EmployerService employerService;
 	private SaltRepository saltRepository;
 	private ManagerRepository managerRepository;
@@ -157,17 +156,6 @@ public class AudaceApplication implements CommandLineRunner {
 		employer.getOffers().add(offer4);
 		employerRepository.save(employer);
 
-		String cvContent = "cv content for fun";
-		byte[] content = cvContent.getBytes();
-
-		Cv cv = new Cv(
-				null,
-				student,
-				content,
-				"cv.pdf"
-		);
-		cvRepository.save(cv);
-
 		Manager manager = new Manager(null, "manager", "managerman", "manager@email.com", "password", "yeete", "1234567890", department);
 		manager = managerRepository.save(manager);
 
@@ -175,5 +163,6 @@ public class AudaceApplication implements CommandLineRunner {
 		String managerSalt = BCrypt.gensalt();
 		manager.setPassword(BCrypt.hashpw(managerPassword, managerSalt));
 		saltRepository.save(new Salt(null, manager, managerSalt));
+		manager = managerRepository.save(manager);
 	}
 }
