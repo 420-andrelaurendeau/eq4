@@ -58,7 +58,7 @@ public class AudaceApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Department department = departmentRepository.save(new Department(null, "GLO", "Génie logiciel"));
 
-		Optional<EmployerDTO> optionalEmployerDTO = employerService.createEmployer(new EmployerDTO(null, "employer", "employerman", "temp@gmail.com", "password", "Temp Baklungel", "Big Baklunger", "123 Street Street", "1234567890", "-123"));
+		Optional<EmployerDTO> optionalEmployerDTO = employerService.createEmployer(new EmployerDTO(1L, "employer", "employerman", "temp@gmail.com", "password", "Temp Baklungel", "Big Baklunger", "123 Street Street", "1234567890", "-123"));
 		if (optionalEmployerDTO.isEmpty()) return;
 		EmployerDTO employerDTO = optionalEmployerDTO.get();
 		Employer employer = employerDTO.fromDTO();
