@@ -5,7 +5,7 @@ import {Button, Modal} from "react-bootstrap";
 import { getEmployerById } from "../../../../services/userService";
 import { useTranslation } from "react-i18next";
 import { formatDate } from "../../../../services/formatService";
-import { apply } from "../../../../services/studentApplicationService"
+import {apply, getCvsByStudentId} from "../../../../services/studentApplicationService"
 import { useParams} from "react-router";
 import Application from "../../../../model/application";
 import { CV } from "../../../../model/cv";
@@ -25,6 +25,8 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
     const {t} = useTranslation();
     const [applicationMessage, setApplicationMessage] = useState("");
     const [applicationMessageColor, setApplicationMessageColor] = useState("");
+    const studentId = getUserId();
+    const [cv, setCv] = useState<CV>();
 
     useEffect(() => {
         if (employer !== undefined) return;
@@ -36,41 +38,40 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
             .catch((err) => {
                 console.log("getEmployerById error", err);
             });
-    }, [setEmployer, offer, employer]);
+        getCvsByStudentId(parseInt(getUserId()!))
+            .then((res) => {
+                setCv(res.data[0]);
+            })
+            .catch((err) => {
+                console.log("getCvsByStudentId error", err);
+            });
+    }, [setEmployer, offer, employer, studentId]);
 
     const createBoldText = (text: string) => {
         return <b>{text}</b>;
     };
 
     const handleApply = () => {
-        const studentId = getUserId();
 
-        if (!studentId) return;
+        if (!studentId || !cv) return;
 
         const tempStudent: Student = {
             id: parseInt(studentId),
-            email: "",
-            password: "",
             firstName: "",
             lastName: "",
-            type: "student",
+            email: "",
             phone: "",
             address: "",
+            type: "student",
             studentNumber: "",
-        }
-
-        const tempCV: CV = {
-            id: 1,
-            student: tempStudent,
-            fileName: "CV",
-            content: "test",
+            password: "string"
         }
 
         const applicationData: Application = {
             id: 1000,
-            student: tempStudent,
             offer: offer,
-            cv: tempCV,
+            cv: cv,
+            student: tempStudent,
         };
 
         apply(applicationData)
