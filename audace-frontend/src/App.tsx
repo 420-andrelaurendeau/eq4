@@ -4,7 +4,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignupView from "./views/Signup";
 import { UserType } from "./model/user";
-import EmployerHomePage from "./components/EmployerHomePage";
 import ManagerOfferView from "./views/ManagerOfferView";
 import AppHeader from "./components/AppHeader";
 import LoginView from "./views/LoginView";
@@ -14,8 +13,8 @@ import ConnectedRoute from "./components/ConnectedRoute";
 import PageNotFoundView from "./views/PageNotFoundView";
 import StudentView from "./views/StudentView";
 import ManagerView from "./views/ManagerView";
-import EmployerOfferView from "./views/EmployerOfferView";
 import EmployerView from "./views/EmployerView";
+import EmployerOfferView from "./views/EmployerOfferView";
 
 function App() {
     return (
@@ -59,6 +58,7 @@ function App() {
                         <AuthorizedRoute requiredAuthority={Authority.EMPLOYER}>
                             <Routes>
                                 <Route index element={<EmployerView/>}/>
+                                <Route path="offers" element={<EmployerOfferView />} />
                                 <Route path="*" element={<PageNotFoundView />}/>
                             </Routes>
                         </AuthorizedRoute>
@@ -68,65 +68,4 @@ function App() {
         </Router>
     );
 }
-/*function App() {
-    return (
-        <>
-            <Navbar bg="light" expand="lg">
-                <Navbar.Brand href="/">Audace</Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav>
-                        <Nav.Link href="/signup/employer">{t("signup.signup")}</Nav.Link>
-                    </Nav>
-                    <LanguageToggler />
-                </Navbar.Collapse>
-            </Navbar>
-            <Router>
-                <Routes>
-                    <Route
-                        path="/"
-                        element={
-                            <>
-                                <h1>OSE ÊTRE MEILLEUR</h1>
-                            </>
-                        }
-                    />
-                    <Route path="/student/*" element={
-                        <Routes>
-                            <Route path=":id/offers" element={<StudentOfferView />}/>
-                        </Routes>
-                    } />
-                    <Route path="/manager/*" element={
-                        <Routes>
-                            <Route path=":id/offers" element={<ManagerOfferView />}/>
-                        </Routes>
-                    } />
-                    <Route path="/employer/*" element={
-                        <Routes>
-                            <Route path=":id/offers" element={<EmployerOfferView/>}/>
-                        </Routes>
-                    }/>
-                    <Route path="/signup/*" element={
-                        <Routes>
-                            <Route path="employer" element={<SignupView userType={UserType.Employer} />}/>
-                            <Route path="student/:depCode" element={<SignupView userType={UserType.Student} />}/>
-                        </Routes>
-                    }>
-                    </Route>
-                    <Route path="/users/*" element={
-                        <Routes>
-                            <Route path="" element={<UserList></UserList>}/>
-                        </Routes>
-                    }>
-                    </Route>
-                    <Route path="/student/:userId" element={<StudentHomePage></StudentHomePage>}></Route>
-                    <Route path="/employer/:userId" element={<EmployerHomePage></EmployerHomePage>}>
-
-                    </Route>
-                    <Route path="/manager/:userId" element={<ManagerHomePage />}></Route>
-                </Routes>
-            </Router>
-        </>
-    );
-}*/
 export default App;
