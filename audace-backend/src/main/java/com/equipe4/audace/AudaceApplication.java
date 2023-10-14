@@ -174,6 +174,7 @@ public class AudaceApplication implements CommandLineRunner {
 		String managerPassword = manager.getPassword();
 		String managerSalt = BCrypt.gensalt();
 		manager.setPassword(BCrypt.hashpw(managerPassword, managerSalt));
+		manager = managerRepository.save(manager);
 		saltRepository.save(new Salt(null, manager, managerSalt));
 	}
 }
