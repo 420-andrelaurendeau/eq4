@@ -83,6 +83,26 @@ public class AudaceApplication implements CommandLineRunner {
 				)
 		);
 
+		Student backOfTheClassStudent = new Student(
+				null,
+				"Chad",
+				"The Mad Lad",
+				"chadisamadlad@live.ca",
+				"password",
+				"Omega Fraternity House",
+				"5147076969",
+				"2080350",
+				department
+		);
+
+		Optional<StudentDTO> indispensableStudent = studentService.createStudent(backOfTheClassStudent.toDTO(), department.getCode());
+
+		if (indispensableStudent.isEmpty()) {
+			return;
+		}
+
+		backOfTheClassStudent = indispensableStudent.get().fromDTO();
+
 		Student student = new Student(
 				null,
 				"student",

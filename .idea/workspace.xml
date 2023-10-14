@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/AudaceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/AudaceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/views/StudentView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/views/StudentView/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,8 +19,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
-        <option value="TypeScript JSX File" />
         <option value="TypeScript File" />
+        <option value="TypeScript JSX File" />
       </list>
     </option>
   </component>
@@ -59,9 +61,12 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;spring.configuration.checksum&quot;: &quot;81b0bfba543f51b2eb085412d50e4b6b&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\psara\\OneDrive\\Bureau\\school\\session7\\projet\\test\\eq4\\audace-frontend\\node_modules\\typescript\\lib&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\le sun\\Desktop\\school\\projet\\eq4\\audace-frontend\\node_modules\\typescript\\lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -186,6 +191,9 @@
       <workItem from="1696965040418" duration="79000" />
       <workItem from="1696965215193" duration="4257000" />
       <workItem from="1697236569679" duration="1116000" />
+      <workItem from="1697315162197" duration="698000" />
+      <workItem from="1697315890631" duration="721000" />
+      <workItem from="1697316619040" duration="3434000" />
     </task>
     <servers />
   </component>
