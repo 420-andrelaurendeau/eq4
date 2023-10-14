@@ -23,13 +23,17 @@ function CvList() {
     return (
         <div>
             <h2>Your CVs</h2>
-            <ul>
-                {cvs.map((cv) => (
-                    <li key={cv.id}>
-                        <a href={`link-to-cv/${cv.id}`}>{cv.fileName}</a>
-                    </li>
-                ))}
-            </ul>
+            {cvs.length > 0 ? (
+                <ul>
+                    {cvs.map((cv) => (
+                        <li key={cv.id}>
+                            <a href={`link-to-cv/${cv.id}`}>{cv.fileName}</a>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p>No CVs found</p>
+            )}
         </div>
     );
 }
