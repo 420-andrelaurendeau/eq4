@@ -1,7 +1,7 @@
 import React from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
-import {Button} from "react-bootstrap";
+import {Button, Container} from "react-bootstrap";
 
 const EmployerHomePage = () => {
     const {userId} = useParams();
@@ -13,10 +13,10 @@ const EmployerHomePage = () => {
     }
 
     return (
-        <div>
+        <Container>
             <h1>Employer {userId}</h1>
             <Button onClick={seeOffers}>{t("employer.seeOffersButton")}</Button>
-        </div>
+        </Container>
     );
 };
 

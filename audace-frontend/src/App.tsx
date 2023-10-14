@@ -2,18 +2,10 @@ import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Nav, Navbar } from "react-bootstrap";
-import LanguageToggler from "./components/LanguageToggler";
-import { useTranslation } from "react-i18next";
 import SignupView from "./views/Signup";
 import { UserType } from "./model/user";
-import StudentOfferView from "./views/StudentOfferView";
-import StudentHomePage from "./components/StudentHomePage";
 import EmployerHomePage from "./components/EmployerHomePage";
-import UserList from "./components/Login";
 import ManagerOfferView from "./views/ManagerOfferView";
-import ManagerHomePage from "./components/ManagerHomePage";
-import EmployerOfferView from "./views/EmployerOfferView";
 import AppHeader from "./components/AppHeader";
 import LoginView from "./views/LoginView";
 import AuthorizedRoute from "./components/AuthorizedRoute";
@@ -22,7 +14,7 @@ import ConnectedRoute from "./components/ConnectedRoute";
 import PageNotFoundView from "./views/PageNotFoundView";
 import StudentView from "./views/StudentView";
 import ManagerView from "./views/ManagerView";
-import ManagerOfferView from "./views/ManagerOfferView";
+import EmployerOfferView from "./views/EmployerOfferView";
 import EmployerView from "./views/EmployerView";
 
 function App() {
@@ -30,32 +22,14 @@ function App() {
         <Router>
             <AppHeader />
             <Routes>
-                <Route
-                    path="/"
-                    element={
-                        <>
-                            <h1>OSE ÊTRE MEILLEUR</h1>
-                        </>
-                    }
-                />
-                <Route
-                    path="/signup/*"
-                    element={
+                <Route path="/" element={<><h1>OSE ÊTRE MEILLEUR</h1></>}/>
+                <Route path="/signup/*" element={
                         <Routes>
-                            <Route
-                                path="employer"
-                                element={<SignupView userType={UserType.Employer} />}
-                            />
-                            <Route
-                                path="student/:depCode"
-                                element={<SignupView userType={UserType.Student} />}
-                            />
+                            <Route path="employer" element={<SignupView userType={UserType.Employer} />}/>
+                            <Route path="student/:depCode" element={<SignupView userType={UserType.Student} />}/>
                         </Routes>
-                    }
-                />
-                <Route
-                    path="/login/*"
-                    element={
+                }/>
+                <Route path="/login/*" element={
                         <ConnectedRoute isConnectedRoute={false}>
                             <Routes>
                                 <Route index element={<LoginView />} />
@@ -63,22 +37,16 @@ function App() {
                                 <Route path="*" element={<PageNotFoundView />} />
                             </Routes>
                         </ConnectedRoute>
-                    }
-                />
-                <Route
-                    path="/student/*"
-                    element={
+                }/>
+                <Route path="/student/*" element={
                         <AuthorizedRoute requiredAuthority={Authority.STUDENT}>
                             <Routes>
                                 <Route index element={<StudentView />} />
                                 <Route path="*" element={<PageNotFoundView />} />
                             </Routes>
                         </AuthorizedRoute>
-                    }
-                />
-                <Route
-                    path="/manager/*"
-                    element={
+                }/>
+                <Route path="/manager/*" element={
                         <AuthorizedRoute requiredAuthority={Authority.MANAGER}>
                             <Routes>
                                 <Route index element={<ManagerView />} />
@@ -86,25 +54,21 @@ function App() {
                                 <Route path="*" element={<PageNotFoundView />} />
                             </Routes>
                         </AuthorizedRoute>
-                    }
-                />
-                <Route
-                    path="/employer/*"
-                    element={
+                }/>
+                <Route path="/employer/*" element={
                         <AuthorizedRoute requiredAuthority={Authority.EMPLOYER}>
                             <Routes>
-                                <Route index element={<EmployerView />} />
-                                <Route path="*" element={<PageNotFoundView />} />
+                                <Route index element={<EmployerView/>}/>
+                                <Route path="*" element={<PageNotFoundView />}/>
                             </Routes>
                         </AuthorizedRoute>
-                    }
-                />
+                }/>
                 <Route path="*" element={<PageNotFoundView />} />
             </Routes>
         </Router>
     );
 }
-function App() {
+/*function App() {
     return (
         <>
             <Navbar bg="light" expand="lg">
@@ -164,5 +128,5 @@ function App() {
             </Router>
         </>
     );
-}
+}*/
 export default App;

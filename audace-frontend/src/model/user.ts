@@ -15,14 +15,12 @@ export interface User {
 export interface Student extends User{
     studentNumber: string;
     department?: Department;
-    cvs: CV[];
 }
 
 export interface Employer extends User{
     organisation: string;
     position: string;
     extension: string;
-    offers: Offer[];
 }
 
 export interface Manager extends User {

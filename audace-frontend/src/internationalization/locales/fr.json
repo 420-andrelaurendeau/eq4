@@ -90,7 +90,7 @@
     "errors": {
       "employerNotFound": "Aucun employeur trouvé"
     },
-    "seeOffersButton": "Voir les offres",
+    "seeOffersButton": "Voir les offres"
   },
   "upload": {
     "CvFormTitle": "Téléverser votre CV",
