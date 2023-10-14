@@ -30,7 +30,8 @@
       "extension": "SVP entrez un numéro de poste valide",
       "email": "SVP entrez un courriel valide",
       "password": "SVP entrez un mot de passe valide",
-      "studentId": "SVP entrez une matricule valide"
+      "studentId": "SVP entrez une matricule valide",
+      "network": "Il y a eu une erreur de réseau inconnue"
     }
   },
   "offersList": {

@@ -60,7 +60,14 @@ const Signup = ({handleSubmit, extension, setExtension, errors, setErrors, valid
             })
             .catch((err) => {
                 setIsDisabled(false);
-                setUnexpectedError(err.status);
+                console.log(err.code);
+                if (err.code === "ERR_NETWORK") {
+                    console.log("IN HERE");
+                    setUnexpectedError(t("signup.errors.network"));
+                }
+                else {
+                    setUnexpectedError(err.status);
+                }
             });
     };
 
@@ -261,7 +268,8 @@ const Signup = ({handleSubmit, extension, setExtension, errors, setErrors, valid
             >
                 {t("signup.signup")}
             </Button>
-            {unexpectedError !== "" && (
+            {
+            unexpectedError !== "" && (
                 <p className="unexpected-error">{unexpectedError}</p>
             )}
         </>

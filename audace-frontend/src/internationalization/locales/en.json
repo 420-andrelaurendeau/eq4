@@ -30,7 +30,8 @@
       "extension": "Please enter a valid extension",
       "email": "Please enter a valid email address",
       "password": "Please enter a valid password",
-      "studentId": "Please enter a valid student number"
+      "studentId": "Please enter a valid student number",
+      "network": "There was an unexpected networking error"
     }
   },
   "offersList": {
