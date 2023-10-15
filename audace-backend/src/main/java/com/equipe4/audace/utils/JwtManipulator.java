@@ -3,10 +3,10 @@ package com.equipe4.audace.utils;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.equipe4.audace.model.Employer;
-import com.equipe4.audace.model.Manager;
-import com.equipe4.audace.model.Student;
-import com.equipe4.audace.model.User;
+import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.ManagerDTO;
+import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.security.config.Authorities;
 import com.equipe4.audace.security.jwt.TimedJwt;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,7 +37,7 @@ public class JwtManipulator {
         this.signingAlgorithm = Algorithm.HMAC256(secret);
     }
 
-    public TimedJwt generateToken(User user) {
+    public TimedJwt generateToken(UserDTO user) {
         return new TimedJwt(
                 JWT.create()
                         .withSubject(user.getEmail())
@@ -52,14 +52,14 @@ public class JwtManipulator {
         );
     }
 
-    public List<String> determineAuthorities(User user) {
+    public List<String> determineAuthorities(UserDTO user) {
         List<String> authorities = new ArrayList<>();
 
-        if (user instanceof Student)
+        if (user instanceof StudentDTO)
             authorities.add(Authorities.STUDENT.name());
-        if (user instanceof Employer)
+        if (user instanceof EmployerDTO)
             authorities.add(Authorities.EMPLOYER.name());
-        if (user instanceof Manager)
+        if (user instanceof ManagerDTO)
             authorities.add(Authorities.MANAGER.name());
 
         authorities.add(Authorities.USER.name());

@@ -8,7 +8,6 @@ import OfferButtons from "./OfferButtons";
 import { Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
-
 interface Props {
     offer: Offer;
     userType: UserType;
@@ -35,7 +34,7 @@ const OfferRow = ({offer, userType, updateOffersState}: Props) => {
                 </td>
                 <td>{formatDate(offer.internshipStartDate)}</td>
                 <td>{formatDate(offer.internshipEndDate)}</td>
-                <td className="text-end"><OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState}/></td>
+                {/*<td className="text-end"><OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState}/></td>*/}
             </tr>
             {show && <OfferModal offer={offer} show={show} handleClose={handleClose} userType={userType} employer={employer} setEmployer={setEmployer} updateOffersState={updateOffersState}/>}
         </>

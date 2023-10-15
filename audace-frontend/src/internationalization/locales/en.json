@@ -74,6 +74,10 @@
   },
   "employerOffersList": {
     "viewTitle": "Available Offers",
+    "status": "Status",
+    "PENDING": "Pending",
+    "ACCEPTED": "Accepted",
+    "REFUSED": "Refused",
     "editButton": "Edit",
     "deleteButton": "Delete"
   },
@@ -81,6 +85,12 @@
     "seeOffersButton": "See Offers"
   },
   "manager": {
+    "seeOffersButton": "See Offers"
+  },
+  "employer": {
+    "errors": {
+      "employerNotFound": "Employer not found"
+    },
     "seeOffersButton": "See Offers"
   },
   "upload": {

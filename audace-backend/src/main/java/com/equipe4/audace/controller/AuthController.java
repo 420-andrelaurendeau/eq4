@@ -37,7 +37,7 @@ public class AuthController extends LoggedController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        TimedJwt jwt = jwtManipulator.generateToken(loggedUser.get().fromDTO());
+        TimedJwt jwt = jwtManipulator.generateToken(loggedUser.get());
         return ResponseEntity.ok(jwt);
     }
 
