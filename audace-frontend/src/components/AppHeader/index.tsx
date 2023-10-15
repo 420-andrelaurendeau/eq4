@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button, Nav, Navbar } from "react-bootstrap";
-import LanguageToggler from "../LanguageToggler";
+import LanguageToggler from "../LanguageToggler/index";
 import { useTranslation } from "react-i18next";
 import LogoutButton from "../LogoutButton";
 import { isConnected } from "../../services/authService";

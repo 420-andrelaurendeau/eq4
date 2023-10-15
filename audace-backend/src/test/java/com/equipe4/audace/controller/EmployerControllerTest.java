@@ -8,8 +8,8 @@ import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
-import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.UserRepository;
+import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
@@ -17,6 +17,7 @@ import com.equipe4.audace.service.EmployerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.equipe4.audace.service.StudentService;
 import com.equipe4.audace.utils.JwtManipulator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -65,52 +66,56 @@ public class EmployerControllerTest {
     @MockBean
     private CvRepository cvRepository;
     @MockBean
-    private UserRepository userRepository;
-    @MockBean
     private JwtManipulator jwtManipulator;
     @MockBean
     private StudentService studentService;
     @MockBean
     private SaltRepository saltRepository;
-
-    @Test
-    @WithMockUser(username = "admin", authorities = {"ADMIN", "USER"})
-    public void getEmployerById_happyPath_test_asAdmin() throws Exception {
-        getEmployerById_happyPath_test();
-    }
+    @MockBean
+    private UserRepository userRepository;
 
     @Test
     @WithMockUser(username = "employer", authorities = {"EMPLOYER", "USER"})
     public void getEmployerById_happyPath_test_asEmployer() throws Exception {
         getEmployerById_happyPath_test();
     }
-
+    @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER", "USER"})
     public void getEmployerById_happyPath_test_asManager() throws Exception {
         getEmployerById_happyPath_test();
     }
-
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT", "USER"})
     public void getEmployerById_happyPath_test_asStudent() throws Exception {
         getEmployerById_happyPath_test();
     }
+    @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
+    public void getEmployerById_notFound_test_asAdmin() throws Exception {
+        getEmployerById_notFound_test();
+    }
+    @Test
+    @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
+    public void getEmployerById_notFound_test_asEmployer() throws Exception {
+        getEmployerById_notFound_test();
+    }
+    @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
+    public void getEmployerById_notFound_test_asManager() throws Exception {
+        getEmployerById_notFound_test();
+    }
+    @Test
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
+    public void getEmployerById_notFound_test_asStudent() throws Exception {
+        getEmployerById_notFound_test();
+    }
 
-    private void getEmployerById_happyPath_test() throws Exception {
-        Employer employer = new Employer(
-                1L,
-                "Employer1",
-                "Employer1",
-                "employer1@gmail.com",
-                "password",
-                "org",
-                "extension",
-                "blorg",
-                "norg",
-                "canorg"
-        );
+    @Test
+    @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
+    public void getEmployerById_happyPath_test() throws Exception {
+        EmployerDTO employerDTO = createEmployerDTO();
 
-        when(employerService.findEmployerById(1L)).thenReturn(Optional.of(employer.toDTO()));
+        when(employerService.findEmployerById(1L)).thenReturn(Optional.of(employerDTO));
 
         mockMvc.perform(get("/employers/{id}", 1L))
                 .andExpect(status().isOk())
@@ -120,32 +125,9 @@ public class EmployerControllerTest {
                 .andExpect(jsonPath("$.lastName").value("Employer1"))
                 .andExpect(jsonPath("$.email").value("employer1@gmail.com"));
     }
-
-    @Test
-    @WithMockUser(username = "admin", authorities = {"ADMIN"})
-    public void getEmployerById_notFound_test_asAdmin() throws Exception {
-        getEmployerById_notFound_test();
-    }
-
     @Test
     @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
-    public void getEmployerById_notFound_test_asEmployer() throws Exception {
-        getEmployerById_notFound_test();
-    }
-
-    @Test
-    @WithMockUser(username = "manager", authorities = {"MANAGER"})
-    public void getEmployerById_notFound_test_asManager() throws Exception {
-        getEmployerById_notFound_test();
-    }
-
-    @Test
-    @WithMockUser(username = "student", authorities = {"STUDENT"})
-    public void getEmployerById_notFound_test_asStudent() throws Exception {
-        getEmployerById_notFound_test();
-    }
-
-    private void getEmployerById_notFound_test() throws Exception{
+    public void getEmployerById_notFound_test() throws Exception {
         when(employerService.findEmployerById(1L)).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/employers/{id}", 1L))
@@ -156,15 +138,15 @@ public class EmployerControllerTest {
     @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
     public void givenOfferObject_whenCreateOffer_thenReturnSavedOffer() throws Exception{
         // given - precondition or setup
-        Department department = new Department(1L, "GLO", "Génie logiciel");
         Employer employer = createEmployerDTO().fromDTO();
 
-        OfferDTO offerDTO = createOffer(employer, department).toDTO();
+        OfferDTO offerDTO = createOffer(employer).toDTO();
 
         when(employerService.createOffer(any(OfferDTO.class))).thenReturn(Optional.of(offerDTO));
 
         // when - action or behaviour that we are going test
-        ResultActions response = mockMvc.perform(post("/employers/{id}/offers", 1L).with(csrf())
+        ResultActions response = mockMvc.perform(post("/employers/{id}/offers", 1L)
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(Optional.of(offerDTO))));
 
@@ -179,17 +161,16 @@ public class EmployerControllerTest {
                 .andExpect(jsonPath("$.offerEndDate", is(offerDTO.getOfferEndDate().toString())))
                 .andExpect(jsonPath("$.availablePlaces", is(offerDTO.getAvailablePlaces())));
     }
-
     @Test
     @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
     public void givenListOfOffers_whenGetAllOffers_thenReturnOffersList() throws Exception{
         // given - precondition or setup
-        Department department = new Department(1L, "GLO", "Génie logiciel");
+
         Employer employer = createEmployerDTO().fromDTO();
 
         List<OfferDTO> listOfOffers = new ArrayList<>();
-        listOfOffers.add(createOffer(employer, department).toDTO());
-        listOfOffers.add(createOffer(employer, department).toDTO());
+        listOfOffers.add(createOffer(employer).toDTO());
+        listOfOffers.add(createOffer(employer).toDTO());
         given(employerService.findAllOffersByEmployerId(employer.getId())).willReturn(listOfOffers);
 
         // when -  action or the behaviour that we are going test
@@ -206,31 +187,21 @@ public class EmployerControllerTest {
     @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
     public void givenUpdatedOffer_whenUpdateOffer_thenReturnUpdateOfferObject() throws Exception{
         // given - precondition or setup
-
-        Department department = new Department(1L, "GLO", "Génie logiciel");
         Employer employer = createEmployerDTO().fromDTO();
 
-        Offer offerSaved = createOffer(employer, department);
+        Offer offerSaved = createOffer(employer);
         OfferDTO offerDTOSaved = offerSaved.toDTO();
 
-        Offer offerUpdated = new Offer(
-                offerDTOSaved.getId(),
-                "Stage en génie logiciel Updated",
-                "Stage en génie logiciel Updated",
-                LocalDate.now(),
-                LocalDate.now(),
-                LocalDate.now(),
-                3,
-                department,
-                employer
-        );
+        Offer offerUpdated = createOffer(employer);
+        offerUpdated.setAvailablePlaces(1);
         OfferDTO offerDTOUpdated = offerUpdated.toDTO();
 
         given(offerRepository.findById(offerDTOSaved.getId())).willReturn(Optional.of(offerSaved));
         given(employerService.updateOffer(any(OfferDTO.class))).willReturn(Optional.of(offerDTOUpdated));
 
         // when -  action or the behaviour that we are going test
-        ResultActions response = mockMvc.perform(put("/employers/{id}/offers", 1L).with(csrf())
+        ResultActions response = mockMvc.perform(put("/employers/{id}/offers", 1L)
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(offerDTOUpdated)));
 
@@ -243,35 +214,16 @@ public class EmployerControllerTest {
                 .andExpect(jsonPath("$.internshipStartDate", is(offerDTOUpdated.getInternshipStartDate().toString())))
                 .andExpect(jsonPath("$.internshipEndDate", is(offerDTOUpdated.getInternshipEndDate().toString())))
                 .andExpect(jsonPath("$.offerEndDate", is(offerDTOUpdated.getOfferEndDate().toString())))
-                .andExpect(jsonPath("$.availablePlaces", is(offerDTOUpdated.getAvailablePlaces())));
+                .andExpect(jsonPath("$.availablePlaces", is(offerDTOUpdated.getAvailablePlaces())))
+                .andExpect(jsonPath("$.employer.id", is(offerDTOUpdated.getEmployer().getId().intValue())))
+                .andExpect(jsonPath("$.department.code", is(offerDTOUpdated.getDepartment().getCode())));
     }
 
     private EmployerDTO createEmployerDTO() {
-        return new EmployerDTO(
-                1L,
-                "Employer1",
-                "Employer1",
-                "employer1@gmail.com",
-                "123456eE",
-                "Organisation1",
-                "Position1",
-                "Class Service, Javatown, Qc H8N1C1",
-                "123-456-7890",
-                "12345"
-        );
+        return new EmployerDTO(1L, "Employer1", "Employer1", "employer1@gmail.com", "123456eE", "Organisation1", "Position1", "Class Service, Javatown, Qc H8N1C1", "123-456-7890", "12345");
     }
-
-    private Offer createOffer(Employer employer, Department department) {
-        return new Offer(
-                1L,
-                "Stage en génie logiciel",
-                "Stage en génie logiciel",
-                LocalDate.now(),
-                LocalDate.now(),
-                LocalDate.now(),
-                3,
-                department,
-                employer
-        );
+    private Offer createOffer(Employer employer) {
+        Department department = new Department(1L, "GLO", "Génie logiciel");
+        return new Offer(1L,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, employer, department);
     }
 }

@@ -22,9 +22,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+
+import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -38,6 +41,10 @@ class UserControllerTest {
     @MockBean
     private UserService userService;
     @MockBean
+    private EmployerService employerService;
+    @MockBean
+    private StudentService studentService;
+    @MockBean
     private DepartmentRepository departmentRepository;
     @MockBean
     private EmployerRepository employerRepository;
@@ -46,18 +53,29 @@ class UserControllerTest {
     @MockBean
     private ManagerRepository managerRepository;
     @MockBean
-    private EmployerService employerService;
+    private UserRepository userRepository;
     @MockBean
     private CvRepository cvRepository;
     @MockBean
-    private UserRepository userRepository;
-    @MockBean
     private JwtManipulator jwtManipulator;
-    @MockBean
-    private StudentService studentService;
     @MockBean
     private SaltRepository saltRepository;
 
+
+    @Test
+    @WithMockUser(username = "user")
+    void testGetAllUsers() throws Exception {
+        EmployerDTO employerDTO1 = new EmployerDTO(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
+        EmployerDTO employerDTO2 = new EmployerDTO(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
+
+        List<UserDTO> userDTOs = List.of(employerDTO1, employerDTO2);
+
+        when(userService.getAllUsers()).thenReturn(userDTOs);
+
+        mockMvc.perform(get("/users"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(userDTOs.size())));
+    }
     @Test
     @WithMockUser(username = "user")
     void testGetUser() throws Exception {

@@ -26,6 +26,7 @@ public class OfferDTO {
     private EmployerDTO employer;
 
 
+
     public Offer fromDTO() {
         return new Offer(
                 id,
@@ -35,8 +36,8 @@ public class OfferDTO {
                 internshipEndDate,
                 offerEndDate,
                 availablePlaces,
-                department.fromDTO(),
-                employer.fromDTO()
+                employer.fromDTO(),
+                department.fromDTO()
         );
     }
 }

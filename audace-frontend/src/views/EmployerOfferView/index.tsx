@@ -1,21 +1,29 @@
 import { Container } from "react-bootstrap";
-import {Employer, Student, UserType} from "../../model/user";
+import {Employer, UserType} from "../../model/user";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
-import { Offer, OfferStatus } from "../../model/offer";
+import { Offer } from "../../model/offer";
 import OffersList from "../../components/OffersList";
-import { useParams } from "react-router-dom";
-import {getEmployerById, getStudentById} from "../../services/userService";
+import {getEmployerById,} from "../../services/userService";
 import {getAllOffersByEmployerId} from "../../services/offerService";
+import {getUserId} from "../../services/authService";
+import {useNavigate} from "react-router-dom";
 
 const EmployerOfferView = () => {
     const [employer, setEmployer] = useState<Employer>();
-    const {id} = useParams();
     const [offers, setOffers] = useState<Offer[]>([]);
     const [error, setError] = useState<string>("");
     const {t} = useTranslation();
+    const navigate = useNavigate();
 
     useEffect(() => {
+        if (employer !== undefined) return;
+        const id = getUserId();
+        if (id == null) {
+            navigate("/pageNotFound");
+            return;
+        }
+
         getEmployerById(parseInt(id!))
             .then((res) => {
                 setEmployer(res.data);
@@ -24,7 +32,7 @@ const EmployerOfferView = () => {
                 console.log(err)
                 if (err.request.status === 404) setError(t("employer.errors.employerNotFound"));
             })
-    }, [employer, id, t]);
+    }, [employer, navigate, t]);
 
     useEffect(() => {
         if (employer === undefined) return;
@@ -36,7 +44,7 @@ const EmployerOfferView = () => {
             .catch((err) => {
                 console.log(err)
             })
-    }, [employer, t]);
+    }, [employer]);
 
     return (
         <Container>

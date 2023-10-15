@@ -20,6 +20,7 @@ public class Department {
     private String code;
     private String name;
 
+
     public DepartmentDTO toDTO() {
         return new DepartmentDTO(
                 id,
