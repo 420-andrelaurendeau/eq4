@@ -92,7 +92,7 @@ const Signup = ({handleSubmit, extension, setExtension, errors, setErrors, valid
         }
 
         setErrors(errorsToDisplay);
-        if (validateExtraFormValues !== undefined && isFormValid !== false) isFormValid = validateExtraFormValues(errorsToDisplay);
+        if (validateExtraFormValues !== undefined) isFormValid = validateExtraFormValues(errorsToDisplay) && isFormValid;
 
         return isFormValid;
     };
