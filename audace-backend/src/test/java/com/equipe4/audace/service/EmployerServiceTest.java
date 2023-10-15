@@ -45,7 +45,7 @@ public class EmployerServiceTest {
     @Test
     public void createEmployer_HappyPath(){
         // Arrange
-        EmployerDTO employerDTO = new EmployerDTO(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
+        EmployerDTO employerDTO = createEmployerDTO();
 
         when(employerRepository.save(any(Employer.class))).thenReturn(employerDTO.fromDTO());
         when(saltRepository.save(any())).thenReturn(mock(Salt.class));
@@ -66,7 +66,7 @@ public class EmployerServiceTest {
     @Test
     void createEmployer_EmailAlreadyInUse() {
         // Arrange
-        EmployerDTO employerDTO = new EmployerDTO(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
+        EmployerDTO employerDTO = createEmployerDTO();
         when(employerRepository.findByEmail(anyString())).thenReturn(Optional.of(employerDTO.fromDTO()));
 
         assertThatThrownBy(() -> employerService.createEmployer(employerDTO))
@@ -78,14 +78,9 @@ public class EmployerServiceTest {
     public void findAllEmployersTest(){
         // Arrange
         List<Employer> employers = new ArrayList<>();
-        Employer employer1 = new Employer(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
-        Employer employer2 = new Employer(2L,
-                "Employer1", "Employer1", "asd@email.com", "password", "Organisation1",
-                "Position1",
-                "123-456-7890",
-                "12345",
-                "Class Service, Javatown, Qc H8N1C1"
-        );
+        Employer employer1 = createEmployerDTO().fromDTO();
+        Employer employer2 = createEmployerDTO().fromDTO();
+        employer2.setId(2L);
 
         employers.add(employer1);
         employers.add(employer2);
@@ -101,7 +96,7 @@ public class EmployerServiceTest {
     @Test
     public void findEmployerById_happyPathTest() {
         // Arrange
-        Employer employer = new Employer(1L, "Employer1", "Employer1", "employer1@gmail.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
+        Employer employer = createEmployerDTO().fromDTO();
 
         when(employerRepository.findById(1L)).thenReturn(Optional.of(employer));
 
@@ -140,14 +135,20 @@ public class EmployerServiceTest {
         verify(offerRepository, times(1)).save(offerDTO.fromDTO());
     }
     @Test
-    void getOffers_HappyPath() {
-        Department mockedDepartment = new Department(1L, "GLO", "Génie logiciel");
-        Employer fakeEmployer = new Employer(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
-        fakeEmployer.setId(1L);
+    public void createOffer_NullOffer(){
+        assertThatThrownBy(() -> employerService.createOffer(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Offer cannot be null");
+    }
+
+    @Test
+    void getAllOffersByEmployerId_HappyPath() {
+        Employer fakeEmployer =createEmployerDTO().fromDTO();
 
         List<Offer> offers = new ArrayList<>();
-        Offer offer1 = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, fakeEmployer, mockedDepartment);
-        Offer offer2 = new Offer(2L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, fakeEmployer, mockedDepartment);
+        Offer offer1 = createOffer();
+        Offer offer2 = createOffer();
+        offer2.setId(2L);
 
         offers.add(offer1);
         offers.add(offer2);
@@ -160,12 +161,28 @@ public class EmployerServiceTest {
         assertThat(offerDTOList.size()).isEqualTo(2);
         verify(offerRepository, times(1)).findAllByEmployer(fakeEmployer);
     }
+    @Test
+    void getAllOffersByEmployerId_NotFound() {
+        when(employerRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> employerService.findAllOffersByEmployerId(anyLong()))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Employer not found");
+    }
+    @Test
+    void getAllOffersByEmployerId_noOffers() {
+        Employer employer = createEmployerDTO().fromDTO();
+        when(employerRepository.findById(anyLong())).thenReturn(Optional.of(employer));
+        when(offerRepository.findAllByEmployer(employer)).thenReturn(new ArrayList<>());
+
+        List<OfferDTO> result = employerService.findAllOffersByEmployerId(1L);
+
+        assertThat(result.size()).isEqualTo(0);
+    }
 
     @Test
     public void deleteOffer_HappyPath(){
-        Department mockedDepartment = mock(Department.class);
-        Employer fakeEmployer = new Employer(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
-        Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, fakeEmployer, mockedDepartment);
+        Offer offer = createOffer();
 
         when(offerRepository.findById(offer.getId())).thenReturn(Optional.of(offer));
 
@@ -184,9 +201,7 @@ public class EmployerServiceTest {
 
     @Test
     public void updateOffer_HappyPath() {
-        Department mockedDepartment = new Department(1L, "GLO", "Génie logiciel");
-        Employer fakeEmployer = new Employer(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
-        Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, fakeEmployer, mockedDepartment);
+        Offer offer = createOffer();
 
         when(offerRepository.save(any(Offer.class))).thenReturn(offer);
         when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
@@ -204,9 +219,7 @@ public class EmployerServiceTest {
     }
     @Test()
     public void updateOffer_OfferDontExists() {
-        Department mockedDepartment = new Department(1L, "GLO", "Génie logiciel");
-        Employer fakeEmployer = new Employer(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
-        Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, fakeEmployer, mockedDepartment);
+        Offer offer = createOffer();
 
         when(offerRepository.findById(anyLong())).thenReturn(Optional.empty());
 
@@ -234,6 +247,25 @@ public class EmployerServiceTest {
 
         assertThat(applicationDTOList.size()).isEqualTo(2);
         verify(applicationRepository, times(1)).findAllByOffer(offer);
+    }
+    @Test
+    void getAllApplicationsByOfferId_OfferNotFound() {
+        when(offerRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> employerService.findAllApplicationsByOfferId(anyLong()))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Offer not found");
+    }
+    @Test
+    void getAllApplicationsByOfferId_noOffers() {
+        Offer offer = createOffer();
+
+        when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
+        when(applicationRepository.findAllByOffer(offer)).thenReturn(new ArrayList<>());
+
+        List<ApplicationDTO> result = employerService.findAllApplicationsByOfferId(1L);
+
+        assertThat(result.size()).isEqualTo(0);
     }
 
     private Department createDepartment(){

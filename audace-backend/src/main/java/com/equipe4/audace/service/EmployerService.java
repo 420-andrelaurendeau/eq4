@@ -52,7 +52,7 @@ public class EmployerService extends GenericUserService<Employer> {
         return Optional.of(offerRepository.save(offerDTO.fromDTO()).toDTO());
     }
     public List<OfferDTO> findAllOffersByEmployerId(Long employerId){
-        Employer employer = employerRepository.findById(employerId).orElseThrow();
+        Employer employer = employerRepository.findById(employerId).orElseThrow(() -> new NoSuchElementException("Employer not found"));
         return offerRepository.findAllByEmployer(employer).stream().map(Offer::toDTO).toList();
     }
     public Optional<OfferDTO> updateOffer(OfferDTO offerDTO){

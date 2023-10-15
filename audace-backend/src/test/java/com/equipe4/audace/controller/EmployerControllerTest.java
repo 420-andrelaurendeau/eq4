@@ -216,7 +216,6 @@ public class EmployerControllerTest {
                 .andExpect(jsonPath("$.department.code", is(offerDTOUpdated.getDepartment().getCode())));
     }
 
-
     @Test
     @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
     public void givenListOfApplications_whenGetAllApplications_thenReturnApplicationsList() throws Exception{
@@ -237,6 +236,7 @@ public class EmployerControllerTest {
                 .andExpect(jsonPath("$.size()",
                         is(applicationDTOList.size())));
     }
+
 
     private Department createDepartment(){
         return new Department(1L, "GLO", "Génie logiciel");

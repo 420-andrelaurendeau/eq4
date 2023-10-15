@@ -85,7 +85,6 @@ public class StudentControllerTest {
                         .contentType(MediaType.MULTIPART_FORM_DATA).with(csrf())
         ).andExpect(status().isCreated());
     }
-
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT"})
     void uploadCv_noFile() throws Exception {
@@ -138,6 +137,16 @@ public class StudentControllerTest {
 
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT"})
+    void getCvsByStudent() throws Exception {
+        List<CvDTO> cvDTOList = List.of(mock(CvDTO.class));
+        when(studentService.getCvsByStudent(1L)).thenReturn(cvDTOList);
+
+        mockMvc.perform(get("/students/cvs/1"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
     public void givenApplicationObject_whenCreateApplication_thenReturnSavedApplication() throws Exception{
         // given - precondition or setup
         Department department = new Department(1L, "GLO", "Génie logiciel");
@@ -166,15 +175,6 @@ public class StudentControllerTest {
                 .andExpect(jsonPath("$.id").value(1L));
     }
 
-    @Test
-    @WithMockUser(username = "student", authorities = {"STUDENT"})
-    void getCvsByStudent() throws Exception {
-        List<CvDTO> cvDTOList = List.of(mock(CvDTO.class));
-        when(studentService.getCvsByStudent(1L)).thenReturn(cvDTOList);
-
-        mockMvc.perform(get("/students/cvs/1"))
-                .andExpect(status().isOk());
-    }
 
     private MockMultipartFile createMockFile() {
         return new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "Hello, World!".getBytes());

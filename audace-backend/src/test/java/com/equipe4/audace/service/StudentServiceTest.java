@@ -1,6 +1,7 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.ApplicationDTO;
+import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
@@ -105,10 +106,9 @@ public class StudentServiceTest {
 
         // Assert
         assertThat(result.getFirstName()).isEqualTo("student");
-        assertThat(result.getLastName()).isEqualTo("studentMan");
-        assertThat(result.getEmail()).isEqualTo("email@email.com");
+        assertThat(result.getLastName()).isEqualTo("studentman");
+        assertThat(result.getEmail()).isEqualTo("student@email.com");
     }
-
     @Test
     public void findStudentById_notFoundTest() {
         // Arrange
@@ -183,15 +183,6 @@ public class StudentServiceTest {
                 .hasMessage("File cannot be read");
     }
 
-    private StudentDTO createStudentDTO() {
-        DepartmentDTO departmentDTO = new DepartmentDTO(1L, "GEN", "Génie");
-        return new StudentDTO(1L, "student", "studentMan", "email@email.com", "123 Street street", "1234567890", "123456789", "studentNumber", departmentDTO);
-    }
-
-    private MultipartFile createMockFile() {
-        return new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "test data".getBytes());
-    }
-
     @Test
     void getCvsByStudent() {
         StudentDTO studentDTO = createStudentDTO();
@@ -251,35 +242,12 @@ public class StudentServiceTest {
         assertThat(result.size()).isEqualTo(0);
     }
 
-
-    private static class CustomMockMultipartFile extends MockMultipartFile {
-        public CustomMockMultipartFile(String name, String originalFilename, String contentType, byte[] content) {
-            super(name, originalFilename, contentType, content);
-        }
-
-        // To test the IOException
-        @Override
-        public byte[] getBytes() throws IOException {
-            throw new IOException();
-        }
-    }
-
     @Test
     public void createApplication_HappyPath(){
-        Department department = new Department(1L, "GEN", "Génie");
-        Student student = new Student(
-                1L,
-                "student",
-                "studentMan",
-                "email@email.com",
-                "password",
-                "123 Street Street",
-                "1234567890",
-                "123456789",
-                department
-        );
+        Student student = createStudentDTO().fromDTO();
+        Offer offer = createOffer();
         Cv cv = new Cv(1L, student, new byte[0], "fileName");
-        Offer offer = new Offer(1L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 0, mock(Employer.class), department);
+
         Application application = new Application(null, student, cv, offer);
 
         ApplicationDTO applicationDTO = application.toDTO();
@@ -293,5 +261,45 @@ public class StudentServiceTest {
 
         assertThat(dto).isEqualTo(applicationDTO);
         verify(applicationRepository, times(1)).save(application);
+    }
+    @Test
+    public void createApplication_NullApplication(){
+        assertThatThrownBy(() -> studentService.createApplication(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Application cannot be null");
+    }
+
+
+    private MultipartFile createMockFile() {
+        return new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "test data".getBytes());
+    }
+
+    private Department createDepartment(){
+        return new Department(1L, "GLO", "Génie logiciel");
+    }
+    private EmployerDTO createEmployerDTO() {
+        return new EmployerDTO(1L, "Employer1", "Employer1", "employer1@gmail.com", "123456eE", "Organisation1", "Position1", "Class Service, Javatown, Qc H8N1C1", "123-456-7890", "12345");
+    }
+    private StudentDTO createStudentDTO() {
+        DepartmentDTO departmentDTO = createDepartment().toDTO();
+        return new StudentDTO(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", departmentDTO);
+    }
+    private Offer createOffer() {
+        Employer employer = createEmployerDTO().fromDTO();
+        Department department = createDepartment();
+        return new Offer(1L,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, employer, department);
+    }
+
+
+    private static class CustomMockMultipartFile extends MockMultipartFile {
+        public CustomMockMultipartFile(String name, String originalFilename, String contentType, byte[] content) {
+            super(name, originalFilename, contentType, content);
+        }
+
+        // To test the IOException
+        @Override
+        public byte[] getBytes() throws IOException {
+            throw new IOException();
+        }
     }
 }
