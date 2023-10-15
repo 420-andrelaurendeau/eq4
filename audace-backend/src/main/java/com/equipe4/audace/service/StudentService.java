@@ -2,13 +2,14 @@ package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.ApplicationDTO;
 import com.equipe4.audace.dto.StudentDTO;
-import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
+import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
+import com.equipe4.audace.model.offer.Offer.Status;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
@@ -16,10 +17,8 @@ import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.stereotype.Service;
-import com.equipe4.audace.model.offer.Offer.Status;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;

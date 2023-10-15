@@ -1,20 +1,9 @@
 package com.equipe4.audace.service;
 
-import com.equipe4.audace.repository.department.DepartmentRepository;
-import com.equipe4.audace.repository.offer.OfferRepository;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import com.equipe4.audace.dto.UserDTO;
-import com.equipe4.audace.model.User;
-import com.equipe4.audace.repository.UserRepository;
-
 import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.model.User;
 import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
-import org.springframework.stereotype.Service;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

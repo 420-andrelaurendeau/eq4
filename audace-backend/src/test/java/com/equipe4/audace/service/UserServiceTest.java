@@ -6,7 +6,6 @@ import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.User;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.repository.UserRepository;
-import com.equipe4.audace.repository.security.SaltRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,7 +17,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
