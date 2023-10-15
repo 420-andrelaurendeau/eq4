@@ -1,8 +1,14 @@
 package com.equipe4.audace.controller;
 
+import com.equipe4.audace.dto.ApplicationDTO;
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
@@ -133,14 +139,12 @@ public class EmployerControllerTest {
     @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
     public void givenOfferObject_whenCreateOffer_thenReturnSavedOffer() throws Exception{
         // given - precondition or setup
-        Employer employer = createEmployerDTO().fromDTO();
-
-        OfferDTO offerDTO = createOffer(employer).toDTO();
+        OfferDTO offerDTO = createOffer().toDTO();
 
         when(employerService.createOffer(any(OfferDTO.class))).thenReturn(Optional.of(offerDTO));
 
         // when - action or behaviour that we are going test
-        ResultActions response = mockMvc.perform(post("/employers/{id}/offers", 1L)
+        ResultActions response = mockMvc.perform(post("/employers/offers/{employerId}", 1L)
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(Optional.of(offerDTO))));
@@ -164,12 +168,12 @@ public class EmployerControllerTest {
         Employer employer = createEmployerDTO().fromDTO();
 
         List<OfferDTO> listOfOffers = new ArrayList<>();
-        listOfOffers.add(createOffer(employer).toDTO());
-        listOfOffers.add(createOffer(employer).toDTO());
+        listOfOffers.add(createOffer().toDTO());
+        listOfOffers.add(createOffer().toDTO());
         given(employerService.findAllOffersByEmployerId(employer.getId())).willReturn(listOfOffers);
 
         // when -  action or the behaviour that we are going test
-        ResultActions response = mockMvc.perform(get("/employers/{id}/offers", 1L));
+        ResultActions response = mockMvc.perform(get("/employers/offers/{employerId}", 1L));
 
         // then - verify the output
         response.andExpect(status().isOk())
@@ -182,12 +186,10 @@ public class EmployerControllerTest {
     @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
     public void givenUpdatedOffer_whenUpdateOffer_thenReturnUpdateOfferObject() throws Exception{
         // given - precondition or setup
-        Employer employer = createEmployerDTO().fromDTO();
-
-        Offer offerSaved = createOffer(employer);
+        Offer offerSaved = createOffer();
         OfferDTO offerDTOSaved = offerSaved.toDTO();
 
-        Offer offerUpdated = createOffer(employer);
+        Offer offerUpdated = createOffer();
         offerUpdated.setAvailablePlaces(1);
         OfferDTO offerDTOUpdated = offerUpdated.toDTO();
 
@@ -195,7 +197,7 @@ public class EmployerControllerTest {
         given(employerService.updateOffer(any(OfferDTO.class))).willReturn(Optional.of(offerDTOUpdated));
 
         // when -  action or the behaviour that we are going test
-        ResultActions response = mockMvc.perform(put("/employers/{id}/offers", 1L)
+        ResultActions response = mockMvc.perform(put("/employers/offers/{id}", 1L)
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(offerDTOUpdated)));
@@ -214,11 +216,50 @@ public class EmployerControllerTest {
                 .andExpect(jsonPath("$.department.code", is(offerDTOUpdated.getDepartment().getCode())));
     }
 
+
+    @Test
+    @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
+    public void givenListOfApplications_whenGetAllApplications_thenReturnApplicationsList() throws Exception{
+        // given - precondition or setup
+        Offer offer = createOffer();
+
+        List<ApplicationDTO> applicationDTOList = new ArrayList<>();
+        applicationDTOList.add(createApplication().toDTO());
+        applicationDTOList.add(createApplication().toDTO());
+        given(employerService.findAllApplicationsByOfferId(offer.getId())).willReturn(applicationDTOList);
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/employers/offers/applications/{offerId}", 1L));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.size()",
+                        is(applicationDTOList.size())));
+    }
+
+    private Department createDepartment(){
+        return new Department(1L, "GLO", "Génie logiciel");
+    }
     private EmployerDTO createEmployerDTO() {
         return new EmployerDTO(1L, "Employer1", "Employer1", "employer1@gmail.com", "123456eE", "Organisation1", "Position1", "Class Service, Javatown, Qc H8N1C1", "123-456-7890", "12345");
     }
-    private Offer createOffer(Employer employer) {
-        Department department = new Department(1L, "GLO", "Génie logiciel");
+    private StudentDTO createStudentDTO() {
+        DepartmentDTO departmentDTO = createDepartment().toDTO();
+        return new StudentDTO(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", departmentDTO);
+    }
+    private Offer createOffer() {
+        Employer employer = createEmployerDTO().fromDTO();
+        Department department = createDepartment();
         return new Offer(1L,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, employer, department);
     }
+    private Application createApplication() {
+        Offer offer = createOffer();
+        Student student = createStudentDTO().fromDTO();
+        Cv cv = mock(Cv.class);
+
+        return new Application(1L, student, cv, offer);
+    }
+
+
 }

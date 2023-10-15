@@ -67,9 +67,9 @@ public class StudentController extends GenericUserController<Student, StudentSer
         }
     }
 
-    @PostMapping("/{id}/applications")
+    @PostMapping("/applications/{id}")
     public ResponseEntity<ApplicationDTO> createApplication(@RequestBody ApplicationDTO applicationDTO){
-        logger.info("createOffer");
+        logger.info("createApplication");
         return service.createApplication(applicationDTO).map(application -> ResponseEntity.status(HttpStatus.CREATED).body(applicationDTO))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }

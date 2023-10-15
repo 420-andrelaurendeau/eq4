@@ -1,11 +1,18 @@
 package com.equipe4.audace.service;
 
+import com.equipe4.audace.dto.ApplicationDTO;
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.security.Salt;
+import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
@@ -30,6 +37,8 @@ public class EmployerServiceTest {
     private OfferRepository offerRepository;
     @Mock
     private SaltRepository saltRepository;
+    @Mock
+    private ApplicationRepository applicationRepository;
     @InjectMocks
     private EmployerService employerService;
 
@@ -170,7 +179,7 @@ public class EmployerServiceTest {
 
         assertThatThrownBy(() -> employerService.deleteOffer(1L))
                 .isInstanceOf(NoSuchElementException.class)
-                .hasMessage("No value present");
+                .hasMessage("Offer not found");
     }
 
     @Test
@@ -203,6 +212,50 @@ public class EmployerServiceTest {
 
         assertThatThrownBy(() -> employerService.updateOffer(offer.toDTO()))
                 .isInstanceOf(NoSuchElementException.class)
-                .hasMessage("No value present");
+                .hasMessage("Offer not found");
+    }
+
+    @Test
+    void getAllApplicationsByOfferId_HappyPath() {
+        Offer offer = createOffer();
+
+        List<Application> applications = new ArrayList<>();
+        Application application1 = createApplication();
+        Application application2 = createApplication();
+        application2.setId(2L);
+
+        applications.add(application1);
+        applications.add(application2);
+
+        when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
+        when(applicationRepository.findAllByOffer(any(Offer.class))).thenReturn(applications);
+
+        List<ApplicationDTO> applicationDTOList = employerService.findAllApplicationsByOfferId(offer.getId());
+
+        assertThat(applicationDTOList.size()).isEqualTo(2);
+        verify(applicationRepository, times(1)).findAllByOffer(offer);
+    }
+
+    private Department createDepartment(){
+        return new Department(1L, "GLO", "Génie logiciel");
+    }
+    private EmployerDTO createEmployerDTO() {
+        return new EmployerDTO(1L, "Employer1", "Employer1", "employer1@gmail.com", "123456eE", "Organisation1", "Position1", "Class Service, Javatown, Qc H8N1C1", "123-456-7890", "12345");
+    }
+    private StudentDTO createStudentDTO() {
+        DepartmentDTO departmentDTO = createDepartment().toDTO();
+        return new StudentDTO(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", departmentDTO);
+    }
+    private Offer createOffer() {
+        Employer employer = createEmployerDTO().fromDTO();
+        Department department = createDepartment();
+        return new Offer(1L,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, employer, department);
+    }
+    private Application createApplication() {
+        Offer offer = createOffer();
+        Student student = createStudentDTO().fromDTO();
+        Cv cv = mock(Cv.class);
+
+        return new Application(1L, student, cv, offer);
     }
 }
