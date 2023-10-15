@@ -14,33 +14,27 @@ function AppHeader() {
   };
 
   return (
-    <Navbar bg="light" expand="lg" sticky="top" className="mx-3">
+    <Navbar bg="light" sticky="top" className="px-3 shadow-sm">
       <Navbar.Brand href="/">Audace</Navbar.Brand>
-      {/* <Navbar.Toggle aria-controls="basic-navbar-nav" /> */}
-      {/* <Navbar.Collapse id="basic-navbar-nav"> */}
+      <Nav className="col justify-content-end">
           {!isConnected() ? (
             <>
-              <Button
-                onClick={() => handleClick("/signup/employer")}
-                variant="light"
-              >
+              <Button onClick={() => handleClick("/signup/employer")} variant="outline-success" className="me-2">
                 {t("signup.signup")}
               </Button>
-              <Nav>
-                <Button onClick={() => handleClick("/login")} variant="light">
-                  {t("signin")}
-                </Button>
-              </Nav>
+              <Button onClick={() => handleClick("/login")} variant="outline-primary" className="me-2">
+                {t("signin")}
+              </Button>
             </>
           ) : (
             <Nav>
               <LogoutButton />
             </Nav>
           )}
-        <Nav className="justify-content-end flex-grow-1">
-          <LanguageToggler />
-        </Nav>
+        <LanguageToggler />
+      </Nav>
     </Navbar>
   );
+  
 }
 export default AppHeader;

@@ -1,6 +1,6 @@
 {
-  "langCode": "en",
-  "signin": "Sign In",
+  "langCode": "EN",
+  "signin": "Log in",
   "signup": {
     "employerFormTitle": "Employer Registration",
     "studentFormTitle": "Student Registration",
@@ -17,7 +17,7 @@
     "password": "Choose a Password",
     "passwordConfirmation": "Confirm Your Password",
     "studentId": "Student number",
-    "signup": "Sign Up",
+    "signup": "Sign up",
     "errors": {
       "organisation": "Please enter a valid organisation name",
       "position": "Position cannot be empty",

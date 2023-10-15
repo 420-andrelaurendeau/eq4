@@ -14,7 +14,7 @@ const LogoutButton = () => {
 
   return (
     <>
-      <Button variant="light" onClick={onClick}>
+      <Button variant="outline-danger" onClick={onClick} className="me-2">
         {t("logout")}
       </Button>
     </>
