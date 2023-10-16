@@ -78,6 +78,11 @@ const AddOffer: React.FC = () => {
     return "";
 };
 
+function isValidDate(d: any) {
+    return d instanceof Date && !isNaN(d.getTime());
+  }
+  
+
 
 
   const renderDateInputError = (formError: string) => {
@@ -97,6 +102,11 @@ const AddOffer: React.FC = () => {
     if (!internshipStartDate) errorsToDisplay.push("addOffer.errors.startDateRequired");
     if (!internshipEndDate) errorsToDisplay.push("addOffer.errors.endDateRequired");
     if (!offerEndDate) errorsToDisplay.push("addOffer.errors.offerEndDateRequired");
+    if (!isValidDate(internshipStartDate)) errorsToDisplay.push("addOffer.errors.invalidStartDate");
+    if (!isValidDate(internshipEndDate)) errorsToDisplay.push("addOffer.errors.invalidEndDate");
+    if (!isValidDate(offerEndDate)) errorsToDisplay.push("addOffer.errors.invalidOfferEndDate");
+  
+
 
     setErrors(errorsToDisplay);
     return errorsToDisplay.length === 0;
@@ -144,7 +154,7 @@ const AddOffer: React.FC = () => {
 
         <Col md="4">
           <Form.Group controlId="formOfferDepartment">
-            <Form.Label>{t("addOffer.department")}</Form.Label>
+            <Form.Label>{t("addOffer.departmentCode")}</Form.Label>
             <Form.Control
               as="select"
               value={department.toString()}
@@ -168,13 +178,20 @@ const AddOffer: React.FC = () => {
       </Row>
 
       <Form.Group controlId="formOfferDescription">
-        <Form.Label>{t("addOffer.description")}</Form.Label>
-        <Form.Control
-          as="textarea"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-      </Form.Group>
+   <Form.Label>{t("addOffer.description")}</Form.Label>
+   <Form.Control
+     as="textarea"
+     value={description}
+     isInvalid={errors.includes("addOffer.errors.descriptionRequired")}
+     onChange={(e) => setDescription(e.target.value)}
+   />
+   {errors.includes("addOffer.errors.descriptionRequired") && (
+     <Form.Control.Feedback type="invalid">
+       {t("addOffer.errors.descriptionRequired")}
+     </Form.Control.Feedback>
+   )}
+</Form.Group>
+
 
       <Row>
         <Col md="4">
@@ -184,7 +201,15 @@ const AddOffer: React.FC = () => {
               type="date"
               value={formatDateForInput(internshipStartDate)}
               isInvalid={errors.includes("addOffer.errors.startDateRequired")}
-              onChange={(e) => setInternshipStartDate(new Date(e.target.value))}
+              onChange={(e) => {
+                const newDate = new Date(e.target.value);
+                if (isValidDate(newDate)) {
+                  setInternshipStartDate(newDate);
+                } else {
+                  setErrors((prevErrors) => [...prevErrors, "addOffer.errors.invalidDate"]);
+                }
+              }}
+              
             />
             {renderDateInputError("addOffer.errors.startDateRequired")}
           </Form.Group>
@@ -197,7 +222,15 @@ const AddOffer: React.FC = () => {
               type="date"
               value={formatDateForInput(internshipEndDate)}
               isInvalid={errors.includes("addOffer.errors.endDateRequired")}
-              onChange={(e) => setInternshipEndDate(new Date(e.target.value))}
+              onChange={(e) => {
+                const newDate = new Date(e.target.value);
+                if (isValidDate(newDate)) {
+                  setInternshipEndDate(newDate);
+                } else {
+                  setErrors((prevErrors) => [...prevErrors, "addOffer.errors.invalidDate"]);
+                }
+              }}
+              
             />
             {renderDateInputError("addOffer.errors.endDateRequired")}
           </Form.Group>
@@ -210,7 +243,15 @@ const AddOffer: React.FC = () => {
               type="date"
               value={formatDateForInput(offerEndDate)}
               isInvalid={errors.includes("addOffer.errors.offerEndDateRequired")}
-              onChange={(e) => setOfferEndDate(new Date(e.target.value))}
+              onChange={(e) => {
+                const newDate = new Date(e.target.value);
+                if (isValidDate(newDate)) {
+                  setOfferEndDate(newDate);
+                } else {
+                  setErrors((prevErrors) => [...prevErrors, "addOffer.errors.invalidDate"]);
+                }
+              }}
+              
             />
             {renderDateInputError("addOffer.errors.offerEndDateRequired")}
           </Form.Group>
