@@ -88,6 +88,8 @@ public class ManagerService extends GenericUserService<Manager> {
     }
 
     public List<CvDTO> getCvsByDepartment(Long departmentId) {
-        return cvRepository.findAllByStudentDepartmentId(departmentId).map(cvs -> cvs.stream().map(Cv::toDTO).toList()).orElseThrow();
+        return cvRepository
+                .findAllByStudentDepartmentId(departmentId)
+                .stream().map(Cv::toDTO).toList();
     }
 }

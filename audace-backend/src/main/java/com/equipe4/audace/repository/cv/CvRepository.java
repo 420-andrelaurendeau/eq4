@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface CvRepository extends JpaRepository<Cv, Long> {
     List<Cv> findAllByStudentId(Long studentId);
-    Optional<List<Cv>> findAllByStudentDepartmentId(Long departmentId);
+    List<Cv> findAllByStudentDepartmentId(Long departmentId);
 }

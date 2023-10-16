@@ -194,8 +194,8 @@ public class ManagerServiceTest {
     public void getCvsByDepartment_happyPath() {
         Department mockedDepartment = mock(Department.class);
         Student student = new Student(1L, "firstName", "lastName", "email", "password", "address", "phone", "studentNumber", mockedDepartment);
-        Optional<List<Cv>> listCvs = Optional.of(new ArrayList<>());
-        listCvs.get().add(new Cv(null, student, new byte[10], "cv"));
+        List<Cv> listCvs = new ArrayList<>();
+        listCvs.add(new Cv(null, student, new byte[10], "cv"));
 
         when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(listCvs);
 
@@ -206,15 +206,14 @@ public class ManagerServiceTest {
 
     @Test
     public void getCvsByDepartment_invalidDepartmentId() {
-        when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(Optional.empty());
+        when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(new ArrayList<>());
 
-        assertThatThrownBy(() -> managerService.getCvsByDepartment(509L))
-                .isInstanceOf(NoSuchElementException.class);
+        assertThat(managerService.getCvsByDepartment(1L).size()).isEqualTo(0);
     }
 
     @Test
     public void getCvsByDepartment_noCvs() {
-        Optional<List<Cv>> listCvs = Optional.of(new ArrayList<>());
+        List<Cv> listCvs = new ArrayList<>();
 
         when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(listCvs);
 
