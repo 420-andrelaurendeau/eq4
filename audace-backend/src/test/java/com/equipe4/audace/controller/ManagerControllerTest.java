@@ -1,6 +1,5 @@
 package com.equipe4.audace.controller;
 
-import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
@@ -17,7 +16,6 @@ import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
-import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.ManagerService;
 import com.equipe4.audace.service.StudentService;
@@ -293,5 +291,15 @@ public class ManagerControllerTest {
 
         mvc.perform(get("/managers/{id}", -1L))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
+    public void getCvsByDepartment() throws Exception {
+        List<CvDTO> cvDTOList = List.of(mock(CvDTO.class));
+        when(managerService.getCvsByDepartment(1L)).thenReturn(cvDTOList);
+
+        mvc.perform(get("/managers/cvs/1"))
+                .andExpect(status().isOk());
     }
 }
