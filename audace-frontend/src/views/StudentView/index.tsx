@@ -10,7 +10,12 @@ import { getUserId } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 import FileUploader from "../../components/FileUploader";
 
-const StudentView = () => {
+interface StudentViewProps {
+  viewOffers?: boolean;
+  viewUpload?: boolean;
+}
+
+const StudentView = ({ viewOffers = true, viewUpload = true }: StudentViewProps) => {
   const [student, setStudent] = useState<Student>();
   const [offers, setOffers] = useState<Offer[]>([]);
   const [error, setError] = useState<string>("");
@@ -55,9 +60,15 @@ const StudentView = () => {
   return (
     <Container>
       <h1 className="my-3">Student view</h1>
-      <h2>{t("studentOffersList.viewTitle")}</h2>
-      <OffersList offers={offers} error={error} userType={UserType.Student} />
-      <FileUploader student={student!} />
+      {viewOffers && (
+        <>
+          <h2>{t("studentOffersList.viewTitle")}</h2>
+          <OffersList offers={offers} error={error} userType={UserType.Student} />
+        </>
+      )}
+      {viewUpload && (
+        <FileUploader student={student!} />
+      )}
     </Container>
   );
 };

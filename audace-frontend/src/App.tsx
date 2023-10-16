@@ -17,20 +17,6 @@ import { getAuthorities, isConnected } from "./services/authService";
 import { Authority } from "./model/auth";
 
 function App() {
-
-  const navigateTo = () => {
-    switch (getAuthorities()?.[0]) {
-      case Authority.STUDENT:
-        return <Navigate to="/student" />;
-      case Authority.MANAGER:
-        return <Navigate to="/manager" />;
-      case Authority.EMPLOYER:
-        return <Navigate to="/employer" />;
-      default:
-        return <Navigate to="login" />;
-    }
-  }
-
   return (
     <Router>
       <AppHeader />
@@ -68,6 +54,8 @@ function App() {
             <AuthorizedRoute requiredAuthority={Authority.STUDENT}>
               <Routes>
                 <Route index element={<StudentView />} />
+                <Route path="offers" element={<StudentView viewUpload={false} />} />
+                <Route path="upload" element={<StudentView viewOffers={false} />} />
                 <Route path="*" element={<PageNotFoundView />} />
               </Routes>
             </AuthorizedRoute>
@@ -97,7 +85,7 @@ function App() {
           }
         />
         <Route path="*" element={<PageNotFoundView />} />
-        <Route path="/" element={navigateTo()} />
+        <Route path="/" element={<Navigate to={getAuthorities()?.[0]?.toString().toLowerCase() || "/login"} />} />
       </Routes>
     </Router>
   );

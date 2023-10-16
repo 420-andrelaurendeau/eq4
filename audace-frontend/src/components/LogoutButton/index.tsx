@@ -9,7 +9,7 @@ const LogoutButton = () => {
 
   const onClick = () => {
     logout();
-    navigate("/");
+    navigate("/login");
   };
 
   return (
