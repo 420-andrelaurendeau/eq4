@@ -62,7 +62,6 @@ const Signup = ({handleSubmit, extension, setExtension, errors, setErrors, valid
                 setIsDisabled(false);
                 console.log(err.code);
                 if (err.code === "ERR_NETWORK") {
-                    console.log("IN HERE");
                     setUnexpectedError(t("signup.errors.network"));
                 }
                 else {
