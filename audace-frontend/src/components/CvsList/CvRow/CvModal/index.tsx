@@ -19,8 +19,6 @@ const CvModal = ({cv, show, handleClose}: Props) => {
                 <Modal.Body>
                     <PDFViewer pdf={cv.content}/>
                 </Modal.Body>
-                <Modal.Footer>
-                </Modal.Footer>
             </Modal>
         </>
     );

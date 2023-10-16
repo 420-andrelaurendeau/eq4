@@ -78,7 +78,7 @@
     "refuseButton": "Refuse",
     "ACCEPTED": "Accepted",
     "REFUSED": "Refused",
-    "noMorePendingOffers": "There is no more pending offers"
+    "noMorePendingOffers": "There are no more pending offers"
   },
   "managerCvsList": {
     "errors": {
@@ -91,7 +91,7 @@
     "refuseButton": "Refuse",
     "ACCEPTED": "Accepted",
     "REFUSED": "Refused",
-    "noMorePendingCvs": "There is no more pending CVs"
+    "noMorePendingCvs": "There are no more pending CVs"
   },
   "employerOffersList": {
     "viewTitle": "Available Offers",

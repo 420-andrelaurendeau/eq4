@@ -23,7 +23,7 @@ const CvsList = ({cvs, error, userType, updateCvsState}: Props) => {
                 : 
                 cvs.length > 0
                     ?
-                    <Table striped bordered hover size="sm">
+                    <Table striped bordered size="sm">
                         <thead>
                             <tr>
                                 <th>{t("cvsList.studentName")}</th>

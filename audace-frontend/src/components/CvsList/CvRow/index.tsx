@@ -21,7 +21,7 @@ const CvRow = ({cv, userType, updateCvsState}: Props) => {
 
     return (
         <>
-            <tr className="hovered">
+            <tr>
                 <td>
                     {cv.student.firstName} {cv.student.lastName}
                 </td>
@@ -29,8 +29,8 @@ const CvRow = ({cv, userType, updateCvsState}: Props) => {
                     <Col>
                         {cv.fileName}
                     </Col>
-                    <Col onClick={handleClick} className="text-muted small">
-                        <u>{t("cvsList.viewMore")}</u>
+                    <Col className="text-muted small">
+                        <u className="hovered" onClick={handleClick}>{t("cvsList.viewMore")}</u>
                     </Col>
                 </td>                
                 <td className="text-end"><CvButtons userType={userType} disabled={false} cv={cv} updateCvsState={updateCvsState}/></td>
