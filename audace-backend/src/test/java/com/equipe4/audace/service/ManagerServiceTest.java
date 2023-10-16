@@ -1,12 +1,16 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.ManagerDTO;
+import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
+import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.ManagerRepository;
+import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -33,6 +37,8 @@ public class ManagerServiceTest {
     private DepartmentRepository departmentRepository;
     @Mock
     private ManagerRepository managerRepository;
+    @Mock
+    private CvRepository cvRepository;
     @InjectMocks
     private ManagerService managerService;
 
@@ -182,5 +188,82 @@ public class ManagerServiceTest {
 
         // Assert
         assertThat(result.isEmpty()).isTrue();
+    }
+
+    @Test
+    public void getCvsByDepartment_happyPath() {
+        Department mockedDepartment = mock(Department.class);
+        Student student = new Student(1L, "firstName", "lastName", "email", "password", "address", "phone", "studentNumber", mockedDepartment);
+        Optional<List<Cv>> listCvs = Optional.of(new ArrayList<>());
+        listCvs.get().add(new Cv(null, student, new byte[10], "cv"));
+
+        when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(listCvs);
+
+        List<CvDTO> result = managerService.getCvsByDepartment(1L);
+
+        assertThat(result.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void getCvsByDepartment_invalidDepartmentId() {
+        when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> managerService.getCvsByDepartment(509L))
+                .isInstanceOf(NoSuchElementException.class);
+    }
+
+    @Test
+    public void getCvsByDepartment_noCvs() {
+        Optional<List<Cv>> listCvs = Optional.of(new ArrayList<>());
+
+        when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(listCvs);
+
+        List<CvDTO> result = managerService.getCvsByDepartment(1L);
+
+        assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void acceptCv() {
+        Student student = mock(Student.class);
+        Cv cv = new Cv(null, student, "Monkey Enthusiast needs more sleep".getBytes(), "cv");
+        when(cvRepository.findById(1L)).thenReturn(Optional.of(cv));
+        when(cvRepository.save(any())).thenReturn(cv);
+
+        Optional<CvDTO> cvDTO = managerService.acceptCv(1L);
+        if (cvDTO.isPresent()) {
+            assert(cvDTO.get().getCvStatus() == Cv.CvStatus.ACCEPTED);
+        }
+        else {
+            assert(false);
+        }
+    }
+
+    @Test
+    public void acceptCv_InvalidId() {
+        when(cvRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
+        assertThrows(EntityNotFoundException.class, () -> managerService.acceptCv(1L));
+    }
+
+    @Test
+    public void refuseCv() {
+        Student student = mock(Student.class);
+        Cv cv = new Cv(null, student, "Monkey Enthusiast needs more sleep".getBytes(), "cv");
+        when(cvRepository.findById(1L)).thenReturn(Optional.of(cv));
+        when(cvRepository.save(any())).thenReturn(cv);
+
+        Optional<CvDTO> cvDTO = managerService.refuseCv(1L);
+        if (cvDTO.isPresent()) {
+            assert(cvDTO.get().getCvStatus() == Cv.CvStatus.REFUSED);
+        }
+        else {
+            assert(false);
+        }
+    }
+
+    @Test
+    public void refuseCv_Invalid_Id() {
+        when(cvRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
+        assertThrows(EntityNotFoundException.class, () -> managerService.refuseCv(1L));
     }
 }
