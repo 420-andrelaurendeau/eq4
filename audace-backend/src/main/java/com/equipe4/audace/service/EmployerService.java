@@ -1,6 +1,7 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
@@ -55,6 +56,10 @@ public class EmployerService extends GenericUserService<Employer> {
 
     public Optional<OfferDTO> findOfferById(Long offerId){
         return offerRepository.findById(offerId).map(OfferDTO::new);
+    }
+
+    public List<DepartmentDTO> findAllDepartments(){
+        return departmentRepository.findAll().stream().map(DepartmentDTO::new).toList();
     }
     public List<OfferDTO> findAllOffersByEmployerId(Long employerId){
         Employer employer = employerRepository.findById(employerId).orElseThrow();

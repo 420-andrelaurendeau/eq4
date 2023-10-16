@@ -8,6 +8,7 @@ export interface Offer {
     internshipEndDate: Date;
     offerEndDate: Date;
     department: Department;
+    availablePlaces: number;
     employerId: number;
     status: OfferStatus;
 }

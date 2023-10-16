@@ -15,6 +15,7 @@ const EditOffer: React.FC = () => {
   const [internshipStartDate, setInternshipStartDate] = useState<Date>({} as Date);
   const [internshipEndDate, setInternshipEndDate] = useState<Date>({} as Date);
   const [offerEndDate, setOfferEndDate] = useState<Date>({} as Date);
+  const [availablePlaces, setAvailablePlaces] = useState<number>(3);
   const [errors, setErrors] = useState<string[]>([]);
 
   useEffect(() => {
@@ -70,6 +71,7 @@ const EditOffer: React.FC = () => {
         internshipStartDate,
         internshipEndDate,
         offerEndDate,
+        availablePlaces,
         id: parseInt (offerId), 
         employerId: (parseInt) (employerId),
         status: {} as OfferStatus

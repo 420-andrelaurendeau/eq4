@@ -1,8 +1,10 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.service.EmployerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -63,6 +65,7 @@ public class EmployerController extends GenericUserController<Employer, Employer
     @PostMapping("/{id}/offers")
     public ResponseEntity<OfferDTO> createOffer(@RequestBody OfferDTO offerDTO){
         logger.info("createOffer");
+        logger.info(offerDTO.toString());
         return service.createOffer(offerDTO).map(offer -> ResponseEntity.status(HttpStatus.CREATED).body(offerDTO))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
@@ -79,6 +82,12 @@ public class EmployerController extends GenericUserController<Employer, Employer
         service.deleteOffer(offerId);
         return ResponseEntity.ok().build();
 
+    }
+
+    @GetMapping("/departments")
+    public ResponseEntity<List<DepartmentDTO>> getAllDepartments(){
+        logger.info("getAllDepartments");
+        return ResponseEntity.ok(service.findAllDepartments());
     }
 
 

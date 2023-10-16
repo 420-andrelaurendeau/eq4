@@ -1,198 +1,249 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Form, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import FormInput from "../Signup/FormInput";  
+import FormInput from "../Signup/FormInput";
+import { Offer } from "../../model/offer"; 
+import { Department } from "../../model/department";
+import { OfferStatus } from "../../model/offer";
 
 interface OfferFormData {
-    title: string;
-    description: string;
-    internshipStartDate: string;
-    internshipEndDate: string;
-    offerEndDate: string;
-    availablePlaces?: number;
-    status?: string; 
-    departmentCode: string;
-    employerId?: number; 
-}
+    title: string,
+    description: string,
+    departmentCode: string,
+    internshipStartDate:  string,
+    internshipEndDate:  string,
+    offerEndDate:  string,
+    availablePlaces: number,
+    status: string,
+    employerId: number
+    };
 
 
 const AddOffer: React.FC = () => {
   const { t } = useTranslation();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [departmentCode, setDepartmentCode] = useState<string>("");  
-  const [internshipStartDate, setInternshipStartDate] = useState<string>("");  
-  const [internshipEndDate, setInternshipEndDate] = useState<string>("");  
-  const [offerEndDate, setOfferEndDate] = useState<string>("");
-  const [availablePlaces, setAvailablePlaces] = useState<number>(3); 
-  const [status, setStatus] = useState<string>("PENDING"); 
-  const [employerId, setEmployerId] = useState<number>(1);  
+  const [department, setDepartment] = useState<Department>({id:1, name: "Génie Logiciel", code:"GLO"} as Department);
+  const [internshipStartDate, setInternshipStartDate] = useState<Date>({} as Date);
+  const [internshipEndDate, setInternshipEndDate] = useState<Date>({} as Date);
+  const [offerEndDate, setOfferEndDate] = useState<Date>({} as Date);
+  const [availablePlaces, setAvailablePlaces] = useState<number>(3);
+  const [status, setStatus] = useState<OfferStatus>(OfferStatus.PENDING);
+  const [employerId, setEmployerId] = useState<number>(1);
   const [errors, setErrors] = useState<string[]>([]);
-  
+  const [departments, setDepartments] = useState<Department[]>([]);
+
+  useEffect(() => {
+    fetchDepartments();
+  }, []);
+
+  const fetchDepartments = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/employers/departments");
+
+      if (!response.ok) {
+        throw new Error(
+          `Backend returned code ${response.status}, body: ${response.statusText}`
+        );
+      }
+
+      const departmentData: Department[] = await response.json();
+      setDepartments(departmentData);
+    } catch (error) {
+      console.error("There was an error fetching the departments:", error);
+    }
+  };
+
   const handleSubmit = () => {
-      if (validateForm()) {
-          const formData: OfferFormData = {
-              title,
-              description,
-              departmentCode,
-              internshipStartDate,
-              internshipEndDate,
-              offerEndDate,
-              availablePlaces,  
-              status,  
-              employerId,  
-          };
-          addOffer(formData);
-      }
+    if (validateForm()) {
+      const formData: OfferFormData = {
+        title,
+        description,
+        departmentCode: department.code,
+        internshipStartDate: internshipStartDate.toISOString(),
+        internshipEndDate: internshipEndDate.toISOString(),
+        offerEndDate: offerEndDate.toISOString(),
+        availablePlaces,
+        status: OfferStatus.PENDING,
+        employerId
+      };
+      addOffer(formData);
+    }
   };
 
-    const renderDateInputError = (formError: string) => {
-      if (errors.includes(formError)) {
-          return <Form.Control.Feedback type="invalid">{t(formError)}</Form.Control.Feedback>;
-      }
-      return null;
+  const formatDateForInput = (date: Date | null): string => {
+    if (date instanceof Date) {
+        return date.toISOString().substring(0, 10);
+    }
+    return "";
+};
+
+
+
+  const renderDateInputError = (formError: string) => {
+    if (errors.includes(formError)) {
+      return <Form.Control.Feedback type="invalid">{t(formError)}</Form.Control.Feedback>;
+    }
+    return null;
   };
 
-    const validateForm = (): boolean => {
-        let isValid = true;
-        const errorsToDisplay: string[] = [];
+  const validateForm = (): boolean => {
+    let isValid = true;
+    const errorsToDisplay: string[] = [];
 
-        if (!title) errorsToDisplay.push("addOffer.errors.titleRequired");
-        if (!description) errorsToDisplay.push("addOffer.errors.descriptionRequired");
-        if (!departmentCode) errorsToDisplay.push("addOffer.errors.departmentCodeRequired");
-        if (!internshipStartDate) errorsToDisplay.push("addOffer.errors.startDateRequired");
-        if (!internshipEndDate) errorsToDisplay.push("addOffer.errors.endDateRequired");
-        if (!offerEndDate) errorsToDisplay.push("addOffer.errors.offerEndDateRequired");
-        
-        setErrors(errorsToDisplay);
-        return errorsToDisplay.length === 0;
-    };
+    if (!title) errorsToDisplay.push("addOffer.errors.titleRequired");
+    if (!description) errorsToDisplay.push("addOffer.errors.descriptionRequired");
+    if (!department) errorsToDisplay.push("addOffer.errors.departmentCodeRequired");
+    if (!internshipStartDate) errorsToDisplay.push("addOffer.errors.startDateRequired");
+    if (!internshipEndDate) errorsToDisplay.push("addOffer.errors.endDateRequired");
+    if (!offerEndDate) errorsToDisplay.push("addOffer.errors.offerEndDateRequired");
 
-    const addOffer = async (offerData: OfferFormData) => {
-        try {
-            const response = await fetch("http://localhost:8080/employers/1/offers", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(offerData),
-            });
+    setErrors(errorsToDisplay);
+    return errorsToDisplay.length === 0;
+  };
 
-            if (!response.ok) {
-                throw new Error(
-                    `Backend returned code ${response.status}, body: ${response.statusText}`
-                );
-            }
+  const addOffer = async (offerData: OfferFormData) => {
+    try {
+       console.log("Offer data:", JSON.stringify(offerData));
+      const response = await fetch("http://localhost:8080/employers/1/offers", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(offerData)
+      });
 
-            const responseData = await response.json();
-            console.log(responseData);
-        } catch (error) {
-            console.error("There was an error sending the data:", error);
-        }
-    };
+      if (!response.ok) {
+        throw new Error(
+          `Backend returned code ${response.status}, body: ${response.statusText}`
+        );
+      }
 
-    return (
-        <>
-            <h3 className="text-center">{t("addOffer.pageTitle")}</h3>
-            <Form className="container mt-5">
-                <Row>
-                    <FormInput 
-                        label="addOffer.title"
-                        value={title}
-                        onChange={(e: any) => setTitle(e.target.value)}
-                        errors={errors}
-                        formError="addOffer.errors.titleRequired"
-                        controlId="formOfferTitle"
-                    />
+      
 
-                    <FormInput 
-                        label="addOffer.departmentCode"
-                        value={departmentCode}
-                        onChange={(e: any) => setDepartmentCode(e.target.value)}
-                        errors={errors}
-                        formError="addOffer.errors.departmentCodeRequired"
-                        controlId="formOfferdepartmentCode"
-                    />
-                </Row>
+      const responseData = await response.json();
+      console.log(responseData);
+    } catch (error) {
+      console.error("There was an error sending the data:", error);
+    }
+  };
 
-                <Form.Group controlId="formOfferDescription">
-                    <Form.Label>{t("addOffer.description")}</Form.Label>
-                    <Form.Control
-                        as="textarea"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
-                </Form.Group>
+  return (
+    <>
+    <h3 className="text-center">{t("addOffer.pageTitle")}</h3>
+    <Form className="container mt-5">
+      <Row>
+        <FormInput
+          label="addOffer.title"
+          value={title}
+          onChange={(e: any) => setTitle(e.target.value)}
+          errors={errors}
+          formError="addOffer.errors.titleRequired"
+          controlId="formOfferTitle"
+        />
 
-                <Row>
-            <Col md="4">
-                <Form.Group controlId="formOfferStartDate">
-                    <Form.Label>{t("addOffer.startDate")}</Form.Label>
-                    <Form.Control
-                        type="date"
-                        value={internshipStartDate}
-                        isInvalid={errors.includes("addOffer.errors.startDateRequired")}
-                        onChange={(e) => setInternshipStartDate(e.target.value)}
-                    />
-                    {renderDateInputError("addOffer.errors.startDateRequired")}
-                </Form.Group>
-            </Col>
+        <Col md="4">
+          <Form.Group controlId="formOfferDepartment">
+            <Form.Label>{t("addOffer.department")}</Form.Label>
+            <Form.Control
+              as="select"
+              value={department.toString()}
+              isInvalid={errors.includes("addOffer.errors.departmentRequired")}
+              onChange={(e: any) => setDepartment(e.target.value)}
+            >
+              <option value="" disabled>Select department...</option>
+              {departments.map(dept => (
+                <option key={dept.code} value={dept.code}>
+                  {dept.name}
+                </option>
+              ))}
+            </Form.Control>
+            {errors.includes("addOffer.errors.departmentRequired") && (
+              <Form.Control.Feedback type="invalid">
+                {t("addOffer.errors.departmentRequired")}
+              </Form.Control.Feedback>
+            )}
+          </Form.Group>
+        </Col>
+      </Row>
 
-            <Col md="4">
-                <Form.Group controlId="formOfferEndDate">
-                    <Form.Label>{t("addOffer.endDate")}</Form.Label>
-                    <Form.Control
-                        type="date"
-                        value={internshipEndDate}
-                        isInvalid={errors.includes("addOffer.errors.endDateRequired")}
-                        onChange={(e) => setInternshipEndDate(e.target.value)}
-                    />
-                    {renderDateInputError("addOffer.errors.endDateRequired")}
-                </Form.Group>
-            </Col>
+      <Form.Group controlId="formOfferDescription">
+        <Form.Label>{t("addOffer.description")}</Form.Label>
+        <Form.Control
+          as="textarea"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </Form.Group>
 
-            <Col md="4">
-                <Form.Group controlId="formOfferOfferEndDate">
-                    <Form.Label>{t("addOffer.offerEndDate")}</Form.Label>
-                    <Form.Control
-                        type="date"
-                        value={offerEndDate}
-                        isInvalid={errors.includes("addOffer.errors.offerEndDateRequired")}
-                        onChange={(e) => setOfferEndDate(e.target.value)}
-                    />
-                    {renderDateInputError("addOffer.errors.offerEndDateRequired")}
-                </Form.Group>
-            </Col>
-        </Row>
+      <Row>
+        <Col md="4">
+          <Form.Group controlId="formOfferStartDate">
+            <Form.Label>{t("addOffer.startDate")}</Form.Label>
+            <Form.Control
+              type="date"
+              value={formatDateForInput(internshipStartDate)}
+              isInvalid={errors.includes("addOffer.errors.startDateRequired")}
+              onChange={(e) => setInternshipStartDate(new Date(e.target.value))}
+            />
+            {renderDateInputError("addOffer.errors.startDateRequired")}
+          </Form.Group>
+        </Col>
 
-        <Row className="mb-3">
-    <Col md="4">
-        <Form.Group controlId="formOfferAvailablePlaces">
+        <Col md="4">
+          <Form.Group controlId="formOfferEndDate">
+            <Form.Label>{t("addOffer.endDate")}</Form.Label>
+            <Form.Control
+              type="date"
+              value={formatDateForInput(internshipEndDate)}
+              isInvalid={errors.includes("addOffer.errors.endDateRequired")}
+              onChange={(e) => setInternshipEndDate(new Date(e.target.value))}
+            />
+            {renderDateInputError("addOffer.errors.endDateRequired")}
+          </Form.Group>
+        </Col>
+
+        <Col md="4">
+          <Form.Group controlId="formOfferOfferEndDate">
+            <Form.Label>{t("addOffer.offerEndDate")}</Form.Label>
+            <Form.Control
+              type="date"
+              value={formatDateForInput(offerEndDate)}
+              isInvalid={errors.includes("addOffer.errors.offerEndDateRequired")}
+              onChange={(e) => setOfferEndDate(new Date(e.target.value))}
+            />
+            {renderDateInputError("addOffer.errors.offerEndDateRequired")}
+          </Form.Group>
+        </Col>
+      </Row>
+
+      <Row className="mb-3">
+        <Col md="4">
+          <Form.Group controlId="formOfferAvailablePlaces">
             <Form.Label>{t("addOffer.availablePlaces")}</Form.Label>
             <Form.Control
-                type="number"
-                size="sm"  
-                min="1"  
-                value={availablePlaces}
-                isInvalid={errors.includes("addOffer.errors.availablePlacesRequired")}
-                onChange={(e) => setAvailablePlaces(Number(e.target.value))}
+              type="number"
+              size="sm"
+              min="1"
+              value={availablePlaces}
+              isInvalid={errors.includes("addOffer.errors.availablePlacesRequired")}
+              onChange={(e) => setAvailablePlaces(Number(e.target.value))}
             />
             {errors.includes("addOffer.errors.availablePlacesRequired") && (
-                <Form.Control.Feedback type="invalid">
-                    {t("addOffer.errors.availablePlacesRequired")}
-                </Form.Control.Feedback>
+              <Form.Control.Feedback type="invalid">
+                {t("addOffer.errors.availablePlacesRequired")}
+              </Form.Control.Feedback>
             )}
-        </Form.Group>
-    </Col>
-</Row>
+          </Form.Group>
+        </Col>
+      </Row>
 
-
-                <Button variant="primary" className="mt-3" onClick={handleSubmit}>
-                    {t("addOffer.submit")}
-                </Button>
-            </Form>
-        </>
-    );
+      <Button variant="primary" className="mt-3" onClick={handleSubmit}>
+        {t("addOffer.submit")}
+      </Button>
+    </Form>
+  </>
+  );
 };
 
 export default AddOffer;
