@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { Button, Row } from "react-bootstrap";
+import { Alert, Button, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { User } from "../../model/user";
 import { validateEmail, validatePassword } from "../../services/validationService";
 import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import FormInput from "./FormInput";
-import './styles.css'
 
 interface Props {
     handleSubmit: (user: User) => Promise<AxiosResponse>;
@@ -16,6 +15,8 @@ interface Props {
     setErrors: (errors: string[]) => void;
     validateExtraFormValues?: (errorsToDisplay: string[]) => boolean;
 }
+
+const errorStringValue = "signup.errors.network";
 
 const Signup = ({handleSubmit, extension, setExtension, errors, setErrors, validateExtraFormValues}: Props) => {
     const {t} = useTranslation();
@@ -62,7 +63,7 @@ const Signup = ({handleSubmit, extension, setExtension, errors, setErrors, valid
                 setIsDisabled(false);
                 console.log(err.code);
                 if (err.code === "ERR_NETWORK") {
-                    setUnexpectedError(t("signup.errors.network"));
+                    setUnexpectedError(errorStringValue);
                 }
                 else {
                     setUnexpectedError(err.status);
@@ -269,7 +270,7 @@ const Signup = ({handleSubmit, extension, setExtension, errors, setErrors, valid
             </Button>
             {
             unexpectedError !== "" && (
-                <p className="unexpected-error">{unexpectedError}</p>
+                <Alert variant="danger" className="mt-2">{unexpectedError === errorStringValue ? t(errorStringValue) : unexpectedError}</Alert>
             )}
         </>
     );
