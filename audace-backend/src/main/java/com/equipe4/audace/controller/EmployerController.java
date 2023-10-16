@@ -52,13 +52,21 @@ public class EmployerController extends GenericUserController<Employer, Employer
         return ResponseEntity.ok(service.findAllOffersByEmployerId(id));
     }
 
+    @GetMapping("/offers/{offerId}")
+    public ResponseEntity<OfferDTO> getOfferById(@PathVariable Long offerId) {
+        logger.info("getOfferById");
+        return service.findOfferById(offerId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     @PostMapping("/{id}/offers")
     public ResponseEntity<OfferDTO> createOffer(@RequestBody OfferDTO offerDTO){
         logger.info("createOffer");
         return service.createOffer(offerDTO).map(offer -> ResponseEntity.status(HttpStatus.CREATED).body(offerDTO))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
-    @PutMapping("/{id}/offers")
+    @PutMapping("/offers")
     public ResponseEntity<OfferDTO> updateOffer(@RequestBody OfferDTO offerDTO){
         logger.info("updateOffer");
         OfferDTO updatedOffer = service.updateOffer(offerDTO).get();

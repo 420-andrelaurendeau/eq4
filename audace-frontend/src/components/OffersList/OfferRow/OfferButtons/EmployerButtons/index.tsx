@@ -2,6 +2,7 @@ import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { Offer } from "../../../../../model/offer";
+import { Route } from "react-router-dom";
 
 interface Props {
     disabled?: boolean;
@@ -58,9 +59,10 @@ const EmployerButtons = ({ disabled, offer }: Props) => {
                 className="btn-danger"
             >
                 {isDeleting ? t("employerOffersList.deletingButton") : t("employerOffersList.deleteButton")}
-            </Button>
-        </>
-    );
-};
-
-export default EmployerButtons;
+            </Button> 
+        </> 
+    ); 
+}; 
+ 
+export default EmployerButtons; 
+ 

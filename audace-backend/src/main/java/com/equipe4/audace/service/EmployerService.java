@@ -52,6 +52,10 @@ public class EmployerService extends GenericUserService<Employer> {
 
         return Optional.of(new OfferDTO(offerRepository.save(offer)));
     }
+
+    public Optional<OfferDTO> findOfferById(Long offerId){
+        return offerRepository.findById(offerId).map(OfferDTO::new);
+    }
     public List<OfferDTO> findAllOffersByEmployerId(Long employerId){
         Employer employer = employerRepository.findById(employerId).orElseThrow();
         return offerRepository.findAllByEmployer(employer).stream().map(OfferDTO::new).toList();
