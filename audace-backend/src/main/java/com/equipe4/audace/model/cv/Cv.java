@@ -28,16 +28,14 @@ public class Cv {
     private String fileName;
     private byte[] content;
     private CvStatus cvStatus;
-
+    @ToString.Exclude
+    @OneToMany(mappedBy = "cv", cascade = CascadeType.ALL)
+    private List<Application> applications = new ArrayList<>();
     public enum CvStatus {
         PENDING,
         ACCEPTED,
         REFUSED
     }
-
-    @ToString.Exclude
-    @OneToMany(mappedBy = "cv", cascade = CascadeType.ALL)
-    private List<Application> applications = new ArrayList<>();
 
     public Cv(Long id, Student student, byte[] content, String fileName) {
         this.id = id;

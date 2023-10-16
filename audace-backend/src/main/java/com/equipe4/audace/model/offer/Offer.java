@@ -46,6 +46,12 @@ public class Offer {
 
     private OfferStatus offerStatus;
 
+    public enum OfferStatus {
+        PENDING,
+        ACCEPTED,
+        REFUSED
+    }
+
     public Offer(
             Long id,
             String title,
@@ -67,12 +73,6 @@ public class Offer {
         this.department = department;
         this.employer = employer;
         this.offerStatus = OfferStatus.PENDING;
-    }
-
-    public enum OfferStatus {
-        PENDING,
-        ACCEPTED,
-        REFUSED
     }
 
     public OfferDTO toDTO(){
