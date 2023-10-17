@@ -1,7 +1,7 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.GenericUserController;
-import com.equipe4.audace.dto.ApplicationDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

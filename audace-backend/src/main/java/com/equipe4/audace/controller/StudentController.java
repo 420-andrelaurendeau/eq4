@@ -1,7 +1,7 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.GenericUserController;
-import com.equipe4.audace.dto.ApplicationDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;

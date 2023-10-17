@@ -1,11 +1,11 @@
 package com.equipe4.audace.controller;
 
-import com.equipe4.audace.dto.ApplicationDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.Application;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.cv.Cv;
@@ -291,7 +291,7 @@ public class EmployerControllerTest {
         Student student = createStudentDTO().fromDTO();
         Cv cv = mock(Cv.class);
 
-        return new Application(1L, student, cv, offer);
+        return new Application(1L, cv, offer);
     }
 
 
