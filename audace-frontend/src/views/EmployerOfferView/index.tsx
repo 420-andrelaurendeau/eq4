@@ -50,7 +50,7 @@ const EmployerOfferView = () => {
             })
     }, [employer]);
 
-    const student : Student = {id : 1, firstName : "The", lastName : "Guy that repeatdly says to chill out", email : "it annoys me", phone : "cause their code is shit", address : "but then they tell people to chill out", password : "when they're pissed about it", type : "pain in my ass", studentNumber : "This is a number string", department : {id : 1, code : "fuck", name : "Why do I have to do this?"}};
+    const student : Student = {id : 1, firstName : "The", lastName : "Someone", email : "asd", phone : "asd", address : "shit", password : "oh no", type : "love", studentNumber : "This is a number string", department : {id : 1, code : "fuck", name : "Why do I have to do this?"}};
 
     const offer : Offer = {id : 1, title : "offre", description : "description", internshipStartDate : new Date(Date.now()), internshipEndDate : new Date(Date.now() + 100000), offerEndDate : new Date(Date.now() + 100000), availablePlaces : 5, department : {id : 1, code : "fuck", name : "Why do I have to do this?"}, employer : employer!, status : OfferStatus.PENDING}
     
