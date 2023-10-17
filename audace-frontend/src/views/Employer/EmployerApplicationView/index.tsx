@@ -9,6 +9,7 @@ import Application from "../../../model/application";
 import { CV, CVStatus } from "../../../model/cv";
 import CvList from "../../../components/CVsList";
 import {Container} from "react-bootstrap";
+import { Department } from "../../../model/department";
 
 const EmployerApplicationView = () => {
     const [employer, setEmployer] = useState<Employer>();
@@ -34,10 +35,11 @@ const EmployerApplicationView = () => {
             })
     }, [employer, navigate, t]);
 
-    const student : Student = {id : 1, firstName : "The", lastName : "Someone", email : "asd", phone : "asd", address : "ah", password : "oh no", type : "love", studentNumber : "This is a number string", department : {id : 1, code : "fuck", name : "Why do I have to do this?"}};
+    const department : Department = {id : 1, code : "code", name : "COMPUTER SCIENCE"};
+    const student : Student = {id : 1, firstName : "firstName", lastName : "lastName", email : "email", phone : "phone", address : "address", password : "oh no", type : "type", studentNumber : "This is a number string", department : department};
 
-    const offer : Offer = {id : 1, title : "offre", description : "description", internshipStartDate : new Date(Date.now()), internshipEndDate : new Date(Date.now() + 100000), offerEndDate : new Date(Date.now() + 100000), availablePlaces : 5, department : {id : 1, code : "fuck", name : "Why do I have to do this?"}, employer : employer!, offerStatus : OfferStatus.PENDING}
-    const offer2 : Offer = {id : 1, title : "offre", description : "description", internshipStartDate : new Date(Date.now()), internshipEndDate : new Date(Date.now() + 100000), offerEndDate : new Date(Date.now() + 100000), availablePlaces : 5, department : {id : 1, code : "fuck", name : "Why do I have to do this?"}, employer : employer!, offerStatus : OfferStatus.PENDING}
+    const offer : Offer = {id : 1, title : "offre", description : "description", internshipStartDate : new Date(Date.now()), internshipEndDate : new Date(Date.now() + 100000), offerEndDate : new Date(Date.now() + 100000), availablePlaces : 5, department : department, employer : employer!, offerStatus : OfferStatus.PENDING}
+    const offer2 : Offer = {id : 1, title : "offre", description : "description", internshipStartDate : new Date(Date.now()), internshipEndDate : new Date(Date.now() + 100000), offerEndDate : new Date(Date.now() + 100000), availablePlaces : 5, department : department, employer : employer!, offerStatus : OfferStatus.PENDING}
 
     const application : Application[] = [{id : 1, student : student, offer : offer, cv : {id : 1, fileName : "string", content : "content", student : student, cvStatus : CVStatus.PENDING}}]
     const application2 : Application[] = [{id : 1, student : student, offer : offer, cv : {id : 1, fileName : "string", content : "content", student : student, cvStatus : CVStatus.PENDING}}]
