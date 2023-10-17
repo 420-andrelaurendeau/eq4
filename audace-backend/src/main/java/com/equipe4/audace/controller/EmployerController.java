@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -55,9 +57,16 @@ public class EmployerController extends GenericUserController<Employer, Employer
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("offers/applications/{offerId}")
+    @GetMapping("offer/applications/{offerId}")
     public ResponseEntity<List<ApplicationDTO>> getAllApplicationsByOfferId(@PathVariable Long offerId) {
         logger.info("getAllApplicationsByOfferId");
         return ResponseEntity.ok(service.findAllApplicationsByOfferId(offerId));
     }
+
+    @GetMapping("offers/applications/{employerId}")
+    public ResponseEntity<Map<OfferDTO, List<ApplicationDTO>>> getAllApplicationsByEmployerId(@PathVariable Long employerId) {
+        logger.info("getAllApplicationsByEmployerId");
+        return ResponseEntity.ok(service.findAllApplicationsByEmployerId(employerId));
+    }
+
 }

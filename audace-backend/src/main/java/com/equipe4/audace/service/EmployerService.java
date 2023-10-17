@@ -13,6 +13,9 @@ import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 import java.util.*;
 
 @Service
@@ -75,5 +78,14 @@ public class EmployerService extends GenericUserService<Employer> {
     public List<ApplicationDTO> findAllApplicationsByOfferId(Long offerId){
         Offer offer = offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
         return applicationRepository.findAllByOffer(offer).stream().map(Application::toDTO).toList();
+    }
+
+    public Map<OfferDTO, List<ApplicationDTO>> findAllApplicationsByEmployerId(Long employerId){
+        Map<OfferDTO, List<ApplicationDTO>> map = new HashMap<>();
+
+        for (OfferDTO offerDTO: findAllOffersByEmployerId(employerId)){
+            map.put(offerDTO, findAllApplicationsByOfferId(offerDTO.getId()));
+        }
+        return map;
     }
 }
