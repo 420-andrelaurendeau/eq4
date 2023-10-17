@@ -164,7 +164,7 @@ public class StudentControllerTest {
         when(studentService.createApplication(any(ApplicationDTO.class))).thenReturn(Optional.of(applicationDTO));
 
         // when - action or behaviour that we are going test
-        ResultActions response = mockMvc.perform(post("/students/{id}/applications", 1L)
+        ResultActions response = mockMvc.perform(post("/students/applications/{id}", 1L)
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(Optional.of(applicationDTO))));
