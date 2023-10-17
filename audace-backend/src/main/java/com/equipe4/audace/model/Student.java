@@ -1,6 +1,7 @@
 package com.equipe4.audace.model;
 
 import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import jakarta.persistence.*;
