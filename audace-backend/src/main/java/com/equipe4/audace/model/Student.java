@@ -27,10 +27,6 @@ public class Student extends User {
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<Cv> cvs = new ArrayList<>();
 
-    @ToString.Exclude
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-    private List<Application> applications = new ArrayList<>();
-
     public Student(
             Long id,
             String firstname,
