@@ -61,19 +61,20 @@ const LoginForm = () => {
             return;
           }
 
-          getUserById(parseInt(id))
-              .then((res) => {
-                navigateToUserTypeHomePage(res.data.type!);
-              })
-              .catch((err) => {
-                console.log(err);
-                logout();
-                navigate("/pageNotFound");
-              });
-        })
-        .catch((error) => {
-          if (error.response.status === 401 || error.response.status === 403)
-            setAreCredentialsValid(false);
+        getUserById(parseInt(id))
+          .then((res) => {
+            navigateToUserTypeHomePage(res.data.type!);
+          })
+          .catch((err) => {
+            console.log(err);
+            logout();
+            navigate("/pageNotFound");
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.response.status === 401 || error.response.status === 403)
+          setAreCredentialsValid(false);
 
           setIsDisabled(false);
         });
@@ -127,38 +128,38 @@ const LoginForm = () => {
   };
 
   return (
-      <>
-        <Form className="my-3">
-          <FormInput
-              label="login.identification"
-              value={identification}
-              onChange={(e) => setIdentification(e.target.value)}
-              controlId="formBasicIdentification"
-              errors={errors}
-              formError={"login.errors.emptyIdentification"}
-          />
-          <FormInput
-              label="login.password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              controlId="formBasicPassword"
-              errors={errors}
-              formError={"login.errors.emptyPassword"}
-              type="password"
-          />
-          <Button onClick={submitForm} disabled={isDisabled}>
-            {t("signin")}
-          </Button>
-          {!areCredentialsValid && (
-              <p className="invalid-credentials">
-                {t("login.errors.invalidCredentials")}
-              </p>
-          )}
-        </Form>
-        {showExpiredSessionNotif && (
-            <Alert variant="danger">{t("login.errors.sessionExpired")}</Alert>
+    <>
+      <Form className="my-3">
+        <FormInput
+          label="login.identification"
+          value={identification}
+          onChange={(e) => setIdentification(e.target.value)}
+          controlId="formBasicIdentification"
+          errors={errors}
+          formError={"login.errors.emptyIdentification"}
+        />
+        <FormInput
+          label="login.password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          controlId="formBasicPassword"
+          errors={errors}
+          formError={"login.errors.emptyPassword"}
+          type="password"
+        />
+        <Button onClick={submitForm} disabled={isDisabled}>
+          {t("signin")}
+        </Button>
+        {!areCredentialsValid && (
+          <p className="invalid-credentials">
+            {t("login.errors.invalidCredentials")}
+          </p>
         )}
-      </>
+      </Form>
+      {showExpiredSessionNotif && (
+        <Alert variant="danger">{t("login.errors.sessionExpired")}</Alert>
+      )}
+    </>
   );
 };
 

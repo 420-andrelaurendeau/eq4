@@ -1,12 +1,16 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.ManagerDTO;
+import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
+import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.ManagerRepository;
+import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -32,6 +36,8 @@ public class ManagerServiceTest {
     private DepartmentRepository departmentRepository;
     @Mock
     private ManagerRepository managerRepository;
+    @Mock
+    private CvRepository cvRepository;
     @InjectMocks
     private ManagerService managerService;
 
@@ -39,14 +45,23 @@ public class ManagerServiceTest {
     public void acceptOffer() {
         Employer employer = mock(Employer.class);
         Department department = mock(Department.class);
-        Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, employer, department);
-
-        when(offerRepository.findById(1L)).thenReturn(Optional.of(offer));
-        when(offerRepository.save(any())).thenReturn(offer);
+        Offer offer1 = new Offer(
+                1L,
+                "title",
+                "description",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                1,
+                department,
+                employer
+        );
+        when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
+        when(offerRepository.save(any())).thenReturn(offer1);
 
         managerService.acceptOffer(1L);
 
-        assert(offer.getStatus() == Offer.Status.ACCEPTED);
+        assert(offer1.getOfferStatus() == Offer.OfferStatus.ACCEPTED);
     }
 
     @Test
@@ -59,14 +74,23 @@ public class ManagerServiceTest {
     public void refuseOffer() {
         Employer employer = mock(Employer.class);
         Department department = mock(Department.class);
-        Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, employer, department);
-
-        when(offerRepository.findById(1L)).thenReturn(Optional.of(offer));
-        when(offerRepository.save(any())).thenReturn(offer);
+        Offer offer1 = new Offer(
+                1L,
+                "title",
+                "description",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                1,
+                department,
+                employer
+        );
+        when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
+        when(offerRepository.save(any())).thenReturn(offer1);
 
         managerService.refuseOffer(1L);
 
-        assert(offer.getStatus() == Offer.Status.REFUSED);
+        assert(offer1.getOfferStatus() == Offer.OfferStatus.REFUSED);
     }
 
     @Test
@@ -80,10 +104,19 @@ public class ManagerServiceTest {
         Department mockedDepartment = mock(Department.class);
         List<Offer> offers = new ArrayList<>();
 
-        Employer fakeEmployer = new Employer(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
-        Offer fakeOffer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, fakeEmployer, mockedDepartment);
+        Employer fakeEmployer = mock(Employer.class);
 
-        fakeEmployer.getOffers().add(fakeOffer);
+        Offer fakeOffer = new Offer(
+                1L,
+                "title",
+                "description",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                1,
+                mockedDepartment,
+                fakeEmployer
+        );
 
         for (int i = 0; i < 3; i++)
             offers.add(fakeOffer);
@@ -122,7 +155,16 @@ public class ManagerServiceTest {
     public void findManagerById_happyPathTest() {
         // Arrange
         Department department = mock(Department.class);
-        Manager manager = new Manager(1L, "manager", "managerman", "manager@email.com", "password", "yeete", "1234567890", department);
+        Manager manager = new Manager(
+                1L,
+                "manager",
+                "managerman",
+                "manager@email.com",
+                "password",
+                "1234567890",
+                "123456789",
+                department
+        );
 
         when(managerRepository.findById(1L)).thenReturn(Optional.of(manager));
 
@@ -145,5 +187,81 @@ public class ManagerServiceTest {
 
         // Assert
         assertThat(result.isEmpty()).isTrue();
+    }
+
+    @Test
+    public void getCvsByDepartment_happyPath() {
+        Department mockedDepartment = mock(Department.class);
+        Student student = new Student(1L, "firstName", "lastName", "email", "password", "address", "phone", "studentNumber", mockedDepartment);
+        List<Cv> listCvs = new ArrayList<>();
+        listCvs.add(new Cv(null, student, new byte[10], "cv"));
+
+        when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(listCvs);
+
+        List<CvDTO> result = managerService.getCvsByDepartment(1L);
+
+        assertThat(result.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void getCvsByDepartment_invalidDepartmentId() {
+        when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(new ArrayList<>());
+
+        assertThat(managerService.getCvsByDepartment(1L).size()).isEqualTo(0);
+    }
+
+    @Test
+    public void getCvsByDepartment_noCvs() {
+        List<Cv> listCvs = new ArrayList<>();
+
+        when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(listCvs);
+
+        List<CvDTO> result = managerService.getCvsByDepartment(1L);
+
+        assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void acceptCv() {
+        Student student = mock(Student.class);
+        Cv cv = new Cv(null, student, "Monkey Enthusiast needs more sleep".getBytes(), "cv");
+        when(cvRepository.findById(1L)).thenReturn(Optional.of(cv));
+        when(cvRepository.save(any())).thenReturn(cv);
+
+        Optional<CvDTO> cvDTO = managerService.acceptCv(1L);
+        if (cvDTO.isPresent()) {
+            assert(cvDTO.get().getCvStatus() == Cv.CvStatus.ACCEPTED);
+        }
+        else {
+            assert(false);
+        }
+    }
+
+    @Test
+    public void acceptCv_InvalidId() {
+        when(cvRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
+        assertThrows(EntityNotFoundException.class, () -> managerService.acceptCv(1L));
+    }
+
+    @Test
+    public void refuseCv() {
+        Student student = mock(Student.class);
+        Cv cv = new Cv(null, student, "Monkey Enthusiast needs more sleep".getBytes(), "cv");
+        when(cvRepository.findById(1L)).thenReturn(Optional.of(cv));
+        when(cvRepository.save(any())).thenReturn(cv);
+
+        Optional<CvDTO> cvDTO = managerService.refuseCv(1L);
+        if (cvDTO.isPresent()) {
+            assert(cvDTO.get().getCvStatus() == Cv.CvStatus.REFUSED);
+        }
+        else {
+            assert(false);
+        }
+    }
+
+    @Test
+    public void refuseCv_Invalid_Id() {
+        when(cvRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
+        assertThrows(EntityNotFoundException.class, () -> managerService.refuseCv(1L));
     }
 }

@@ -33,6 +33,15 @@
       "studentId": "SVP entrez une matricule valide"
     }
   },
+  "cvsList": {
+    "errors": {
+      "departmentNotFound": "Département pas trouvé"
+    },
+    "name": "Titre du CV",
+    "viewMore": "Voir le CV",
+    "noCvs": "Aucun CV disponible",	
+    "studentName": "Nom de l'étudiant"
+  },
   "offersList": {
     "errors": {
       "departmentNotFound": "Aucun département trouvé"
@@ -71,6 +80,19 @@
     "REFUSED": "Refusé",
     "noMorePendingOffers": "Il n'y a plus d'offres en attente"
   },
+  "managerCvsList": {
+    "errors": {
+      "cvNotFound": "CV non trouvé",
+      "departmentNotFound": "Département non trouvé",
+      "studentNotFound": "Étudiant non trouvé"
+    },
+    "viewTitle": "CVs disponibles",
+    "acceptButton": "Accepter",
+    "refuseButton": "Refuser",
+    "ACCEPTED": "Accepté",
+    "REFUSED": "Refusé",
+    "noMorePendingCvs": "Il n'y a plus de CV en attente"
+  },
   "employerOffersList": {
     "viewTitle": "Offres disponibles",
     "status": "État",
@@ -84,13 +106,15 @@
     "seeOffersButton": "Voir les offres"
   },
   "manager": {
-    "seeOffersButton": "Voir les offres"
+    "seeOffersButton": "Voir les offres",
+    "seeCvsButton": "See CVS"
   },
   "employer": {
     "errors": {
       "employerNotFound": "Aucun employeur trouvé"
     },
-    "seeOffersButton": "Voir les offres"
+    "seeOffersButton": "Voir les offres",
+    "seeApplicationsButton": "Voir les applications"
   },
   "upload": {
     "CvFormTitle": "Téléverser votre CV",

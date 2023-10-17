@@ -9,7 +9,7 @@ import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
-import com.equipe4.audace.model.offer.Offer.Status;
+import com.equipe4.audace.model.offer.Offer.OfferStatus;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
@@ -33,7 +33,14 @@ public class StudentService extends GenericUserService<Student> {
     private final CvRepository cvRepository;
     private final ApplicationRepository applicationRepository;
 
-    public StudentService(SaltRepository saltRepository, DepartmentRepository departmentRepository, OfferRepository offerRepository, StudentRepository studentRepository, CvRepository cvRepository, ApplicationRepository applicationRepository) {
+    public StudentService(
+            SaltRepository saltRepository,
+            DepartmentRepository departmentRepository,
+            OfferRepository offerRepository,
+            StudentRepository studentRepository,
+            CvRepository cvRepository,
+            ApplicationRepository applicationRepository
+    ) {
         super(saltRepository);
         this.departmentRepository = departmentRepository;
         this.offerRepository = offerRepository;
@@ -47,7 +54,8 @@ public class StudentService extends GenericUserService<Student> {
         if (studentDTO == null) {
             throw new IllegalArgumentException("Student cannot be null");
         }
-        Optional<Student> studentOptional = studentRepository.findStudentByStudentNumberOrEmail(studentDTO.getStudentNumber(), studentDTO.getEmail());
+        Optional<Student> studentOptional =
+                studentRepository.findStudentByStudentNumberOrEmail(studentDTO.getStudentNumber(), studentDTO.getEmail());
 
         if (studentOptional.isPresent()) {
             throw new IllegalArgumentException("Student already exists");
@@ -67,8 +75,9 @@ public class StudentService extends GenericUserService<Student> {
 
     @Transactional
     public List<OfferDTO> getAcceptedOffersByDepartment(Long departmentId) {
-        Department department = departmentRepository.findById(departmentId).orElseThrow(() -> new NoSuchElementException("Department not found"));
-        List<Offer> offers = offerRepository.findAllByDepartmentAndStatus(department, Status.ACCEPTED);
+        Department department = departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new NoSuchElementException("Department not found"));
+        List<Offer> offers = offerRepository.findAllByDepartmentAndOfferStatus(department, OfferStatus.ACCEPTED);
 
         return offers.stream().map(Offer::toDTO).toList();
     }

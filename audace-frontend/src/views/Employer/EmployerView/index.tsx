@@ -9,11 +9,15 @@ const EmployerView = () => {
     const seeOffers = () => {
         navigate(`/employer/offers`);
     };
+    const seeApplications = () => {
+        navigate(`/employer/applications`);
+    };
 
     return (
         <Container>
             <h1 className="my-3">Employer view</h1>
             <Button onClick={seeOffers}>{t("employer.seeOffersButton")}</Button>
+            <Button className="mx-2" onClick={seeApplications}>{t("employer.seeApplicationsButton")}</Button>
         </Container>
     )
 }

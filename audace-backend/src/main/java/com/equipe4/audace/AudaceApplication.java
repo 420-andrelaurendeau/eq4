@@ -17,6 +17,7 @@ import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.StudentService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -59,7 +60,22 @@ public class AudaceApplication implements CommandLineRunner {
 		if (optionalEmployerDTO.isEmpty()) return;
 		EmployerDTO employerDTO = optionalEmployerDTO.get();
 		Employer employer = employerDTO.fromDTO();
-		employerService.createOffer(new OfferDTO(null, "Stage en génie logiciel PROTOTYPE", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, Offer.Status.ACCEPTED, department.toDTO(), employerDTO));
+
+		employerService.createOffer(
+				new OfferDTO(
+						null,
+						"Stage en génie logiciel PROTOTYPE",
+						"Stage en génie logiciel",
+						LocalDate.now(),
+						LocalDate.now(),
+						LocalDate.now(),
+						3,
+						Offer.OfferStatus.ACCEPTED,
+						department.toDTO(),
+						employerDTO
+				)
+		);
+		employerService.createOffer(new OfferDTO(null, "Stage en génie logiciel PROTOTYPE", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, Offer.OfferStatus.ACCEPTED, department.toDTO(), employerDTO));
 
 		Student student = new Student(2L, "Kylian", "Mbappe", "kylian@live.fr", "123123", "34 de Montpellier", "4387654545", "2080350", department);
 		Optional<StudentDTO> optionalStudent = studentService.createStudent(student.toDTO(), department.getCode());
@@ -67,16 +83,25 @@ public class AudaceApplication implements CommandLineRunner {
 		student = optionalStudent.get().fromDTO();
 
 
-		Offer offer1 = new Offer(null,"Stage en génie spaget car c'est bon du spaget pour le dîner miam", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, employer, department);
-		offer1.setStatus(Offer.Status.ACCEPTED);
+		Offer offer2 = new Offer(
+				null,
+				"Stage en génie logiciel chez Roc-a-Fella Records",
+				"Stage en génie logiciel",
+				LocalDate.now(),
+				LocalDate.now(),
+				LocalDate.now(),
+				3,
+                department,
+                employer
+		);
+		offer2.setOfferStatus(Offer.OfferStatus.ACCEPTED);
+		Offer offer1 = new Offer(null,"Stage en génie spaget car c'est bon du spaget pour le dîner miam", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
+		offer1.setOfferStatus(Offer.OfferStatus.ACCEPTED);
 
-		Offer offer2 = new Offer(null,"Stage en génie logiciel chez Roc-a-Fella Records", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, employer, department);
-		offer2.setStatus(Offer.Status.ACCEPTED);
+		Offer offer3 = new Offer(null,"Stage en génie logiciel chez Google", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
 
-		Offer offer3 = new Offer(null,"Stage en génie logiciel chez Google", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, employer, department);
-
-		Offer offer4 = new Offer(null,"Stage en génie logiciel chez Microsoft", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, employer, department);
-		offer4.setStatus(Offer.Status.ACCEPTED);
+		Offer offer4 = new Offer(null,"Stage en génie logiciel chez Microsoft", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
+		offer4.setOfferStatus(Offer.OfferStatus.ACCEPTED);
 
 		employer.getOffers().add(offer1);
 		employer.getOffers().add(offer2);
@@ -92,9 +117,11 @@ public class AudaceApplication implements CommandLineRunner {
 
 		Manager manager = new Manager(3L, "manager", "managerman", "manager@email.com", "password", "yeete", "1234567890", department);
 		managerRepository.save(manager);
+
 		String managerPassword = manager.getPassword();
 		String managerSalt = BCrypt.gensalt();
 		manager.setPassword(BCrypt.hashpw(managerPassword, managerSalt));
+		manager = managerRepository.save(manager);
 		saltRepository.save(new Salt(null, manager, managerSalt));
 		managerRepository.save(manager);
 	}

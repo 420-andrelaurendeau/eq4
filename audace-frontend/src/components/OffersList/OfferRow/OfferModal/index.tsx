@@ -8,7 +8,7 @@ import { formatDate } from "../../../../services/formatService";
 import {apply, getCvsByStudentId} from "../../../../services/studentApplicationService"
 import { useParams} from "react-router";
 import Application from "../../../../model/application";
-import { CV } from "../../../../model/cv";
+import { CV, CVStatus } from "../../../../model/cv";
 import { getUserId } from "../../../../services/authService";
 import OfferButtons from "../OfferButtons";
 
@@ -66,6 +66,7 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
             student: tempStudent,
             fileName: "CV",
             content: "test",
+            cvStatus: CVStatus.PENDING,
         }
         
         const applicationData: Application = {
@@ -134,7 +135,7 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
                         {userType === UserType.Employer &&
                             <div>
                                 {t("employerOffersList.status")}:&nbsp;
-                                {createBoldText(t(`employerOffersList.${offer.status}`))}
+                                {createBoldText(t(`employerOffersList.${offer.offerStatus}`))}
                                 {/*offer.status === OfferStatus.ACCEPTED ? createBoldText(t("employerOffersList.ACCEPTED")):
                                     (offer.status === OfferStatus.PENDING ? createBoldText(t("employerOffersList.PENDING")):
                                             createBoldText(t("employerOffersList.REFUSED"))

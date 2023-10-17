@@ -5,4 +5,11 @@ export interface CV {
   fileName: string;
   content: string;
   student: Student;
+  cvStatus: CVStatus;
+}
+
+export enum CVStatus {
+    PENDING = "PENDING",
+    ACCEPTED = "ACCEPTED",
+    REFUSED = "REFUSED"
 }

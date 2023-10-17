@@ -54,6 +54,60 @@ public class StudentServiceTest {
     private StudentService studentService;
 
     @Test
+    void getOffersByDepartmentAndStatus_happyPath() {
+        Department mockedDepartment = mock(Department.class);
+        List<Offer> offers = new ArrayList<>();
+
+        Employer fakeEmployer = new Employer(
+                null,
+                "employer",
+                "employerMan",
+                "employer@email.com",
+                "password",
+                "organisation",
+                "position",
+                "123 Street Street",
+                "1234567890",
+                "-123"
+        );
+
+        Offer mockedOffer = mock(Offer.class);
+        fakeEmployer.getOffers().add(mockedOffer);
+
+        for (int i = 0; i < 3; i++)
+            offers.add(mockedOffer);
+
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
+        when(offerRepository.findAllByDepartmentAndOfferStatus(mockedDepartment, Offer.OfferStatus.ACCEPTED)).thenReturn(offers);
+
+        List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
+
+        assertThat(result.size()).isEqualTo(offers.size());
+        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
+    }
+
+    @Test
+    void getOffersByDepartmentAndStatus_departmentNotFound() {
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> studentService.getAcceptedOffersByDepartment(1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Department not found");
+    }
+
+    @Test
+    void getOffersByDepartmentAndStatus_noOffers() {
+        Department mockedDepartment = mock(Department.class);
+
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
+        when(offerRepository.findAllByDepartmentAndOfferStatus(mockedDepartment, Offer.OfferStatus.ACCEPTED)).thenReturn(new ArrayList<>());
+
+        List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
+
+        assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
     void createStudent() {
         StudentDTO studentDTO = createStudentDTO();
 
@@ -201,7 +255,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    void getOffersByDepartmentAndStatus_happyPath() {
+    void getOffersByDepartmentAndOfferStatus_happyPath() {
         Department mockedDepartment = mock(Department.class);
         List<Offer> offers = new ArrayList<>();
 
@@ -215,7 +269,7 @@ public class StudentServiceTest {
             offers.add(mockedOffer);
 
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
-        when(offerRepository.findAllByDepartmentAndStatus(mockedDepartment, Offer.Status.ACCEPTED)).thenReturn(offers);
+        when(offerRepository.findAllByDepartmentAndOfferStatus(mockedDepartment, Offer.OfferStatus.ACCEPTED)).thenReturn(offers);
 
         List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
 
@@ -223,7 +277,7 @@ public class StudentServiceTest {
         assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
     }
     @Test
-    void getOffersByDepartmentAndStatus_departmentNotFound() {
+    void getOffersByDepartmentAndOfferStatus_departmentNotFound() {
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> studentService.getAcceptedOffersByDepartment(1L))
@@ -231,11 +285,11 @@ public class StudentServiceTest {
                 .hasMessage("Department not found");
     }
     @Test
-    void getOffersByDepartmentAndStatus_noOffers() {
+    void getOffersByDepartmentAndOfferStatus_noOffers() {
         Department mockedDepartment = mock(Department.class);
 
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
-        when(offerRepository.findAllByDepartmentAndStatus(mockedDepartment, Offer.Status.ACCEPTED)).thenReturn(new ArrayList<>());
+        when(offerRepository.findAllByDepartmentAndOfferStatus(mockedDepartment, Offer.OfferStatus.ACCEPTED)).thenReturn(new ArrayList<>());
 
         List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
 
@@ -287,7 +341,7 @@ public class StudentServiceTest {
     private Offer createOffer() {
         Employer employer = createEmployerDTO().fromDTO();
         Department department = createDepartment();
-        return new Offer(1L,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, employer, department);
+        return new Offer(1L,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
     }
 
 

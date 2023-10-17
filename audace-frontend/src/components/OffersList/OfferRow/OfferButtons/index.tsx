@@ -3,7 +3,6 @@ import EmployerButtons from "./EmployerButtons";
 import StudentButtons from "./StudentButtons";
 import ManagerButtons from "./ManagerButtons";
 import { Offer, OfferStatus } from "../../../../model/offer";
-import { useParams } from "react-router-dom";
 
 interface Props {
     userType : UserType;

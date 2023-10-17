@@ -2,6 +2,7 @@ package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.GenericUserController;
 import com.equipe4.audace.dto.ManagerDTO;
+import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.service.ManagerService;
@@ -46,5 +47,27 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
     @GetMapping("/offers/{departmentId}")
     public ResponseEntity<List<OfferDTO>> getOffersByDepartment(@PathVariable Long departmentId) {
         return ResponseEntity.ok(service.getOffersByDepartment(departmentId));
+    }
+
+    @GetMapping("/cvs/{departmentId}")
+    public ResponseEntity<List<CvDTO>> getCvsByDepartment(@PathVariable Long departmentId) {
+        logger.info("getCvsByDepartment");
+        return ResponseEntity.ok(service.getCvsByDepartment(departmentId));
+    }
+
+    @PostMapping("/accept_cv/{cvId}")
+    public ResponseEntity<HttpStatus> acceptCv(@PathVariable Long cvId) {
+        logger.info("acceptCv");
+        return service.acceptCv(cvId)
+                .map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    }
+
+    @PostMapping("/refuse_cv/{cvId}")
+    public ResponseEntity<HttpStatus> refuseCv(@PathVariable Long cvId) {
+        logger.info("refuseCv");
+        return service.refuseCv(cvId)
+                .map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 }

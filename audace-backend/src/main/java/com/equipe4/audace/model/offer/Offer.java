@@ -41,15 +41,25 @@ public class Offer {
     @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL)
     private List<Application> applications = new ArrayList<>();
 
-    private Status status;
+    private OfferStatus offerStatus;
 
-    public enum Status {
+    public enum OfferStatus {
         PENDING,
         ACCEPTED,
         REFUSED
     }
 
-    public Offer(Long id, String title, String description, LocalDate internshipStartDate, LocalDate internshipEndDate, LocalDate offerEndDate, int availablePlaces, Employer employer, Department department) {
+    public Offer(
+            Long id,
+            String title,
+            String description,
+            LocalDate internshipStartDate,
+            LocalDate internshipEndDate,
+            LocalDate offerEndDate,
+            int availablePlaces,
+            Department department,
+            Employer employer
+    ) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -57,11 +67,10 @@ public class Offer {
         this.internshipEndDate = internshipEndDate;
         this.offerEndDate = offerEndDate;
         this.availablePlaces = availablePlaces;
-        this.status = Status.PENDING;
         this.department = department;
         this.employer = employer;
+        this.offerStatus = OfferStatus.PENDING;
     }
-
 
     public OfferDTO toDTO(){
         return new OfferDTO(
@@ -72,7 +81,7 @@ public class Offer {
                 internshipEndDate,
                 offerEndDate,
                 availablePlaces,
-                status,
+                offerStatus,
                 department.toDTO(),
                 employer.toDTO()
         );

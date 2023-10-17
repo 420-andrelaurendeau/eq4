@@ -33,12 +33,14 @@ public class EmployerService extends GenericUserService<Employer> {
         if (employerDTO == null) throw new IllegalArgumentException("Employer cannot be null");
 
         Optional<Employer> employerOptional = employerRepository.findByEmail(employerDTO.getEmail());
+
         if(employerOptional.isPresent()) throw new IllegalArgumentException("Email already in use");
 
         Employer employer = employerDTO.fromDTO();
         hashAndSaltPassword(employer);
         return Optional.of(employerRepository.save(employer).toDTO());
     }
+
     public Optional<EmployerDTO> findEmployerById(Long employerId){
         return employerRepository.findById(employerId).map(Employer::toDTO);
     }
@@ -49,16 +51,22 @@ public class EmployerService extends GenericUserService<Employer> {
     public Optional<OfferDTO> createOffer(OfferDTO offerDTO){
         if(offerDTO == null) throw new IllegalArgumentException("Offer cannot be null");
 
-        return Optional.of(offerRepository.save(offerDTO.fromDTO()).toDTO());
+        Offer offer = offerDTO.fromDTO();
+        offer.setOfferStatus(Offer.OfferStatus.PENDING);
+
+        return Optional.of(offerRepository.save(offer).toDTO());
     }
+
     public List<OfferDTO> findAllOffersByEmployerId(Long employerId){
         Employer employer = employerRepository.findById(employerId).orElseThrow(() -> new NoSuchElementException("Employer not found"));
         return offerRepository.findAllByEmployer(employer).stream().map(Offer::toDTO).toList();
     }
+
     public Optional<OfferDTO> updateOffer(OfferDTO offerDTO){
         Offer offer = offerRepository.findById(offerDTO.getId()).orElseThrow(() -> new NoSuchElementException("Offer not found"));
         return Optional.of(offerRepository.save(offer).toDTO());
     }
+
     public void deleteOffer(Long offerId){
         Offer offer = offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
         offerRepository.delete(offer);

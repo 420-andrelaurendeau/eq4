@@ -156,7 +156,7 @@ public class StudentControllerTest {
 
         Cv cv = mock(Cv.class);
 
-        Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, employer, department);
+        Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
         offer.setId(1L);
         Application application = new Application(1L, student, cv, offer);
         ApplicationDTO applicationDTO = application.toDTO();

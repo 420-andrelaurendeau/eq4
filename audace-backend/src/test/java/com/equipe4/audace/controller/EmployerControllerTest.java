@@ -251,7 +251,7 @@ public class EmployerControllerTest {
     private Offer createOffer() {
         Employer employer = createEmployerDTO().fromDTO();
         Department department = createDepartment();
-        return new Offer(1L,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, employer, department);
+        return new Offer(1L,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
     }
     private Application createApplication() {
         Offer offer = createOffer();

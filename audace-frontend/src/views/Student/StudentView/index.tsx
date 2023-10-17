@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
-import { getStudentById } from "../../services/userService";
+import { getStudentById } from "../../../services/userService";
 import { useTranslation } from "react-i18next";
-import { Student, UserType } from "../../model/user";
-import { Offer } from "../../model/offer";
-import { getStudentOffersByDepartment } from "../../services/offerService";
-import OffersList from "../../components/OffersList";
-import { getUserId } from "../../services/authService";
+import { Student, UserType } from "../../../model/user";
+import { Offer } from "../../../model/offer";
+import { getStudentOffersByDepartment } from "../../../services/offerService";
+import OffersList from "../../../components/OffersList";
+import { getUserId } from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
-import FileUploader from "../../components/FileUploader";
-import {getCvsByStudentId} from "../../services/studentApplicationService";
-import {CV} from "../../model/cv";
-import CvList from "../../components/CVsList";
+import { getCvsByStudentId } from "../../../services/studentApplicationService";
+import { CV } from "../../../model/cv";
+import FileUploader from "../../../components/FileUploader";
 
 const StudentView = () => {
   const [student, setStudent] = useState<Student>();
@@ -67,7 +66,6 @@ const StudentView = () => {
       <h1 className="my-3">Student view</h1>
       <h2>{t("studentOffersList.viewTitle")}</h2>
       <OffersList offers={offers} error={error} userType={UserType.Student} />
-      <CvList></CvList>
       <FileUploader student={student!} />
     </Container>
   );

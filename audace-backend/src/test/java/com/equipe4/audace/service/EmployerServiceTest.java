@@ -125,7 +125,7 @@ public class EmployerServiceTest {
         // Arrange
         Department mockedDepartment = new Department(1L, "GLO", "Génie logiciel");
         Employer fakeEmployer = new Employer(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
-        OfferDTO offerDTO = new OfferDTO(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, Offer.Status.PENDING, mockedDepartment.toDTO(), fakeEmployer.toDTO());
+        OfferDTO offerDTO = new OfferDTO(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, Offer.OfferStatus.PENDING, mockedDepartment.toDTO(), fakeEmployer.toDTO());
 
         when(offerRepository.save(any(Offer.class))).thenReturn(offerDTO.fromDTO());
 
@@ -281,7 +281,7 @@ public class EmployerServiceTest {
     private Offer createOffer() {
         Employer employer = createEmployerDTO().fromDTO();
         Department department = createDepartment();
-        return new Offer(1L,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, employer, department);
+        return new Offer(1L,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
     }
     private Application createApplication() {
         Offer offer = createOffer();
