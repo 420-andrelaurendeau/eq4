@@ -368,4 +368,12 @@ public class StudentServiceTest {
         assertThat(dto).isEqualTo(applicationDTO);
         verify(applicationRepository, times(1)).save(application);
     }
+
+    @Test
+    public void createApplication_NullApplication(){
+        assertThatThrownBy(() -> studentService.createApplication(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Application cannot be null");
+    }
+
 }
