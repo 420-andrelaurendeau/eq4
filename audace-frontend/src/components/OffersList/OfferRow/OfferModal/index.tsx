@@ -39,14 +39,7 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
             .catch((err) => {
                 console.log("getEmployerById error", err);
             });
-        getCvsByStudentId(parseInt(getUserId()!))
-            .then((res) => {
-                setCv(res.data[0]);
-            })
-            .catch((err) => {
-                console.log("getCvsByStudentId error", err);
-            });
-    }, [setEmployer, offer, employer, studentId]);
+    }, [setEmployer, offer, employer]);
 
     const createBoldText = (text: string) => {
         return <b>{text}</b>;
@@ -141,11 +134,12 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
                         {userType === UserType.Employer &&
                             <div>
                                 {t("employerOffersList.status")}:&nbsp;
-                                {offer.status === OfferStatus.ACCEPTED ? createBoldText(t("employerOffersList.ACCEPTED")):
+                                {createBoldText(t(`employerOffersList.${offer.status}`))}
+                                {/*offer.status === OfferStatus.ACCEPTED ? createBoldText(t("employerOffersList.ACCEPTED")):
                                     (offer.status === OfferStatus.PENDING ? createBoldText(t("employerOffersList.PENDING")):
                                             createBoldText(t("employerOffersList.REFUSED"))
                                     )
-                                }
+                                */}
                             </div>
                         }
                     </div>
@@ -157,7 +151,7 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
                     )}
                     <Button onClick={handleApply}>Apply</Button>
                     
-                    {/*<OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState}/>*/}
+                    <OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState}/>
                 </Modal.Footer>
             </Modal>
         </>

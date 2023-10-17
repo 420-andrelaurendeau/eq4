@@ -4,7 +4,7 @@ import http from "../constants/http";
 import { CV } from "../model/cv";
 
 export const apply = async (application: Application): Promise<AxiosResponse> => {
-    return http.post(`/students/${application.student!.id}/applications`, application);
+    return http.post(`/students/applications/${application.student!.id}`, application);
 }
 
 export const getCvsByStudentId = async (studentId: number): Promise<AxiosResponse<CV[]>> => {
