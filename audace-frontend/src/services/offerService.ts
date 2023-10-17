@@ -1,16 +1,15 @@
 import { AxiosResponse } from "axios";
 import { Offer } from "../model/offer";
 import http from "../constants/http";
-import Application from "../model/application";
 
 export const getStudentOffersByDepartment = async (departmentId: number): Promise<AxiosResponse<Offer[]>> => {
     return http.get<Offer[]>(`/students/offers/${departmentId}`);
 }
 export const getAllOffersByEmployerId = async (employerId: number): Promise<AxiosResponse<Offer[]>> =>{
-    return http.get(`/employers/${employerId}/offers`);
+    return http.get(`/employers/offers/${employerId}`);
 }
 export const employerCreateOffer = async (offer: Offer): Promise<AxiosResponse> => {
-    return http.post(`/employers/${offer.employer.id}/offers`)
+    return http.post(`/employers/offers/${offer.employer.id}`)
 }
 
 export const getManagerOffersByDepartment = async (departmentId: number): Promise<AxiosResponse<Offer[]>> => {
