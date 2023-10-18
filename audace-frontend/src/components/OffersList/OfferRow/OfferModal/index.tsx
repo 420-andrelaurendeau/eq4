@@ -1,15 +1,11 @@
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import { Offer, OfferStatus } from "../../../../model/offer";
-import { Employer, Student, UserType } from "../../../../model/user";
-import {Button, Modal} from "react-bootstrap";
+import { Employer, UserType } from "../../../../model/user";
+import { Modal} from "react-bootstrap";
 import { getEmployerById } from "../../../../services/userService";
 import { useTranslation } from "react-i18next";
 import { formatDate } from "../../../../services/formatService";
-import {apply, getCvsByStudentId} from "../../../../services/studentApplicationService"
-import { useParams} from "react-router";
-import Application from "../../../../model/application";
-import { CV } from "../../../../model/cv";
-import { getUserId } from "../../../../services/authService";
+import OfferButtons from "../OfferButtons";
 
 interface Props {
     offer: Offer;
@@ -23,10 +19,6 @@ interface Props {
 
 const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, updateOffersState}: Props) => {
     const {t} = useTranslation();
-    const [applicationMessage, setApplicationMessage] = useState("");
-    const [applicationMessageColor, setApplicationMessageColor] = useState("");
-    const studentId = getUserId();
-    const [cv, setCv] = useState<CV>();
 
     useEffect(() => {
         if (employer !== undefined) return;
@@ -38,51 +30,10 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
             .catch((err) => {
                 console.log("getEmployerById error", err);
             });
-        getCvsByStudentId(parseInt(getUserId()!))
-            .then((res) => {
-                setCv(res.data[0]);
-            })
-            .catch((err) => {
-                console.log("getCvsByStudentId error", err);
-            });
-    }, [setEmployer, offer, employer, studentId]);
+    }, [setEmployer, offer, employer]);
 
     const createBoldText = (text: string) => {
         return <b>{text}</b>;
-    };
-
-    const handleApply = () => {
-
-        if (!studentId || !cv) return;
-
-        const tempStudent: Student = {
-            id: parseInt(studentId),
-            firstName: "",
-            lastName: "",
-            email: "",
-            phone: "",
-            address: "",
-            type: "student",
-            studentNumber: "",
-            password: "string"
-        }
-
-        const applicationData: Application = {
-            id: 1000,
-            offer: offer,
-            cv: cv,
-            student: tempStudent,
-        };
-
-        apply(applicationData)
-            .then((response) => {
-                setApplicationMessage("Application submitted successfully");
-                setApplicationMessageColor("green");
-            })
-            .catch((error) => {
-                setApplicationMessage("Error submitting application: " + error.message);
-                setApplicationMessageColor("red");
-            });
     };
 
     return (
@@ -136,11 +87,7 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
                 </Modal.Body>
                 <Modal.Footer>
                     {employer === undefined && <div className="text-danger">{t("offer.modal.empNotFound")}</div>}
-                    {applicationMessage && (
-                        <div style={{ color: applicationMessageColor }}>{applicationMessage}</div>
-                    )}
-                    <Button onClick={handleApply}>Apply</Button>
-                    {/*<OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState}/>*/}
+                    <OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState}/>
                 </Modal.Footer>
             </Modal>
         </>

@@ -16,7 +16,7 @@
     "https-browserify": "^1.0.0",
     "i18next": "^23.5.1",
     "jwt-decode": "^3.1.2",
-    "pdfjs-dist": "^3.4.120",
+    "pdfjs-dist": "^3.4ac.120",
     "react": "^18.2.0",
     "react-bootstrap": "^2.8.0",
     "react-dom": "^18.2.0",
