@@ -33,6 +33,15 @@
       "studentId": "SVP entrez une matricule valide"
     }
   },
+  "cvsList": {
+    "errors": {
+      "departmentNotFound": "Département pas trouvé"
+    },
+    "name": "Titre du CV",
+    "viewMore": "Voir le CV",
+    "noCvs": "Aucun CV disponible",
+    "studentName": "Nom de l'étudiant"
+  },
   "offersList": {
     "errors": {
       "departmentNotFound": "Aucun département trouvé"

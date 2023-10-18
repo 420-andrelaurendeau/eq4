@@ -17,7 +17,7 @@ const OffersList = ({offers, error, userType, updateOffersState}: Props) => {
     return (
         <>
             {
-                error !== "" 
+                error !== ""
                 ? 
                 <p>{error}</p> 
                 : 
@@ -29,7 +29,6 @@ const OffersList = ({offers, error, userType, updateOffersState}: Props) => {
                                 <th>{t("offersList.title")}</th>
                                 <th>{t("offersList.internshipStartDate")}</th>
                                 <th>{t("offersList.internshipEndDate")}</th>
-                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
