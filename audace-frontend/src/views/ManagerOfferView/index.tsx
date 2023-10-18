@@ -10,21 +10,22 @@ import { getUserId } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 
 const ManagerOfferView = () => {
-    const [manager, setManager] = useState<Manager>();
-    const [offers, setOffers] = useState<Offer[]>([]);
-    const [offersAccepted, setOffersAccepted] = useState<Offer[]>([]);
-    const [offersRefused, setOffersRefused] = useState<Offer[]>([]);
-    const [error, setError] = useState<string>("");
-    const {t} = useTranslation();
-    const navigate = useNavigate();
+  const [manager, setManager] = useState<Manager>();
+  const [offers, setOffers] = useState<Offer[]>([]);
+  const [offersAccepted, setOffersAccepted] = useState<Offer[]>([]);
+  const [offersRefused, setOffersRefused] = useState<Offer[]>([]);
+  const [error, setError] = useState<string>("");
+  const { t } = useTranslation();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const id = getUserId();
+  useEffect(() => {
+    if (manager !== undefined) return;
+    const id = getUserId();
 
-        if (id == null) {
-            navigate("/pageNotFound");
-            return;
-        }
+    if (id == null) {
+      navigate("/pageNotFound");
+      return;
+    }
 
     getManagerById(parseInt(id!))
       .then((res) => {
@@ -37,8 +38,8 @@ const ManagerOfferView = () => {
       });
   }, [manager, t, navigate]);
 
-    useEffect(() => {
-        if (manager === undefined) return;
+  useEffect(() => {
+    if (manager === undefined) return;
 
     getManagerOffersByDepartment(manager.department!.id!)
       .then((res) => {
@@ -65,45 +66,45 @@ const ManagerOfferView = () => {
       });
   }, [manager, t]);
 
-    const updateOffersState = (offer: Offer, offerStatus: OfferStatus) => {
-        let newOffers = offers.filter((o) => o.id !== offer.id);
-        offer.status = offerStatus;
-        setOffers(newOffers);
-        if (offerStatus === "ACCEPTED") {
-            setOffersAccepted([...offersAccepted, offer]);
-        } else if (offerStatus === "REFUSED") {
-            setOffersRefused([...offersRefused, offer]);
-        }
-    };
-    return (
-        <Container>
-            <h1>{t("managerOffersList.viewTitle")}</h1>
-            {offers.length > 0 ? (
-                <OffersList
-                    offers={offers}
-                    error={error}
-                    userType={UserType.Manager}
-                    updateOffersState={updateOffersState}
-                />
-            ) : (
-                <p>{t("managerOffersList.noMorePendingOffers")}</p>
-            )}
-            {offersAccepted.length > 0 ? (
-                <OffersList
-                    offers={offersAccepted}
-                    error={error}
-                    userType={UserType.Manager}
-                />
-            ) : null}
-            {offersRefused.length > 0 ? (
-                <OffersList
-                    offers={offersRefused}
-                    error={error}
-                    userType={UserType.Manager}
-                />
-            ) : null}
-        </Container>
-    );
+  const updateOffersState = (offer: Offer, offerStatus: OfferStatus) => {
+    let newOffers = offers.filter((o) => o.id !== offer.id);
+    offer.status = offerStatus;
+    setOffers(newOffers);
+    if (offerStatus === "ACCEPTED") {
+      setOffersAccepted([...offersAccepted, offer]);
+    } else if (offerStatus === "REFUSED") {
+      setOffersRefused([...offersRefused, offer]);
+    }
+  };
+  return (
+    <Container>
+      <h1>{t("managerOffersList.viewTitle")}</h1>
+      {offers.length > 0 ? (
+        <OffersList
+          offers={offers}
+          error={error}
+          userType={UserType.Manager}
+          updateOffersState={updateOffersState}
+        />
+      ) : (
+        <p>{t("managerOffersList.noMorePendingOffers")}</p>
+      )}
+      {offersAccepted.length > 0 ? (
+        <OffersList
+          offers={offersAccepted}
+          error={error}
+          userType={UserType.Manager}
+        />
+      ) : null}
+      {offersRefused.length > 0 ? (
+        <OffersList
+          offers={offersRefused}
+          error={error}
+          userType={UserType.Manager}
+        />
+      ) : null}
+    </Container>
+  );
 };
 
 export default ManagerOfferView;

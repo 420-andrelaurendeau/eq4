@@ -1,4 +1,3 @@
-import { CV } from "./cv";
 import { Department } from "./department";
 
 export interface User {
