@@ -10,10 +10,12 @@ import { CV, CVStatus } from "../../../model/cv";
 import CvList from "../../../components/CVsList";
 import {Container} from "react-bootstrap";
 import { Department } from "../../../model/department";
+import { getAllApplicationsByOfferId } from "../../../services/applicationService";
 
 const EmployerApplicationView = () => {
     const [employer, setEmployer] = useState<Employer>();
     const [error, setError] = useState<string>("");
+    const [cvs, setCvs] = useState<Map<Offer, Application[]>>(new Map<Offer, Application[]>());
     const {t} = useTranslation();
     const navigate = useNavigate();
 
@@ -34,6 +36,41 @@ const EmployerApplicationView = () => {
                 if (err.request.status === 404) setError(t("employer.errors.employerNotFound"));
             })
     }, [employer, navigate, t]);
+
+    useEffect(() => {
+        if (employer !== undefined) return;
+        const id = getUserId();
+        if (id == null) {
+            navigate("/pageNotFound");
+            return;
+        }
+
+        getAllApplicationsByOfferId(parseInt(id!))
+            .then((res) => {
+                const dataMap = new Map(Object.entries(res.data));
+                dataMap.forEach((value, key) => {
+                    let shit = key.slice(9, -2);
+                    let nobodyCanStopMe = shit.split("=");
+                    for (let i = 0; i < nobodyCanStopMe.length; i = i + 1) {
+                        nobodyCanStopMe[i] = "\"" + nobodyCanStopMe[i] + "\"";
+                    }
+                    let shitter = "";
+                    for (let i = 0; i < nobodyCanStopMe.length; i = i + 1) {
+                        shitter = shitter + nobodyCanStopMe[i] + ":";
+                    }
+                    let shitterer = shitter.split(",");
+                    let string259 = "";
+                    for (let i = 0; i < shitterer.length; i = i + 1) {
+                        string259 = string259 + "\"" + shitterer[i].split(" ")[1] + "\","
+                    }
+                    console.log(string259);
+                });
+                setCvs(res.data);
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }, [employer, navigate, t])
 
     const department : Department = {id : 1, code : "code", name : "COMPUTER SCIENCE"};
     const student : Student = {id : 1, firstName : "firstName", lastName : "lastName", email : "email", phone : "phone", address : "address", password : "oh no", type : "type", studentNumber : "This is a number string", department : department};
