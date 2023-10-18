@@ -31,7 +31,7 @@ http.interceptors.response.use(
 );
 
 const isResponseInvalid = (response: AxiosResponse<any>) => {
-  return isConnected() && (response.status === 401);
+  return isConnected() && (response.status === 401 || response.status === 403);
 };
 
 const handleInvalidResponse = () => {
