@@ -20,7 +20,25 @@ function App() {
     <Router>
       <AppHeader />
       <Routes>
-        <Route
+          <Route
+              path="/*"
+              element={
+                  <Routes>
+                      <Route index element={
+                          <>
+                              <h1>OSE ÊTRE MEILLEUR</h1>
+                          </>
+                      } />
+                      <Route path="createdUser" element={
+                          <>
+                              <h1>OSE ÊTRE MEILLEUR</h1>
+                              <h2>Utilisateur créé</h2>
+                          </>
+                      } />
+                  </Routes>
+              }
+          />
+          <Route
           path="/"
           element={
             <>
@@ -44,10 +62,14 @@ function App() {
           }
         />
         <Route
-          path="/login"
+          path="/login/*"
           element={
             <ConnectedRoute isConnectedRoute={false}>
-              <LoginView />
+              <Routes>
+                <Route index element={<LoginView />} />
+                <Route path="disconnected" element={<LoginView />} />
+                <Route path="*" element={<PageNotFoundView />} />
+              </Routes>
             </ConnectedRoute>
           }
         />

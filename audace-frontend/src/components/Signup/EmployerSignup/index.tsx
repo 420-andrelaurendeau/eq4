@@ -19,7 +19,6 @@ const EmployerSignup = () => {
       organisation: organisation,
       position: position,
       extension: extension,
-      offers: [],
       type: "employer",
     };
 

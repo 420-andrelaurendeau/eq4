@@ -1,6 +1,7 @@
 package com.equipe4.audace.security.config;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.model.User;
 import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.utils.JwtManipulator;
@@ -34,18 +35,29 @@ public class JwtFilter extends OncePerRequestFilter {
         if (jwt.isPresent()) {
             String token = jwt.get();
             DecodedJWT decodedJWT = jwtManipulator.decodeToken(token);
-            User user = userRepository.findByEmail(decodedJWT.getSubject()).orElseThrow();
+            Optional<User> optionalUser = userRepository.findByEmail(decodedJWT.getSubject());
 
-            List<String> authorities = jwtManipulator.determineAuthorities(user);
+            UserDTO userDTO;
 
-            if (!isTokenValid(decodedJWT, authorities))
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            if (optionalUser.isPresent()) {
+                userDTO = optionalUser.get().toDTO();
+            } else {
+                handleInvalidToken(request, response, filterChain);
+                return;
+            }
+
+            List<String> authorities = jwtManipulator.determineAuthorities(userDTO);
+
+            if (!isTokenValid(decodedJWT, authorities)) {
+                handleInvalidToken(request, response, filterChain);
+                return;
+            }
 
             List<GrantedAuthority> grantedAuthorities = convertAuthorities(authorities);
 
             UserDetails userDetails = org.springframework.security.core.userdetails.User
-                    .withUsername(user.getEmail())
-                    .password(user.getPassword())
+                    .withUsername(userDTO.getEmail())
+                    .password(userDTO.getPassword())
                     .authorities(grantedAuthorities)
                     .build();
 
@@ -57,15 +69,20 @@ public class JwtFilter extends OncePerRequestFilter {
     }
 
     private boolean isTokenValid(DecodedJWT decodedJWT, List<String> authorities) {
-        return !isTokenExpired(decodedJWT) && doRolesMatch(decodedJWT, authorities);
+        return !isTokenExpired(decodedJWT) && doAuthoritiesMatch(decodedJWT, authorities);
     }
 
     private boolean isTokenExpired(DecodedJWT decodedJWT) {
         return decodedJWT.getExpiresAt().before(new Date());
     }
 
-    private boolean doRolesMatch(DecodedJWT decodedJWT, List<String> authorities) {
+    private boolean doAuthoritiesMatch(DecodedJWT decodedJWT, List<String> authorities) {
         return new HashSet<>(decodedJWT.getClaim("authorities").asList(String.class)).containsAll(authorities);
+    }
+
+    private void handleInvalidToken(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        filterChain.doFilter(request, response);
     }
 
     private List<GrantedAuthority> convertAuthorities(List<String> authorities) {

@@ -1,14 +1,16 @@
-import { useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { useCallback, useEffect, useState } from "react";
+import { Alert, Button, Form } from "react-bootstrap";
 import FormInput from "../FormInput";
 import { LoginRequest } from "../../model/auth";
 import {
   authenticate,
   getUserId,
+  hasSessionExpiredRecently,
+  isConnected,
   login,
   logout,
 } from "../../services/authService";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { getUserById } from "../../services/userService";
 
@@ -20,6 +22,22 @@ const LoginForm = () => {
   const [areCredentialsValid, setAreCredentialsValid] = useState<boolean>(true);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [showExpiredSessionNotif, setShowExpiredSessionNotif] = useState<boolean>(false);
+
+  const isSessionProperlyExpired = useCallback(() => {
+    return (
+      location.pathname === "/login/disconnected" &&
+      !isConnected() &&
+      hasSessionExpiredRecently()
+    );
+  }, [location.pathname]);
+
+  useEffect(() => {
+    if (!isSessionProperlyExpired()) return;
+
+    setShowExpiredSessionNotif(true);
+  }, [isSessionProperlyExpired]);
 
   const submitForm = () => {
     if (!validateForm()) return;
@@ -110,7 +128,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <Form>
+      <Form className="my-3">
         <FormInput
           label="login.identification"
           value={identification}
@@ -137,6 +155,9 @@ const LoginForm = () => {
           </p>
         )}
       </Form>
+      {showExpiredSessionNotif && (
+        <Alert variant="danger">{t("login.errors.sessionExpired")}</Alert>
+      )}
     </>
   );
 };

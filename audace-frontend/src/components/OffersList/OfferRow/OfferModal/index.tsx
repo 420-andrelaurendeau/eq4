@@ -1,11 +1,15 @@
-import { useEffect } from "react";
+import {useEffect, useState} from "react";
 import { Offer, OfferStatus } from "../../../../model/offer";
-import { Employer, UserType } from "../../../../model/user";
-import { Modal } from "react-bootstrap";
+import { Employer, Student, UserType } from "../../../../model/user";
+import {Button, Modal} from "react-bootstrap";
 import { getEmployerById } from "../../../../services/userService";
 import { useTranslation } from "react-i18next";
 import { formatDate } from "../../../../services/formatService";
-import OfferButtons from "../OfferButtons";
+import { apply } from "../../../../services/studentApplicationService"
+import { useParams} from "react-router";
+import Application from "../../../../model/application";
+import { CV } from "../../../../model/cv";
+import { getUserId } from "../../../../services/authService";
 
 interface Props {
     offer: Offer;
@@ -19,21 +23,65 @@ interface Props {
 
 const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, updateOffersState}: Props) => {
     const {t} = useTranslation();
+    const [applicationMessage, setApplicationMessage] = useState("");
+    const [applicationMessageColor, setApplicationMessageColor] = useState("");
 
     useEffect(() => {
         if (employer !== undefined) return;
 
-        getEmployerById(offer.employerId)
+        getEmployerById(offer.employer.id!)
             .then((res) => {
                 setEmployer!(res.data);
             })
             .catch((err) => {
-                console.log(err);
+                console.log("getEmployerById error", err);
             });
     }, [setEmployer, offer, employer]);
 
     const createBoldText = (text: string) => {
         return <b>{text}</b>;
+    };
+
+    const handleApply = () => {
+        const studentId = getUserId();
+
+        if (!studentId) return;
+
+        const tempStudent: Student = {
+            id: parseInt(studentId),
+            email: "",
+            password: "",
+            firstName: "",
+            lastName: "",
+            type: "student",
+            phone: "",
+            address: "",
+            studentNumber: "",
+        }
+
+        const tempCV: CV = {
+            id: 1,
+            student: tempStudent,
+            fileName: "CV",
+            content: "test",
+        }
+
+        const applicationData: Application = {
+            id: 1000,
+            student: tempStudent,
+            offer: offer,
+            cv: tempCV,
+        };
+
+        apply(applicationData)
+            .then((response) => {
+                setApplicationMessage("Application submitted successfully");
+                setApplicationMessageColor("green");
+            })
+            .catch((error) => {
+                setApplicationMessage("Error submitting application: " + error.message);
+                setApplicationMessageColor("red");
+            });
     };
 
     return (
@@ -46,23 +94,23 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
                     <div className="text-end">
                         <div>{t("offer.modal.org")}: {
                                 createBoldText(
-                                    employer !== undefined ? 
-                                    employer.organisation! : 
+                                    employer !== undefined ?
+                                    employer.organisation! :
                                     t("offer.modal.orgNotFound")
                                 )
                             }
                         </div>
                         <div>{t("offer.modal.address")}:&nbsp;
                             {createBoldText(
-                                employer !== undefined ? 
-                                employer.address! : 
+                                employer !== undefined ?
+                                employer.address! :
                                 t("offer.modal.orgNotFound")
                             )}
                         </div>
                         <div>{t("offer.modal.phone")}:&nbsp;
                             {createBoldText(
-                                employer !== undefined ? 
-                                employer.phone! : 
+                                employer !== undefined ?
+                                employer.phone! :
                                 t("offer.modal.orgNotFound")
                             )}
                         </div>
@@ -85,9 +133,13 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
                         <div>{t("offer.modal.offerEnd")}: {createBoldText(formatDate(offer.offerEndDate))}</div>
                     </div>
                 </Modal.Body>
-                <Modal.Footer> 
+                <Modal.Footer>
                     {employer === undefined && <div className="text-danger">{t("offer.modal.empNotFound")}</div>}
-                    <OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState}/>
+                    {applicationMessage && (
+                        <div style={{ color: applicationMessageColor }}>{applicationMessage}</div>
+                    )}
+                    <Button onClick={handleApply}>Apply</Button>
+                    {/*<OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState}/>*/}
                 </Modal.Footer>
             </Modal>
         </>

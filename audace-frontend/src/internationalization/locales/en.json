@@ -30,7 +30,8 @@
       "extension": "Please enter a valid extension",
       "email": "Please enter a valid email address",
       "password": "Please enter a valid password",
-      "studentId": "Please enter a valid student number"
+      "studentId": "Please enter a valid student number",
+      "network": "There was an unexpected networking error"
     }
   },
   "offersList": {
@@ -73,6 +74,10 @@
   },
   "employerOffersList": {
     "viewTitle": "Available Offers",
+    "status": "Status",
+    "PENDING": "Pending",
+    "ACCEPTED": "Accepted",
+    "REFUSED": "Refused",
     "editButton": "Edit",
     "deleteButton": "Delete"
   },
@@ -80,6 +85,12 @@
     "seeOffersButton": "See Offers"
   },
   "manager": {
+    "seeOffersButton": "See Offers"
+  },
+  "employer": {
+    "errors": {
+      "employerNotFound": "Employer not found"
+    },
     "seeOffersButton": "See Offers"
   },
   "upload": {
@@ -94,7 +105,8 @@
     "errors": {
       "emptyIdentification": "Please enter your email or student number",
       "emptyPassword": "Please enter your password",
-      "invalidCredentials": "Email, student number or password is invalid"
+      "invalidCredentials": "Email, student number or password is invalid",
+      "sessionExpired": "Your session has expired, please log in again"
     }
   },
   "logout": "Log out",

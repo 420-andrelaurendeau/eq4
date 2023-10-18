@@ -18,7 +18,6 @@ const StudentSignup = () => {
       ...user,
       studentNumber: studentId,
       type: "student",
-      cvs: [],
     };
 
     return studentSignup(student, depCode!);

@@ -1,6 +1,7 @@
 package com.equipe4.audace.service.auth;
 
 import com.equipe4.audace.dto.UserDTO;
+import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.User;
 import com.equipe4.audace.model.security.Salt;
 import com.equipe4.audace.repository.StudentRepository;
@@ -26,8 +27,11 @@ public class AuthService {
         String identification = loginRequest.getIdentification();
         Optional<User> optionalUser = userRepository.findByEmail(identification);
 
-        if (optionalUser.isEmpty())
-            optionalUser = studentRepository.findByStudentNumber(identification).map((student -> student));
+        if (optionalUser.isEmpty()) {
+            Student student = studentRepository.findByStudentNumber(identification).orElseThrow();
+
+            optionalUser = Optional.of(student);
+        }
 
         User user = optionalUser.orElseThrow();
         Salt salt = saltRepository.findByUser(user).orElseThrow();
