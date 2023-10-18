@@ -161,12 +161,12 @@ public class EmployerServiceTest {
         );
         OfferDTO offerDTO = offer.toDTO();
 
-        when(offerRepository.save(any(Offer.class))).thenReturn(offer);
+        when(offerRepository.save(offerDTO.fromDTO())).thenReturn(offer);
 
         OfferDTO dto = employerService.createOffer(offerDTO).get();
 
         assertThat(dto.equals(offerDTO));
-        verify(offerRepository, times(1)).save(offer);
+        verify(offerRepository, times(1)).save(offerDTO.fromDTO());
     }
 
     @Test

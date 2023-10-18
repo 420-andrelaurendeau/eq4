@@ -1,12 +1,9 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.ManagerDTO;
-import com.equipe4.audace.dto.StudentDTO;
-import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
-import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.ManagerRepository;
@@ -18,8 +15,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -40,7 +42,7 @@ public class ManagerServiceTest {
     public void acceptOffer() {
         Employer employer = mock(Employer.class);
         Department department = mock(Department.class);
-        Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, employer, department);
+        Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
 
         when(offerRepository.findById(1L)).thenReturn(Optional.of(offer));
         when(offerRepository.save(any())).thenReturn(offer);
@@ -60,7 +62,7 @@ public class ManagerServiceTest {
     public void refuseOffer() {
         Employer employer = mock(Employer.class);
         Department department = mock(Department.class);
-        Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, employer, department);
+        Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, department, employer);
 
         when(offerRepository.findById(1L)).thenReturn(Optional.of(offer));
         when(offerRepository.save(any())).thenReturn(offer);
@@ -82,7 +84,7 @@ public class ManagerServiceTest {
         List<Offer> offers = new ArrayList<>();
 
         Employer fakeEmployer = new Employer(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
-        Offer fakeOffer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, fakeEmployer, mockedDepartment);
+        Offer fakeOffer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, mockedDepartment, fakeEmployer);
 
         fakeEmployer.getOffers().add(fakeOffer);
 

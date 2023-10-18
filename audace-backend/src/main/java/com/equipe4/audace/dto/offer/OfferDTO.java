@@ -36,8 +36,8 @@ public class OfferDTO {
                 internshipEndDate,
                 offerEndDate,
                 availablePlaces,
-                employer.fromDTO(),
-                department.fromDTO()
+                department.fromDTO(),
+                employer.fromDTO()
         );
     }
 }
