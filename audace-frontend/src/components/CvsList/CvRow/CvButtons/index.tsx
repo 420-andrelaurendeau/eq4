@@ -1,6 +1,7 @@
 import { UserType } from "../../../../model/user";
 import ManagerButtons from "./ManagerButtons";
 import { CV, CVStatus } from "../../../../model/cv";
+import EmployerButtons from "./EmployerButtons";
 
 interface Props {
     userType : UserType;
@@ -14,6 +15,8 @@ const CvButtons = ({userType, disabled, cv, updateCvsState} : Props) => {
         switch (userType) {
             case UserType.Manager:
                 return <ManagerButtons disabled={disabled} cv={cv} updateCvsState={updateCvsState}/>;
+            case UserType.Employer:
+                return <EmployerButtons disabled={disabled} cv={cv} updateCvsState={updateCvsState}/>;
         }
     }
 

@@ -37,10 +37,10 @@
     "errors": {
       "departmentNotFound": "Département pas trouvé"
     },
-    "name": "Titre du CV",
+    "name": "CV",
     "viewMore": "Voir le CV",
     "noCvs": "Aucun CV disponible",	
-    "studentName": "Nom de l'étudiant"
+    "studentName": "Étudiant"
   },
   "offersList": {
     "errors": {
@@ -92,6 +92,12 @@
     "ACCEPTED": "Accepté",
     "REFUSED": "Refusé",
     "noMorePendingCvs": "Il n'y a plus de CV en attente"
+  },
+  "employerCvsList": {
+    "acceptButton": "Accepter",
+    "refuseButton": "Refuser",
+    "ACCEPTED": "Accepté",
+    "REFUSED": "Refusé"
   },
   "employerOffersList": {
     "viewTitle": "Offres disponibles",

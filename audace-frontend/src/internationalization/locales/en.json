@@ -93,6 +93,12 @@
     "REFUSED": "Refused",
     "noMorePendingCvs": "There are no more pending CVs"
   },
+  "employerCvsList": {
+    "acceptButton": "Accept",
+    "refuseButton": "Refuse",
+    "ACCEPTED": "Accepted",
+    "REFUSED": "Refused"
+  },
   "employerOffersList": {
     "viewTitle": "Available Offers",
     "status": "Status",

@@ -6,14 +6,17 @@ import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.security.Salt;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
+import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
+import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.StudentService;
@@ -36,8 +39,10 @@ public class AudaceApplication implements CommandLineRunner {
 	private ManagerRepository managerRepository;
 	private EmployerService employerService;
 	private StudentService studentService;
+	private ApplicationRepository applicationRepository;
+	private OfferRepository offerRepository;
 
-	public AudaceApplication(DepartmentRepository departmentRepository, EmployerRepository employerRepository, CvRepository cvRepository, SaltRepository saltRepository, ManagerRepository managerRepository, EmployerService employerService, StudentService studentService) {
+	public AudaceApplication(DepartmentRepository departmentRepository, EmployerRepository employerRepository, CvRepository cvRepository, SaltRepository saltRepository, ManagerRepository managerRepository, EmployerService employerService, StudentService studentService, ApplicationRepository applicationRepository, OfferRepository offerRepository) {
 		this.departmentRepository = departmentRepository;
 		this.employerRepository = employerRepository;
 		this.cvRepository = cvRepository;
@@ -45,6 +50,8 @@ public class AudaceApplication implements CommandLineRunner {
 		this.managerRepository = managerRepository;
 		this.employerService = employerService;
 		this.studentService = studentService;
+		this.applicationRepository = applicationRepository;
+		this.offerRepository = offerRepository;
 	}
 
 
@@ -124,5 +131,8 @@ public class AudaceApplication implements CommandLineRunner {
 		manager = managerRepository.save(manager);
 		saltRepository.save(new Salt(null, manager, managerSalt));
 		managerRepository.save(manager);
+
+		Application application = new Application(null, cv, offerRepository.findById(1L).orElseThrow());
+		applicationRepository.save(application);
 	}
 }

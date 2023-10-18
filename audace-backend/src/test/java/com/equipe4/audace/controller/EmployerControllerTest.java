@@ -218,30 +218,9 @@ public class EmployerControllerTest {
 
     @Test
     @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
-    public void givenListOfApplications_whenGetAllApplications_thenReturnApplicationsList() throws Exception{
-        // given - precondition or setup
-        Offer offer = createOffer();
-
-        List<ApplicationDTO> applicationDTOList = new ArrayList<>();
-        applicationDTOList.add(createApplication(offer).toDTO());
-        applicationDTOList.add(createApplication(offer).toDTO());
-        given(employerService.findAllApplicationsByOfferId(offer.getId())).willReturn(applicationDTOList);
-
-        // when -  action or the behaviour that we are going test
-        ResultActions response = mockMvc.perform(get("/employers/offer/applications/{offerId}", 1L));
-
-        // then - verify the output
-        response.andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(jsonPath("$.size()",
-                        is(applicationDTOList.size())));
-    }
-
-    @Test
-    @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
     public void givenMapOfOffersAndApplications_whenGetAllApplicationsByEmployerId_thenReturnOffersAndApplicationsMap() throws Exception{
         // given - precondition or setup
-        Map<OfferDTO, List<ApplicationDTO>> map = new HashMap<>();
+        Map<Long, List<ApplicationDTO>> map = new HashMap<>();
         EmployerDTO employerDTO = createEmployerDTO();
 
         Offer offer = createOffer();
@@ -256,8 +235,8 @@ public class EmployerControllerTest {
         applicationDTOList2.add(createApplication(offer2).toDTO());
         applicationDTOList2.add(createApplication(offer2).toDTO());
 
-        map.put(offer.toDTO(), applicationDTOList);
-        map.put(offer2.toDTO(), applicationDTOList2);
+        map.put(offer.getId(), applicationDTOList);
+        map.put(offer2.getId(), applicationDTOList2);
 
         given(employerService.findAllApplicationsByEmployerId(employerDTO.getId())).willReturn(map);
 

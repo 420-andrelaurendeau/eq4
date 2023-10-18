@@ -227,47 +227,6 @@ public class EmployerServiceTest {
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Offer not found");
     }
-
-    @Test
-    void getAllApplicationsByOfferId_HappyPath() {
-        Offer offer = createOffer();
-
-        List<Application> applications = new ArrayList<>();
-        Application application1 = createApplication();
-        Application application2 = createApplication();
-        application2.setId(2L);
-
-        applications.add(application1);
-        applications.add(application2);
-
-        when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
-        when(applicationRepository.findAllByOffer(any(Offer.class))).thenReturn(applications);
-
-        List<ApplicationDTO> applicationDTOList = employerService.findAllApplicationsByOfferId(offer.getId());
-
-        assertThat(applicationDTOList.size()).isEqualTo(2);
-        verify(applicationRepository, times(1)).findAllByOffer(offer);
-    }
-    @Test
-    void getAllApplicationsByOfferId_OfferNotFound() {
-        when(offerRepository.findById(anyLong())).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> employerService.findAllApplicationsByOfferId(anyLong()))
-                .isInstanceOf(NoSuchElementException.class)
-                .hasMessage("Offer not found");
-    }
-    @Test
-    void getAllApplicationsByOfferId_noOffers() {
-        Offer offer = createOffer();
-
-        when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
-        when(applicationRepository.findAllByOffer(offer)).thenReturn(new ArrayList<>());
-
-        List<ApplicationDTO> result = employerService.findAllApplicationsByOfferId(1L);
-
-        assertThat(result.size()).isEqualTo(0);
-    }
-
     private Department createDepartment(){
         return new Department(1L, "GLO", "Génie logiciel");
     }

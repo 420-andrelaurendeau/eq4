@@ -1,94 +1,79 @@
-import {Employer, Student, UserType} from "../../../model/user";
+import {UserType} from "../../../model/user";
 import { useTranslation } from "react-i18next";
 import { ReactElement, useEffect, useState } from "react";
-import { Offer, OfferStatus } from "../../../model/offer";
-import {getEmployerById,} from "../../../services/userService";
+import { Offer } from "../../../model/offer";
 import {getUserId} from "../../../services/authService";
 import {useNavigate} from "react-router-dom";
 import Application from "../../../model/application";
-import { CV, CVStatus } from "../../../model/cv";
+import { CV } from "../../../model/cv";
 import CvList from "../../../components/CVsList";
 import {Container} from "react-bootstrap";
-import { Department } from "../../../model/department";
-import { getAllApplicationsByOfferId } from "../../../services/applicationService";
+import { getAllApplicationsByEmployerId } from "../../../services/applicationService";
+import { getAllOffersByEmployerId } from "../../../services/offerService";
 
 const EmployerApplicationView = () => {
-    const [employer, setEmployer] = useState<Employer>();
     const [error, setError] = useState<string>("");
     const [cvs, setCvs] = useState<Map<Offer, Application[]>>(new Map<Offer, Application[]>());
     const {t} = useTranslation();
+    const [cvsApplicationsApplied, setCvsApplicationsApplied] = useState<boolean>(false);
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (employer !== undefined) return;
         const id = getUserId();
         if (id == null) {
             navigate("/pageNotFound");
             return;
         }
-
-        getEmployerById(parseInt(id!))
+        if (cvs.size !== 0) {
+            return;
+        }
+        getAllOffersByEmployerId(parseInt(id))
             .then((res) => {
-                setEmployer(res.data);
+                let map : Map<Offer, Application[]> = new Map<Offer, Application[]>();
+                res.data.forEach((offer) => {
+                    map.set(offer, []);
+                })
+                setCvs(map);
             })
             .catch((err) => {
+                setError(err.response.data);
                 console.log(err)
-                if (err.request.status === 404) setError(t("employer.errors.employerNotFound"));
             })
-    }, [employer, navigate, t]);
+    }, [navigate, cvs]);
 
     useEffect(() => {
-        if (employer !== undefined) return;
         const id = getUserId();
         if (id == null) {
             navigate("/pageNotFound");
             return;
         }
-
-        getAllApplicationsByOfferId(parseInt(id!))
+        if (cvs.size === 0) {
+            return;
+        };
+        if (cvsApplicationsApplied) {
+            return;
+        }
+        getAllApplicationsByEmployerId(parseInt(id!))
             .then((res) => {
                 const dataMap = new Map(Object.entries(res.data));
-                dataMap.forEach((value, key) => {
-                    let shit = key.slice(9, -2);
-                    let nobodyCanStopMe = shit.split("=");
-                    for (let i = 0; i < nobodyCanStopMe.length; i = i + 1) {
-                        nobodyCanStopMe[i] = "\"" + nobodyCanStopMe[i] + "\"";
+                let map2 = new Map(cvs);
+                map2.forEach((value, key) => {
+                    if (dataMap.has(key.id!.toString())) {
+                        map2.set(key, dataMap.get(key.id!.toString()));
                     }
-                    let shitter = "";
-                    for (let i = 0; i < nobodyCanStopMe.length; i = i + 1) {
-                        shitter = shitter + nobodyCanStopMe[i] + ":";
-                    }
-                    let shitterer = shitter.split(",");
-                    let string259 = "";
-                    for (let i = 0; i < shitterer.length; i = i + 1) {
-                        string259 = string259 + "\"" + shitterer[i].split(" ")[1] + "\","
-                    }
-                    console.log(string259);
-                });
-                setCvs(res.data);
+                })
+                setCvs(map2);
+                setCvsApplicationsApplied(true);
             })
             .catch((err) => {
+                setError(err.response.data);
                 console.log(err)
             })
-    }, [employer, navigate, t])
-
-    const department : Department = {id : 1, code : "code", name : "COMPUTER SCIENCE"};
-    const student : Student = {id : 1, firstName : "firstName", lastName : "lastName", email : "email", phone : "phone", address : "address", password : "oh no", type : "type", studentNumber : "This is a number string", department : department};
-
-    const offer : Offer = {id : 1, title : "offre", description : "description", internshipStartDate : new Date(Date.now()), internshipEndDate : new Date(Date.now() + 100000), offerEndDate : new Date(Date.now() + 100000), availablePlaces : 5, department : department, employer : employer!, offerStatus : OfferStatus.PENDING}
-    const offer2 : Offer = {id : 1, title : "offre", description : "description", internshipStartDate : new Date(Date.now()), internshipEndDate : new Date(Date.now() + 100000), offerEndDate : new Date(Date.now() + 100000), availablePlaces : 5, department : department, employer : employer!, offerStatus : OfferStatus.PENDING}
-
-    const application : Application[] = [{id : 1, student : student, offer : offer, cv : {id : 1, fileName : "string", content : "content", student : student, cvStatus : CVStatus.PENDING}}]
-    const application2 : Application[] = [{id : 1, student : student, offer : offer, cv : {id : 1, fileName : "string", content : "content", student : student, cvStatus : CVStatus.PENDING}}]
-
-    const tempBackEndStuff : Map<Offer, Application[]> = new Map<Offer, Application[]>([
-        [offer, application],
-        [offer2, application2]
-    ]);
+    }, [navigate, t, cvs, cvsApplicationsApplied]);
 
     const getReactElements = () => {
         let elements : ReactElement<any, any>[] = []
-        tempBackEndStuff.forEach((value, key) => {elements.push(makeOfferList(value, key))});
+        cvs.forEach((value, key) => {elements.push(makeOfferList(value, key))});
         return elements
     }
 
@@ -96,7 +81,7 @@ const EmployerApplicationView = () => {
         let cv : CV[] = [];
         value.forEach((application) => {cv.push(application.cv!)});
         return (
-            <div>
+            <div key={key.id}>
                 <h1>{key.title}</h1>
                 <CvList cvs={cv} error={error} userType={UserType.Employer} />
             </div>

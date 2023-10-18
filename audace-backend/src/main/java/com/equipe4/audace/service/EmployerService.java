@@ -77,11 +77,11 @@ public class EmployerService extends GenericUserService<Employer> {
         return applicationRepository.findAllByOffer(offer).stream().map(Application::toDTO).toList();
     }
 
-    public Map<OfferDTO, List<ApplicationDTO>> findAllApplicationsByEmployerId(Long employerId){
-        Map<OfferDTO, List<ApplicationDTO>> map = new HashMap<>();
+    public Map<Long, List<ApplicationDTO>> findAllApplicationsByEmployerId(Long employerId){
+        Map<Long, List<ApplicationDTO>> map = new HashMap<>();
 
-        for (OfferDTO offerDTO: findAllOffersByEmployerId(employerId)){
-            map.put(offerDTO, findAllApplicationsByOfferId(offerDTO.getId()));
+        for (OfferDTO offerDTO: findAllOffersByEmployerId(employerId)) {
+            map.put(offerDTO.getId(), applicationRepository.findAllByOffer(offerDTO.fromDTO()).stream().map(Application::toDTO).toList());
         }
         return map;
     }
