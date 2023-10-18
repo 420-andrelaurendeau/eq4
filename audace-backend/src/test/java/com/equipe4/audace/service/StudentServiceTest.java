@@ -7,12 +7,10 @@ import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Employer;
-import com.equipe4.audace.model.department.Department;
-import com.equipe4.audace.model.offer.Offer;
+import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
-import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.security.Salt;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.StudentRepository;
@@ -28,15 +26,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
-import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class StudentServiceTest {
@@ -56,6 +56,60 @@ public class StudentServiceTest {
     private StudentService studentService;
 
     @Test
+    void getOffersByDepartmentAndStatus_happyPath() {
+        Department mockedDepartment = mock(Department.class);
+        List<Offer> offers = new ArrayList<>();
+
+        Employer fakeEmployer = new Employer(
+                null,
+                "employer",
+                "employerMan",
+                "employer@email.com",
+                "password",
+                "organisation",
+                "position",
+                "123 Street Street",
+                "1234567890",
+                "-123"
+        );
+
+        Offer mockedOffer = mock(Offer.class);
+        fakeEmployer.getOffers().add(mockedOffer);
+
+        for (int i = 0; i < 3; i++)
+            offers.add(mockedOffer);
+
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
+        when(offerRepository.findAllByDepartmentAndStatus(mockedDepartment, Offer.Status.ACCEPTED)).thenReturn(offers);
+
+        List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
+
+        assertThat(result.size()).isEqualTo(offers.size());
+        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
+    }
+
+    @Test
+    void getOffersByDepartmentAndStatus_departmentNotFound() {
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> studentService.getAcceptedOffersByDepartment(1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Department not found");
+    }
+
+    @Test
+    void getOffersByDepartmentAndStatus_noOffers() {
+        Department mockedDepartment = mock(Department.class);
+
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
+        when(offerRepository.findAllByDepartmentAndStatus(mockedDepartment, Offer.Status.ACCEPTED)).thenReturn(new ArrayList<>());
+
+        List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
+
+        assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
     void createStudent() {
         StudentDTO studentDTO = createStudentDTO();
 
@@ -69,12 +123,14 @@ public class StudentServiceTest {
 
         assertThat(optionalStudentDTO).isPresent();
     }
+
     @Test
     void createStudentNullStudent() {
         assertThatThrownBy(() -> studentService.createStudent(null, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Student cannot be null");
     }
+
     @Test
     void createStudentAlreadyExists() {
         StudentDTO studentDTO = createStudentDTO();
@@ -85,6 +141,7 @@ public class StudentServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Student already exists");
     }
+
     @Test
     void createStudentDepartmentInvalid() {
         StudentDTO studentDTO = createStudentDTO();
@@ -150,6 +207,7 @@ public class StudentServiceTest {
         verify(cvRepository, times(1)).save(any());
         assertThat(result).isEqualTo(expected);
     }
+
     @Test
     void saveCv_studentNotFound() {
         MultipartFile file = createMockFile();
@@ -161,6 +219,7 @@ public class StudentServiceTest {
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Student not found");
     }
+
     @Test
     void saveCv_fileNull() {
         StudentDTO studentDTO = createStudentDTO();
@@ -169,6 +228,7 @@ public class StudentServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("File cannot be null");
     }
+
     @Test
     void saveCv_fileUnreadable() {
         MultipartFile file = new CustomMockMultipartFile(
@@ -212,49 +272,6 @@ public class StudentServiceTest {
         assertThat(result).containsExactlyInAnyOrderElementsOf(cvs.stream().map(Cv::toDTO).toList());
     }
 
-    @Test
-    void getOffersByDepartmentAndStatus_happyPath() {
-        Department mockedDepartment = mock(Department.class);
-        List<Offer> offers = new ArrayList<>();
-
-        Employer fakeEmployer = new Employer(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
-
-        Offer mockedOffer = mock(Offer.class);
-
-        fakeEmployer.getOffers().add(mockedOffer);
-
-        for (int i = 0; i < 3; i++)
-            offers.add(mockedOffer);
-
-        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
-        when(offerRepository.findAllByDepartmentAndStatus(mockedDepartment, Offer.Status.ACCEPTED)).thenReturn(offers);
-
-        List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
-
-        assertThat(result.size()).isEqualTo(offers.size());
-        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
-    }
-    @Test
-    void getOffersByDepartmentAndStatus_departmentNotFound() {
-        when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> studentService.getAcceptedOffersByDepartment(1L))
-                .isInstanceOf(NoSuchElementException.class)
-                .hasMessage("Department not found");
-    }
-    @Test
-    void getOffersByDepartmentAndStatus_noOffers() {
-        Department mockedDepartment = mock(Department.class);
-
-        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
-        when(offerRepository.findAllByDepartmentAndStatus(mockedDepartment, Offer.Status.ACCEPTED)).thenReturn(new ArrayList<>());
-
-        List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
-
-        assertThat(result.size()).isEqualTo(0);
-    }
-
-
     private static class CustomMockMultipartFile extends MockMultipartFile {
         public CustomMockMultipartFile(String name, String originalFilename, String contentType, byte[] content) {
             super(name, originalFilename, contentType, content);
@@ -282,7 +299,7 @@ public class StudentServiceTest {
                 department
         );
         Cv cv = new Cv(1L, student, new byte[0], "fileName");
-        Offer offer = new Offer(1L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 0, mock(Employer.class), department);
+        Offer offer = new Offer(1L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 0, department, mock(Employer.class));
         Application application = new Application(null, student, cv, offer);
 
         ApplicationDTO applicationDTO = application.toDTO();
@@ -297,5 +314,4 @@ public class StudentServiceTest {
         assertThat(dto).isEqualTo(applicationDTO);
         verify(applicationRepository, times(1)).save(application);
     }
-
 }

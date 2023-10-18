@@ -26,44 +26,44 @@ const ManagerOfferView = () => {
             return;
         }
 
-        getManagerById(parseInt(id!))
-            .then((res) => {
-                setManager(res.data);
-            })
-            .catch((err) => {
-                console.log(err);
-                if (err.request.status === 404)
-                    setError(t("managerOffersList.errors.managerNotFound"));
-            });
-    }, [manager, t, navigate]);
+    getManagerById(parseInt(id!))
+      .then((res) => {
+        setManager(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.request && err.request.status === 404)
+          setError(t("managerOffersList.errors.managerNotFound"));
+      });
+  }, [manager, t, navigate]);
 
     useEffect(() => {
         if (manager === undefined) return;
 
-        getManagerOffersByDepartment(manager.department!.id!)
-            .then((res) => {
-                let acceptedOffers = [];
-                let refusedOffers = [];
-                let offers = [];
-                for (let i = 0; i < res.data.length; i = i + 1) {
-                    if (res.data[i].status === "ACCEPTED") {
-                        acceptedOffers.push(res.data[i]);
-                    } else if (res.data[i].status === "REFUSED") {
-                        refusedOffers.push(res.data[i]);
-                    } else if (res.data[i].status === "PENDING") {
-                        offers.push(res.data[i]);
-                    }
-                }
-                setOffersAccepted(acceptedOffers);
-                setOffersRefused(refusedOffers);
-                setOffers(offers);
-            })
-            .catch((err) => {
-                console.log(err);
-                if (err.request.status === 404)
-                    setError(t("offersList.errors.departmentNotFound"));
-            });
-    }, [manager, t]);
+    getManagerOffersByDepartment(manager.department!.id!)
+      .then((res) => {
+        let acceptedOffers = [];
+        let refusedOffers = [];
+        let offers = [];
+        for (let i = 0; i < res.data.length; i = i + 1) {
+          if (res.data[i].status === "ACCEPTED") {
+            acceptedOffers.push(res.data[i]);
+          } else if (res.data[i].status === "REFUSED") {
+            refusedOffers.push(res.data[i]);
+          } else if (res.data[i].status === "PENDING") {
+            offers.push(res.data[i]);
+          }
+        }
+        setOffersAccepted(acceptedOffers);
+        setOffersRefused(refusedOffers);
+        setOffers(offers);
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.request && err.request.status === 404)
+          setError(t("offersList.errors.departmentNotFound"));
+      });
+  }, [manager, t]);
 
     const updateOffersState = (offer: Offer, offerStatus: OfferStatus) => {
         let newOffers = offers.filter((o) => o.id !== offer.id);

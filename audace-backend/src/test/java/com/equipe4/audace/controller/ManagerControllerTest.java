@@ -10,9 +10,11 @@ import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.UserRepository;
+import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.ManagerService;
 import com.equipe4.audace.service.StudentService;
@@ -51,7 +53,6 @@ public class ManagerControllerTest {
     private EmployerService employerService;
     @MockBean
     private ManagerService managerService;
-
     @MockBean
     private ManagerRepository managerRepository;
     @MockBean
@@ -71,13 +72,22 @@ public class ManagerControllerTest {
     @MockBean
     private SaltRepository saltRepository;
 
-
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void acceptOffer() throws Exception {
         Employer employer = new Employer();
         Department department = new Department();
-        Offer offer1 = new Offer(1L,"title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, employer, department);
+        Offer offer1 = new Offer(
+                1L,
+                "title",
+                "description",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                1,
+                department,
+                employer
+        );
         OfferDTO offerDTO1 = offer1.toDTO();
 
         when(managerService.acceptOffer(1L)).thenReturn(Optional.of(offerDTO1));
@@ -90,12 +100,23 @@ public class ManagerControllerTest {
 
         mockMvc.perform(request).andExpect(status().isOk());
     }
+
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void refuseOffer() throws Exception {
         Employer employer = new Employer();
         Department department = new Department();
-        Offer offer1 = new Offer(1L,"title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, employer, department);
+        Offer offer1 = new Offer(
+                1L,
+                "title",
+                "description",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                1,
+                department,
+                employer
+        );
         OfferDTO offerDTO1 = offer1.toDTO();
         when(managerService.refuseOffer(1L)).thenReturn(Optional.of(offerDTO1));
 
@@ -107,12 +128,23 @@ public class ManagerControllerTest {
 
         mockMvc.perform(request).andExpect(status().isOk());
     }
+
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void acceptOffer_invalidId() throws Exception {
         Employer employer = mock(Employer.class);
         Department department = mock(Department.class);
-        Offer offer1 = new Offer(1L,"title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, employer, department);
+        Offer offer1 = new Offer(
+                1L,
+                "title",
+                "description",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                1,
+                department,
+                employer
+        );
 
         when(managerService.acceptOffer(-25L)).thenReturn(Optional.empty());
 
@@ -124,12 +156,23 @@ public class ManagerControllerTest {
 
         mockMvc.perform(request).andExpect(status().isBadRequest());
     }
+
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void refuseOffer_invalidId() throws Exception {
         Employer employer = new Employer();
         Department department = new Department();
-        Offer offer1 = new Offer(1L,"title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, employer, department);
+        Offer offer1 = new Offer(
+                1L,
+                "title",
+                "description",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                1,
+                department,
+                employer
+        );
 
         when(managerService.refuseOffer(-25L)).thenReturn(Optional.empty());
 

@@ -1,6 +1,7 @@
 package com.equipe4.audace.security.config;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.model.User;
 import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.utils.JwtManipulator;
@@ -36,16 +37,16 @@ public class JwtFilter extends OncePerRequestFilter {
             DecodedJWT decodedJWT = jwtManipulator.decodeToken(token);
             Optional<User> optionalUser = userRepository.findByEmail(decodedJWT.getSubject());
 
-            User user;
+            UserDTO userDTO;
 
             if (optionalUser.isPresent()) {
-                user = optionalUser.get();
+                userDTO = optionalUser.get().toDTO();
             } else {
                 handleInvalidToken(request, response, filterChain);
                 return;
             }
 
-            List<String> authorities = jwtManipulator.determineAuthorities(user);
+            List<String> authorities = jwtManipulator.determineAuthorities(userDTO);
 
             if (!isTokenValid(decodedJWT, authorities)) {
                 handleInvalidToken(request, response, filterChain);
@@ -55,8 +56,8 @@ public class JwtFilter extends OncePerRequestFilter {
             List<GrantedAuthority> grantedAuthorities = convertAuthorities(authorities);
 
             UserDetails userDetails = org.springframework.security.core.userdetails.User
-                    .withUsername(user.getEmail())
-                    .password(user.getPassword())
+                    .withUsername(userDTO.getEmail())
+                    .password(userDTO.getPassword())
                     .authorities(grantedAuthorities)
                     .build();
 

@@ -8,7 +8,7 @@ export const validateEmail = (email: string): boolean => {
   );
 };
 
-// TODO: add hashing for password
+// TODO: password verification
 
 export const validatePassword = (
   password: string,

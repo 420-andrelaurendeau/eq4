@@ -8,6 +8,7 @@ import com.equipe4.audace.service.EmployerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -16,12 +17,6 @@ import java.util.List;
 public class EmployerController extends GenericUserController<Employer, EmployerService> {
     public EmployerController(EmployerService employerService) {
         super(employerService);
-    }
-
-    @GetMapping
-    public List<EmployerDTO> getAllEmployers(){
-        logger.info("getAllEmployers");
-        return service.findAllEmployers();
     }
 
     @GetMapping("/{id}")

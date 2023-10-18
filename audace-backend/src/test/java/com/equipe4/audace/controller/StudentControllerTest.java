@@ -22,8 +22,6 @@ import com.equipe4.audace.service.StudentService;
 import com.equipe4.audace.utils.JwtManipulator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -34,21 +32,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDate;
-
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
 @WebMvcTest(StudentController.class)
 public class StudentControllerTest {
     @Autowired
@@ -84,7 +77,8 @@ public class StudentControllerTest {
         MockMultipartFile file = createMockFile();
         when(studentService.saveCv(file, 1L)).thenReturn(Optional.of(mock(CvDTO.class)));
 
-        mockMvc.perform(multipart("/students/upload/1")
+        mockMvc.perform(
+                multipart("/students/upload/1")
                         .file(file)
                         .contentType(MediaType.MULTIPART_FORM_DATA).with(csrf())
         ).andExpect(status().isCreated());
@@ -112,8 +106,17 @@ public class StudentControllerTest {
     @WithMockUser(username = "student", authorities = {"STUDENT"})
     public void getStudentById_happyPath() throws Exception {
         Department department = new Department(1L, "dep", "artment");
-        Student student = new Student(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", department);
-        student.setId(1L);
+        Student student = new Student(
+                1L,
+                "student",
+                "studentman",
+                "student@email.com",
+                "password",
+                "123 Street Street",
+                "1234567890",
+                "123456789",
+                department
+        );
 
         when(studentService.getStudentById(1L)).thenReturn(Optional.of(student.toDTO()));
 
@@ -140,6 +143,15 @@ public class StudentControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    private MockMultipartFile createMockFile() {
+        return new MockMultipartFile(
+                "file",
+                "test.txt",
+                MediaType.TEXT_PLAIN_VALUE,
+                "Hello, World!".getBytes()
+        );
+    }
+
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT"})
     public void givenApplicationObject_whenCreateApplication_thenReturnSavedApplication() throws Exception{
@@ -151,8 +163,7 @@ public class StudentControllerTest {
 
         Cv cv = mock(Cv.class);
 
-        Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, employer, department);
-        offer.setId(1L);
+        Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
         Application application = new Application(1L, student, cv, offer);
         ApplicationDTO applicationDTO = application.toDTO();
 
@@ -178,9 +189,5 @@ public class StudentControllerTest {
 
         mockMvc.perform(get("/students/cvs/1"))
                 .andExpect(status().isOk());
-    }
-
-    private MockMultipartFile createMockFile() {
-        return new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "Hello, World!".getBytes());
     }
 }
