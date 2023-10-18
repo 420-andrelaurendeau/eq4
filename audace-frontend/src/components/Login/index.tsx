@@ -23,7 +23,10 @@ const LoginForm = () => {
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const [showExpiredSessionNotif, setShowExpiredSessionNotif] = useState<boolean>(false);
+  const [showExpiredSessionNotif, setShowExpiredSessionNotif] =
+    useState<boolean>(false);
+  const [showUserCreatedNotif, setShowUserCreatedNotif] =
+    useState<boolean>(false);
 
   const isSessionProperlyExpired = useCallback(() => {
     return (
@@ -38,6 +41,12 @@ const LoginForm = () => {
 
     setShowExpiredSessionNotif(true);
   }, [isSessionProperlyExpired]);
+
+  useEffect(() => {
+    if (location.pathname !== "/login/createdUser") return;
+
+    setShowUserCreatedNotif(true);
+  }, [location, setShowUserCreatedNotif]);
 
   const submitForm = () => {
     if (!validateForm()) return;
@@ -128,6 +137,9 @@ const LoginForm = () => {
 
   return (
     <>
+      {showUserCreatedNotif && (
+        <Alert variant="success">{t("login.userCreated")}</Alert>
+      )}
       <Form className="my-3">
         <FormInput
           label="login.identification"
