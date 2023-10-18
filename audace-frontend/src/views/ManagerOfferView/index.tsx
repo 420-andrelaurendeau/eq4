@@ -32,7 +32,7 @@ const ManagerOfferView = () => {
       })
       .catch((err) => {
         console.log(err);
-        if (err.request.status === 404)
+        if (err.request && err.request.status === 404)
           setError(t("managerOffersList.errors.managerNotFound"));
       });
   }, [manager, t, navigate]);
@@ -60,7 +60,7 @@ const ManagerOfferView = () => {
       })
       .catch((err) => {
         console.log(err);
-        if (err.request.status === 404)
+        if (err.request && err.request.status === 404)
           setError(t("offersList.errors.departmentNotFound"));
       });
   }, [manager, t]);

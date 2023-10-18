@@ -1,6 +1,6 @@
 {
-  "langCode": "en",
-  "signin": "Sign In",
+  "langCode": "EN",
+  "signin": "Log in",
   "signup": {
     "employerFormTitle": "Employer Registration",
     "studentFormTitle": "Student Registration",
@@ -17,7 +17,7 @@
     "password": "Choose a Password",
     "passwordConfirmation": "Confirm Your Password",
     "studentId": "Student number",
-    "signup": "Sign Up",
+    "signup": "Sign up",
     "errors": {
       "organisation": "Please enter a valid organisation name",
       "position": "Position cannot be empty",
@@ -42,7 +42,8 @@
     "internshipEndDate": "End Date",
     "internshipStartDate": "Start Date",
     "noOffers": "No offers available",
-    "viewTitle": "Available Offers"
+    "viewTitle": "Available Offers",
+    "viewMore": "View More"
   },
   "offer": {
     "modal": {
@@ -102,6 +103,7 @@
   "login": {
     "identification": "Email or Student Number",
     "password": "Password",
+    "userCreated": "Account has been successfully created",
     "errors": {
       "emptyIdentification": "Please enter your email or student number",
       "emptyPassword": "Please enter your password",

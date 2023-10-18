@@ -1,5 +1,5 @@
 {
-  "langCode": "fr",
+  "langCode": "FR",
   "signin": "Se connecter",
   "signup": {
     "employerFormTitle": "Inscription Employeur",
@@ -42,7 +42,9 @@
     "internshipEndDate": "Date de fin",
     "internshipStartDate": "Date de début",
     "noOffers": "Aucun offre disponible",
-    "viewTitle": "Offres disponibles"
+    "viewTitle": "Offres disponibles",
+    "viewMore": "Afficher plus"
+
   },
   "offer": {
     "modal": {
@@ -102,6 +104,7 @@
   "login": {
     "identification": "Courriel ou matricule",
     "password": "Mot de passe",
+    "userCreated": "Le compte a été créé avec succès",
     "errors": {
       "emptyIdentification": "SVP entrez votre courriel ou votre matricule",
       "emptyPassword": "SVP entrez votre mot de passe",
