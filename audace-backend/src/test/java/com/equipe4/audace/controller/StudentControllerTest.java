@@ -180,8 +180,7 @@ public class StudentControllerTest {
 
         // then - verify the result or output using assert statements
         response.andDo(print()).
-                andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(1L));
+                andExpect(status().isCreated());
     }
 
     void getCvsByStudent() throws Exception {

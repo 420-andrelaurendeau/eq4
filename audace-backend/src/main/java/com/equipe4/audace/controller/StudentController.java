@@ -69,9 +69,17 @@ public class StudentController extends GenericUserController<Student, StudentSer
 
 
     @PostMapping("/{id}/applications")
-    public ResponseEntity<ApplicationDTO> createApplication(@RequestBody ApplicationDTO applicationDTO){
+    public ResponseEntity<HttpStatus> createApplication(@RequestBody ApplicationDTO applicationDTO){
         logger.info("createOffer");
-        return service.createApplication(applicationDTO).map(application -> ResponseEntity.status(HttpStatus.CREATED).body(applicationDTO))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        try {
+            service.createApplication(applicationDTO);
+        } catch (NoSuchElementException e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
