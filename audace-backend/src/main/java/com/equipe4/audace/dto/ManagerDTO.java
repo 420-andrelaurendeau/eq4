@@ -2,22 +2,23 @@ package com.equipe4.audace.dto;
 
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.model.Manager;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
 public class ManagerDTO extends UserDTO {
     private DepartmentDTO department;
 
-    public ManagerDTO(Long id,
-                      String firstName,
-                      String lastName,
-                      String email,
-                      String address,
-                      String phone,
-                      String password,
-                      DepartmentDTO department) {
+    public ManagerDTO(
+            Long id,
+            String firstName,
+            String lastName,
+            String email,
+            String address,
+            String phone,
+            String password,
+            DepartmentDTO department
+    ) {
         super(id, firstName, lastName, address, phone, email, password);
         this.department = department;
     }
@@ -32,7 +33,7 @@ public class ManagerDTO extends UserDTO {
                 password,
                 address,
                 phone,
-                department.fromDto()
+                department.fromDTO()
         );
     }
 }

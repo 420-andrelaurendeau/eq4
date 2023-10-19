@@ -1,6 +1,6 @@
 {
-  "langCode": "en",
-  "signin": "Sign In",
+  "langCode": "EN",
+  "signin": "Log in",
   "signup": {
     "employerFormTitle": "Employer Registration",
     "studentFormTitle": "Student Registration",
@@ -17,7 +17,7 @@
     "password": "Choose a Password",
     "passwordConfirmation": "Confirm Your Password",
     "studentId": "Student number",
-    "signup": "Sign Up",
+    "signup": "Sign up",
     "errors": {
       "organisation": "Please enter a valid organisation name",
       "position": "Position cannot be empty",
@@ -30,7 +30,8 @@
       "extension": "Please enter a valid extension",
       "email": "Please enter a valid email address",
       "password": "Please enter a valid password",
-      "studentId": "Please enter a valid student number"
+      "studentId": "Please enter a valid student number",
+      "network": "There was an unexpected networking error"
     }
   },
   "offersList": {
@@ -41,7 +42,8 @@
     "internshipEndDate": "End Date",
     "internshipStartDate": "Start Date",
     "noOffers": "No offers available",
-    "viewTitle": "Available Offers"
+    "viewTitle": "Available Offers",
+    "viewMore": "View More"
   },
   "offer": {
     "modal": {
@@ -67,12 +69,16 @@
     "viewTitle": "Available Offers",
     "acceptButton": "Accept",
     "refuseButton": "Refuse",
-    "ACCEPTED" : "Accepted",
-    "REFUSED" : "Refused",
-    "noMorePendingOffers" : "There is no more pending offers"
+    "ACCEPTED": "Accepted",
+    "REFUSED": "Refused",
+    "noMorePendingOffers": "There is no more pending offers"
   },
   "employerOffersList": {
     "viewTitle": "Available Offers",
+    "status": "Status",
+    "PENDING": "Pending",
+    "ACCEPTED": "Accepted",
+    "REFUSED": "Refused",
     "editButton": "Edit",
     "deleteButton": "Delete"
   },
@@ -82,10 +88,29 @@
   "manager": {
     "seeOffersButton": "See Offers"
   },
+  "employer": {
+    "errors": {
+      "employerNotFound": "Employer not found"
+    },
+    "seeOffersButton": "See Offers"
+  },
   "upload": {
     "CvFormTitle": "Upload CV",
     "file": "Upload File",
     "submit": "Submit",
     "success": "Your CV has been uploaded successfully"
-  }
+  },
+  "login": {
+    "identification": "Email or Student Number",
+    "password": "Password",
+    "userCreated": "Account has been successfully created",
+    "errors": {
+      "emptyIdentification": "Please enter your email or student number",
+      "emptyPassword": "Please enter your password",
+      "invalidCredentials": "Email, student number or password is invalid",
+      "sessionExpired": "Your session has expired, please log in again"
+    }
+  },
+  "logout": "Log out",
+  "pageNotFound": "Error 404: Page Not Found"
 }
