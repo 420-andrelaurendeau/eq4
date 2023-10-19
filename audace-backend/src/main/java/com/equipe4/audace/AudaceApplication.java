@@ -31,6 +31,7 @@ import java.time.LocalDate;
 import java.util.*;
 
 @SpringBootApplication
+@AllArgsConstructor
 public class AudaceApplication implements CommandLineRunner {
 	private DepartmentRepository departmentRepository;
 	private EmployerRepository employerRepository;
@@ -39,21 +40,6 @@ public class AudaceApplication implements CommandLineRunner {
 	private ManagerRepository managerRepository;
 	private EmployerService employerService;
 	private StudentService studentService;
-	private ApplicationRepository applicationRepository;
-	private OfferRepository offerRepository;
-
-	public AudaceApplication(DepartmentRepository departmentRepository, EmployerRepository employerRepository, CvRepository cvRepository, SaltRepository saltRepository, ManagerRepository managerRepository, EmployerService employerService, StudentService studentService, ApplicationRepository applicationRepository, OfferRepository offerRepository) {
-		this.departmentRepository = departmentRepository;
-		this.employerRepository = employerRepository;
-		this.cvRepository = cvRepository;
-		this.saltRepository = saltRepository;
-		this.managerRepository = managerRepository;
-		this.employerService = employerService;
-		this.studentService = studentService;
-		this.applicationRepository = applicationRepository;
-		this.offerRepository = offerRepository;
-	}
-
 
 	public static void main(String[] args) {
 		SpringApplication.run(AudaceApplication.class, args);
@@ -131,8 +117,5 @@ public class AudaceApplication implements CommandLineRunner {
 		manager = managerRepository.save(manager);
 		saltRepository.save(new Salt(null, manager, managerSalt));
 		managerRepository.save(manager);
-
-		Application application = new Application(null, cv, offerRepository.findById(1L).orElseThrow());
-		applicationRepository.save(application);
 	}
 }
