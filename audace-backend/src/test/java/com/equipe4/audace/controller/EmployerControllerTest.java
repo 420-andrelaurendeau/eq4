@@ -10,6 +10,7 @@ import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.UserRepository;
+import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
@@ -17,6 +18,7 @@ import com.equipe4.audace.service.EmployerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.equipe4.audace.service.StudentService;
 import com.equipe4.audace.utils.JwtManipulator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -74,17 +76,12 @@ public class EmployerControllerTest {
     private SaltRepository saltRepository;
 
     @Test
-    @WithMockUser(username = "admin", authorities = {"ADMIN", "USER"})
-    public void getEmployerById_happyPath_test_asAdmin() throws Exception {
-        getEmployerById_happyPath_test();
-    }
-
-    @Test
     @WithMockUser(username = "employer", authorities = {"EMPLOYER", "USER"})
     public void getEmployerById_happyPath_test_asEmployer() throws Exception {
         getEmployerById_happyPath_test();
     }
 
+    @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER", "USER"})
     public void getEmployerById_happyPath_test_asManager() throws Exception {
         getEmployerById_happyPath_test();
@@ -164,7 +161,8 @@ public class EmployerControllerTest {
         when(employerService.createOffer(any(OfferDTO.class))).thenReturn(Optional.of(offerDTO));
 
         // when - action or behaviour that we are going test
-        ResultActions response = mockMvc.perform(post("/employers/{id}/offers", 1L).with(csrf())
+        ResultActions response = mockMvc.perform(post("/employers/{id}/offers", 1L)
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(Optional.of(offerDTO))));
 
@@ -230,7 +228,8 @@ public class EmployerControllerTest {
         given(employerService.updateOffer(any(OfferDTO.class))).willReturn(Optional.of(offerDTOUpdated));
 
         // when -  action or the behaviour that we are going test
-        ResultActions response = mockMvc.perform(put("/employers/{id}/offers", 1L).with(csrf())
+        ResultActions response = mockMvc.perform(put("/employers/{id}/offers", 1L)
+                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(offerDTOUpdated)));
 
@@ -243,7 +242,9 @@ public class EmployerControllerTest {
                 .andExpect(jsonPath("$.internshipStartDate", is(offerDTOUpdated.getInternshipStartDate().toString())))
                 .andExpect(jsonPath("$.internshipEndDate", is(offerDTOUpdated.getInternshipEndDate().toString())))
                 .andExpect(jsonPath("$.offerEndDate", is(offerDTOUpdated.getOfferEndDate().toString())))
-                .andExpect(jsonPath("$.availablePlaces", is(offerDTOUpdated.getAvailablePlaces())));
+                .andExpect(jsonPath("$.availablePlaces", is(offerDTOUpdated.getAvailablePlaces())))
+                .andExpect(jsonPath("$.employer.id", is(offerDTOUpdated.getEmployer().getId().intValue())))
+                .andExpect(jsonPath("$.department.code", is(offerDTOUpdated.getDepartment().getCode())));
     }
 
     private EmployerDTO createEmployerDTO() {

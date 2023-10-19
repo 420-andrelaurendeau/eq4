@@ -7,12 +7,12 @@ import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
-import com.equipe4.audace.model.Student;
-import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.model.security.Salt;
+import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
@@ -26,14 +26,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
-import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class StudentServiceTest {
@@ -108,23 +111,7 @@ public class StudentServiceTest {
 
     @Test
     void createStudent() {
-        DepartmentDTO departmentDTO = new DepartmentDTO(
-                1L,
-                "GEN",
-                "Génie"
-        );
-
-        StudentDTO studentDTO = new StudentDTO(
-                1L,
-                "student",
-                "studentMan",
-                "password",
-                "123 Street street",
-                "1234567890",
-                "123456789",
-                "studentNumber",
-                departmentDTO
-        );
+        StudentDTO studentDTO = createStudentDTO();
 
         when(studentRepository.save(any())).thenReturn(studentDTO.fromDTO());
         when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(studentDTO.getDepartment().fromDTO()));
@@ -169,19 +156,7 @@ public class StudentServiceTest {
     @Test
     public void findStudentById_happyPathTest() {
         // Arrange
-        Department department = new Department(1L, "GEN", "Génie");
-
-        Student student = new Student(
-                1L,
-                "student",
-                "studentMan",
-                "email@email.com",
-                "password",
-                "123 Street Street",
-                "1234567890",
-                "123456789",
-                department
-        );
+        Student student = createStudentDTO().fromDTO();
 
         when(studentRepository.findById(1L)).thenReturn(Optional.of(student));
 
@@ -272,31 +247,12 @@ public class StudentServiceTest {
     }
 
     private StudentDTO createStudentDTO() {
-        DepartmentDTO departmentDTO = new DepartmentDTO(
-                1L,
-                "GEN",
-                "Génie"
-        );
-        return new StudentDTO(
-                1L,
-                "student",
-                "studentMan",
-                "password",
-                "123 Street street",
-                "1234567890",
-                "123456789",
-                "studentNumber",
-                departmentDTO
-        );
+        DepartmentDTO departmentDTO = new DepartmentDTO(1L, "GEN", "Génie");
+        return new StudentDTO(1L, "student", "studentMan", "email@email.com", "123 Street street", "1234567890", "123456789", "studentNumber", departmentDTO);
     }
 
     private MultipartFile createMockFile() {
-        return new MockMultipartFile(
-                "file",
-                "test.txt",
-                MediaType.TEXT_PLAIN_VALUE,
-                "test data".getBytes()
-        );
+        return new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "test data".getBytes());
     }
 
     @Test
@@ -343,17 +299,7 @@ public class StudentServiceTest {
                 department
         );
         Cv cv = new Cv(1L, student, new byte[0], "fileName");
-        Offer offer = new Offer(
-                1L,
-                "title",
-                "description",
-                LocalDate.now(),
-                LocalDate.now(),
-                LocalDate.now(),
-                0,
-                department,
-                mock(Employer.class)
-        );
+        Offer offer = new Offer(1L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 0, department, mock(Employer.class));
         Application application = new Application(null, student, cv, offer);
 
         ApplicationDTO applicationDTO = application.toDTO();

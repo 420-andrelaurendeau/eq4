@@ -4,6 +4,7 @@ import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Student;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Cv {
     @Id

@@ -22,8 +22,9 @@ public class Offer {
     @SequenceGenerator(name = "offer_gen", sequenceName = "offer_sec", allocationSize = 1)
     @Column(name = "offer_id")
     private Long id;
-
     private String title;
+
+    @Column(length = 2048)
     private String description;
     private LocalDate internshipStartDate;
     private LocalDate internshipEndDate;

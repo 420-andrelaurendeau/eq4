@@ -7,7 +7,6 @@ import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.security.Salt;
 import com.equipe4.audace.repository.EmployerRepository;
-import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import org.junit.jupiter.api.Test;
@@ -33,11 +32,7 @@ public class EmployerServiceTest {
     @Mock
     private OfferRepository offerRepository;
     @Mock
-    private DepartmentRepository departmentRepository;
-
-    @Mock
     private SaltRepository saltRepository;
-
     @InjectMocks
     private EmployerService employerService;
 
@@ -137,6 +132,7 @@ public class EmployerServiceTest {
 
     @Test
     public void createOffer_HappyPath(){
+        // Arrange
         Department mockedDepartment = new Department(1L, "GLO", "Génie logiciel");
         Employer fakeEmployer = new Employer(
                 1L,
@@ -165,12 +161,12 @@ public class EmployerServiceTest {
         );
         OfferDTO offerDTO = offer.toDTO();
 
-        when(offerRepository.save(any(Offer.class))).thenReturn(offer);
+        when(offerRepository.save(offerDTO.fromDTO())).thenReturn(offer);
 
         OfferDTO dto = employerService.createOffer(offerDTO).get();
 
         assertThat(dto.equals(offerDTO));
-        verify(offerRepository, times(1)).save(offer);
+        verify(offerRepository, times(1)).save(offerDTO.fromDTO());
     }
 
     @Test

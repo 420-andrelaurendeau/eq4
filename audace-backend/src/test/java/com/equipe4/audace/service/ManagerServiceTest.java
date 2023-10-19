@@ -19,11 +19,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -105,19 +107,10 @@ public class ManagerServiceTest {
         Department mockedDepartment = mock(Department.class);
         List<Offer> offers = new ArrayList<>();
 
-        Employer fakeEmployer = mock(Employer.class);
+        Employer fakeEmployer = new Employer(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
+        Offer fakeOffer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, mockedDepartment, fakeEmployer);
 
-        Offer fakeOffer = new Offer(
-                1L,
-                "title",
-                "description",
-                LocalDate.now(),
-                LocalDate.now(),
-                LocalDate.now(),
-                1,
-                mockedDepartment,
-                fakeEmployer
-        );
+        fakeEmployer.getOffers().add(fakeOffer);
 
         for (int i = 0; i < 3; i++)
             offers.add(fakeOffer);
@@ -156,16 +149,7 @@ public class ManagerServiceTest {
     public void findManagerById_happyPathTest() {
         // Arrange
         Department department = mock(Department.class);
-        Manager manager = new Manager(
-                1L,
-                "manager",
-                "managerman",
-                "manager@email.com",
-                "password",
-                "1234567890",
-                "123456789",
-                department
-        );
+        Manager manager = new Manager(1L, "manager", "managerman", "manager@email.com", "password", "yeete", "1234567890", department);
 
         when(managerRepository.findById(1L)).thenReturn(Optional.of(manager));
 

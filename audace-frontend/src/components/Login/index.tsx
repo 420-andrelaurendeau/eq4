@@ -23,13 +23,16 @@ const LoginForm = () => {
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const [showExpiredSessionNotif, setShowExpiredSessionNotif] = useState<boolean>(false);
+  const [showExpiredSessionNotif, setShowExpiredSessionNotif] =
+    useState<boolean>(false);
+  const [showUserCreatedNotif, setShowUserCreatedNotif] =
+    useState<boolean>(false);
 
   const isSessionProperlyExpired = useCallback(() => {
     return (
-      location.pathname === "/login/disconnected" &&
-      !isConnected() &&
-      hasSessionExpiredRecently()
+        location.pathname === "/login/disconnected" &&
+        !isConnected() &&
+        hasSessionExpiredRecently()
     );
   }, [location.pathname]);
 
@@ -38,6 +41,12 @@ const LoginForm = () => {
 
     setShowExpiredSessionNotif(true);
   }, [isSessionProperlyExpired]);
+
+  useEffect(() => {
+    if (location.pathname !== "/login/createdUser") return;
+
+    setShowUserCreatedNotif(true);
+  }, [location, setShowUserCreatedNotif]);
 
   const submitForm = () => {
     if (!validateForm()) return;
@@ -50,34 +59,33 @@ const LoginForm = () => {
     };
 
     login(loginRequest)
-      .then((response) => {
-        authenticate(response.data);
+        .then((response) => {
+          authenticate(response.data);
 
-        const id = getUserId();
+          const id = getUserId();
 
-        if (id == null) {
-          logout();
-          navigate("/pageNotFound");
-          return;
-        }
-
-        getUserById(parseInt(id))
-          .then((res) => {
-            navigateToUserTypeHomePage(res.data.type!);
-          })
-          .catch((err) => {
-            console.log(err);
+          if (id == null) {
             logout();
             navigate("/pageNotFound");
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-        if (error.response.status === 401 || error.response.status === 403)
-          setAreCredentialsValid(false);
+            return;
+          }
 
-        setIsDisabled(false);
-      });
+          getUserById(parseInt(id))
+              .then((res) => {
+                navigateToUserTypeHomePage(res.data.type!);
+              })
+              .catch((err) => {
+                console.log(err);
+                logout();
+                navigate("/pageNotFound");
+              });
+        })
+        .catch((error) => {
+          if (error.response.status === 401 || error.response.status === 403)
+            setAreCredentialsValid(false);
+
+          setIsDisabled(false);
+        });
   };
 
   const navigateToUserTypeHomePage = (userType: string) => {
@@ -129,6 +137,9 @@ const LoginForm = () => {
 
   return (
     <>
+      {showUserCreatedNotif && (
+        <Alert variant="success">{t("login.userCreated")}</Alert>
+      )}
       <Form className="my-3">
         <FormInput
           label="login.identification"

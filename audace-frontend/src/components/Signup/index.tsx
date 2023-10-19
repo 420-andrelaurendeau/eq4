@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Row } from "react-bootstrap";
+import { Alert, Button, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { User } from "../../model/user";
 import {
@@ -9,7 +9,6 @@ import {
 import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../FormInput";
-import "./styles.css";
 
 interface Props {
   handleSubmit: (user: User) => Promise<AxiosResponse>;
@@ -19,6 +18,8 @@ interface Props {
   setErrors: (errors: string[]) => void;
   validateExtraFormValues?: (errorsToDisplay: string[]) => boolean;
 }
+
+const errorStringValue = "signup.errors.network";
 
 const Signup = ({
   handleSubmit,
@@ -61,16 +62,22 @@ const Signup = ({
   const sendRequest = (user: User) => {
     setIsDisabled(true);
 
-    handleSubmit(user)
-      .then((_) => {
-        setUnexpectedError("");
-        navigate("/");
-      })
-      .catch((err) => {
-        setIsDisabled(false);
-        setUnexpectedError(err.status);
-      });
-  };
+        handleSubmit(user)
+            .then((_) => {
+                setUnexpectedError("");
+                navigate("/login/createdUser");
+            })
+            .catch((err) => {
+                setIsDisabled(false);
+                console.log(err.code);
+                if (err.code === "ERR_NETWORK") {
+                    setUnexpectedError(errorStringValue);
+                }
+                else {
+                    setUnexpectedError(err.status);
+                }
+            });
+    };
 
   const validateForm = (): boolean => {
     let isFormValid = true;
@@ -92,9 +99,8 @@ const Signup = ({
       isFormValid = false;
     }
 
-    setErrors(errorsToDisplay);
-    if (validateExtraFormValues !== undefined)
-      isFormValid = validateExtraFormValues(errorsToDisplay);
+        setErrors(errorsToDisplay);
+        if (validateExtraFormValues !== undefined) isFormValid = validateExtraFormValues(errorsToDisplay) && isFormValid;
 
     return isFormValid;
   };
@@ -265,19 +271,20 @@ const Signup = ({
         />
       </Row>
 
-      <Button
-        variant="primary"
-        className="mt-3"
-        onClick={submitForm}
-        disabled={isDisabled}
-      >
-        {t("signup.signup")}
-      </Button>
-      {unexpectedError !== "" && (
-        <p className="unexpected-error">{unexpectedError}</p>
-      )}
-    </>
-  );
-};
+            <Button 
+                variant="primary" 
+                className="mt-3" 
+                onClick={submitForm}
+                disabled={isDisabled}
+            >
+                {t("signup.signup")}
+            </Button>
+            {
+            unexpectedError !== "" && (
+                <Alert variant="danger" className="mt-2">{unexpectedError === errorStringValue ? t(errorStringValue) : unexpectedError}</Alert>
+            )}
+        </>
+    );
+}
 
 export default Signup;

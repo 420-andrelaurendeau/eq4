@@ -46,10 +46,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ManagerController.class)
 public class ManagerControllerTest {
     @Autowired
-    private MockMvc mvc;
+    private MockMvc mockMvc;
 
     @MockBean
+    private StudentService studentService;
+    @MockBean
+    private EmployerService employerService;
+    @MockBean
     private ManagerService managerService;
+    @MockBean
+    private ManagerRepository managerRepository;
     @MockBean
     private OfferRepository offerRepository;
     @MockBean
@@ -59,19 +65,13 @@ public class ManagerControllerTest {
     @MockBean
     private StudentRepository studentRepository;
     @MockBean
-    private ManagerRepository managerRepository;
+    private CvRepository cvRepository;
     @MockBean
     private UserRepository userRepository;
     @MockBean
     private JwtManipulator jwtManipulator;
     @MockBean
-    private StudentService studentService;
-    @MockBean
     private SaltRepository saltRepository;
-    @MockBean
-    private EmployerService employerService;
-    @MockBean
-    private CvRepository cvRepository;
 
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
@@ -90,6 +90,7 @@ public class ManagerControllerTest {
                 employer
         );
         OfferDTO offerDTO1 = offer1.toDTO();
+
         when(managerService.acceptOffer(1L)).thenReturn(Optional.of(offerDTO1));
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -98,8 +99,9 @@ public class ManagerControllerTest {
                 .content(offer1.toString())
                 .contentType(MediaType.APPLICATION_JSON);
 
-        mvc.perform(request).andExpect(status().isOk());
+        mockMvc.perform(request).andExpect(status().isOk());
     }
+
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void refuseOffer() throws Exception {
@@ -125,8 +127,9 @@ public class ManagerControllerTest {
                 .content(offer1.toString())
                 .contentType(MediaType.APPLICATION_JSON);
 
-        mvc.perform(request).andExpect(status().isOk());
+        mockMvc.perform(request).andExpect(status().isOk());
     }
+
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void acceptOffer_invalidId() throws Exception {
@@ -152,8 +155,9 @@ public class ManagerControllerTest {
                 .content(offer1.toDTO().toString())
                 .contentType(MediaType.APPLICATION_JSON);
 
-        mvc.perform(request).andExpect(status().isBadRequest());
+        mockMvc.perform(request).andExpect(status().isBadRequest());
     }
+
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void refuseOffer_invalidId() throws Exception {
@@ -179,7 +183,7 @@ public class ManagerControllerTest {
                 .content(offer1.toDTO().toString())
                 .contentType(MediaType.APPLICATION_JSON);
 
-        mvc.perform(request).andExpect(status().isBadRequest());
+        mockMvc.perform(request).andExpect(status().isBadRequest());
     }
 
     @Test
@@ -188,7 +192,7 @@ public class ManagerControllerTest {
         List<OfferDTO> offerDTOList = List.of(mock(OfferDTO.class));
         when(managerService.getOffersByDepartment(1L)).thenReturn(offerDTOList);
 
-        mvc.perform(get("/managers/offers/1"))
+        mockMvc.perform(get("/managers/offers/1"))
                 .andExpect(status().isOk());
     }
     @Test
@@ -205,7 +209,7 @@ public class ManagerControllerTest {
                 .content(cv.toString())
                 .contentType(MediaType.APPLICATION_JSON);
 
-        mvc.perform(request).andExpect(status().isOk());
+        mockMvc.perform(request).andExpect(status().isOk());
     }
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
@@ -221,7 +225,7 @@ public class ManagerControllerTest {
                 .content(cv.toString())
                 .contentType(MediaType.APPLICATION_JSON);
 
-        mvc.perform(request).andExpect(status().isOk());
+        mockMvc.perform(request).andExpect(status().isOk());
     }
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
@@ -236,7 +240,7 @@ public class ManagerControllerTest {
                 .content(cv.toString())
                 .contentType(MediaType.APPLICATION_JSON);
 
-        mvc.perform(request).andExpect(status().isBadRequest());
+        mockMvc.perform(request).andExpect(status().isBadRequest());
     }
 
     @Test
@@ -252,7 +256,7 @@ public class ManagerControllerTest {
                 .content(cv.toString())
                 .contentType(MediaType.APPLICATION_JSON);
 
-        mvc.perform(request).andExpect(status().isBadRequest());
+        mockMvc.perform(request).andExpect(status().isBadRequest());
     }
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
@@ -271,7 +275,7 @@ public class ManagerControllerTest {
 
         when(managerService.getManagerById(1L)).thenReturn(Optional.of(manager.toDTO()));
 
-        mvc.perform(get("/managers/{id}", 1L))
+        mockMvc.perform(get("/managers/{id}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(1L))
@@ -289,7 +293,7 @@ public class ManagerControllerTest {
     public void getManagerById_invalidId_test() throws Exception {
         when(managerService.getManagerById(-1L)).thenReturn(Optional.empty());
 
-        mvc.perform(get("/managers/{id}", -1L))
+        mockMvc.perform(get("/managers/{id}", -1L))
                 .andExpect(status().isNotFound());
     }
 
@@ -299,7 +303,7 @@ public class ManagerControllerTest {
         List<CvDTO> cvDTOList = List.of(mock(CvDTO.class));
         when(managerService.getCvsByDepartment(1L)).thenReturn(cvDTOList);
 
-        mvc.perform(get("/managers/cvs/1"))
+        mockMvc.perform(get("/managers/cvs/1"))
                 .andExpect(status().isOk());
     }
 }
