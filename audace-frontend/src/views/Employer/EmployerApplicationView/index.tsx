@@ -82,16 +82,17 @@ const EmployerApplicationView = () => {
         value.forEach((application) => {cv.push(application.cv!)});
         return (
             <div key={key.id}>
-                <h1>{key.title}</h1>
+                <h2>{key.title}</h2>
                 <CvList cvs={cv} error={error} userType={UserType.Employer} />
             </div>
         )
     }
 
     return (
-    <Container>
-        {getReactElements()}
-    </Container>
+        <Container>
+            <h1 className="text-center my-3">{t("employerCvsList.title")}</h1>
+            {getReactElements()}
+        </Container>
     );
 };
 

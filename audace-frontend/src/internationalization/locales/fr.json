@@ -94,6 +94,7 @@
     "noMorePendingCvs": "Il n'y a plus de CV en attente"
   },
   "employerCvsList": {
+    "title": "Applications",
     "acceptButton": "Accepter",
     "refuseButton": "Refuser",
     "ACCEPTED": "Accepté",

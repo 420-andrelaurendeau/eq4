@@ -18,8 +18,8 @@ import java.util.*;
 @Service
 public class EmployerService extends GenericUserService<Employer> {
     private final EmployerRepository employerRepository;
-    private OfferRepository offerRepository;
-    private ApplicationRepository applicationRepository;
+    private final OfferRepository offerRepository;
+    private final ApplicationRepository applicationRepository;
 
     public EmployerService(SaltRepository saltRepository, EmployerRepository employerRepository, OfferRepository offerRepository, ApplicationRepository applicationRepository) {
         super(saltRepository);
@@ -72,17 +72,13 @@ public class EmployerService extends GenericUserService<Employer> {
         offerRepository.delete(offer);
     }
 
-    public List<ApplicationDTO> findAllApplicationsByOfferId(Long offerId){
-        Offer offer = offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
-        return applicationRepository.findAllByOffer(offer).stream().map(Application::toDTO).toList();
-    }
-
     public Map<Long, List<ApplicationDTO>> findAllApplicationsByEmployerId(Long employerId){
         Map<Long, List<ApplicationDTO>> map = new HashMap<>();
 
         for (OfferDTO offerDTO: findAllOffersByEmployerId(employerId)) {
             map.put(offerDTO.getId(), applicationRepository.findAllByOffer(offerDTO.fromDTO()).stream().map(Application::toDTO).toList());
         }
+
         return map;
     }
 }
