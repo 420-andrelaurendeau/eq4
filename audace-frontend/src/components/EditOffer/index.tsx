@@ -1,12 +1,25 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, Row } from "react-bootstrap";
+import { Button, Form, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import FormInput from "../Signup/FormInput"; 
+import FormInput from "../Signup/FormInput";
 import { Offer, OfferStatus } from "../../model/offer";
 import { Department } from "../../model/department";
 
-const EditOffer: React.FC = () => {
+interface OfferFormData {
+  id: number,
+  title: string,
+  description: string,
+  departmentCode: string,
+  internshipStartDate:  string,
+  internshipEndDate:  string,
+  offerEndDate:  string,
+  availablePlaces: number,
+  status: string,
+  employerId: number
+  };
 
+
+const EditOffer: React.FC = () => {
   const { t } = useTranslation();
 
   const [title, setTitle] = useState<string>("");
@@ -17,10 +30,30 @@ const EditOffer: React.FC = () => {
   const [offerEndDate, setOfferEndDate] = useState<Date>({} as Date);
   const [availablePlaces, setAvailablePlaces] = useState<number>(3);
   const [errors, setErrors] = useState<string[]>([]);
+  const [departments, setDepartments] = useState<Department[]>([]);
 
   useEffect(() => {
     fetchOffer();
+    fetchDepartments();
   }, []);
+
+  const fetchDepartments = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/employers/departments");
+
+      if (!response.ok) {
+        throw new Error(
+          `Backend returned code ${response.status}, body: ${response.statusText}`
+        );
+      }
+
+      const departmentData: Department[] = await response.json();
+      setDepartments(departmentData);
+      setDepartment(departmentData[0]);
+    } catch (error) {
+      console.error("There was an error fetching the departments:", error);
+    }
+  };
 
   const fetchOffer = async () => {
     const paths = window.location.pathname.split("/");
@@ -37,7 +70,7 @@ const EditOffer: React.FC = () => {
 
       setTitle(offerData.title);
       setDescription(offerData.description);
-      setDepartment(offerData.department);
+      setDepartment(offerData.department || {id:1, code:"GLO", name:"Genie"} as Department);
       setInternshipStartDate(new Date(offerData.internshipStartDate));
       setInternshipEndDate(new Date(offerData.internshipEndDate));
       setOfferEndDate(new Date(offerData.offerEndDate));
@@ -47,42 +80,61 @@ const EditOffer: React.FC = () => {
     }
   };
 
+  const formatDateForInput = (date: Date | null): string => {
+    if (date instanceof Date) {
+        return date.toISOString().substring(0, 10);
+    }
+    return "";
+};
+
+  function isValidDate(d: any) {
+    return d instanceof Date && !isNaN(d.getTime());
+  }
+
   const validateForm = (): boolean => {
     let isValid = true;
     const errorsToDisplay: string[] = [];
 
-    // ... your validation logic here
+    // if (!title) errorsToDisplay.push("addOffer.errors.titleRequired");
+    // if (!description) errorsToDisplay.push("addOffer.errors.descriptionRequired");
+    // if (!department) errorsToDisplay.push("addOffer.errors.departmentCodeRequired");
+
+    // if (!isValidDate(internshipStartDate)) errorsToDisplay.push("addOffer.errors.invalidStartDate");
+    // if (!isValidDate(internshipEndDate)) errorsToDisplay.push("addOffer.errors.invalidEndDate");
+    // if (!isValidDate(offerEndDate)) errorsToDisplay.push("addOffer.errors.invalidOfferEndDate");
+  
 
     setErrors(errorsToDisplay);
     return errorsToDisplay.length === 0;
   };
 
   const handleSubmit = () => {
+    console.log("Submit button clicked");
     if (validateForm()) {
-      // Assuming you might also want to get the offerId from the URL here
       const paths = window.location.pathname.split("/");
       const offerId = paths[paths.length - 1];
       const employerId = paths[paths.length - 3];
 
-      const updatedOffer: Offer = {
+      const updatedOffer: OfferFormData = {
+        id: parseInt(offerId),
         title,
         description,
-        department,
-        internshipStartDate,
-        internshipEndDate,
-        offerEndDate,
+        departmentCode: department.code,
+        internshipStartDate: formatDateForInput(internshipStartDate),
+        internshipEndDate: formatDateForInput(internshipEndDate),
+        offerEndDate: formatDateForInput(offerEndDate),
         availablePlaces,
-        id: parseInt (offerId), 
-        employerId: (parseInt) (employerId),
-        status: {} as OfferStatus
+        employerId: parseInt(employerId),
+        status: OfferStatus.PENDING
       };
-      editOffer(updatedOffer);
+      editOffer(updatedOffer, parseInt(offerId));
     }
   };
 
-  const editOffer = async (updatedOffer: Offer) => {
+  const editOffer = async (updatedOffer: OfferFormData, id: number) => {
     try {
-      const response = await fetch(`http://localhost:8080/employers/offers/${updatedOffer.id}`, { 
+      console.log("Offer to update:", updatedOffer);
+      const response = await fetch(`http://localhost:8080/employers/offers`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -113,38 +165,112 @@ const EditOffer: React.FC = () => {
       <h3 className="text-center">{t("editOffer.pageTitle")}</h3>
       <Form className="container mt-5">
         <Row>
-          <FormInput 
+          <FormInput
             label="editOffer.title"
             value={title}
             onChange={(e: any) => setTitle(e.target.value)}
             errors={errors}
-            formError="editOffer.errors.titleRequired"
-            controlId="formOfferTitle"
-          />
-          <FormInput 
-            label="editOffer.department"
-            value={department.toString()}
-            onChange={(e: any) => setDepartment(e.target.value)}
-            errors={errors}
-            formError="editOffer.errors.departmentRequired"
-            controlId="formOfferDepartment"
-          />
+            formError="error.title.required" controlId={""}          />
         </Row>
-        <Form.Group controlId="formOfferDescription">
-          <Form.Label>{t("editOffer.description")}</Form.Label>
-          <Form.Control
-            as="textarea"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </Form.Group>
         <Row>
-          {/* Date input components similar to those in AddOffer */}
-          {/* ... */}
+          <FormInput
+            label="editOffer.description"
+            value={description}
+            onChange={(e: any) => setDescription(e.target.value)}
+            errors={errors}
+            formError="error.description.required" controlId={""}          />
         </Row>
-        <Button variant="primary" className="mt-3" onClick={handleSubmit}>
-          {t("editOffer.submit")}
-        </Button>
+        <Row>
+          <Col>
+            <Form.Group controlId="formDepartment">
+              <Form.Label>{t("addOffer.department")}</Form.Label>
+              <Form.Control as="select" value={department?.id || ""} onChange={(e: any) => setDepartment(departments.find(d => d.id === parseInt(e.target.value)) || {id: 1, name: "Genie Logiciel", code: "GLO"} as Department)}>
+                {departments.map((dept: Department) => (
+                  <option key={dept.id} value={dept.id}>
+                    {dept.name}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
+          </Col>
+        </Row>
+        <Row>
+        <Col md="4">
+          <Form.Group controlId="formOfferStartDate">
+            <Form.Label>{t("addOffer.startDate")}</Form.Label>
+            <Form.Control
+              type="date"
+              value={formatDateForInput(internshipStartDate)}
+              isInvalid={errors.includes("addOffer.errors.startDateRequired")}
+              onChange={(e) => {
+                const newDate = new Date(e.target.value);
+                if (isValidDate(newDate)) {
+                  setInternshipStartDate(newDate);
+                } else {
+                  setErrors((prevErrors) => [...prevErrors, "addOffer.errors.invalidDate"]);
+                }
+              }}
+              
+            />
+            {renderDateInputError("addOffer.errors.startDateRequired")}
+          </Form.Group>
+        </Col>
+
+        <Col md="4">
+          <Form.Group controlId="formOfferEndDate">
+            <Form.Label>{t("addOffer.endDate")}</Form.Label>
+            <Form.Control
+              type="date"
+              value={formatDateForInput(internshipEndDate)}
+              isInvalid={errors.includes("addOffer.errors.endDateRequired")}
+              onChange={(e) => {
+                const newDate = new Date(e.target.value);
+                if (isValidDate(newDate)) {
+                  setInternshipEndDate(newDate);
+                } else {
+                  setErrors((prevErrors) => [...prevErrors, "addOffer.errors.invalidDate"]);
+                }
+              }}
+              
+            />
+            {renderDateInputError("addOffer.errors.endDateRequired")}
+          </Form.Group>
+        </Col>
+
+        <Col md="4">
+          <Form.Group controlId="formOfferOfferEndDate">
+            <Form.Label>{t("addOffer.offerEndDate")}</Form.Label>
+            <Form.Control
+              type="date"
+              value={formatDateForInput(offerEndDate)}
+              isInvalid={errors.includes("addOffer.errors.offerEndDateRequired")}
+              onChange={(e) => {
+                const newDate = new Date(e.target.value);
+                if (isValidDate(newDate)) {
+                  setOfferEndDate(newDate);
+                } else {
+                  setErrors((prevErrors) => [...prevErrors, "addOffer.errors.invalidDate"]);
+                }
+              }}
+              
+            />
+            {renderDateInputError("addOffer.errors.offerEndDateRequired")}
+          </Form.Group>
+        </Col>
+      </Row>
+        <Row>
+          <Col>
+            <Form.Group controlId="formAvailablePlaces">
+              <Form.Label>{t("addOffer.availablePlaces")}</Form.Label>
+              <Form.Control type="number" value={availablePlaces} onChange={(e: any) => setAvailablePlaces(e.target.value)}/>
+            </Form.Group>
+          </Col>
+        </Row>
+        <Row>
+          <Col className="mt-3">
+            <Button variant="primary" onClick={handleSubmit}>{t("editOffer.submit")}</Button>
+          </Col>
+        </Row>
       </Form>
     </>
   );

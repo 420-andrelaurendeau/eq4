@@ -73,6 +73,8 @@ public class EmployerController extends GenericUserController<Employer, Employer
     public ResponseEntity<OfferDTO> updateOffer(@RequestBody OfferDTO offerDTO){
         logger.info("updateOffer");
         OfferDTO updatedOffer = service.updateOffer(offerDTO).get();
+        logger.info("Received offer for update: " + offerDTO.toString());
+        logger.info("Updated offer: " + updatedOffer.toString());
         return ResponseEntity.ok(updatedOffer);
     }
 
