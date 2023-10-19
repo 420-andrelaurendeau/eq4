@@ -1,0 +1,143 @@
+{
+  "langCode": "en",
+  "signin": "Sign In",
+  "signup": {
+    "employerFormTitle": "Employer Registration",
+    "studentFormTitle": "Student Registration",
+    "companyNameEntry": "Company Name",
+    "addressEntry": "Address",
+    "cityEntry": "City",
+    "postalCodeEntry": "Postal Code",
+    "phoneEntry": "Phone",
+    "extensionEntry": "Extension",
+    "lastNameEntry": "Last Name",
+    "firstNameEntry": "First Name",
+    "positionEntry": "Position",
+    "emailEntry": "Email",
+    "password": "Choose a Password",
+    "passwordConfirmation": "Confirm Your Password",
+    "studentId": "Student number",
+    "signup": "Sign Up",
+    "errors": {
+      "organisation": "Please enter a valid organisation name",
+      "position": "Position cannot be empty",
+      "firstName": "First name cannot be empty",
+      "lastName": "Last name cannot be empty",
+      "address": "Address cannot be empty",
+      "city": "City cannot be empty",
+      "postalCode": "Postal code cannot be empty",
+      "phone": "Please enter a valid phone number",
+      "extension": "Please enter a valid extension",
+      "email": "Please enter a valid email address",
+      "password": "Please enter a valid password",
+      "studentId": "Please enter a valid student number"
+    }
+  },
+  "cvsList": {
+    "errors": {
+      "departmentNotFound": "Department not found"
+    },
+    "name": "CV",
+    "viewMore": "View the CV",
+    "noCvs": "No CVs available",
+    "studentName": "Student"
+  },
+  "offersList": {
+    "errors": {
+      "departmentNotFound": "Department not found"
+    },
+    "title": "Title",
+    "internshipEndDate": "End Date",
+    "internshipStartDate": "Start Date",
+    "noOffers": "No offers available",
+    "viewTitle": "Available Offers"
+  },
+  "offer": {
+    "modal": {
+      "org": "Organization",
+      "address": "Address",
+      "phone": "Phone number",
+      "orgNotFound": "Organization not found",
+      "offerEnd": "Offer ends on",
+      "offerDescription": "Offer Description",
+      "empNotFound": "Employer not found!",
+      "apply": "Apply",
+      "internDate": {
+        "start": "From",
+        "end": "to"
+      }
+    }
+  },
+  "studentOffersList": {
+    "viewTitle": "Available Offers",
+    "applyButton": "Apply"
+  },
+  "managerOffersList": {
+    "viewTitle": "Available Offers",
+    "acceptButton": "Accept",
+    "refuseButton": "Refuse",
+    "ACCEPTED": "Accepted",
+    "REFUSED": "Refused",
+    "noMorePendingOffers": "There are no more pending offers"
+  },
+  "managerCvsList": {
+    "errors": {
+      "cvNotFound": "CV not found",
+      "departmentNotFound": "Department not found",
+      "studentNotFound": "Student not found"
+    },
+    "viewTitle": "Available CVs",
+    "acceptButton": "Accept",
+    "refuseButton": "Refuse",
+    "ACCEPTED": "Accepted",
+    "REFUSED": "Refused",
+    "noMorePendingCvs": "There are no more pending CVs"
+  },
+  "employerCvsList": {
+    "acceptButton": "Accept",
+    "refuseButton": "Refuse",
+    "ACCEPTED": "Accepted",
+    "REFUSED": "Refused"
+  },
+  "employerOffersList": {
+    "viewTitle": "Available Offers",
+    "status": "Status",
+    "PENDING": "Pending",
+    "ACCEPTED": "Accepted",
+    "REFUSED": "Refused",
+    "editButton": "Edit",
+    "deleteButton": "Delete"
+  },
+  "student": {
+    "seeOffersButton": "See Offers"
+  },
+  "manager": {
+    "seeOffersButton": "See Offers",
+    "seeCvsButton": "See CVS"
+  },
+  "employer": {
+    "errors": {
+      "employerNotFound": "Employer not found"
+    },
+    "seeOffersButton": "See Offers",
+    "seeApplicationsButton": "See Applications"
+  },
+  "upload": {
+    "CvFormTitle": "Upload CV",
+    "file": "Upload File",
+    "submit": "Submit",
+    "success": "Your CV has been uploaded successfully"
+  },
+  "login": {
+    "identification": "Email or Student Number",
+    "password": "Password",
+    "errors": {
+      "emptyIdentification": "Please enter your email or student number",
+      "emptyPassword": "Please enter your password",
+      "invalidCredentials": "Email, student number or password is invalid",
+      "sessionExpired": "Your session has expired, please log in again"
+    }
+  },
+  "logout": "Log out",
+  "pageNotFound": "Error 404: Page Not Found"
+}
