@@ -17,7 +17,7 @@ interface Props {
     updateOffersState?: (offer : Offer, offerStatus : OfferStatus) => void;
 }
 
-const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, updateOffersState}: Props) => {
+const  OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, updateOffersState}: Props) => {
     const {t} = useTranslation();
 
     useEffect(() => {

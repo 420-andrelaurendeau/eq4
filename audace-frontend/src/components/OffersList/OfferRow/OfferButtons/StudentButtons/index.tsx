@@ -44,10 +44,12 @@ const StudentButtons = ({disabled, offer}: Props) => {
     };
 
     return (
-        <>
-            <Button disabled={disabled} onClick={handleApply}>{t("studentOffersList.applyButton")}</Button>
-            <p style={{color: applicationMessageColor}}>{applicationMessage}</p>
-        </>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            <Button disabled={disabled} onClick={handleApply}>
+                Apply
+            </Button>
+            <p style={{ color: applicationMessageColor }}>{applicationMessage}</p>
+        </div>
     );
 };
 

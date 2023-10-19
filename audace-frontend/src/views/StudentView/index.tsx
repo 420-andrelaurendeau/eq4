@@ -77,19 +77,32 @@ const StudentView = () => {
             });
     }, [student, t]);
 
+    const handleUploadSuccess = () => {
+        // Fetch the updated list of CVs after a successful upload
+        getCvsByStudentId(student!.id!)
+            .then((res) => {
+                if (res.data.length === 0) {
+                    setCvsError(t("cvsList.noCvs"));
+                } else {
+                    setCvs(res.data);
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+
+                if (err.request && err.request.status === 404) {
+                    setCvsError(t("cvsList.noCvs"));
+                }
+            });
+    };
+
     return (
         <Container>
             <h1 className="my-3">Student view</h1>
             <h2>{t("studentOffersList.viewTitle")}</h2>
             <OffersList offers={offers} error={offersError} userType={UserType.Student}/>
-
-            {cvs.length > 0 ? (
-                <CvsList cvs={cvs} error={cvsError} userType={UserType.Student}/>
-            ) : (
-                <><h2>CV's</h2><p>{cvsError}</p></>
-            )}
-
-            <FileUploader student={student!}/>
+            <CvsList cvs={cvs} error={cvsError} userType={UserType.Student}/>
+            <FileUploader student={student!} onUploadSuccess={handleUploadSuccess}/>
         </Container>
     );
 };
