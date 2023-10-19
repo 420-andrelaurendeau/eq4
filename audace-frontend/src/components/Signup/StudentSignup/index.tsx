@@ -53,6 +53,7 @@ const StudentSignup = () => {
           value={studentId}
           onChange={(e) => setStudentId(e.target.value)}
           errors={errors}
+          type="number"
           formError="signup.errors.studentId"
           controlId="formBasicStudentId"
         />

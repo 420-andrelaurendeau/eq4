@@ -25,11 +25,12 @@
       "lastName": "Last name cannot be empty",
       "address": "Address cannot be empty",
       "city": "City cannot be empty",
-      "postalCode": "Postal code cannot be empty",
+      "postalCode": "Please enter a valid postal code",
       "phone": "Please enter a valid phone number",
       "extension": "Please enter a valid extension",
       "email": "Please enter a valid email address",
       "password": "Please enter a valid password",
+      "passwordConfirmation": "Passwords do not match",
       "studentId": "Please enter a valid student number",
       "network": "There was an unexpected networking error"
     }
