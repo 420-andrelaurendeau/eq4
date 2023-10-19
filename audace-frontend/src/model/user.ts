@@ -1,15 +1,14 @@
-import { CV } from "./cv";
 import { Department } from "./department";
 
 export interface User {
-  id?: number;
-  firstName?: string;
-  lastName?: string;
-  email: string;
-  phone?: string;
-  address?: string;
-  password: string;
-  type?: string;
+    id?: number;
+    firstName?: string;
+    lastName?: string;
+    email: string;
+    phone?: string;
+    address?: string;
+    password: string;
+    type?: string;
 }
 
 export interface Student extends User {
@@ -17,10 +16,10 @@ export interface Student extends User {
   department?: Department;
 }
 
-export interface Employer extends User {
-  organisation: string;
-  position: string;
-  extension: string;
+export interface Employer extends User{
+    organisation: string;
+    position: string;
+    extension: string;
 }
 
 export interface Manager extends User {
@@ -28,7 +27,7 @@ export interface Manager extends User {
 }
 
 export enum UserType {
-  Student,
-  Employer,
-  Manager,
+    Student,
+    Employer,
+    Manager
 }

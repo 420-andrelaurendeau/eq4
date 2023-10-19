@@ -18,6 +18,7 @@ import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import lombok.AllArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

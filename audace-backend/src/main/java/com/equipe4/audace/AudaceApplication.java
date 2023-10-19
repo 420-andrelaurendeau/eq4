@@ -32,9 +32,9 @@ public class AudaceApplication implements CommandLineRunner {
 	private DepartmentRepository departmentRepository;
 	private EmployerRepository employerRepository;
 	private CvRepository cvRepository;
-	private EmployerService employerService;
 	private SaltRepository saltRepository;
 	private ManagerRepository managerRepository;
+	private EmployerService employerService;
 	private StudentService studentService;
 
 	public static void main(String[] args) {

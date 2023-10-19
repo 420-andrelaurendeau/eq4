@@ -19,6 +19,7 @@ const ManagerOfferView = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (manager !== undefined) return;
     const id = getUserId();
 
     if (id == null) {

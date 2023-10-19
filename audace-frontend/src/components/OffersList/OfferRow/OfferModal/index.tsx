@@ -10,6 +10,7 @@ import { useParams } from "react-router";
 import Application from "../../../../model/application";
 import { CV } from "../../../../model/cv";
 import { getUserId } from "../../../../services/authService";
+import OfferButtons from "../OfferButtons";
 
 interface Props {
     offer: Offer;
@@ -58,14 +59,12 @@ const OfferModal = ({ offer, show, handleClose, userType, employer, setEmployer,
             address: "",
             studentNumber: "",
         }
-
         const tempCV: CV = {
             id: 1,
             student: tempStudent,
             fileName: "CV",
             content: "test",
         }
-
         const applicationData: Application = {
             id: 1000,
             student: tempStudent,
@@ -73,15 +72,13 @@ const OfferModal = ({ offer, show, handleClose, userType, employer, setEmployer,
             cv: tempCV,
         };
 
-        apply(applicationData)
-            .then((response) => {
+        apply(applicationData).then((response) => {
                 setApplicationMessage("Application submitted successfully");
                 setApplicationMessageColor("green");
-            })
-            .catch((error) => {
+        }).catch((error) => {
                 setApplicationMessage("Error submitting application: " + error.message);
                 setApplicationMessageColor("red");
-            });
+        });
     };
 
     return (
@@ -133,11 +130,7 @@ const OfferModal = ({ offer, show, handleClose, userType, employer, setEmployer,
                 </Modal.Body>
                 <Modal.Footer>
                     {employer === undefined && <div className="text-danger">{t("offer.modal.empNotFound")}</div>}
-                    {applicationMessage && (
-                        <div style={{ color: applicationMessageColor }}>{applicationMessage}</div>
-                    )}
-                    <Button onClick={handleApply}>Apply</Button>
-                    {/*<OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState}/>*/}
+                    <OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState}/>
                 </Modal.Footer>
             </Modal>
         </>

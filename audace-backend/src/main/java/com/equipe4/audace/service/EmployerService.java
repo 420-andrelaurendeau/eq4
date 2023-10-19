@@ -45,13 +45,14 @@ public class EmployerService extends GenericUserService<Employer> {
         return employerRepository.findById(employerId).map(Employer::toDTO);
     }
 
+    public List<EmployerDTO> findAllEmployers(){
+        return employerRepository.findAll().stream().map(Employer::toDTO).toList();
+    }
+
     public Optional<OfferDTO> createOffer(OfferDTO offerDTO){
         if(offerDTO == null) throw new IllegalArgumentException("Offer cannot be null");
 
-        Offer offer = offerDTO.fromDTO();
-        offer.setStatus(Offer.Status.PENDING);
-
-        return Optional.of(offerRepository.save(offer).toDTO());
+        return Optional.of(offerRepository.save(offerDTO.fromDTO()).toDTO());
     }
 
     public List<OfferDTO> findAllOffersByEmployerId(Long employerId){

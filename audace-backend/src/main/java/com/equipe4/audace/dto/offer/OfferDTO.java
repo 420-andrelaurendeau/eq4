@@ -26,6 +26,7 @@ public class OfferDTO {
     private EmployerDTO employer;
 
 
+
     public Offer fromDTO() {
         return new Offer(
                 id,

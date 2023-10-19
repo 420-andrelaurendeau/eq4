@@ -30,6 +30,7 @@
       "extension": "SVP entrez un numéro de poste valide",
       "email": "SVP entrez un courriel valide",
       "password": "SVP entrez un mot de passe valide",
+      "passwordConfirmation": "Les mots de passe ne correspondent pas",
       "studentId": "SVP entrez une matricule valide",
       "network": "Il y a eu une erreur de réseau inconnue"
     }
@@ -70,9 +71,9 @@
     "viewTitle": "Offres disponibles",
     "acceptButton": "Accepter",
     "refuseButton": "Refuser",
-    "ACCEPTED" : "Accepté",
-    "REFUSED" : "Refusé",
-    "noMorePendingOffers" : "Il n'y a plus d'offres en attente"
+    "ACCEPTED": "Accepté",
+    "REFUSED": "Refusé",
+    "noMorePendingOffers": "Il n'y a plus d'offres en attente"
   },
   "employerOffersList": {
     "viewTitle": "Offres disponibles",

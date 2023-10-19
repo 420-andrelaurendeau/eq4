@@ -67,7 +67,6 @@ public class StudentController extends GenericUserController<Student, StudentSer
         }
     }
 
-
     @PostMapping("/{id}/applications")
     public ResponseEntity<ApplicationDTO> createApplication(@RequestBody ApplicationDTO applicationDTO){
         logger.info("createOffer");
