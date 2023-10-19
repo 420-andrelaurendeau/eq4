@@ -35,6 +35,15 @@
       "network": "There was an unexpected networking error"
     }
   },
+  "cvsList": {
+    "errors": {
+      "departmentNotFound": "Department not found"
+    },
+    "name": "CV title",
+    "viewMore": "View the CV",
+    "noCvs": "No CVs available",
+    "studentName": "Student name"
+  },
   "offersList": {
     "errors": {
       "departmentNotFound": "Department not found"
@@ -72,7 +81,20 @@
     "refuseButton": "Refuse",
     "ACCEPTED": "Accepted",
     "REFUSED": "Refused",
-    "noMorePendingOffers": "There is no more pending offers"
+    "noMorePendingOffers": "There are no more pending offers"
+  },
+  "managerCvsList": {
+    "errors": {
+      "cvNotFound": "CV not found",
+      "departmentNotFound": "Department not found",
+      "studentNotFound": "Student not found"
+    },
+    "viewTitle": "Available CVs",
+    "acceptButton": "Accept",
+    "refuseButton": "Refuse",
+    "ACCEPTED": "Accepted",
+    "REFUSED": "Refused",
+    "noMorePendingCvs": "There are no more pending CVs"
   },
   "employerOffersList": {
     "viewTitle": "Available Offers",
@@ -87,7 +109,8 @@
     "seeOffersButton": "See Offers"
   },
   "manager": {
-    "seeOffersButton": "See Offers"
+    "seeOffersButton": "See Offers",
+    "seeCvsButton": "See CVS"
   },
   "employer": {
     "errors": {

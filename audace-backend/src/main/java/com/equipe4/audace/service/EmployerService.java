@@ -52,7 +52,10 @@ public class EmployerService extends GenericUserService<Employer> {
     public Optional<OfferDTO> createOffer(OfferDTO offerDTO){
         if(offerDTO == null) throw new IllegalArgumentException("Offer cannot be null");
 
-        return Optional.of(offerRepository.save(offerDTO.fromDTO()).toDTO());
+        Offer offer = offerDTO.fromDTO();
+        offer.setOfferStatus(Offer.OfferStatus.PENDING);
+
+        return Optional.of(offerRepository.save(offer).toDTO());
     }
 
     public List<OfferDTO> findAllOffersByEmployerId(Long employerId){

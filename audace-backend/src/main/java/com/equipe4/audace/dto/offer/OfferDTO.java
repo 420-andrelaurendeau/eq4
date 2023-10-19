@@ -3,7 +3,7 @@ package com.equipe4.audace.dto.offer;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.model.offer.Offer;
-import com.equipe4.audace.model.offer.Offer.Status;
+import com.equipe4.audace.model.offer.Offer.OfferStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +21,7 @@ public class OfferDTO {
     private LocalDate internshipEndDate;
     private LocalDate offerEndDate;
     private int availablePlaces;
-    private Status status;
+    private OfferStatus offerStatus;
     private DepartmentDTO department;
     private EmployerDTO employer;
 

@@ -8,8 +8,6 @@ export const validateEmail = (email: string): boolean => {
   );
 };
 
-// TODO: password verification
-
 export const validatePassword = (password: string): boolean => {
   const minLength = 8;
   const hasUpperCase = /[A-Z]/.test(password);

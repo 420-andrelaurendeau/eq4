@@ -1,13 +1,14 @@
+import { useEffect, useState } from "react";
 import {Container} from "react-bootstrap";
 import {useTranslation} from "react-i18next";
-import OffersList from "../../components/OffersList";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { Offer } from "../../model/offer";
-import { Employer, UserType } from "../../model/user";
-import { getUserId } from "../../services/authService";
-import { getEmployerById } from "../../services/userService";
-import { getAllOffersByEmployerId } from "../../services/offerService";
+import { Offer } from "../../../model/offer";
+import { Employer, UserType } from "../../../model/user";
+import { useNavigate } from "react-router";
+import { getUserId } from "../../../services/authService";
+import { getEmployerById } from "../../../services/userService";
+import { getAllOffersByEmployerId } from "../../../services/offerService";
+import OffersList from "../../../components/OffersList";
+
 
 const EmployerView = () => {
     const [employer, setEmployer] = useState<Employer>();

@@ -1,12 +1,12 @@
 import { Container } from "react-bootstrap";
-import { Manager, UserType } from "../../model/user";
+import { Manager, UserType } from "../../../model/user";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
-import { Offer, OfferStatus } from "../../model/offer";
-import OffersList from "../../components/OffersList";
-import { getManagerOffersByDepartment } from "../../services/offerService";
-import { getManagerById } from "../../services/userService";
-import { getUserId } from "../../services/authService";
+import { Offer, OfferStatus } from "../../../model/offer";
+import OffersList from "../../../components/OffersList";
+import { getManagerOffersByDepartment } from "../../../services/offerService";
+import { getManagerById } from "../../../services/userService";
+import { getUserId } from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
 
 const ManagerOfferView = () => {
@@ -47,11 +47,11 @@ const ManagerOfferView = () => {
         let refusedOffers = [];
         let offers = [];
         for (let i = 0; i < res.data.length; i = i + 1) {
-          if (res.data[i].status === "ACCEPTED") {
+          if (res.data[i].offerStatus === "ACCEPTED") {
             acceptedOffers.push(res.data[i]);
-          } else if (res.data[i].status === "REFUSED") {
+          } else if (res.data[i].offerStatus === "REFUSED") {
             refusedOffers.push(res.data[i]);
-          } else if (res.data[i].status === "PENDING") {
+          } else if (res.data[i].offerStatus === "PENDING") {
             offers.push(res.data[i]);
           }
         }
@@ -68,7 +68,7 @@ const ManagerOfferView = () => {
 
   const updateOffersState = (offer: Offer, offerStatus: OfferStatus) => {
     let newOffers = offers.filter((o) => o.id !== offer.id);
-    offer.status = offerStatus;
+    offer.offerStatus = offerStatus;
     setOffers(newOffers);
     if (offerStatus === "ACCEPTED") {
       setOffersAccepted([...offersAccepted, offer]);

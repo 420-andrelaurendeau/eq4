@@ -4,17 +4,18 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import SignupView from "./views/Signup";
 import { UserType } from "./model/user";
-import ManagerOfferView from "./views/ManagerOfferView";
 import AppHeader from "./components/AppHeader";
 import LoginView from "./views/LoginView";
 import AuthorizedRoute from "./components/AuthorizedRoute";
 import ConnectedRoute from "./components/ConnectedRoute";
 import PageNotFoundView from "./views/PageNotFoundView";
-import StudentView from "./views/StudentView";
-import ManagerView from "./views/ManagerView";
-import EmployerView from "./views/EmployerView";
-import { getAuthorities } from "./services/authService";
+import StudentView from "./views/Student/StudentView";
+import ManagerView from "./views/Manager/ManagerView";
+import ManagerOfferView from "./views/Manager/ManagerOfferView";
+import EmployerView from "./views/Employer/EmployerView";
+import ManagerCvView from "./views/Manager/ManagerCvView";
 import { Authority } from "./model/auth";
+import { getAuthorities } from "./services/authService";
 
 function App() {
   return (
@@ -69,6 +70,7 @@ function App() {
               <Routes>
                 <Route index element={<ManagerView />} />
                 <Route path="offers" element={<ManagerOfferView />} />
+                <Route path="cvs" element={<ManagerCvView />} />
                 <Route path="*" element={<PageNotFoundView />} />
               </Routes>
             </AuthorizedRoute>
