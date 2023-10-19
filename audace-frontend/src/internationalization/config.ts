@@ -4,11 +4,9 @@ import { initReactI18next } from 'react-i18next';
 export type Locale = "en" | "fr";
 export const ALL_LOCALES: Locale[] = ["en", "fr"];
 
-const lang = localStorage.getItem('lang') || 'en';
-
 i18n.use(initReactI18next).init({
-    fallbackLng: lang,
-    lng: lang,
+    fallbackLng: 'en',
+    lng: 'en',
     resources: {
         en: {
             translation: require('./locales/en.json')

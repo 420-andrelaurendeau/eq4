@@ -1,9 +1,6 @@
 package com.equipe4.audace.controller;
 
-import com.equipe4.audace.controller.abstracts.GenericUserController;
-import com.equipe4.audace.dto.ApplicationDTO;
 import com.equipe4.audace.dto.StudentDTO;
-import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.service.StudentService;
@@ -30,6 +27,14 @@ public class StudentController extends GenericUserController<Student, StudentSer
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @PostMapping("/signup/{departmentCode}")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<HttpStatus> createStudent(@RequestBody StudentDTO studentDTO, @PathVariable String departmentCode) {
+        logger.info("createStudent");
+        service.createStudent(studentDTO, departmentCode);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
     @GetMapping("/offers/{departmentId}")
     public ResponseEntity<List<OfferDTO>> getOffersByDepartment(@PathVariable Long departmentId) {
         return ResponseEntity.ok(service.getAcceptedOffersByDepartment(departmentId));
@@ -42,36 +47,14 @@ public class StudentController extends GenericUserController<Student, StudentSer
         try {
             service.saveCv(file, studentId);
         } catch (NoSuchElementException e) {
-            logger.error(e.getMessage());
+            logger.info(e.getMessage());
             if (e.getMessage().equals("Student not found")) {
                 return ResponseEntity.notFound().build();
             }
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.info(e.getMessage());
             return ResponseEntity.badRequest().build();
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    @GetMapping("/cvs/{studentId}")
-    public ResponseEntity<List<CvDTO>> getCvsByStudent(@PathVariable Long studentId) {
-        logger.info("getCvsByStudent");
-
-        try {
-            List<CvDTO> cvDTOs = service.getCvsByStudent(studentId);
-            return ResponseEntity.ok(cvDTOs);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-
-    @PostMapping("/{id}/applications")
-    public ResponseEntity<ApplicationDTO> createApplication(@RequestBody ApplicationDTO applicationDTO){
-        logger.info("createOffer");
-        return service.createApplication(applicationDTO).map(application -> ResponseEntity.status(HttpStatus.CREATED).body(applicationDTO))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 }

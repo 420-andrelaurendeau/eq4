@@ -1,59 +1,60 @@
-import React, { useState } from "react";
-import { Alert, Button, Form, FormControl } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import {Button, Form, FormControl, Container } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { uploadFile } from "../../services/fileService";
-import { Student } from "../../model/user";
+import './styles.css'
 
-interface Props {
-  student: Student;
-}
+const FileUploader = () => {
+    const {t} = useTranslation();
+    const [file, setFile] = useState<File>();
+    const [studentId, setStudentId] = useState<number>();
+    const [successMessage, setSuccessMessage] = useState<string>("");
 
-const FileUploader = ({ student }: Props) => {
-  const { t } = useTranslation();
-  const [file, setFile] = useState<File>();
-  const [successMessage, setSuccessMessage] = useState<string>("");
+    useEffect(() => {
+        setStudentId(JSON.parse(sessionStorage.getItem("user")!).id);
+    }, []);
 
-  const validateForm = () => {
-    return file !== undefined;
-  };
+    const validateForm = () => {
+        return file !== undefined;
+    }
 
-  const submitForm = () => {
-    if (!validateForm()) return;
+    const submitForm = () => {
+        if (!validateForm()) return;
 
-    uploadFile(student.id!, file!)
-      .then((_) => {
-        setSuccessMessage("upload.success");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+        setStudentId(JSON.parse(sessionStorage.getItem("user")!).id);
 
-  return (
-    <>
-      <h3>{t("upload.CvFormTitle")}</h3>
-      <Form className="my-3">
-        <Form.Group controlId="formBasicCvFile">
-          <Form.Label>{t("upload.file")}</Form.Label>
-          <FormControl
-            type="file"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              if (e.target.files) {
-                setFile(e.target.files[0]);
-              }
-            }}
-          ></FormControl>
-        </Form.Group>
+        uploadFile(studentId!, file!)
+        .then((_) => {
+            setSuccessMessage(t("upload.success"));
+        })
+        .catch((err) => {
+            console.log(err)
+        });
+    };
 
-        <Button variant="primary" className="mt-3" onClick={submitForm}>
-          {t("upload.submit")}
-        </Button>
-      </Form>
-      {successMessage !== "" && (
-        <Alert variant="success">{t(successMessage)}</Alert>
-      )}
-    </>
-  );
+    return (
+        <Container>
+            <h3>{t("upload.CvFormTitle")}</h3>
+            <Form>
+                <Form.Group controlId="formBasicCvFile">
+                    <Form.Label>{t("upload.file")}</Form.Label>
+                    <FormControl type="file"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                            if (e.target.files) {
+                                setFile(e.target.files[0]);
+                            }
+                        }}>
+                    </FormControl>
+                </Form.Group>
+
+                <Button variant="primary" className="mt-3" onClick={submitForm}>
+                        {t("upload.submit")}
+                </Button>
+                {successMessage !== "" && <p className="successMessage">{successMessage}</p>}
+            </Form>
+        </Container>
+    );
+
 };
 
 export default FileUploader;

@@ -1,9 +1,12 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.ManagerDTO;
+import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
+import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.ManagerRepository;
@@ -15,11 +18,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+
+import java.util.*;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -38,19 +39,9 @@ public class ManagerServiceTest {
 
     @Test
     public void acceptOffer() {
-        Employer employer = mock(Employer.class);
-        Department department = mock(Department.class);
-        Offer offer1 = new Offer(
-                1L,
-                "title",
-                "description",
-                LocalDate.now(),
-                LocalDate.now(),
-                LocalDate.now(),
-                1,
-                department,
-                employer
-        );
+        Employer employer = new Employer();
+        Department department = new Department();
+        Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
         when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
         when(offerRepository.save(any())).thenReturn(offer1);
 
@@ -67,19 +58,9 @@ public class ManagerServiceTest {
 
     @Test
     public void refuseOffer() {
-        Employer employer = mock(Employer.class);
-        Department department = mock(Department.class);
-        Offer offer1 = new Offer(
-                1L,
-                "title",
-                "description",
-                LocalDate.now(),
-                LocalDate.now(),
-                LocalDate.now(),
-                1,
-                department,
-                employer
-        );
+        Employer employer = new Employer();
+        Department department = new Department();
+        Offer offer1 = new Offer("Stage en génie logiciel", "Stage en génie logiciel", new Date(), new Date(), null, employer, department);
         when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
         when(offerRepository.save(any())).thenReturn(offer1);
 
@@ -99,19 +80,30 @@ public class ManagerServiceTest {
         Department mockedDepartment = mock(Department.class);
         List<Offer> offers = new ArrayList<>();
 
-        Employer fakeEmployer = mock(Employer.class);
+        Employer fakeEmployer = new Employer(
+                1L,
+                "employer",
+                "employerman",
+                "email@gmail.com",
+                "password",
+                "organisation",
+                "position",
+                "address",
+                "phone",
+                "extension"
+        );
+        fakeEmployer.setId(1L);
 
         Offer fakeOffer = new Offer(
-                1L,
                 "title",
                 "description",
-                LocalDate.now(),
-                LocalDate.now(),
-                LocalDate.now(),
-                1,
-                mockedDepartment,
-                fakeEmployer
+                null,
+                null,
+                null,
+                fakeEmployer,
+                mockedDepartment
         );
+        fakeEmployer.getOffers().add(fakeOffer);
 
         for (int i = 0; i < 3; i++)
             offers.add(fakeOffer);
@@ -149,17 +141,18 @@ public class ManagerServiceTest {
     @Test
     public void findManagerById_happyPathTest() {
         // Arrange
-        Department department = mock(Department.class);
+        Department department = new Department("yeete", "yaint");
         Manager manager = new Manager(
-                1L,
+                3L,
                 "manager",
                 "managerman",
                 "manager@email.com",
                 "password",
+                "yeete",
                 "1234567890",
-                "123456789",
                 department
         );
+
 
         when(managerRepository.findById(1L)).thenReturn(Optional.of(manager));
 

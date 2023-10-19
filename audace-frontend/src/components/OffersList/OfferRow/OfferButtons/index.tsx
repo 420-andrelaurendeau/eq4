@@ -3,7 +3,6 @@ import EmployerButtons from "./EmployerButtons";
 import StudentButtons from "./StudentButtons";
 import ManagerButtons from "./ManagerButtons";
 import { Offer, OfferStatus } from "../../../../model/offer";
-import { useParams } from "react-router-dom";
 
 interface Props {
     userType : UserType;
@@ -11,8 +10,8 @@ interface Props {
     offer : Offer;
     updateOffersState?: (offer : Offer, offerStatus : OfferStatus) => void;
 }
-const OfferButtons = ({userType, disabled, offer, updateOffersState} : Props) => {
 
+const OfferButtons = ({userType, disabled, offer, updateOffersState} : Props) => {
     const selectButtons = () => {
         switch (userType) {
             case UserType.Student:

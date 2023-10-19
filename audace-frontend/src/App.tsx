@@ -1,93 +1,60 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
 import SignupView from "./views/Signup";
 import { UserType } from "./model/user";
-import AppHeader from "./components/AppHeader";
-import LoginView from "./views/LoginView";
-import AuthorizedRoute from "./components/AuthorizedRoute";
-import ConnectedRoute from "./components/ConnectedRoute";
-import PageNotFoundView from "./views/PageNotFoundView";
-import StudentView from "./views/StudentView";
-import ManagerView from "./views/ManagerView";
+import StudentOfferView from "./views/StudentOfferView";
 import ManagerOfferView from "./views/ManagerOfferView";
-import EmployerView from "./views/EmployerView";
-import { getAuthorities } from "./services/authService";
-import { Authority } from "./model/auth";
+import ManagerHomePage from "./components/ManagerHomePage";
+import AppHeader from "./components/AppHeader";
+import UserList from "./components/Login";
+import StudentHomePage from "./components/StudentHomePage";
+import EmployerHomePage from "./components/EmployerHomePage";
 
 function App() {
+
   return (
-    <Router>
-      <AppHeader />
-      <Routes>
-        <Route
-          path="/signup/*"
-          element={
-            <Routes>
-              <Route
-                path="employer"
-                element={<SignupView userType={UserType.Employer} />}
-              />
-              <Route
-                path="student/:depCode"
-                element={<SignupView userType={UserType.Student} />}
-              />
-            </Routes>
-          }
-        />
-        <Route
-          path="/login/*"
-          element={
-            <ConnectedRoute isConnectedRoute={false}>
+      <Router>
+        <>
+          <AppHeader />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <h1>OSE ÊTRE MEILLEUR</h1>
+                </>
+              }
+            />
+            <Route path="/student/*" element={
               <Routes>
-                <Route index element={<LoginView />} />
-                <Route path="createdUser" element={<LoginView />} />
-                <Route path="disconnected" element={<LoginView />} />
-                <Route path="*" element={<PageNotFoundView />} />
+                <Route path=":id/offers" element={<StudentOfferView />}/>
               </Routes>
-            </ConnectedRoute>
-          }
-        />
-        <Route
-          path="/student/*"
-          element={
-            <AuthorizedRoute requiredAuthority={Authority.STUDENT}>
+            } />
+            <Route path="/manager/*" element={
               <Routes>
-                <Route index element={<StudentView />} />
-                <Route path="offers" element={<StudentView viewUpload={false} />} />
-                <Route path="upload" element={<StudentView viewOffers={false} />} />
-                <Route path="*" element={<PageNotFoundView />} />
+                <Route path=":id/offers" element={<ManagerOfferView />}/>
               </Routes>
-            </AuthorizedRoute>
-          }
-        />
-        <Route
-          path="/manager/*"
-          element={
-            <AuthorizedRoute requiredAuthority={Authority.MANAGER}>
+            } />
+            <Route path="/signup/*" element={
               <Routes>
-                <Route index element={<ManagerView />} />
-                <Route path="offers" element={<ManagerOfferView />} />
-                <Route path="*" element={<PageNotFoundView />} />
+                <Route path="employer" element={<SignupView userType={UserType.Employer} />}/>
+                <Route path="student/:depCode" element={<SignupView userType={UserType.Student} />}/>
               </Routes>
-            </AuthorizedRoute>
-          }
-        />
-        <Route
-          path="/employer/*"
-          element={
-            <AuthorizedRoute requiredAuthority={Authority.EMPLOYER}>
+            }>
+            </Route>
+            <Route path="/users/*" element={
               <Routes>
-                <Route index element={<EmployerView />} />
-                <Route path="*" element={<PageNotFoundView />} />
+                <Route path="" element={<UserList></UserList>}/>
               </Routes>
-            </AuthorizedRoute>
-          }
-        />
-        <Route path="*" element={<PageNotFoundView />} />
-        <Route path="/" element={<Navigate to={getAuthorities()?.[0]?.toString().toLowerCase() || "/login"} />} />
-      </Routes>
+            }>
+            </Route>
+            <Route path="/student/:userId" element={<StudentHomePage />}></Route>
+            <Route path="/employer/:userId" element={<EmployerHomePage />}></Route>
+            <Route path="/manager/:userId" element={<ManagerHomePage />}></Route>
+          </Routes>
+      </>
     </Router>
   );
 }
