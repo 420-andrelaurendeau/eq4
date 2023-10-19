@@ -1,16 +1,13 @@
 # Points d'action
-## Sprint 1
-- Faire une daily chaque samedi à 10:00 A.M.
-- Communication entre ceux assignés au backend et frontend d'une story pour décider de l'API chaque fois qu'une story est commencée.
-## Sprint 2
-- Écrire l'équivalent de la daily après avoir travaillé dans le canal discord approprié
-- Informer les personnes concernées avec les roles discord après avoir fait des changements
+- Faire une daily chaque samedi à 7 P.M. (période de disponibilités d'une heure après).
+- Après avoir fini chaque tâche, notifier l'équipe pour faire un code review dans discord. (Prendre des code reviews quand tu commences à travailler s'il y en a)
 
 # Définition de DONE
 - Le code compile
 - 80% de coverage dans le test
 - Le code est vérifiée par un pair (peer programming ou code review)
 - La branche est à jour depuis main
+- Changements faits ne doivent pas briser frontend/backend (Test yo shit yo)
 
 ### Frontend:
 - Typage complet et logique (pas de any)
