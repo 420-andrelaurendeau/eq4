@@ -2,6 +2,7 @@ import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { acceptOffer, refuseOffer } from "../../../../../services/offerService";
 import { Offer, OfferStatus } from "../../../../../model/offer";
+import React from "react";
 
 interface Props {
     disabled? : boolean;

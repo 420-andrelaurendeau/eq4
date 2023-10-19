@@ -4,7 +4,6 @@ import {applyStage, getCvsByStudentId} from "../../../../../services/studentAppl
 import React, {useEffect, useState} from "react";
 import {getUserId} from "../../../../../services/authService";
 import {CV} from "../../../../../model/cv";
-import {getEmployerById} from "../../../../../services/userService";
 import {Offer} from "../../../../../model/offer";
 
 interface Props {
@@ -34,10 +33,10 @@ const StudentButtons = ({disabled, offer}: Props) => {
     const handleApply = (event: { stopPropagation: () => void; }) => {
         try {
             const applicationMessage = applyStage(studentId!, cv!, offer);
-            setApplicationMessage("Application submitted successfully");
+            setApplicationMessage(t("offersList.applicationMessageSuccess"));
             setApplicationMessageColor("green");
         } catch (error) {
-            setApplicationMessage("Error submitting application: " + error);
+            setApplicationMessage(t("offersList.applicationMessageFailure") + error);
             setApplicationMessageColor("red");
         }
         event.stopPropagation();
@@ -46,7 +45,7 @@ const StudentButtons = ({disabled, offer}: Props) => {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
             <Button disabled={disabled} onClick={handleApply}>
-                Apply
+                {t("offersList.applyButton")}
             </Button>
             <p style={{ color: applicationMessageColor }}>{applicationMessage}</p>
         </div>

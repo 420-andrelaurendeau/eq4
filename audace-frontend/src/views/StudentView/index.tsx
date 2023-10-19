@@ -40,7 +40,7 @@ const StudentView = () => {
                 console.error(err);
                 if (err.request && err.request.status === 404) {
                     setOffersError(t("studentOffersList.errors.studentNotFound"));
-                    setCvsError(t("studentOffersList.errors.studentNotFound")); // Set both errors for consistency
+                    setCvsError(t("studentOffersList.errors.studentNotFound"));
                 }
             });
     }, [student, navigate, t]);
@@ -100,7 +100,9 @@ const StudentView = () => {
 
     return (
         <Container>
-            <h1 className="my-3">Student view</h1>
+            <h1 className="my-3" style={{ textTransform: 'capitalize' }}>
+                {student?.firstName} {student?.lastName}
+            </h1>
             <h2>{t("studentOffersList.viewTitle")}</h2>
             <OffersList offers={offers} error={offersError} userType={UserType.Student}/>
             <CvsList cvs={cvs} error={cvsError} userType={UserType.Student}/>

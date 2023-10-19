@@ -50,7 +50,10 @@
     "internshipEndDate": "Date de fin",
     "internshipStartDate": "Date de début",
     "noOffers": "Aucun offre disponible",
-    "viewTitle": "Offres disponibles"
+    "viewTitle": "Offres disponibles",
+    "applyButton": "Appliquer",
+    "applicationMessageSuccess": "Application soumise avec succès",
+    "applicationMessageFailure": "Erreur lors de la soumission de l'application"
   },
   "offer": {
     "modal": {

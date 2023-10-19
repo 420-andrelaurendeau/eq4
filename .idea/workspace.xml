@@ -6,7 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/StudentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/StudentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/OfferRow/OfferButtons/ManagerButtons/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/OfferRow/OfferButtons/ManagerButtons/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/OfferRow/OfferButtons/StudentButtons/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/OfferRow/OfferButtons/StudentButtons/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/internationalization/locales/en.json" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/internationalization/locales/en.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/internationalization/locales/fr.json" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/internationalization/locales/fr.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/services/studentApplicationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/services/studentApplicationService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-frontend/src/views/StudentView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/views/StudentView/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -36,6 +40,9 @@
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
@@ -206,7 +213,7 @@
       <workItem from="1697581594361" duration="1045000" />
       <workItem from="1697583336538" duration="10067000" />
       <workItem from="1697657792436" duration="1325000" />
-      <workItem from="1697662754939" duration="17537000" />
+      <workItem from="1697662754939" duration="20435000" />
     </task>
     <servers />
   </component>

@@ -15,7 +15,7 @@ export const getCvsByStudentId = async (studentId: number): Promise<AxiosRespons
 
 export async function applyStage(studentId: string, cv: CV, offer: Offer) {
     if (!studentId || !cv) {
-        throw new Error("Student or CV is null"); // TODO: eng & fr
+        throw new Error("Student/CV null");
     }
 
     const tempStudent: Student = {
