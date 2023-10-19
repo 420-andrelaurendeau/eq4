@@ -1,8 +1,6 @@
-import { Student } from "./user";
-
 export interface CV {
-  id?: number;
-  fileName: string;
-  content: string;
-  student: Student;
+    id?: number;
+    name: string;
+    content: File;
+    uploaderId: number;
 }

@@ -4,7 +4,7 @@ import { employerSignup } from "../../../services/signupService";
 import { Employer, User } from "../../../model/user";
 import { useTranslation } from "react-i18next";
 import Signup from "..";
-import FormInput from "../../FormInput";
+import FormInput from "../FormInput";
 
 const EmployerSignup = () => {
   const { t } = useTranslation();
@@ -19,6 +19,7 @@ const EmployerSignup = () => {
       organisation: organisation,
       position: position,
       extension: extension,
+      offers: [],
       type: "employer",
     };
 
@@ -60,7 +61,7 @@ const EmployerSignup = () => {
       <h3>{t("signup.employerFormTitle")}</h3>
       <Form>
         <Row>
-          <FormInput
+          <FormInput 
             label="signup.companyNameEntry"
             value={organisation}
             onChange={(e) => setOrganisation(e.target.value)}
@@ -69,7 +70,7 @@ const EmployerSignup = () => {
             controlId="formBasicCompanyName"
           />
 
-          <FormInput
+          <FormInput 
             label="signup.positionEntry"
             value={position}
             onChange={(e) => setPosition(e.target.value)}

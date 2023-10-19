@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { Employer, Manager, Student, User } from "../model/user";
+import { Employer, Manager, Student } from "../model/user";
 import http from "../constants/http";
 
 export const getEmployerById = async (id: number): Promise<AxiosResponse<Employer>> => {
@@ -12,8 +12,4 @@ export const getManagerById = async (id: number): Promise<AxiosResponse<Manager>
 
 export const getStudentById = async (id: number): Promise<AxiosResponse<Student>> => {
     return http.get<Student>(`/students/${id}`);
-}
-
-export const getUserById = async (id: number): Promise<AxiosResponse<User>> => {
-    return http.get<User>(`/users/${id}`);
 }

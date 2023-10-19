@@ -8,7 +8,7 @@ const LanguageToggler = () => {
     const {t} = useTranslation();
 
     return (
-        <Button onClick={toggleLanguage} variant="light">
+        <Button onClick={toggleLanguage}>
             {t("langCode")}
         </Button>
     )

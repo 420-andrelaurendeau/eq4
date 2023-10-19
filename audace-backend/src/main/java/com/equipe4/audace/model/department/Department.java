@@ -1,7 +1,9 @@
 package com.equipe4.audace.model.department;
 
 import com.equipe4.audace.dto.department.DepartmentDTO;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,19 +14,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Department {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "department_gen")
-    @SequenceGenerator(name = "department_gen", sequenceName = "department_sec", allocationSize = 1)
-    @Column(name = "department_id")
+    @GeneratedValue
     private Long id;
-    @Column(unique = true)
     private String code;
     private String name;
 
+    public Department(String code, String name) {
+        this.code = code;
+        this.name = name;
+    }
+
     public DepartmentDTO toDTO() {
-        return new DepartmentDTO(
-                id,
-                code,
-                name
-        );
+        return new DepartmentDTO(id, code, name);
     }
 }
