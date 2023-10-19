@@ -48,12 +48,12 @@ const Signup = ({
     if (!validateForm()) return;
 
     let user: User = {
-      firstName: firstName,
-      lastName: lastName,
+      firstName,
+      lastName,
       address: `${address}, ${city}, ${postalCode}`,
-      phone: phone,
-      email: email,
-      password: password,
+      phone,
+      email,
+      password,
       type: "student",
     };
 
