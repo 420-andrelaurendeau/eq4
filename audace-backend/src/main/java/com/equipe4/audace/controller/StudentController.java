@@ -61,7 +61,7 @@ public class StudentController extends GenericUserController<Student, StudentSer
             List<CvDTO> cvDTOs = service.getCvsByStudent(studentId);
             return ResponseEntity.ok(cvDTOs);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().build();
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }

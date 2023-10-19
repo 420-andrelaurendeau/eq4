@@ -78,12 +78,14 @@ const StudentView = () => {
     }, [student, t]);
 
     const handleUploadSuccess = () => {
-        // Fetch the updated list of CVs after a successful upload
+
         getCvsByStudentId(student!.id!)
             .then((res) => {
+                console.log(res.data);
                 if (res.data.length === 0) {
                     setCvsError(t("cvsList.noCvs"));
                 } else {
+                    setCvsError("");
                     setCvs(res.data);
                 }
             })
