@@ -5,6 +5,7 @@ import { User } from "../../model/user";
 import {
   validateEmail,
   validatePassword,
+  validatePasswordConfirmation,
 } from "../../services/validationService";
 import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
@@ -62,22 +63,21 @@ const Signup = ({
   const sendRequest = (user: User) => {
     setIsDisabled(true);
 
-        handleSubmit(user)
-            .then((_) => {
-                setUnexpectedError("");
-                navigate("/login/createdUser");
-            })
-            .catch((err) => {
-                setIsDisabled(false);
-                console.log(err.code);
-                if (err.code === "ERR_NETWORK") {
-                    setUnexpectedError(errorStringValue);
-                }
-                else {
-                    setUnexpectedError(err.status);
-                }
-            });
-    };
+    handleSubmit(user)
+      .then((_) => {
+        setUnexpectedError("");
+        navigate("/login/createdUser");
+      })
+      .catch((err) => {
+        setIsDisabled(false);
+        console.log(err.code);
+        if (err.code === "ERR_NETWORK") {
+          setUnexpectedError(errorStringValue);
+        } else {
+          setUnexpectedError(err.status);
+        }
+      });
+  };
 
   const validateForm = (): boolean => {
     let isFormValid = true;
@@ -94,13 +94,18 @@ const Signup = ({
       errorsToDisplay.push("signup.errors.email");
       isFormValid = false;
     }
-    if (!validatePassword(password, passwordConfirmation)) {
+    if (!validatePassword(password)) {
       errorsToDisplay.push("signup.errors.password");
       isFormValid = false;
     }
+    if (!validatePasswordConfirmation(password, passwordConfirmation)) {
+      errorsToDisplay.push("signup.errors.passwordConfirmation");
+      isFormValid = false;
+    }
 
-        setErrors(errorsToDisplay);
-        if (validateExtraFormValues !== undefined) isFormValid = validateExtraFormValues(errorsToDisplay) && isFormValid;
+    setErrors(errorsToDisplay);
+    if (validateExtraFormValues !== undefined)
+      isFormValid = validateExtraFormValues(errorsToDisplay) && isFormValid;
 
     return isFormValid;
   };
@@ -271,20 +276,23 @@ const Signup = ({
         />
       </Row>
 
-            <Button 
-                variant="primary" 
-                className="mt-3" 
-                onClick={submitForm}
-                disabled={isDisabled}
-            >
-                {t("signup.signup")}
-            </Button>
-            {
-            unexpectedError !== "" && (
-                <Alert variant="danger" className="mt-2">{unexpectedError === errorStringValue ? t(errorStringValue) : unexpectedError}</Alert>
-            )}
-        </>
-    );
-}
+      <Button
+        variant="primary"
+        className="mt-3"
+        onClick={submitForm}
+        disabled={isDisabled}
+      >
+        {t("signup.signup")}
+      </Button>
+      {unexpectedError !== "" && (
+        <Alert variant="danger" className="mt-2">
+          {unexpectedError === errorStringValue
+            ? t(errorStringValue)
+            : unexpectedError}
+        </Alert>
+      )}
+    </>
+  );
+};
 
 export default Signup;
