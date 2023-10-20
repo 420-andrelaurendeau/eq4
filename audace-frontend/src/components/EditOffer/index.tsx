@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import FormInput from "../Signup/FormInput";
 import { Offer, OfferStatus } from "../../model/offer";
 import { Department } from "../../model/department";
+import { useNavigate } from 'react-router-dom';
 
 interface OfferFormData {
   id: number,
@@ -31,6 +32,8 @@ const EditOffer: React.FC = () => {
   const [availablePlaces, setAvailablePlaces] = useState<number>(3);
   const [errors, setErrors] = useState<string[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchOffer();
@@ -95,13 +98,13 @@ const EditOffer: React.FC = () => {
     let isValid = true;
     const errorsToDisplay: string[] = [];
 
-    // if (!title) errorsToDisplay.push("addOffer.errors.titleRequired");
-    // if (!description) errorsToDisplay.push("addOffer.errors.descriptionRequired");
-    // if (!department) errorsToDisplay.push("addOffer.errors.departmentCodeRequired");
+    if (!title) errorsToDisplay.push("addOffer.errors.titleRequired");
+    if (!description) errorsToDisplay.push("addOffer.errors.descriptionRequired");
+    if (!department) errorsToDisplay.push("addOffer.errors.departmentCodeRequired");
 
-    // if (!isValidDate(internshipStartDate)) errorsToDisplay.push("addOffer.errors.invalidStartDate");
-    // if (!isValidDate(internshipEndDate)) errorsToDisplay.push("addOffer.errors.invalidEndDate");
-    // if (!isValidDate(offerEndDate)) errorsToDisplay.push("addOffer.errors.invalidOfferEndDate");
+    if (!isValidDate(internshipStartDate)) errorsToDisplay.push("addOffer.errors.invalidStartDate");
+    if (!isValidDate(internshipEndDate)) errorsToDisplay.push("addOffer.errors.invalidEndDate");
+    if (!isValidDate(offerEndDate)) errorsToDisplay.push("addOffer.errors.invalidOfferEndDate");
   
 
     setErrors(errorsToDisplay);
@@ -128,6 +131,7 @@ const EditOffer: React.FC = () => {
         status: OfferStatus.PENDING
       };
       editOffer(updatedOffer, parseInt(offerId));
+      navigate(`/employer/${employerId}/offers`);
     }
   };
 

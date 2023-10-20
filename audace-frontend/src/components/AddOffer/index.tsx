@@ -5,6 +5,7 @@ import FormInput from "../Signup/FormInput";
 import { Offer } from "../../model/offer"; 
 import { Department } from "../../model/department";
 import { OfferStatus } from "../../model/offer";
+import { useNavigate } from 'react-router-dom';
 
 interface OfferFormData {
     title: string,
@@ -32,6 +33,8 @@ const AddOffer: React.FC = () => {
   const [employerId, setEmployerId] = useState<number>(1);
   const [errors, setErrors] = useState<string[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchDepartments();
@@ -68,6 +71,7 @@ const AddOffer: React.FC = () => {
         employerId
       };
       addOffer(formData);
+      navigate(`/employer/${employerId}/offers`); 
     }
   };
 
