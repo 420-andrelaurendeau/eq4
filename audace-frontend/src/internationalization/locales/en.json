@@ -136,6 +136,17 @@
     }
   },
   "applicationsList": {
+    "title": "Applications submitted",
+    "offerTitle": "Position title",
+    "organization": "Organization",
+    "status": "Status",
+    "row": {
+      "status": {
+        "PENDING": "Pending",
+        "ACCEPTED": "Accepted",
+        "REFUSED": "Refused"
+      }
+    },
     "errors": {
       "studentNotFound": "Student wasn't found"
     }

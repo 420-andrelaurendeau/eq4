@@ -1,6 +1,7 @@
 import { Alert, Table } from "react-bootstrap";
 import Application from "../../model/application";
 import ApplicationRow from "./ApplicationRow";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   applications: Application[];
@@ -8,19 +9,21 @@ interface Props {
 }
 
 const ApplicationsList = ({ applications, error }: Props) => {
+  const { t } = useTranslation();
+
   return (
     <>
       {error !== "" ? (
         <Alert variant="danger">{error}</Alert>
       ) : applications.length > 0 ? (
         <>
-          <h2>ApplicationsList</h2>
+          <h2>{t("applicationsList.title")}</h2>
           <Table striped bordered hover size="sm">
             <thead>
               <tr>
-                <th>Position title</th>
-                <th>Organization</th>
-                <th>Status</th>
+                <th>{t("applicationsList.offerTitle")}</th>
+                <th>{t("applicationsList.organization")}</th>
+                <th>{t("applicationsList.status")}</th>
               </tr>
             </thead>
             <tbody>
