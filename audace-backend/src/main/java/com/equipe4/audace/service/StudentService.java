@@ -141,6 +141,10 @@ public class StudentService extends GenericUserService<Student> {
         if (studentId == null) {
             throw new IllegalArgumentException("Student ID cannot be null");
         }
-        return applicationRepository.findApplicationsByStudentId(studentId).stream().map(Application::toDTO).map(ApplicationDTO::getOffer).toList();
+        return applicationRepository.findApplicationsByStudentId(studentId)
+                .stream()
+                .map(Application::toDTO)
+                .map(ApplicationDTO::getOffer)
+                .toList();
     }
 }
