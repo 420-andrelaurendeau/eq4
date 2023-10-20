@@ -16,6 +16,7 @@ public class ApplicationDTO {
     private StudentDTO student;
     private OfferDTO offer;
     private CvDTO cv;
+    private Application.ApplicationStatus applicationStatus;
 
 
     //TODO: Modify to add necesary properties for displaying in list

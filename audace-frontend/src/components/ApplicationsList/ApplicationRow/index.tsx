@@ -9,6 +9,7 @@ const ApplicationRow = ({ application }: Props) => {
     <tr>
       <td>{application.offer!.title}</td>
       <td>{application.offer!.employer.organisation}</td>
+      <td>{application.applicationStatus}</td>
     </tr>
   );
 };

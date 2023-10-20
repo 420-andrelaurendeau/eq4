@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { formatDate } from "../../../../services/formatService";
 import { apply } from "../../../../services/studentApplicationService"
 import { useParams } from "react-router";
-import Application from "../../../../model/application";
+import Application, { ApplicationStatus } from "../../../../model/application";
 import { CV, CVStatus } from "../../../../model/cv";
 import { getUserId } from "../../../../services/authService";
 import OfferButtons from "../OfferButtons";
@@ -71,6 +71,7 @@ const OfferModal = ({ offer, show, handleClose, userType, employer, setEmployer,
             student: tempStudent,
             offer: offer,
             cv: tempCV,
+            applicationStatus: ApplicationStatus.PENDING,
         };
 
         apply(applicationData).then((response) => {
