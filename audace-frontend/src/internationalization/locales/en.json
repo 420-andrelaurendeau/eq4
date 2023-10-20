@@ -135,6 +135,11 @@
       "sessionExpired": "Your session has expired, please log in again"
     }
   },
+  "applicationsList": {
+    "errors": {
+      "studentNotFound": "Student wasn't found"
+    }
+  },
   "logout": "Log out",
   "pageNotFound": "Error 404: Page Not Found"
 }

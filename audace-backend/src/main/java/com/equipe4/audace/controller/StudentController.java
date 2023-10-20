@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -77,6 +78,15 @@ public class StudentController extends GenericUserController<Student, StudentSer
     @GetMapping("{studentId}/appliedOffers")
     public ResponseEntity<List<OfferDTO>> getOffersStudentApplied(@PathVariable Long studentId) {
         logger.info("getOffersStudentApplied");
-        return ResponseEntity.ok(service.getOffersStudentApplied(studentId));
+
+        List<OfferDTO> offersList;
+
+        try {
+            offersList = service.getOffersStudentApplied(studentId);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        return ResponseEntity.ok(offersList);
     }
 }

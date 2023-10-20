@@ -12,6 +12,7 @@ import FileUploader from "../../../components/FileUploader";
 import ApplicationsList from "../../../components/ApplicationsList";
 import Application from "../../../model/application";
 import { getApplicationsByStudentId } from "../../../services/studentApplicationService";
+import { error } from "console";
 
 interface StudentViewProps {
   viewOffers?: boolean;
@@ -24,8 +25,9 @@ const StudentView = ({
 }: StudentViewProps) => {
   const [student, setStudent] = useState<Student>();
   const [offers, setOffers] = useState<Offer[]>([]);
+  const [offersError, setOffersError] = useState<string>("");
   const [applications, setApplications] = useState<Application[]>([]);
-  const [error, setError] = useState<string>("");
+  const [applicationsError, setApplicationsError] = useState<string>("");
   const { t } = useTranslation();
   const navigate = useNavigate();
 
@@ -46,7 +48,7 @@ const StudentView = ({
       .catch((err) => {
         console.log(err);
         if (err.request.status === 404)
-          setError(t("studentOffersList.errors.studentNotFound"));
+          setOffersError(t("studentOffersList.errors.studentNotFound"));
       });
   }, [student, navigate, t]);
 
@@ -60,7 +62,7 @@ const StudentView = ({
       .catch((err) => {
         console.log(err);
         if (err.request.status === 404)
-          setError(t("offersList.errors.departmentNotFound"));
+          setOffersError(t("offersList.errors.departmentNotFound"));
       });
   }, [student, t]);
 
@@ -73,8 +75,10 @@ const StudentView = ({
       })
       .catch((err) => {
         console.log(err);
+        if (err.request.status === 404)
+          setApplicationsError(t("applicationsList.errors.studentNotFound"));
       });
-  }, [student]);
+  }, [student, t]);
 
   return (
     <Container>
@@ -84,13 +88,13 @@ const StudentView = ({
           <h2>{t("studentOffersList.viewTitle")}</h2>
           <OffersList
             offers={offers}
-            error={error}
+            error={offersError}
             userType={UserType.Student}
           />
         </>
       )}
       {viewUpload && <FileUploader student={student!} />}
-      <ApplicationsList applications={applications} />
+      <ApplicationsList applications={applications} error={applicationsError}/>
     </Container>
   );
 };

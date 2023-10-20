@@ -1,5 +1,5 @@
 import { Offer, OfferStatus } from "../../model/offer";
-import { Table } from "react-bootstrap";
+import { Alert, Table } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import OfferRow from "./OfferRow";
 import { UserType } from "../../model/user";
@@ -19,7 +19,7 @@ const OffersList = ({ offers, error, userType, updateOffersState }: Props) => {
             {
                 error !== ""
                     ?
-                    <p>{error}</p>
+                    <Alert variant="danger">{error}</Alert>
                     :
                     offers.length > 0
                         ?

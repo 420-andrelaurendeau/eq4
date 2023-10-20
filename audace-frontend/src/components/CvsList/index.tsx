@@ -1,4 +1,4 @@
-import { Table } from "react-bootstrap";
+import { Alert, Table } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { UserType } from "../../model/user";
 import { CV, CVStatus } from "../../model/cv";
@@ -19,7 +19,7 @@ const CvsList = ({cvs, error, userType, updateCvsState}: Props) => {
             {
                 error !== "" 
                 ? 
-                <p>{error}</p> 
+                <Alert variant="danger">{error}</Alert> 
                 : 
                 cvs.length > 0
                     ?

@@ -1,15 +1,18 @@
-import { Table } from "react-bootstrap";
+import { Alert, Table } from "react-bootstrap";
 import Application from "../../model/application";
 import ApplicationRow from "./ApplicationRow";
 
 interface Props {
   applications: Application[];
+  error: string;
 }
 
-const ApplicationsList = ({ applications }: Props) => {
+const ApplicationsList = ({ applications, error }: Props) => {
   return (
     <>
-      {applications.length > 0 ? (
+      {error !== "" ? (
+        <Alert variant="danger">{error}</Alert>
+      ) : applications.length > 0 ? (
         <>
           <h2>ApplicationsList</h2>
           <Table striped bordered hover size="sm">
