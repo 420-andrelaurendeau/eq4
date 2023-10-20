@@ -84,7 +84,7 @@ public class StudentController extends GenericUserController<Student, StudentSer
         try {
             offersList = service.getOffersStudentApplied(studentId);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.notFound().build();
         }
 
         return ResponseEntity.ok(offersList);
