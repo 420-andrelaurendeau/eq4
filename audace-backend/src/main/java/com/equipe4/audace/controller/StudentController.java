@@ -62,8 +62,6 @@ public class StudentController extends GenericUserController<Student, StudentSer
             return ResponseEntity.ok(cvDTOs);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
         }
     }
 

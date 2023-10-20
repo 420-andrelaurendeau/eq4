@@ -128,10 +128,6 @@ public class StudentService extends GenericUserService<Student> {
         }
         List<Cv> cvs = cvRepository.findAllByStudentId(studentId);
 
-        if (cvs.isEmpty()) {
-            throw new NoSuchElementException("No CVs found for student ID: " + studentId);
-        }
-
         return cvs.stream().map(Cv::toDTO).toList();
     }
 }

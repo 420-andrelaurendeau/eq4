@@ -68,18 +68,10 @@ const StudentView = ({ viewOffers = true, viewUpload = true }: StudentViewProps)
 
         getCvsByStudentId(student.id!)
             .then((res) => {
-                if (res.data.length === 0) {
-                    setCvsError(t("cvsList.noCvs"));
-                } else {
-                    setCvs(res.data);
-                }
+                setCvs(res.data);
             })
             .catch((err) => {
                 console.error(err);
-
-                if (err.request && err.request.status === 404) {
-                    setCvsError(t("cvsList.noCvs"));
-                }
             });
     }, [student, t]);
 
@@ -87,20 +79,10 @@ const StudentView = ({ viewOffers = true, viewUpload = true }: StudentViewProps)
 
         getCvsByStudentId(student!.id!)
             .then((res) => {
-                console.log(res.data);
-                if (res.data.length === 0) {
-                    setCvsError(t("cvsList.noCvs"));
-                } else {
-                    setCvsError("");
-                    setCvs(res.data);
-                }
+                setCvs(res.data);
             })
             .catch((err) => {
                 console.error(err);
-
-                if (err.request && err.request.status === 404) {
-                    setCvsError(t("cvsList.noCvs"));
-                }
             });
     };
 
