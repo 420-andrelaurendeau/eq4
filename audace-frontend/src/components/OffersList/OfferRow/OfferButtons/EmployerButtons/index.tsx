@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { Offer } from "../../../../../model/offer";
 import { Route } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+
 
 interface Props {
     disabled?: boolean;
@@ -13,9 +15,17 @@ const EmployerButtons = ({ disabled, offer }: Props) => {
     const { t } = useTranslation();
     const [isDeleting, setIsDeleting] = useState(false);
 
+    const navigate = useNavigate();
+
     const editButtonClick = (event: React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();
         console.log("Edit button clicked");
+
+
+        if (offer?.id) {
+            navigate(`/employer/${offer.employerId}/editoffer/${offer.id}`); 
+        }
+
     };
 
     const deleteButtonClick = async (event: React.MouseEvent<HTMLElement>) => {

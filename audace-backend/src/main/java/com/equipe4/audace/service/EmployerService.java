@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -65,10 +66,20 @@ public class EmployerService extends GenericUserService<Employer> {
         Employer employer = employerRepository.findById(employerId).orElseThrow();
         return offerRepository.findAllByEmployer(employer).stream().map(OfferDTO::new).toList();
     }
-    public Optional<OfferDTO> updateOffer(OfferDTO offerDTO){
-        Offer offer = offerRepository.findById(offerDTO.getId()).orElseThrow();
+    public Optional<OfferDTO> updateOffer(OfferDTO offerDTO) {
+        Offer offer = offerRepository.findById(offerDTO.getId()).orElseThrow(() -> new NoSuchElementException("Offer with ID " + offerDTO.getId() + " not found."));
+
+        offer.setTitle(offerDTO.getTitle());
+        offer.setDescription(offerDTO.getDescription());
+        offer.setInternshipStartDate(offerDTO.getInternshipStartDate());
+        offer.setInternshipEndDate(offerDTO.getInternshipEndDate());
+        offer.setOfferEndDate(offerDTO.getOfferEndDate());
+        offer.setAvailablePlaces(offerDTO.getAvailablePlaces());
+        offer.setDepartment(departmentRepository.findByCode(offerDTO.getDepartmentCode()).orElseThrow());
+
         return Optional.of(new OfferDTO(offerRepository.save(offer)));
     }
+
     public void deleteOffer(Long offerId){
         Offer offer = offerRepository.findById(offerId).orElseThrow();
         offerRepository.deleteById(offerId);
