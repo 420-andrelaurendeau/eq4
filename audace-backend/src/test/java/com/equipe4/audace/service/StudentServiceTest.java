@@ -314,4 +314,26 @@ public class StudentServiceTest {
         assertThat(dto).isEqualTo(applicationDTO);
         verify(applicationRepository, times(1)).save(application);
     }
+    @Test
+    public void getOffersStudentApplied() {
+        Student student = mock(Student.class);
+        Offer offer = mock(Offer.class);
+        List<Offer> offers = new ArrayList<>();
+        offers.add(offer);
+        List<Application> applications = new ArrayList<>();
+        applications.add(new Application(1L, student, mock(Cv.class), offer));
+
+        when(applicationRepository.findApplicationsByStudentId(anyLong())).thenReturn(applications);
+
+        List<OfferDTO> result = studentService.getOffersStudentApplied(1L);
+
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
+    }
+    @Test
+    public void getOffersStudentApplied_isNull() {
+        assertThatThrownBy(() -> studentService.getOffersStudentApplied(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Student ID cannot be null");
+    }
 }

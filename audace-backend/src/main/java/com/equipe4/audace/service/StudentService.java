@@ -136,4 +136,11 @@ public class StudentService extends GenericUserService<Student> {
 
         return cvs.stream().map(Cv::toDTO).toList();
     }
+
+    public List<OfferDTO> getOffersStudentApplied(Long studentId) {
+        if (studentId == null) {
+            throw new IllegalArgumentException("Student ID cannot be null");
+        }
+        return applicationRepository.findApplicationsByStudentId(studentId).stream().map(Application::toDTO).map(ApplicationDTO::getOffer).toList();
+    }
 }

@@ -73,4 +73,10 @@ public class StudentController extends GenericUserController<Student, StudentSer
         return service.createApplication(applicationDTO).map(application -> ResponseEntity.status(HttpStatus.CREATED).body(applicationDTO))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
+
+    @GetMapping("{studentId}/appliedOffers")
+    public ResponseEntity<List<OfferDTO>> getOffersStudentApplied(@PathVariable Long studentId) {
+        logger.info("getOffersStudentApplied");
+        return ResponseEntity.ok(service.getOffersStudentApplied(studentId));
+    }
 }
