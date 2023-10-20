@@ -12,30 +12,3 @@ export const apply = async (application: Application): Promise<AxiosResponse> =>
 export const getCvsByStudentId = async (studentId: number): Promise<AxiosResponse<CV[]>> => {
     return http.get<CV[]>(`/students/cvs/${studentId}`);
 }
-
-export async function applyStage(studentId: string, cv: CV, offer: Offer) {
-    if (!studentId || !cv) {
-        throw new Error("Student/CV null");
-    }
-
-    const tempStudent: Student = {
-        id: parseInt(studentId),
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        address: "",
-        type: "student",
-        studentNumber: "",
-        password: "string"
-    };
-
-    const applicationData: Application = {
-        id: 1000,
-        offer: offer,
-        cv: cv,
-        student: tempStudent,
-    }
-
-    return apply(applicationData);
-}

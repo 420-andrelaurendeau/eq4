@@ -1,10 +1,12 @@
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import {applyStage, getCvsByStudentId} from "../../../../../services/studentApplicationService";
+import {apply, getCvsByStudentId} from "../../../../../services/studentApplicationService";
 import React, {useEffect, useState} from "react";
 import {getUserId} from "../../../../../services/authService";
 import {CV} from "../../../../../model/cv";
 import {Offer} from "../../../../../model/offer";
+import {Student} from "../../../../../model/user";
+import Application from "../../../../../model/application";
 
 interface Props {
     disabled?: boolean;
@@ -21,7 +23,7 @@ const StudentButtons = ({disabled, offer}: Props) => {
     useEffect(() => {
         if (studentId === undefined) return;
 
-        getCvsByStudentId(parseInt(getUserId()!))
+        getCvsByStudentId(parseInt(studentId!))
             .then((res) => {
                 setCv(res.data[0]);
             })
@@ -30,16 +32,41 @@ const StudentButtons = ({disabled, offer}: Props) => {
             });
     }, [studentId]);
 
-    const handleApply = (event: { stopPropagation: () => void; }) => {
+    const handleApply = async (event: { stopPropagation: () => void; }) => {
+        event.stopPropagation();
+        if (!studentId || !cv) {
+            throw new Error("Student/CV null");
+        }
+
         try {
-            const applicationMessage = applyStage(studentId!, cv!, offer);
+            const tempStudent: Student = {
+                id: parseInt(studentId!),
+                firstName: "",
+                lastName: "",
+                email: "",
+                phone: "",
+                address: "",
+                type: "student",
+                studentNumber: "",
+                password: "string"
+            };
+
+            const applicationData: Application = {
+                id: 1000,
+                offer: offer,
+                cv: cv,
+                student: tempStudent,
+            }
+
+            const response = await apply(applicationData);
+            console.log(response);
+
             setApplicationMessage(t("offersList.applicationMessageSuccess"));
             setApplicationMessageColor("green");
         } catch (error) {
             setApplicationMessage(t("offersList.applicationMessageFailure") + error);
             setApplicationMessageColor("red");
         }
-        event.stopPropagation();
     };
 
     return (
