@@ -9,15 +9,22 @@ import OffersList from "../../../components/OffersList";
 import { getUserId } from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
 import FileUploader from "../../../components/FileUploader";
+import ApplicationsList from "../../../components/ApplicationsList";
+import Application from "../../../model/application";
+import { getApplicationsByStudentId } from "../../../services/studentApplicationService";
 
 interface StudentViewProps {
   viewOffers?: boolean;
   viewUpload?: boolean;
 }
 
-const StudentView = ({ viewOffers = true, viewUpload = true }: StudentViewProps) => {
+const StudentView = ({
+  viewOffers = true,
+  viewUpload = true,
+}: StudentViewProps) => {
   const [student, setStudent] = useState<Student>();
   const [offers, setOffers] = useState<Offer[]>([]);
+  const [applications, setApplications] = useState<Application[]>([]);
   const [error, setError] = useState<string>("");
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -57,18 +64,33 @@ const StudentView = ({ viewOffers = true, viewUpload = true }: StudentViewProps)
       });
   }, [student, t]);
 
+  useEffect(() => {
+    if (student === undefined) return;
+
+    getApplicationsByStudentId(student?.id!)
+      .then((res) => {
+        setApplications(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [student]);
+
   return (
     <Container>
       <h1 className="my-3">Student view</h1>
       {viewOffers && (
         <>
           <h2>{t("studentOffersList.viewTitle")}</h2>
-          <OffersList offers={offers} error={error} userType={UserType.Student} />
+          <OffersList
+            offers={offers}
+            error={error}
+            userType={UserType.Student}
+          />
         </>
       )}
-      {viewUpload && (
-        <FileUploader student={student!} />
-      )}
+      {viewUpload && <FileUploader student={student!} />}
+      <ApplicationsList applications={applications} />
     </Container>
   );
 };
