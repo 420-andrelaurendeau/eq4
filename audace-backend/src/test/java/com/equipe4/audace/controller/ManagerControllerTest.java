@@ -1,8 +1,11 @@
 package com.equipe4.audace.controller;
 
+import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
+import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
@@ -13,7 +16,6 @@ import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
-import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.ManagerService;
 import com.equipe4.audace.service.StudentService;
@@ -44,10 +46,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ManagerController.class)
 public class ManagerControllerTest {
     @Autowired
-    private MockMvc mvc;
+    private MockMvc mockMvc;
 
     @MockBean
+    private StudentService studentService;
+    @MockBean
+    private EmployerService employerService;
+    @MockBean
     private ManagerService managerService;
+    @MockBean
+    private ManagerRepository managerRepository;
     @MockBean
     private OfferRepository offerRepository;
     @MockBean
@@ -57,19 +65,13 @@ public class ManagerControllerTest {
     @MockBean
     private StudentRepository studentRepository;
     @MockBean
-    private ManagerRepository managerRepository;
+    private CvRepository cvRepository;
     @MockBean
     private UserRepository userRepository;
     @MockBean
     private JwtManipulator jwtManipulator;
     @MockBean
-    private StudentService studentService;
-    @MockBean
     private SaltRepository saltRepository;
-    @MockBean
-    private EmployerService employerService;
-    @MockBean
-    private CvRepository cvRepository;
 
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
@@ -88,6 +90,7 @@ public class ManagerControllerTest {
                 employer
         );
         OfferDTO offerDTO1 = offer1.toDTO();
+
         when(managerService.acceptOffer(1L)).thenReturn(Optional.of(offerDTO1));
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -96,8 +99,9 @@ public class ManagerControllerTest {
                 .content(offer1.toString())
                 .contentType(MediaType.APPLICATION_JSON);
 
-        mvc.perform(request).andExpect(status().isOk());
+        mockMvc.perform(request).andExpect(status().isOk());
     }
+
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void refuseOffer() throws Exception {
@@ -123,8 +127,9 @@ public class ManagerControllerTest {
                 .content(offer1.toString())
                 .contentType(MediaType.APPLICATION_JSON);
 
-        mvc.perform(request).andExpect(status().isOk());
+        mockMvc.perform(request).andExpect(status().isOk());
     }
+
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void acceptOffer_invalidId() throws Exception {
@@ -150,8 +155,9 @@ public class ManagerControllerTest {
                 .content(offer1.toDTO().toString())
                 .contentType(MediaType.APPLICATION_JSON);
 
-        mvc.perform(request).andExpect(status().isBadRequest());
+        mockMvc.perform(request).andExpect(status().isBadRequest());
     }
+
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void refuseOffer_invalidId() throws Exception {
@@ -177,7 +183,7 @@ public class ManagerControllerTest {
                 .content(offer1.toDTO().toString())
                 .contentType(MediaType.APPLICATION_JSON);
 
-        mvc.perform(request).andExpect(status().isBadRequest());
+        mockMvc.perform(request).andExpect(status().isBadRequest());
     }
 
     @Test
@@ -186,10 +192,72 @@ public class ManagerControllerTest {
         List<OfferDTO> offerDTOList = List.of(mock(OfferDTO.class));
         when(managerService.getOffersByDepartment(1L)).thenReturn(offerDTOList);
 
-        mvc.perform(get("/managers/offers/1"))
+        mockMvc.perform(get("/managers/offers/1"))
                 .andExpect(status().isOk());
     }
+    @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
+    public void acceptCv() throws Exception {
+        Student student = mock(Student.class);
+        CvDTO cvDTO = mock(CvDTO.class);
+        Cv cv = new Cv(null, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
+        when(managerService.acceptCv(1L)).thenReturn(Optional.of(cvDTO));
 
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/managers/accept_cv/1").with(csrf())
+                .accept(MediaType.APPLICATION_JSON)
+                .content(cv.toString())
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request).andExpect(status().isOk());
+    }
+    @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
+    public void refuseCv() throws Exception {
+        Student student = mock(Student.class);
+        CvDTO cvDTO = mock(CvDTO.class);
+        Cv cv = new Cv(null, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
+        when(managerService.refuseCv(1L)).thenReturn(Optional.of(cvDTO));
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/managers/refuse_cv/1").with(csrf())
+                .accept(MediaType.APPLICATION_JSON)
+                .content(cv.toString())
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request).andExpect(status().isOk());
+    }
+    @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
+    public void acceptCv_invalidId() throws Exception {
+        Student student = new Student();
+        Cv cv = new Cv(null, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
+        when(managerService.acceptCv(1L)).thenReturn(Optional.empty());
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/managers/accept_offer/1L").with(csrf())
+                .accept(MediaType.APPLICATION_JSON)
+                .content(cv.toString())
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
+    public void refuseCv_invalidId() throws Exception {
+        Student student = new Student();
+        Cv cv = new Cv(null, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
+        when(managerService.acceptCv(1L)).thenReturn(Optional.empty());
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/managers/refuse_offer/1L").with(csrf())
+                .accept(MediaType.APPLICATION_JSON)
+                .content(cv.toString())
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request).andExpect(status().isBadRequest());
+    }
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void getManagerById_happyPath_test() throws Exception {
@@ -207,7 +275,7 @@ public class ManagerControllerTest {
 
         when(managerService.getManagerById(1L)).thenReturn(Optional.of(manager.toDTO()));
 
-        mvc.perform(get("/managers/{id}", 1L))
+        mockMvc.perform(get("/managers/{id}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(1L))
@@ -225,7 +293,17 @@ public class ManagerControllerTest {
     public void getManagerById_invalidId_test() throws Exception {
         when(managerService.getManagerById(-1L)).thenReturn(Optional.empty());
 
-        mvc.perform(get("/managers/{id}", -1L))
+        mockMvc.perform(get("/managers/{id}", -1L))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
+    public void getCvsByDepartment() throws Exception {
+        List<CvDTO> cvDTOList = List.of(mock(CvDTO.class));
+        when(managerService.getCvsByDepartment(1L)).thenReturn(cvDTOList);
+
+        mockMvc.perform(get("/managers/cvs/1"))
+                .andExpect(status().isOk());
     }
 }

@@ -17,7 +17,6 @@ public class Salt {
     @Id
     @GeneratedValue
     private Long id;
-
     @OneToOne
     private User user;
     private String value;

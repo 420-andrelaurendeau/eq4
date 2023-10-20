@@ -1,21 +1,30 @@
-import { Container } from "react-bootstrap";
-import {Employer, Student, UserType} from "../../model/user";
-import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
-import { Offer, OfferStatus } from "../../model/offer";
-import OffersList from "../../components/OffersList";
-import { useParams } from "react-router-dom";
-import {getEmployerById, getStudentById} from "../../services/userService";
-import {getAllOffersByEmployerId} from "../../services/offerService";
+import {Container} from "react-bootstrap";
+import {useTranslation} from "react-i18next";
+import { Offer } from "../../../model/offer";
+import { Employer, UserType } from "../../../model/user";
+import { useNavigate } from "react-router";
+import { getUserId } from "../../../services/authService";
+import { getEmployerById } from "../../../services/userService";
+import { getAllOffersByEmployerId } from "../../../services/offerService";
+import OffersList from "../../../components/OffersList";
 
-const EmployerOfferView = () => {
+
+const EmployerView = () => {
     const [employer, setEmployer] = useState<Employer>();
-    const {id} = useParams();
     const [offers, setOffers] = useState<Offer[]>([]);
     const [error, setError] = useState<string>("");
     const {t} = useTranslation();
+    const navigate = useNavigate();
 
     useEffect(() => {
+        if (employer !== undefined) return;
+        const id = getUserId();
+        if (id == null) {
+            navigate("/pageNotFound");
+            return;
+        }
+
         getEmployerById(parseInt(id!))
             .then((res) => {
                 setEmployer(res.data);
@@ -24,7 +33,7 @@ const EmployerOfferView = () => {
                 console.log(err)
                 if (err.request.status === 404) setError(t("employer.errors.employerNotFound"));
             })
-    }, [employer, id, t]);
+    }, [employer, navigate, t]);
 
     useEffect(() => {
         if (employer === undefined) return;
@@ -36,14 +45,14 @@ const EmployerOfferView = () => {
             .catch((err) => {
                 console.log(err)
             })
-    }, [employer, t]);
+    }, [employer]);
 
     return (
         <Container>
             <h1>{t("studentOffersList.viewTitle")}</h1>
             <OffersList offers={offers} error={error} userType={UserType.Employer} />
         </Container>
-    );
-};
+    )
+}
 
-export default EmployerOfferView;
+export default EmployerView;

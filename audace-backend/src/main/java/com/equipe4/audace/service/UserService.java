@@ -20,9 +20,7 @@ public class UserService extends GenericUserService<User> {
         this.userRepository = userRepository;
     }
 
-    public Optional<UserDTO> getUser(long id) {
-        Optional<User> user = userRepository.findById(id);
-
-        return user.map(User::toDTO);
+    public Optional<UserDTO> getUser(Long id) {
+        return userRepository.findById(id).map(User::toDTO);
     }
 }

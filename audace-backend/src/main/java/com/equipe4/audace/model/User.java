@@ -2,10 +2,7 @@ package com.equipe4.audace.model;
 
 import com.equipe4.audace.dto.UserDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Data
 @Entity

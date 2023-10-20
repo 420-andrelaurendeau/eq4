@@ -1,6 +1,6 @@
 {
-  "langCode": "en",
-  "signin": "Sign In",
+  "langCode": "EN",
+  "signin": "Log in",
   "signup": {
     "employerFormTitle": "Employer Registration",
     "studentFormTitle": "Student Registration",
@@ -25,12 +25,14 @@
       "lastName": "Last name cannot be empty",
       "address": "Address cannot be empty",
       "city": "City cannot be empty",
-      "postalCode": "Postal code cannot be empty",
+      "postalCode": "Please enter a valid postal code",
       "phone": "Please enter a valid phone number",
       "extension": "Please enter a valid extension",
       "email": "Please enter a valid email address",
       "password": "Please enter a valid password",
-      "studentId": "Please enter a valid student number"
+      "passwordConfirmation": "Passwords do not match",
+      "studentId": "Please enter a valid student number",
+      "network": "There was an unexpected networking error"
     }
   },
   "cvsList": {
@@ -53,7 +55,9 @@
     "viewTitle": "Available Offers",
     "applyButton": "Apply",
     "applicationMessageSuccess": "Application submitted successfully",
-    "applicationMessageFailure": "Error submitting application"
+    "applicationMessageFailure": "Error submitting application",
+    "viewTitle": "Available Offers",
+    "viewMore": "View More"
   },
   "offer": {
     "modal": {
@@ -81,7 +85,20 @@
     "refuseButton": "Refuse",
     "ACCEPTED": "Accepted",
     "REFUSED": "Refused",
-    "noMorePendingOffers": "There is no more pending offers"
+    "noMorePendingOffers": "There are no more pending offers"
+  },
+  "managerCvsList": {
+    "errors": {
+      "cvNotFound": "CV not found",
+      "departmentNotFound": "Department not found",
+      "studentNotFound": "Student not found"
+    },
+    "viewTitle": "Available CVs",
+    "acceptButton": "Accept",
+    "refuseButton": "Refuse",
+    "ACCEPTED": "Accepted",
+    "REFUSED": "Refused",
+    "noMorePendingCvs": "There are no more pending CVs"
   },
   "employerOffersList": {
     "viewTitle": "Available Offers",
@@ -96,7 +113,8 @@
     "seeOffersButton": "See Offers"
   },
   "manager": {
-    "seeOffersButton": "See Offers"
+    "seeOffersButton": "See Offers",
+    "seeCvsButton": "See CVS"
   },
   "employer": {
     "errors": {
@@ -113,6 +131,7 @@
   "login": {
     "identification": "Email or Student Number",
     "password": "Password",
+    "userCreated": "Account has been successfully created",
     "errors": {
       "emptyIdentification": "Please enter your email or student number",
       "emptyPassword": "Please enter your password",

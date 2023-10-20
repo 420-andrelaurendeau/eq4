@@ -11,6 +11,7 @@ export class LanguageContextHolder {
 
     public setLanguage = (languageCode: string): void => {
         this.currentLanguage = languageCode;
+        localStorage.setItem('lang', this.currentLanguage);
         i18next.changeLanguage(languageCode);
     }
 

@@ -48,9 +48,12 @@ public class StudentControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
-
     @MockBean
     private StudentService studentService;
+    @MockBean
+    private EmployerService employerService;
+    @MockBean
+    private StudentRepository studentRepository;
     @MockBean
     private OfferRepository offerRepository;
     @MockBean
@@ -88,8 +91,7 @@ public class StudentControllerTest {
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT"})
     void uploadCv_noFile() throws Exception {
-        mockMvc.perform(
-                multipart("/students/upload/1")
+        mockMvc.perform(multipart("/students/upload/1")
                         .contentType(MediaType.MULTIPART_FORM_DATA).with(csrf())
         ).andExpect(status().isBadRequest());
     }
@@ -166,7 +168,6 @@ public class StudentControllerTest {
         Cv cv = mock(Cv.class);
 
         Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
-        offer.setId(1L);
         Application application = new Application(1L, cv, offer);
         ApplicationDTO applicationDTO = application.toDTO();
 
@@ -183,6 +184,8 @@ public class StudentControllerTest {
                 andExpect(status().isCreated());
     }
 
+    @Test
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
     void getCvsByStudent() throws Exception {
         List<CvDTO> cvDTOList = List.of(mock(CvDTO.class));
         when(studentService.getCvsByStudent(1L)).thenReturn(cvDTOList);
@@ -190,8 +193,4 @@ public class StudentControllerTest {
         mockMvc.perform(get("/students/cvs/1"))
                 .andExpect(status().isOk());
     }
-
-
-
-
 }

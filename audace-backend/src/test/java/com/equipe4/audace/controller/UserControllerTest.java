@@ -38,6 +38,10 @@ class UserControllerTest {
     @MockBean
     private UserService userService;
     @MockBean
+    private EmployerService employerService;
+    @MockBean
+    private StudentService studentService;
+    @MockBean
     private DepartmentRepository departmentRepository;
     @MockBean
     private EmployerRepository employerRepository;
@@ -46,15 +50,11 @@ class UserControllerTest {
     @MockBean
     private ManagerRepository managerRepository;
     @MockBean
-    private EmployerService employerService;
-    @MockBean
     private CvRepository cvRepository;
     @MockBean
     private UserRepository userRepository;
     @MockBean
     private JwtManipulator jwtManipulator;
-    @MockBean
-    private StudentService studentService;
     @MockBean
     private SaltRepository saltRepository;
 

@@ -36,13 +36,15 @@ public class EmployerController extends GenericUserController<Employer, Employer
     @PostMapping("/{id}/offers")
     public ResponseEntity<OfferDTO> createOffer(@RequestBody OfferDTO offerDTO){
         logger.info("createOffer");
-        return service.createOffer(offerDTO).map(offer -> ResponseEntity.status(HttpStatus.CREATED).body(offerDTO))
+        return service.createOffer(offerDTO)
+                .map(offer -> ResponseEntity.status(HttpStatus.CREATED).body(offerDTO))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
+
     @PutMapping("/{id}/offers")
     public ResponseEntity<OfferDTO> updateOffer(@RequestBody OfferDTO offerDTO){
         logger.info("updateOffer");
-        OfferDTO updatedOffer = service.updateOffer(offerDTO).get();
+        OfferDTO updatedOffer = service.updateOffer(offerDTO).orElseThrow();
         return ResponseEntity.ok(updatedOffer);
     }
 

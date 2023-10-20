@@ -1,33 +1,27 @@
 import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import SignupView from "./views/Signup";
 import { UserType } from "./model/user";
 import AppHeader from "./components/AppHeader";
 import LoginView from "./views/LoginView";
 import AuthorizedRoute from "./components/AuthorizedRoute";
-import { Authority } from "./model/auth";
 import ConnectedRoute from "./components/ConnectedRoute";
 import PageNotFoundView from "./views/PageNotFoundView";
-import StudentView from "./views/StudentView";
-import ManagerView from "./views/ManagerView";
-import ManagerOfferView from "./views/ManagerOfferView";
-import EmployerView from "./views/EmployerView";
+import StudentView from "./views/Student/StudentView";
+import ManagerView from "./views/Manager/ManagerView";
+import ManagerOfferView from "./views/Manager/ManagerOfferView";
+import EmployerView from "./views/Employer/EmployerView";
+import ManagerCvView from "./views/Manager/ManagerCvView";
+import { Authority } from "./model/auth";
+import { getAuthorities } from "./services/authService";
 
 function App() {
   return (
     <Router>
       <AppHeader />
       <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <h1>OSE ÊTRE MEILLEUR</h1>
-            </>
-          }
-        />
         <Route
           path="/signup/*"
           element={
@@ -49,6 +43,7 @@ function App() {
             <ConnectedRoute isConnectedRoute={false}>
               <Routes>
                 <Route index element={<LoginView />} />
+                <Route path="createdUser" element={<LoginView />} />
                 <Route path="disconnected" element={<LoginView />} />
                 <Route path="*" element={<PageNotFoundView />} />
               </Routes>
@@ -61,6 +56,8 @@ function App() {
             <AuthorizedRoute requiredAuthority={Authority.STUDENT}>
               <Routes>
                 <Route index element={<StudentView />} />
+                <Route path="offers" element={<StudentView viewUpload={false} />} />
+                <Route path="upload" element={<StudentView viewOffers={false} />} />
                 <Route path="*" element={<PageNotFoundView />} />
               </Routes>
             </AuthorizedRoute>
@@ -73,6 +70,7 @@ function App() {
               <Routes>
                 <Route index element={<ManagerView />} />
                 <Route path="offers" element={<ManagerOfferView />} />
+                <Route path="cvs" element={<ManagerCvView />} />
                 <Route path="*" element={<PageNotFoundView />} />
               </Routes>
             </AuthorizedRoute>
@@ -90,9 +88,9 @@ function App() {
           }
         />
         <Route path="*" element={<PageNotFoundView />} />
+        <Route path="/" element={<Navigate to={getAuthorities()?.[0]?.toString().toLowerCase() || "/login"} />} />
       </Routes>
     </Router>
   );
 }
-
 export default App;

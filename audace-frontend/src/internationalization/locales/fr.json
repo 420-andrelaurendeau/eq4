@@ -1,5 +1,5 @@
 {
-  "langCode": "fr",
+  "langCode": "FR",
   "signin": "Se connecter",
   "signup": {
     "employerFormTitle": "Inscription Employeur",
@@ -30,7 +30,9 @@
       "extension": "SVP entrez un numéro de poste valide",
       "email": "SVP entrez un courriel valide",
       "password": "SVP entrez un mot de passe valide",
-      "studentId": "SVP entrez une matricule valide"
+      "passwordConfirmation": "Les mots de passe ne correspondent pas",
+      "studentId": "SVP entrez une matricule valide",
+      "network": "Il y a eu une erreur de réseau inconnue"
     }
   },
   "cvsList": {
@@ -50,6 +52,8 @@
     "internshipEndDate": "Date de fin",
     "internshipStartDate": "Date de début",
     "noOffers": "Aucun offre disponible",
+    "viewTitle": "Offres disponibles",
+    "viewMore": "Afficher plus",
     "viewTitle": "Offres disponibles",
     "applyButton": "Appliquer",
     "applicationMessageSuccess": "Application soumise avec succès",
@@ -79,9 +83,22 @@
     "viewTitle": "Offres disponibles",
     "acceptButton": "Accepter",
     "refuseButton": "Refuser",
-    "ACCEPTED" : "Accepté",
-    "REFUSED" : "Refusé",
-    "noMorePendingOffers" : "Il n'y a plus d'offres en attente"
+    "ACCEPTED": "Accepté",
+    "REFUSED": "Refusé",
+    "noMorePendingOffers": "Il n'y a plus d'offres en attente"
+  },
+  "managerCvsList": {
+    "errors": {
+      "cvNotFound": "CV non trouvé",
+      "departmentNotFound": "Département non trouvé",
+      "studentNotFound": "Étudiant non trouvé"
+    },
+    "viewTitle": "CVs disponibles",
+    "acceptButton": "Accepter",
+    "refuseButton": "Refuser",
+    "ACCEPTED": "Accepté",
+    "REFUSED": "Refusé",
+    "noMorePendingCvs": "Il n'y a plus de CV en attente"
   },
   "employerOffersList": {
     "viewTitle": "Offres disponibles",
@@ -96,7 +113,8 @@
     "seeOffersButton": "Voir les offres"
   },
   "manager": {
-    "seeOffersButton": "Voir les offres"
+    "seeOffersButton": "Voir les offres",
+    "seeCvsButton": "See CVS"
   },
   "employer": {
     "errors": {
@@ -113,6 +131,7 @@
   "login": {
     "identification": "Courriel ou matricule",
     "password": "Mot de passe",
+    "userCreated": "Le compte a été créé avec succès",
     "errors": {
       "emptyIdentification": "SVP entrez votre courriel ou votre matricule",
       "emptyPassword": "SVP entrez votre mot de passe",

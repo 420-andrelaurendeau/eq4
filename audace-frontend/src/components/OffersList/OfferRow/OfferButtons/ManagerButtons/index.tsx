@@ -33,9 +33,9 @@ const ManagerButtons = ({disabled, offer, updateOffersState}: Props) => {
 
     return (
         <>
-            {offer.status === "PENDING" ?
+            {offer.offerStatus === "PENDING" ?
             (<><Button disabled={disabled} onClick={acceptButtonClick} className="btn-success me-2">{t("managerOffersList.acceptButton")}</Button>
-            <Button disabled={disabled} onClick={refuseButtonClick} className="btn-danger">{t("managerOffersList.refuseButton")}</Button></>) : <p>{t("managerOffersList." + offer.status)}</p>}
+            <Button disabled={disabled} onClick={refuseButtonClick} className="btn-danger">{t("managerOffersList.refuseButton")}</Button></>) : <p>{t("managerOffersList." + offer.offerStatus)}</p>}
         </>
     );
 };

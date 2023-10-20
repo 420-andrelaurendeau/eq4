@@ -7,12 +7,14 @@ import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.model.security.Salt;
+import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
@@ -32,6 +34,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 import static org.assertj.core.api.Assertions.*;
 
@@ -77,7 +82,7 @@ public class StudentServiceTest {
             offers.add(mockedOffer);
 
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
-        when(offerRepository.findAllByDepartmentAndStatus(mockedDepartment, Offer.Status.ACCEPTED)).thenReturn(offers);
+        when(offerRepository.findAllByDepartmentAndOfferStatus(mockedDepartment, Offer.OfferStatus.ACCEPTED)).thenReturn(offers);
 
         List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
 
@@ -99,7 +104,7 @@ public class StudentServiceTest {
         Department mockedDepartment = mock(Department.class);
 
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
-        when(offerRepository.findAllByDepartmentAndStatus(mockedDepartment, Offer.Status.ACCEPTED)).thenReturn(new ArrayList<>());
+        when(offerRepository.findAllByDepartmentAndOfferStatus(mockedDepartment, Offer.OfferStatus.ACCEPTED)).thenReturn(new ArrayList<>());
 
         List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
 
@@ -108,23 +113,7 @@ public class StudentServiceTest {
 
     @Test
     void createStudent() {
-        DepartmentDTO departmentDTO = new DepartmentDTO(
-                1L,
-                "GEN",
-                "Génie"
-        );
-
-        StudentDTO studentDTO = new StudentDTO(
-                1L,
-                "student",
-                "studentMan",
-                "password",
-                "123 Street street",
-                "1234567890",
-                "123456789",
-                "studentNumber",
-                departmentDTO
-        );
+        StudentDTO studentDTO = createStudentDTO();
 
         when(studentRepository.save(any())).thenReturn(studentDTO.fromDTO());
         when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(studentDTO.getDepartment().fromDTO()));
@@ -169,19 +158,7 @@ public class StudentServiceTest {
     @Test
     public void findStudentById_happyPathTest() {
         // Arrange
-        Department department = new Department(1L, "GEN", "Génie");
-
-        Student student = new Student(
-                1L,
-                "student",
-                "studentMan",
-                "email@email.com",
-                "password",
-                "123 Street Street",
-                "1234567890",
-                "123456789",
-                department
-        );
+        Student student = createStudentDTO().fromDTO();
 
         when(studentRepository.findById(1L)).thenReturn(Optional.of(student));
 
@@ -272,31 +249,12 @@ public class StudentServiceTest {
     }
 
     private StudentDTO createStudentDTO() {
-        DepartmentDTO departmentDTO = new DepartmentDTO(
-                1L,
-                "GEN",
-                "Génie"
-        );
-        return new StudentDTO(
-                1L,
-                "student",
-                "studentMan",
-                "password",
-                "123 Street street",
-                "1234567890",
-                "123456789",
-                "studentNumber",
-                departmentDTO
-        );
+        DepartmentDTO departmentDTO = new DepartmentDTO(1L, "GEN", "Génie");
+        return new StudentDTO(1L, "student", "studentMan", "email@email.com", "123 Street street", "1234567890", "123456789", "studentNumber", departmentDTO);
     }
 
     private MultipartFile createMockFile() {
-        return new MockMultipartFile(
-                "file",
-                "test.txt",
-                MediaType.TEXT_PLAIN_VALUE,
-                "test data".getBytes()
-        );
+        return new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "test data".getBytes());
     }
 
     @Test
@@ -343,17 +301,7 @@ public class StudentServiceTest {
                 department
         );
         Cv cv = new Cv(1L, student, new byte[0], "fileName");
-        Offer offer = new Offer(
-                1L,
-                "title",
-                "description",
-                LocalDate.now(),
-                LocalDate.now(),
-                LocalDate.now(),
-                0,
-                department,
-                mock(Employer.class)
-        );
+        Offer offer = new Offer(1L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 0, department, mock(Employer.class));
         Application application = new Application(null, cv, offer);
 
         ApplicationDTO applicationDTO = application.toDTO();

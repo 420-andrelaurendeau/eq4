@@ -15,6 +15,7 @@ public class CvDTO {
     private String fileName;
     private byte[] content;
     private StudentDTO student;
+    private Cv.CvStatus cvStatus;
 
     public Cv fromDTO() {
         return new Cv(

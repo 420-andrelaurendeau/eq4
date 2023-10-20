@@ -9,7 +9,7 @@ import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
-import com.equipe4.audace.model.offer.Offer.Status;
+import com.equipe4.audace.model.offer.Offer.OfferStatus;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
@@ -18,6 +18,7 @@ import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import lombok.AllArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -77,7 +78,7 @@ public class StudentService extends GenericUserService<Student> {
     public List<OfferDTO> getAcceptedOffersByDepartment(Long departmentId) {
         Department department = departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
-        List<Offer> offers = offerRepository.findAllByDepartmentAndStatus(department, Status.ACCEPTED);
+        List<Offer> offers = offerRepository.findAllByDepartmentAndOfferStatus(department, OfferStatus.ACCEPTED);
 
         return offers.stream().map(Offer::toDTO).toList();
     }

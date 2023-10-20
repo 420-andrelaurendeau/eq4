@@ -22,8 +22,9 @@ public class Offer {
     @SequenceGenerator(name = "offer_gen", sequenceName = "offer_sec", allocationSize = 1)
     @Column(name = "offer_id")
     private Long id;
-
     private String title;
+
+    @Column(length = 2048)
     private String description;
     private LocalDate internshipStartDate;
     private LocalDate internshipEndDate;
@@ -44,7 +45,13 @@ public class Offer {
     @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL)
     private List<Application> applications = new ArrayList<>();
 
-    private Status status;
+    private OfferStatus offerStatus;
+
+    public enum OfferStatus {
+        PENDING,
+        ACCEPTED,
+        REFUSED
+    }
 
     public Offer(
             Long id,
@@ -66,13 +73,7 @@ public class Offer {
         this.availablePlaces = availablePlaces;
         this.department = department;
         this.employer = employer;
-        this.status = Status.PENDING;
-    }
-
-    public enum Status {
-        PENDING,
-        ACCEPTED,
-        REFUSED
+        this.offerStatus = OfferStatus.PENDING;
     }
 
     public OfferDTO toDTO(){
@@ -84,7 +85,7 @@ public class Offer {
                 internshipEndDate,
                 offerEndDate,
                 availablePlaces,
-                status,
+                offerStatus,
                 department.toDTO(),
                 employer.toDTO()
         );

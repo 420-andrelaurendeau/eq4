@@ -8,18 +8,21 @@ import OfferButtons from "./OfferButtons";
 import {getEmployerById} from "../../../services/userService";
 import {getUserId} from "../../../services/authService";
 
+import { Col } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 
 interface Props {
     offer: Offer;
     userType: UserType;
-    updateOffersState?: (offer : Offer, offerStatus : OfferStatus) => void;
+    updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
 }
 
-const OfferRow = ({offer, userType, updateOffersState}: Props) => {
+const OfferRow = ({ offer, userType, updateOffersState }: Props) => {
     const [show, setShow] = useState<boolean>(false);
     const handleClick = () => setShow(true);
     const handleClose = () => setShow(false);
     const [employer, setEmployer] = useState<Employer | undefined>(undefined);
+    const { t } = useTranslation();
     const studentId = getUserId();
 
     useEffect(() => {
@@ -36,12 +39,19 @@ const OfferRow = ({offer, userType, updateOffersState}: Props) => {
     return (
         <>
             <tr className="hovered" onClick={handleClick}>
-                <td>{offer.title}</td>
+                <td>
+                    <Col className="h5">
+                        {offer.title}
+                    </Col>
+                    <Col className="text-muted small mt-2">
+                        <u>{t("offersList.viewMore")}</u>
+                    </Col>
+                </td>
                 <td>{formatDate(offer.internshipStartDate)}</td>
                 <td>{formatDate(offer.internshipEndDate)}</td>
                 <td style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}}><OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState}/></td>
             </tr>
-            {show && <OfferModal offer={offer} show={show} handleClose={handleClose} userType={userType} employer={employer} setEmployer={setEmployer} updateOffersState={updateOffersState}/>}
+            {show && <OfferModal offer={offer} show={show} handleClose={handleClose} userType={userType} employer={employer} setEmployer={setEmployer} updateOffersState={updateOffersState} />}
         </>
     );
 };
