@@ -94,7 +94,7 @@ const StudentView = ({
         </>
       )}
       {viewUpload && <FileUploader student={student!} />}
-      <ApplicationsList applications={applications} error={applicationsError}/>
+      <ApplicationsList applications={applications} error={applicationsError} />
     </Container>
   );
 };
