@@ -1,16 +1,10 @@
 import {useEffect} from "react";
 import { Offer, OfferStatus } from "../../../../model/offer";
 import { Employer, UserType } from "../../../../model/user";
-import { Modal} from "react-bootstrap";
+import {Col, Modal, Row} from "react-bootstrap";
 import { getEmployerById } from "../../../../services/userService";
 import { useTranslation } from "react-i18next";
 import { formatDate } from "../../../../services/formatService";
-import { apply } from "../../../../services/studentApplicationService"
-import { useParams } from "react-router";
-import Application from "../../../../model/application";
-import { CV, CVStatus } from "../../../../model/cv";
-import { getUserId } from "../../../../services/authService";
-import OfferButtons from "../OfferButtons";
 import OfferButtons from "../OfferButtons";
 
 interface Props {
