@@ -83,7 +83,7 @@ public class EmployerService extends GenericUserService<Employer> {
     public Optional<OfferDTO> updateOffer(OfferDTO offerDTO){
         Offer offer = offerRepository.findById(offerDTO.getId()).orElseThrow();
 
-        if (!sessionManipulator.verifyIfOfferIsInCurrentSession(offer)) {
+        if (!sessionManipulator.isOfferInCurrentSession(offer)) {
             throw new IllegalStateException("Offer is not in current session");
         }
 
@@ -94,7 +94,7 @@ public class EmployerService extends GenericUserService<Employer> {
     public void deleteOffer(Long offerId){
         Offer offer = offerRepository.findById(offerId).orElseThrow();
 
-        if (!sessionManipulator.verifyIfOfferIsInCurrentSession(offer)) {
+        if (!sessionManipulator.isOfferInCurrentSession(offer)) {
             throw new IllegalStateException("Offer is not in current session");
         }
 

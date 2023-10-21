@@ -258,7 +258,7 @@ public class EmployerServiceTest {
                 fakeEmployer
         );
         when(offerRepository.findById(offer1.getId())).thenReturn(Optional.of(offer1));
-        when(sessionManipulator.verifyIfOfferIsInCurrentSession(offer1)).thenReturn(true);
+        when(sessionManipulator.isOfferInCurrentSession(offer1)).thenReturn(true);
 
         employerService.deleteOffer(offer1.getId());
 
@@ -304,7 +304,7 @@ public class EmployerServiceTest {
 
         when(offerRepository.save(any(Offer.class))).thenReturn(offer);
         when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
-        when(sessionManipulator.verifyIfOfferIsInCurrentSession(offer)).thenReturn(true);
+        when(sessionManipulator.isOfferInCurrentSession(offer)).thenReturn(true);
 
         OfferDTO originalOffer = employerService.createOffer(offer.toDTO()).get();
 

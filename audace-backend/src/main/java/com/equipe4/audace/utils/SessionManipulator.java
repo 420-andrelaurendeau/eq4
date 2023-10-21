@@ -50,7 +50,7 @@ public class SessionManipulator {
                 .toList();
     }
 
-    public boolean verifyIfOfferIsInCurrentSession(Offer offer) {
+    public boolean isOfferInCurrentSession(Offer offer) {
         Session session = getCurrentSession();
 
         return offerSessionRepository.existsByOfferAndSession(offer, session);

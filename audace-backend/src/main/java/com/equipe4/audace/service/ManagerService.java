@@ -59,7 +59,7 @@ public class ManagerService extends GenericUserService<Manager> {
     private Optional<OfferDTO> setOfferStatus(Long offerId, OfferStatus offerStatus) {
         Offer offer = offerRepository.findById(offerId).orElseThrow();
 
-        if (!sessionManipulator.verifyIfOfferIsInCurrentSession(offer)) {
+        if (!sessionManipulator.isOfferInCurrentSession(offer)) {
             throw new NoSuchElementException("Offer not found");
         }
 
