@@ -10,6 +10,7 @@ import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.security.jwt.TimedJwt;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.StudentService;
@@ -61,6 +62,8 @@ public class AuthControllerTest {
     private AuthService authService;
     @MockBean
     private CvRepository cvRepository;
+    @MockBean
+    private SessionRepository sessionRepository;
 
     @Test
     @WithMockUser

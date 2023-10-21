@@ -9,6 +9,7 @@ import com.equipe4.audace.model.security.Salt;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.utils.SessionManipulator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,6 +34,8 @@ public class EmployerServiceTest {
     private OfferRepository offerRepository;
     @Mock
     private SaltRepository saltRepository;
+    @Mock
+    private SessionManipulator sessionManipulator;
     @InjectMocks
     private EmployerService employerService;
 

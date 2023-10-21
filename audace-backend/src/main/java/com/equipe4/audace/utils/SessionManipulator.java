@@ -1,6 +1,9 @@
 package com.equipe4.audace.utils;
 
+import com.equipe4.audace.model.offer.Offer;
+import com.equipe4.audace.model.offer.OfferSession;
 import com.equipe4.audace.model.session.Session;
+import com.equipe4.audace.repository.offer.OfferSessionRepository;
 import com.equipe4.audace.repository.session.SessionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class SessionManipulator {
     private final SessionRepository sessionRepository;
+    private final OfferSessionRepository offerSessionRepository;
 
     public Session getCurrentSession() {
         return getSessionAtDate(LocalDate.now());
@@ -29,5 +33,26 @@ public class SessionManipulator {
         }
 
         return sessions.get(0);
+    }
+
+    public List<Offer> removeOffersNotInCurrentSession(List<Offer> offers) {
+        Session session = getCurrentSession();
+
+        return removeOffersNotInSession(offers, session);
+    }
+
+    public List<Offer> removeOffersNotInSession(List<Offer> offers, Session session) {
+        List<OfferSession> offerSessions = offerSessionRepository.findAllByOfferInAndSession(offers, session);
+
+        return offerSessions
+                .stream()
+                .map(OfferSession::getOffer)
+                .toList();
+    }
+
+    public boolean verifyIfOfferIsInCurrentSession(Offer offer) {
+        Session session = getCurrentSession();
+
+        return offerSessionRepository.existsByOfferAndSession(offer, session);
     }
 }

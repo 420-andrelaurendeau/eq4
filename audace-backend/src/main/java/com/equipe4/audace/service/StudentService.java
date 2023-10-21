@@ -16,9 +16,9 @@ import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import lombok.AllArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -33,6 +33,7 @@ public class StudentService extends GenericUserService<Student> {
     private final StudentRepository studentRepository;
     private final CvRepository cvRepository;
     private final ApplicationRepository applicationRepository;
+    private final SessionManipulator sessionManipulator;
 
     public StudentService(
             SaltRepository saltRepository,
@@ -40,7 +41,8 @@ public class StudentService extends GenericUserService<Student> {
             OfferRepository offerRepository,
             StudentRepository studentRepository,
             CvRepository cvRepository,
-            ApplicationRepository applicationRepository
+            ApplicationRepository applicationRepository,
+            SessionManipulator sessionManipulator
     ) {
         super(saltRepository);
         this.departmentRepository = departmentRepository;
@@ -48,6 +50,7 @@ public class StudentService extends GenericUserService<Student> {
         this.studentRepository = studentRepository;
         this.cvRepository = cvRepository;
         this.applicationRepository = applicationRepository;
+        this.sessionManipulator = sessionManipulator;
     }
 
     @Transactional
@@ -80,7 +83,11 @@ public class StudentService extends GenericUserService<Student> {
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
         List<Offer> offers = offerRepository.findAllByDepartmentAndOfferStatus(department, OfferStatus.ACCEPTED);
 
-        return offers.stream().map(Offer::toDTO).toList();
+        return sessionManipulator
+                .removeOffersNotInCurrentSession(offers)
+                .stream()
+                .map(Offer::toDTO)
+                .toList();
     }
 
     public Optional<StudentDTO> getStudentById(Long id) {

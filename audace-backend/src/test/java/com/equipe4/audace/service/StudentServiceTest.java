@@ -18,6 +18,7 @@ import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.utils.SessionManipulator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -52,6 +53,8 @@ public class StudentServiceTest {
     private SaltRepository saltRepository;
     @Mock
     private ApplicationRepository applicationRepository;
+    @Mock
+    private SessionManipulator sessionManipulator;
     @InjectMocks
     private StudentService studentService;
 

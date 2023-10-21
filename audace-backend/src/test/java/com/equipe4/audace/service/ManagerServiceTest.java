@@ -13,6 +13,7 @@ import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,6 +42,8 @@ public class ManagerServiceTest {
     private ManagerRepository managerRepository;
     @Mock
     private CvRepository cvRepository;
+    @Mock
+    private SessionManipulator sessionManipulator;
     @InjectMocks
     private ManagerService managerService;
 

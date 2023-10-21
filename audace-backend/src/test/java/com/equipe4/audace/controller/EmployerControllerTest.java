@@ -14,6 +14,7 @@ import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.service.EmployerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.equipe4.audace.service.StudentService;
@@ -74,6 +75,8 @@ public class EmployerControllerTest {
     private StudentService studentService;
     @MockBean
     private SaltRepository saltRepository;
+    @MockBean
+    private SessionRepository sessionRepository;
 
     @Test
     @WithMockUser(username = "employer", authorities = {"EMPLOYER", "USER"})

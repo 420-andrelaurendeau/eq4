@@ -14,6 +14,7 @@ import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -27,19 +28,22 @@ public class ManagerService extends GenericUserService<Manager> {
     private final OfferRepository offerRepository;
     private final DepartmentRepository departmentRepository;
     private final CvRepository cvRepository;
+    private final SessionManipulator sessionManipulator;
 
     public ManagerService(
             SaltRepository saltRepository,
             ManagerRepository managerRepository,
             OfferRepository offerRepository,
             DepartmentRepository departmentRepository,
-            CvRepository cvRepository
+            CvRepository cvRepository,
+            SessionManipulator sessionManipulator
     ) {
         super(saltRepository);
         this.managerRepository = managerRepository;
         this.offerRepository = offerRepository;
         this.departmentRepository = departmentRepository;
         this.cvRepository = cvRepository;
+        this.sessionManipulator = sessionManipulator;
     }
 
     @Transactional
@@ -54,6 +58,11 @@ public class ManagerService extends GenericUserService<Manager> {
 
     private Optional<OfferDTO> setOfferStatus(Long offerId, OfferStatus offerStatus) {
         Offer offer = offerRepository.findById(offerId).orElseThrow();
+
+        if (!sessionManipulator.verifyIfOfferIsInCurrentSession(offer)) {
+            throw new NoSuchElementException("Offer not found");
+        }
+
         offer.setOfferStatus(offerStatus);
         return Optional.of(offerRepository.save(offer).toDTO());
     }
@@ -64,7 +73,11 @@ public class ManagerService extends GenericUserService<Manager> {
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
         List<Offer> offers = offerRepository.findAllByDepartment(department);
 
-        return offers.stream().map(Offer::toDTO).toList();
+        return sessionManipulator
+                .removeOffersNotInCurrentSession(offers)
+                .stream()
+                .map(Offer::toDTO)
+                .toList();
     }
 
     public Optional<ManagerDTO> getManagerById(Long id) {

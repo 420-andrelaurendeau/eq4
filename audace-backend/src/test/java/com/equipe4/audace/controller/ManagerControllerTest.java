@@ -16,6 +16,7 @@ import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.ManagerService;
 import com.equipe4.audace.service.StudentService;
@@ -72,6 +73,8 @@ public class ManagerControllerTest {
     private JwtManipulator jwtManipulator;
     @MockBean
     private SaltRepository saltRepository;
+    @MockBean
+    private SessionRepository sessionRepository;
 
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
