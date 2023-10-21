@@ -3,6 +3,7 @@ package com.equipe4.audace.service;
 import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.model.User;
 import com.equipe4.audace.repository.UserRepository;
+import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +13,8 @@ import java.util.*;
 public class UserService extends GenericUserService<User> {
     private final UserRepository userRepository;
 
-    public UserService(SaltRepository saltRepository, UserRepository userRepository) {
-        super(saltRepository);
+    public UserService(SaltRepository saltRepository, ApplicationRepository applicationRepository, UserRepository userRepository) {
+        super(saltRepository, applicationRepository);
         this.userRepository = userRepository;
     }
 

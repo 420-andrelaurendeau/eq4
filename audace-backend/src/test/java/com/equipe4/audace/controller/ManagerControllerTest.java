@@ -1,10 +1,16 @@
 package com.equipe4.audace.controller;
 
+import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
@@ -20,6 +26,7 @@ import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.ManagerService;
 import com.equipe4.audace.service.StudentService;
 import com.equipe4.audace.utils.JwtManipulator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -30,16 +37,23 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -47,6 +61,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ManagerControllerTest {
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @MockBean
     private StudentService studentService;
@@ -263,5 +279,62 @@ public class ManagerControllerTest {
 
         mockMvc.perform(get("/managers/cvs/1"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = "manager", authorities = {"Manager"})
+    public void givenContractObject_whenCreateContract_thenReturnSavedContract() throws Exception{
+        // given - precondition or setup
+        ContractDTO contractDTO = createContractDTO();
+
+        when(managerService.createContract(any(ContractDTO.class))).thenReturn(Optional.of(contractDTO));
+
+        // when - action or behaviour that we are going test
+        ResultActions response = mockMvc.perform(post("/managers/contracts")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(Optional.of(contractDTO))));
+
+        // then - verify the result or output using assert statements
+        response.andDo(print()).
+                andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(contractDTO.getId()))
+                .andExpect(jsonPath("$.departmentName", is(contractDTO.getDepartmentName())))
+                .andExpect(jsonPath("$.startHour", is(contractDTO.getStartHour().format(DateTimeFormatter.ofPattern("HH:mm:ss")))))
+                .andExpect(jsonPath("$.endHour", is(contractDTO.getEndHour().format(DateTimeFormatter.ofPattern("HH:mm:ss")))))
+                .andExpect(jsonPath("$.totalHoursPerWeek", is(contractDTO.getTotalHoursPerWeek())))
+                .andExpect(jsonPath("$.salary", is(contractDTO.getSalary())))
+                .andExpect(jsonPath("$.internTasksAndResponsibilities", is(contractDTO.getInternTasksAndResponsibilities())))
+                .andExpect(jsonPath("$.supervisor.email", is(contractDTO.getSupervisor().getEmail())))
+                .andExpect(jsonPath("$.application.id", is(contractDTO.getApplication().getId().intValue())));
+    }
+
+    private Department createDepartment(){
+        return new Department(1L, "GLO", "Génie logiciel");
+    }
+    private EmployerDTO createEmployerDTO() {
+        return new EmployerDTO(1L, "Employer1", "Employer1", "employer1@gmail.com", "123456eE", "Organisation1", "Position1", "Class Service, Javatown, Qc H8N1C1", "123-456-7890", "12345");
+    }
+    private StudentDTO createStudentDTO() {
+        DepartmentDTO departmentDTO = createDepartment().toDTO();
+        return new StudentDTO(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", departmentDTO);
+    }
+    private Offer createOffer() {
+        Employer employer = createEmployerDTO().fromDTO();
+        Department department = createDepartment();
+        return new Offer(1L,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
+    }
+    private Application createApplication(Offer offer) {
+        Student student = createStudentDTO().fromDTO();
+        Cv cv = mock(Cv.class);
+
+        return new Application(1L, cv, offer);
+    }
+
+    private ContractDTO createContractDTO(){
+        EmployerDTO employerDTO = createEmployerDTO();
+        OfferDTO offerDTO = createOffer().toDTO();
+        ApplicationDTO applicationDTO = createApplication(offerDTO.fromDTO()).toDTO();
+        return new ContractDTO(1L, "Construction", LocalTime.parse("08:00"),LocalTime.parse("17:00"), 40, 18.35, "TODO", employerDTO, applicationDTO);
     }
 }

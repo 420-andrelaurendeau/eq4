@@ -49,17 +49,9 @@ public class Offer {
         REFUSED
     }
 
-    public Offer(
-            Long id,
-            String title,
-            String description,
-            LocalDate internshipStartDate,
-            LocalDate internshipEndDate,
-            LocalDate offerEndDate,
-            int availablePlaces,
-            Department department,
-            Employer employer
-    ) {
+    public Offer(Long id, String title, String description,
+                 LocalDate internshipStartDate, LocalDate internshipEndDate, LocalDate offerEndDate,
+                 int availablePlaces, Department department, Employer employer) {
         this.id = id;
         this.title = title;
         this.description = description;

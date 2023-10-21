@@ -36,7 +36,6 @@ public class AudaceApplication implements CommandLineRunner {
 	private SaltRepository saltRepository;
 	private ManagerRepository managerRepository;
 	private StudentService studentService;
-
 	public static void main(String[] args) {
 		SpringApplication.run(AudaceApplication.class, args);
 	}

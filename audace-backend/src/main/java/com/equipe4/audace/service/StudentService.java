@@ -29,18 +29,17 @@ public class StudentService extends GenericUserService<Student> {
     private final OfferRepository offerRepository;
     private final StudentRepository studentRepository;
     private final CvRepository cvRepository;
-    private final ApplicationRepository applicationRepository;
+
 
     public StudentService(
             SaltRepository saltRepository, DepartmentRepository departmentRepository, OfferRepository offerRepository,
             StudentRepository studentRepository, CvRepository cvRepository, ApplicationRepository applicationRepository
     ) {
-        super(saltRepository);
+        super(saltRepository, applicationRepository);
         this.departmentRepository = departmentRepository;
         this.offerRepository = offerRepository;
         this.studentRepository = studentRepository;
         this.cvRepository = cvRepository;
-        this.applicationRepository = applicationRepository;
     }
 
     @Transactional
@@ -69,8 +68,7 @@ public class StudentService extends GenericUserService<Student> {
 
     @Transactional
     public List<OfferDTO> getAcceptedOffersByDepartment(Long departmentId) {
-        Department department = departmentRepository.findById(departmentId)
-                .orElseThrow(() -> new NoSuchElementException("Department not found"));
+        Department department = departmentRepository.findById(departmentId).orElseThrow(() -> new NoSuchElementException("Department not found"));
         List<Offer> offers = offerRepository.findAllByDepartmentAndOfferStatus(department, OfferStatus.ACCEPTED);
 
         return offers.stream().map(Offer::toDTO).toList();
@@ -82,9 +80,7 @@ public class StudentService extends GenericUserService<Student> {
 
     @Transactional
     public Optional<CvDTO> saveCv(MultipartFile file, Long studentId) {
-        if (file == null) {
-            throw new IllegalArgumentException("File cannot be null");
-        }
+        if (file == null) throw new IllegalArgumentException("File cannot be null");
 
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new NoSuchElementException("Student not found"));
         byte[] bytes;

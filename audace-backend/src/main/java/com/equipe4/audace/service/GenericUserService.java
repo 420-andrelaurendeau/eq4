@@ -2,6 +2,7 @@ package com.equipe4.audace.service;
 
 import com.equipe4.audace.model.User;
 import com.equipe4.audace.model.security.Salt;
+import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -9,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 @AllArgsConstructor
 public class GenericUserService <T extends User> {
     protected final SaltRepository saltRepository;
+    protected final ApplicationRepository applicationRepository;
 
     protected void hashAndSaltPassword(T user) {
         String generatedSalt = BCrypt.gensalt();

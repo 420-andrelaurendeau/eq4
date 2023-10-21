@@ -2,9 +2,12 @@ package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.GenericUserController;
 import com.equipe4.audace.dto.ManagerDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Manager;
+import com.equipe4.audace.model.contract.Contract;
 import com.equipe4.audace.service.ManagerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -70,4 +73,12 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
                 .map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
+
+    @PostMapping("/contracts")
+    public ResponseEntity<ContractDTO> createContract(@RequestBody ContractDTO contractDTO){
+        logger.info("createContract");
+        return service.createContract(contractDTO).map(contract -> ResponseEntity.status(HttpStatus.CREATED).body(contractDTO))
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
 }

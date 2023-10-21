@@ -19,13 +19,11 @@ import java.util.*;
 public class EmployerService extends GenericUserService<Employer> {
     private final EmployerRepository employerRepository;
     private final OfferRepository offerRepository;
-    private final ApplicationRepository applicationRepository;
 
     public EmployerService(SaltRepository saltRepository, EmployerRepository employerRepository, OfferRepository offerRepository, ApplicationRepository applicationRepository) {
-        super(saltRepository);
+        super(saltRepository, applicationRepository);
         this.employerRepository = employerRepository;
         this.offerRepository = offerRepository;
-        this.applicationRepository = applicationRepository;
     }
 
     @Transactional
