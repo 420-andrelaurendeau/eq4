@@ -84,6 +84,7 @@ public class StudentServiceTest {
 
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
         when(offerRepository.findAllByDepartmentAndOfferStatus(mockedDepartment, Offer.OfferStatus.ACCEPTED)).thenReturn(offers);
+        when(sessionManipulator.removeOffersNotInCurrentSession(offers)).thenReturn(offers);
 
         List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
 

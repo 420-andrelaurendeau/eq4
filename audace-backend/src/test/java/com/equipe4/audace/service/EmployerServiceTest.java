@@ -5,9 +5,11 @@ import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
+import com.equipe4.audace.model.offer.OfferSession;
 import com.equipe4.audace.model.security.Salt;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.repository.offer.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.utils.SessionManipulator;
 import org.junit.jupiter.api.Test;
@@ -36,6 +38,8 @@ public class EmployerServiceTest {
     private SaltRepository saltRepository;
     @Mock
     private SessionManipulator sessionManipulator;
+    @Mock
+    private OfferSessionRepository offerSessionRepository;
     @InjectMocks
     private EmployerService employerService;
 
@@ -165,6 +169,7 @@ public class EmployerServiceTest {
         OfferDTO offerDTO = offer.toDTO();
 
         when(offerRepository.save(offerDTO.fromDTO())).thenReturn(offer);
+        when(offerSessionRepository.save(any())).thenReturn(mock(OfferSession.class));
 
         OfferDTO dto = employerService.createOffer(offerDTO).get();
 
@@ -217,6 +222,7 @@ public class EmployerServiceTest {
 
         when(employerRepository.findById(anyLong())).thenReturn(Optional.of(fakeEmployer));
         when(offerRepository.findAllByEmployer(any(Employer.class))).thenReturn(offers);
+        when(sessionManipulator.removeOffersNotInCurrentSession(offers)).thenReturn(offers);
 
         List<OfferDTO> offerDTOList = employerService.findAllOffersByEmployerId(fakeEmployer.getId());
 
@@ -252,6 +258,7 @@ public class EmployerServiceTest {
                 fakeEmployer
         );
         when(offerRepository.findById(offer1.getId())).thenReturn(Optional.of(offer1));
+        when(sessionManipulator.verifyIfOfferIsInCurrentSession(offer1)).thenReturn(true);
 
         employerService.deleteOffer(offer1.getId());
 
@@ -297,6 +304,7 @@ public class EmployerServiceTest {
 
         when(offerRepository.save(any(Offer.class))).thenReturn(offer);
         when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
+        when(sessionManipulator.verifyIfOfferIsInCurrentSession(offer)).thenReturn(true);
 
         OfferDTO originalOffer = employerService.createOffer(offer.toDTO()).get();
 
