@@ -13,6 +13,7 @@ import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.repository.offer.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.service.EmployerService;
@@ -77,6 +78,8 @@ public class EmployerControllerTest {
     private SaltRepository saltRepository;
     @MockBean
     private SessionRepository sessionRepository;
+    @MockBean
+    private OfferSessionRepository offerSessionRepository;
 
     @Test
     @WithMockUser(username = "employer", authorities = {"EMPLOYER", "USER"})
