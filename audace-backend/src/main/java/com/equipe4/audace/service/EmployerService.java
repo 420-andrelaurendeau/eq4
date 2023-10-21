@@ -1,9 +1,12 @@
 package com.equipe4.audace.service;
 
+import com.equipe4.audace.dto.ApplicationDTO;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.offer.Offer;
+import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
@@ -17,15 +20,18 @@ import java.util.Optional;
 public class EmployerService extends GenericUserService<Employer> {
     private final EmployerRepository employerRepository;
     private final OfferRepository offerRepository;
+    private final ApplicationRepository applicationRepository;
 
     public EmployerService(
             SaltRepository saltRepository,
             EmployerRepository employerRepository,
-            OfferRepository offerRepository
+            OfferRepository offerRepository,
+            ApplicationRepository applicationRepository
     ) {
         super(saltRepository);
         this.employerRepository = employerRepository;
         this.offerRepository = offerRepository;
+        this.applicationRepository = applicationRepository;
     }
 
     @Transactional
@@ -71,5 +77,20 @@ public class EmployerService extends GenericUserService<Employer> {
     public void deleteOffer(Long offerId){
         Offer offer = offerRepository.findById(offerId).orElseThrow();
         offerRepository.delete(offer);
+    }
+    @Transactional
+    public Optional<ApplicationDTO> acceptApplication(Long applicationId) {
+        return setApplicationStatus(applicationId, Application.ApplicationStatus.ACCEPTED);
+    }
+    @Transactional
+    public Optional<ApplicationDTO> refuseApplication(Long applicationId) {
+        return setApplicationStatus(applicationId, Application.ApplicationStatus.REFUSED);
+    }
+
+    private Optional<ApplicationDTO> setApplicationStatus(Long applicationId, Application.ApplicationStatus applicationStatus) {
+        Application application = applicationRepository.findById(applicationId).orElseThrow();
+        application.setApplicationStatus(applicationStatus);
+        applicationRepository.save(application);
+        return Optional.of(application.toDTO());
     }
 }

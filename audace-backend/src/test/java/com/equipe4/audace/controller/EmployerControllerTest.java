@@ -1,8 +1,12 @@
 package com.equipe4.audace.controller;
 
+import com.equipe4.audace.dto.ApplicationDTO;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
@@ -28,7 +32,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -154,7 +160,7 @@ public class EmployerControllerTest {
     public void givenOfferObject_whenCreateOffer_thenReturnSavedOffer() throws Exception{
         // given - precondition or setup
         Department department = new Department(1L, "GLO", "Génie logiciel");
-        Employer employer = createEmployerDTO().fromDTO();
+        Employer employer = createEmployer();
 
         OfferDTO offerDTO = createOffer(employer, department).toDTO();
 
@@ -183,7 +189,7 @@ public class EmployerControllerTest {
     public void givenListOfOffers_whenGetAllOffers_thenReturnOffersList() throws Exception{
         // given - precondition or setup
         Department department = new Department(1L, "GLO", "Génie logiciel");
-        Employer employer = createEmployerDTO().fromDTO();
+        Employer employer = createEmployer();
 
         List<OfferDTO> listOfOffers = new ArrayList<>();
         listOfOffers.add(createOffer(employer, department).toDTO());
@@ -206,7 +212,7 @@ public class EmployerControllerTest {
         // given - precondition or setup
 
         Department department = new Department(1L, "GLO", "Génie logiciel");
-        Employer employer = createEmployerDTO().fromDTO();
+        Employer employer = createEmployer();
 
         Offer offerSaved = createOffer(employer, department);
         OfferDTO offerDTOSaved = offerSaved.toDTO();
@@ -246,9 +252,63 @@ public class EmployerControllerTest {
                 .andExpect(jsonPath("$.employer.id", is(offerDTOUpdated.getEmployer().getId().intValue())))
                 .andExpect(jsonPath("$.department.code", is(offerDTOUpdated.getDepartment().getCode())));
     }
+    @Test
+    @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
+    public void acceptApplication() throws Exception {
+        Application application = new Application(
+                1L,
+                createStudent(),
+                createCv(),
+                createOffer(createEmployer(), createDepartment())
+        );
+        when(employerService.acceptApplication(anyLong())).thenReturn(Optional.of(application.toDTO()));
 
-    private EmployerDTO createEmployerDTO() {
-        return new EmployerDTO(
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/employers/accept_application/1").with(csrf())
+                .accept(MediaType.APPLICATION_JSON)
+                .content(application.toString())
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request).andExpect(status().isOk());
+    }
+    @Test
+    @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
+    public void acceptApplication_invalidId() throws Exception {
+        when(employerService.acceptApplication(anyLong())).thenReturn(Optional.empty());
+
+        mockMvc.perform(post("/employers/accept_application/1").with(csrf()))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
+    public void refuseApplication() throws Exception {
+        Application application = new Application(
+                1L,
+                createStudent(),
+                createCv(),
+                createOffer(createEmployer(), createDepartment())
+        );
+        when(employerService.refuseApplication(anyLong())).thenReturn(Optional.of(application.toDTO()));
+
+        RequestBuilder request = MockMvcRequestBuilders
+                .post("/employers/refuse_application/1").with(csrf())
+                .accept(MediaType.APPLICATION_JSON)
+                .content(application.toString())
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request).andExpect(status().isOk());
+    }
+    @Test
+    @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
+    public void refuseApplication_invalidId() throws Exception {
+        when(employerService.acceptApplication(anyLong())).thenReturn(Optional.empty());
+
+        mockMvc.perform(post("/employers/refuse_application/1").with(csrf()))
+                .andExpect(status().isBadRequest());
+    }
+    private Employer createEmployer() {
+        return new Employer(
                 1L,
                 "Employer1",
                 "Employer1",
@@ -273,6 +333,34 @@ public class EmployerControllerTest {
                 3,
                 department,
                 employer
+        );
+    }
+    private Student createStudent() {
+        return new Student(
+                1L,
+                "Student1",
+                "StudentLastName",
+                "student@gmail.com",
+                "password",
+                "Class Service, Javatown, Qc H8N1C1",
+                "514-514-5114",
+                "12345",
+                createDepartment()
+        );
+    }
+    private Department createDepartment() {
+        return new Department(
+                1L,
+                "GLO",
+                "Génie logiciel"
+        );
+    }
+    private Cv createCv() {
+        return new Cv(
+                1L,
+                createStudent(),
+                "content".getBytes(),
+                "fileName"
         );
     }
 }
