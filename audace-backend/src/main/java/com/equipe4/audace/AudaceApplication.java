@@ -10,11 +10,13 @@ import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.security.Salt;
+import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.StudentService;
 import lombok.AllArgsConstructor;
@@ -36,6 +38,7 @@ public class AudaceApplication implements CommandLineRunner {
 	private SaltRepository saltRepository;
 	private ManagerRepository managerRepository;
 	private StudentService studentService;
+	private SessionRepository sessionRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AudaceApplication.class, args);
@@ -43,6 +46,8 @@ public class AudaceApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+		Session session = sessionRepository.save(new Session(null, LocalDate.now(), LocalDate.now().plusMonths(6)));
+
 		Department department = departmentRepository.save(new Department(null, "GLO", "Génie logiciel"));
 
 		Optional<EmployerDTO> optionalEmployerDTO = employerService.createEmployer(

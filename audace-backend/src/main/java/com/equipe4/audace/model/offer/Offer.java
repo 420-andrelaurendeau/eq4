@@ -4,7 +4,6 @@ import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
-import com.equipe4.audace.model.session.Session;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,9 +45,6 @@ public class Offer {
     @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL)
     private List<Application> applications = new ArrayList<>();
 
-    @ManyToOne
-    private Session session;
-
     private OfferStatus offerStatus;
 
     public enum OfferStatus {
@@ -66,8 +62,7 @@ public class Offer {
             LocalDate offerEndDate,
             int availablePlaces,
             Department department,
-            Employer employer,
-            Session session
+            Employer employer
     ) {
         this.id = id;
         this.title = title;
@@ -78,7 +73,6 @@ public class Offer {
         this.availablePlaces = availablePlaces;
         this.department = department;
         this.employer = employer;
-        this.session = session;
         this.offerStatus = OfferStatus.PENDING;
     }
 
