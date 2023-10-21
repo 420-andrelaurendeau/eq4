@@ -21,10 +21,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -48,23 +45,15 @@ public class ManagerServiceTest {
     public void acceptOffer() {
         Employer employer = mock(Employer.class);
         Department department = mock(Department.class);
-        Offer offer1 = new Offer(
-                1L,
-                "title",
-                "description",
-                LocalDate.now(),
-                LocalDate.now(),
-                LocalDate.now(),
-                1,
-                department,
-                employer
-        );
-        when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
-        when(offerRepository.save(any())).thenReturn(offer1);
+        Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
+
+        when(offerRepository.findById(1L)).thenReturn(Optional.of(offer));
+        when(offerRepository.save(any())).thenReturn(offer);
 
         managerService.acceptOffer(1L);
 
-        assert(offer1.getOfferStatus() == Offer.OfferStatus.ACCEPTED);
+
+        assert(offer.getStatus() == Offer.Status.ACCEPTED);
     }
 
     @Test
@@ -77,23 +66,14 @@ public class ManagerServiceTest {
     public void refuseOffer() {
         Employer employer = mock(Employer.class);
         Department department = mock(Department.class);
-        Offer offer1 = new Offer(
-                1L,
-                "title",
-                "description",
-                LocalDate.now(),
-                LocalDate.now(),
-                LocalDate.now(),
-                1,
-                department,
-                employer
-        );
-        when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
-        when(offerRepository.save(any())).thenReturn(offer1);
+        Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, department, employer);
+
+        when(offerRepository.findById(1L)).thenReturn(Optional.of(offer));
+        when(offerRepository.save(any())).thenReturn(offer);
 
         managerService.refuseOffer(1L);
 
-        assert(offer1.getOfferStatus() == Offer.OfferStatus.REFUSED);
+        assert(offer.getStatus() == Offer.Status.REFUSED);
     }
 
     @Test

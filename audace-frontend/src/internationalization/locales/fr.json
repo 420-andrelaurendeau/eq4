@@ -39,10 +39,10 @@
     "errors": {
       "departmentNotFound": "Département pas trouvé"
     },
-    "name": "Titre du CV",
+    "name": "CV",
     "viewMore": "Voir le CV",
     "noCvs": "Aucun CV disponible",	
-    "studentName": "Nom de l'étudiant"
+    "studentName": "Étudiant"
   },
   "offersList": {
     "errors": {
@@ -97,6 +97,13 @@
     "REFUSED": "Refusé",
     "noMorePendingCvs": "Il n'y a plus de CV en attente"
   },
+  "employerCvsList": {
+    "title": "Applications",
+    "acceptButton": "Accepter",
+    "refuseButton": "Refuser",
+    "ACCEPTED": "Accepté",
+    "REFUSED": "Refusé"
+  },
   "employerOffersList": {
     "viewTitle": "Offres disponibles",
     "status": "État",
@@ -117,7 +124,8 @@
     "errors": {
       "employerNotFound": "Aucun employeur trouvé"
     },
-    "seeOffersButton": "Voir les offres"
+    "seeOffersButton": "Voir les offres",
+    "seeApplicationsButton": "Voir les applications"
   },
   "upload": {
     "CvFormTitle": "Téléverser votre CV",

@@ -7,8 +7,7 @@ import com.equipe4.audace.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
+import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -16,6 +15,11 @@ import java.util.Optional;
 public class UserController extends GenericUserController<User, UserService> {
     public UserController(UserService userService) {
         super(userService);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        return ResponseEntity.ok(service.getAllUsers());
     }
 
     @GetMapping("/{id}")

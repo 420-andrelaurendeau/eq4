@@ -10,22 +10,22 @@ import { getUserId } from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
 
 const ManagerOfferView = () => {
-  const [manager, setManager] = useState<Manager>();
-  const [offers, setOffers] = useState<Offer[]>([]);
-  const [offersAccepted, setOffersAccepted] = useState<Offer[]>([]);
-  const [offersRefused, setOffersRefused] = useState<Offer[]>([]);
-  const [error, setError] = useState<string>("");
-  const { t } = useTranslation();
-  const navigate = useNavigate();
+    const [manager, setManager] = useState<Manager>();
+    const [offers, setOffers] = useState<Offer[]>([]);
+    const [offersAccepted, setOffersAccepted] = useState<Offer[]>([]);
+    const [offersRefused, setOffersRefused] = useState<Offer[]>([]);
+    const [error, setError] = useState<string>("");
+    const {t} = useTranslation();
+    const navigate = useNavigate();
 
   useEffect(() => {
     if (manager !== undefined) return;
     const id = getUserId();
 
-    if (id == null) {
-      navigate("/pageNotFound");
-      return;
-    }
+        if (id == null) {
+            navigate("/pageNotFound");
+            return;
+        }
 
     getManagerById(parseInt(id!))
       .then((res) => {
@@ -38,8 +38,8 @@ const ManagerOfferView = () => {
       });
   }, [manager, t, navigate]);
 
-  useEffect(() => {
-    if (manager === undefined) return;
+    useEffect(() => {
+        if (manager === undefined) return;
 
     getManagerOffersByDepartment(manager.department!.id!)
       .then((res) => {

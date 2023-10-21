@@ -73,22 +73,13 @@ public class ManagerControllerTest {
     @MockBean
     private SaltRepository saltRepository;
 
+
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void acceptOffer() throws Exception {
         Employer employer = new Employer();
         Department department = new Department();
-        Offer offer1 = new Offer(
-                1L,
-                "title",
-                "description",
-                LocalDate.now(),
-                LocalDate.now(),
-                LocalDate.now(),
-                1,
-                department,
-                employer
-        );
+        Offer offer1 = new Offer(1L,"title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, department, employer);
         OfferDTO offerDTO1 = offer1.toDTO();
 
         when(managerService.acceptOffer(1L)).thenReturn(Optional.of(offerDTO1));
@@ -101,23 +92,12 @@ public class ManagerControllerTest {
 
         mockMvc.perform(request).andExpect(status().isOk());
     }
-
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void refuseOffer() throws Exception {
         Employer employer = new Employer();
         Department department = new Department();
-        Offer offer1 = new Offer(
-                1L,
-                "title",
-                "description",
-                LocalDate.now(),
-                LocalDate.now(),
-                LocalDate.now(),
-                1,
-                department,
-                employer
-        );
+        Offer offer1 = new Offer(1L,"title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, department, employer);
         OfferDTO offerDTO1 = offer1.toDTO();
         when(managerService.refuseOffer(1L)).thenReturn(Optional.of(offerDTO1));
 
@@ -129,23 +109,12 @@ public class ManagerControllerTest {
 
         mockMvc.perform(request).andExpect(status().isOk());
     }
-
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void acceptOffer_invalidId() throws Exception {
         Employer employer = mock(Employer.class);
         Department department = mock(Department.class);
-        Offer offer1 = new Offer(
-                1L,
-                "title",
-                "description",
-                LocalDate.now(),
-                LocalDate.now(),
-                LocalDate.now(),
-                1,
-                department,
-                employer
-        );
+        Offer offer1 = new Offer(1L,"title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, department, employer);
 
         when(managerService.acceptOffer(-25L)).thenReturn(Optional.empty());
 
@@ -157,23 +126,12 @@ public class ManagerControllerTest {
 
         mockMvc.perform(request).andExpect(status().isBadRequest());
     }
-
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void refuseOffer_invalidId() throws Exception {
         Employer employer = new Employer();
         Department department = new Department();
-        Offer offer1 = new Offer(
-                1L,
-                "title",
-                "description",
-                LocalDate.now(),
-                LocalDate.now(),
-                LocalDate.now(),
-                1,
-                department,
-                employer
-        );
+        Offer offer1 = new Offer(1L,"title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, department, employer);
 
         when(managerService.refuseOffer(-25L)).thenReturn(Optional.empty());
 

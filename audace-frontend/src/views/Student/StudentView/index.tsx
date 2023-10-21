@@ -8,6 +8,8 @@ import { getStudentOffersByDepartment } from "../../../services/offerService";
 import OffersList from "../../../components/OffersList";
 import { getUserId } from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
+import { getCvsByStudentId } from "../../../services/studentApplicationService";
+import { CV } from "../../../model/cv";
 import FileUploader from "../../../components/FileUploader";
 
 interface StudentViewProps {
@@ -19,8 +21,10 @@ const StudentView = ({ viewOffers = true, viewUpload = true }: StudentViewProps)
   const [student, setStudent] = useState<Student>();
   const [offers, setOffers] = useState<Offer[]>([]);
   const [error, setError] = useState<string>("");
+  const [cvs, setCvs] = useState<CV[]>([]);
   const { t } = useTranslation();
   const navigate = useNavigate();
+
 
   useEffect(() => {
     if (student !== undefined) return;
@@ -55,6 +59,11 @@ const StudentView = ({ viewOffers = true, viewUpload = true }: StudentViewProps)
         if (err.request.status === 404)
           setError(t("offersList.errors.departmentNotFound"));
       });
+
+    getCvsByStudentId(student.id!)
+        .then((res) => {
+          return setCvs(res.data);
+        })
   }, [student, t]);
 
   return (

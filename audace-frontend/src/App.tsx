@@ -13,6 +13,8 @@ import StudentView from "./views/Student/StudentView";
 import ManagerView from "./views/Manager/ManagerView";
 import ManagerOfferView from "./views/Manager/ManagerOfferView";
 import EmployerView from "./views/Employer/EmployerView";
+import EmployerApplicationView from "./views/Employer/EmployerApplicationView";
+import EmployerOfferView from "./views/Employer/EmployerOfferView";
 import ManagerCvView from "./views/Manager/ManagerCvView";
 import { Authority } from "./model/auth";
 import { getAuthorities } from "./services/authService";
@@ -22,24 +24,13 @@ function App() {
     <Router>
       <AppHeader />
       <Routes>
-        <Route
-          path="/signup/*"
-          element={
+        <Route path="/signup/*" element={
             <Routes>
-              <Route
-                path="employer"
-                element={<SignupView userType={UserType.Employer} />}
-              />
-              <Route
-                path="student/:depCode"
-                element={<SignupView userType={UserType.Student} />}
-              />
+              <Route path="employer" element={<SignupView userType={UserType.Employer} />}/>
+              <Route path="student/:depCode" element={<SignupView userType={UserType.Student} />}/>
             </Routes>
-          }
-        />
-        <Route
-          path="/login/*"
-          element={
+        }/>
+        <Route path="/login/*" element={
             <ConnectedRoute isConnectedRoute={false}>
               <Routes>
                 <Route index element={<LoginView />} />
@@ -48,11 +39,8 @@ function App() {
                 <Route path="*" element={<PageNotFoundView />} />
               </Routes>
             </ConnectedRoute>
-          }
-        />
-        <Route
-          path="/student/*"
-          element={
+        }/>
+        <Route path="/student/*" element={
             <AuthorizedRoute requiredAuthority={Authority.STUDENT}>
               <Routes>
                 <Route index element={<StudentView />} />
@@ -61,11 +49,8 @@ function App() {
                 <Route path="*" element={<PageNotFoundView />} />
               </Routes>
             </AuthorizedRoute>
-          }
-        />
-        <Route
-          path="/manager/*"
-          element={
+        }/>
+        <Route path="/manager/*" element={
             <AuthorizedRoute requiredAuthority={Authority.MANAGER}>
               <Routes>
                 <Route index element={<ManagerView />} />
@@ -74,23 +59,22 @@ function App() {
                 <Route path="*" element={<PageNotFoundView />} />
               </Routes>
             </AuthorizedRoute>
-          }
-        />
-        <Route
-          path="/employer/*"
-          element={
+        }/>
+        <Route path="/employer/*" element={
             <AuthorizedRoute requiredAuthority={Authority.EMPLOYER}>
               <Routes>
                 <Route index element={<EmployerView />} />
+                <Route path="offers" element={<EmployerOfferView />} />
+                <Route path="applications" element={<EmployerApplicationView />}></Route>
                 <Route path="*" element={<PageNotFoundView />} />
               </Routes>
             </AuthorizedRoute>
-          }
-        />
+        }/>
         <Route path="*" element={<PageNotFoundView />} />
         <Route path="/" element={<Navigate to={getAuthorities()?.[0]?.toString().toLowerCase() || "/login"} />} />
       </Routes>
     </Router>
   );
 }
+
 export default App;

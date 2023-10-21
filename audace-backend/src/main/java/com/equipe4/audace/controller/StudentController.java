@@ -1,7 +1,7 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.GenericUserController;
-import com.equipe4.audace.dto.ApplicationDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
@@ -67,9 +67,9 @@ public class StudentController extends GenericUserController<Student, StudentSer
         }
     }
 
-    @PostMapping("/{id}/applications")
+    @PostMapping("/applications/{id}")
     public ResponseEntity<ApplicationDTO> createApplication(@RequestBody ApplicationDTO applicationDTO){
-        logger.info("createOffer");
+        logger.info("createApplication");
         return service.createApplication(applicationDTO).map(application -> ResponseEntity.status(HttpStatus.CREATED).body(applicationDTO))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }

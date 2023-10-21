@@ -1,18 +1,19 @@
 package com.equipe4.audace.service;
 
-import com.equipe4.audace.dto.ApplicationDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.Application;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.security.Salt;
-import com.equipe4.audace.repository.ApplicationRepository;
+import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
@@ -29,10 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -123,14 +121,12 @@ public class StudentServiceTest {
 
         assertThat(optionalStudentDTO).isPresent();
     }
-
     @Test
     void createStudentNullStudent() {
         assertThatThrownBy(() -> studentService.createStudent(null, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Student cannot be null");
     }
-
     @Test
     void createStudentAlreadyExists() {
         StudentDTO studentDTO = createStudentDTO();
@@ -141,7 +137,6 @@ public class StudentServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Student already exists");
     }
-
     @Test
     void createStudentDepartmentInvalid() {
         StudentDTO studentDTO = createStudentDTO();
@@ -165,10 +160,9 @@ public class StudentServiceTest {
 
         // Assert
         assertThat(result.getFirstName()).isEqualTo("student");
-        assertThat(result.getLastName()).isEqualTo("studentMan");
-        assertThat(result.getEmail()).isEqualTo("email@email.com");
+        assertThat(result.getLastName()).isEqualTo("studentman");
+        assertThat(result.getEmail()).isEqualTo("student@email.com");
     }
-
     @Test
     public void findStudentById_notFoundTest() {
         // Arrange
@@ -207,7 +201,6 @@ public class StudentServiceTest {
         verify(cvRepository, times(1)).save(any());
         assertThat(result).isEqualTo(expected);
     }
-
     @Test
     void saveCv_studentNotFound() {
         MultipartFile file = createMockFile();
@@ -219,7 +212,6 @@ public class StudentServiceTest {
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Student not found");
     }
-
     @Test
     void saveCv_fileNull() {
         StudentDTO studentDTO = createStudentDTO();
@@ -228,7 +220,6 @@ public class StudentServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("File cannot be null");
     }
-
     @Test
     void saveCv_fileUnreadable() {
         MultipartFile file = new CustomMockMultipartFile(
@@ -244,15 +235,6 @@ public class StudentServiceTest {
         assertThatThrownBy(() -> studentService.saveCv(file, studentDTO.getId()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("File cannot be read");
-    }
-
-    private StudentDTO createStudentDTO() {
-        DepartmentDTO departmentDTO = new DepartmentDTO(1L, "GEN", "Génie");
-        return new StudentDTO(1L, "student", "studentMan", "email@email.com", "123 Street street", "1234567890", "123456789", "studentNumber", departmentDTO);
-    }
-
-    private MultipartFile createMockFile() {
-        return new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "test data".getBytes());
     }
 
     @Test
@@ -272,6 +254,96 @@ public class StudentServiceTest {
         assertThat(result).containsExactlyInAnyOrderElementsOf(cvs.stream().map(Cv::toDTO).toList());
     }
 
+    @Test
+    void getOffersByDepartmentAndOfferStatus_happyPath() {
+        Department mockedDepartment = mock(Department.class);
+        List<Offer> offers = new ArrayList<>();
+
+        Employer fakeEmployer = new Employer(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
+
+        Offer mockedOffer = mock(Offer.class);
+
+        fakeEmployer.getOffers().add(mockedOffer);
+
+        for (int i = 0; i < 3; i++)
+            offers.add(mockedOffer);
+
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
+        when(offerRepository.findAllByDepartmentAndOfferStatus(mockedDepartment, Offer.OfferStatus.ACCEPTED)).thenReturn(offers);
+
+        List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
+
+        assertThat(result.size()).isEqualTo(offers.size());
+        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
+    }
+    @Test
+    void getOffersByDepartmentAndOfferStatus_departmentNotFound() {
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> studentService.getAcceptedOffersByDepartment(1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Department not found");
+    }
+    @Test
+    void getOffersByDepartmentAndOfferStatus_noOffers() {
+        Department mockedDepartment = mock(Department.class);
+
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
+        when(offerRepository.findAllByDepartmentAndOfferStatus(mockedDepartment, Offer.OfferStatus.ACCEPTED)).thenReturn(new ArrayList<>());
+
+        List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
+
+        assertThat(result.size()).isEqualTo(0);
+    }
+
+    @Test
+    public void createApplication_HappyPath(){
+        Student student = createStudentDTO().fromDTO();
+        Offer offer = createOffer();
+        Cv cv = new Cv(1L, student, new byte[0], "fileName");
+
+        Application application = new Application(null, cv, offer);
+
+        ApplicationDTO applicationDTO = application.toDTO();
+
+        when(applicationRepository.save(any(Application.class))).thenReturn(application);
+        when(cvRepository.findById(anyLong())).thenReturn(Optional.of(cv));
+        when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
+
+        ApplicationDTO dto = studentService.createApplication(applicationDTO).get();
+
+        assertThat(dto).isEqualTo(applicationDTO);
+        verify(applicationRepository, times(1)).save(application);
+    }
+    @Test
+    public void createApplication_NullApplication(){
+        assertThatThrownBy(() -> studentService.createApplication(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Application cannot be null");
+    }
+
+
+    private MultipartFile createMockFile() {
+        return new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "test data".getBytes());
+    }
+
+    private Department createDepartment(){
+        return new Department(1L, "GLO", "Génie logiciel");
+    }
+    private EmployerDTO createEmployerDTO() {
+        return new EmployerDTO(1L, "Employer1", "Employer1", "employer1@gmail.com", "123456eE", "Organisation1", "Position1", "Class Service, Javatown, Qc H8N1C1", "123-456-7890", "12345");
+    }
+    private StudentDTO createStudentDTO() {
+        DepartmentDTO departmentDTO = createDepartment().toDTO();
+        return new StudentDTO(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", departmentDTO);
+    }
+    private Offer createOffer() {
+        Employer employer = createEmployerDTO().fromDTO();
+        Department department = createDepartment();
+        return new Offer(1L,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
+    }
+
+
     private static class CustomMockMultipartFile extends MockMultipartFile {
         public CustomMockMultipartFile(String name, String originalFilename, String contentType, byte[] content) {
             super(name, originalFilename, contentType, content);
@@ -282,36 +354,5 @@ public class StudentServiceTest {
         public byte[] getBytes() throws IOException {
             throw new IOException();
         }
-    }
-
-    @Test
-    public void createApplication_HappyPath(){
-        Department department = new Department(1L, "GEN", "Génie");
-        Student student = new Student(
-                1L,
-                "student",
-                "studentMan",
-                "email@email.com",
-                "password",
-                "123 Street Street",
-                "1234567890",
-                "123456789",
-                department
-        );
-        Cv cv = new Cv(1L, student, new byte[0], "fileName");
-        Offer offer = new Offer(1L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 0, department, mock(Employer.class));
-        Application application = new Application(null, student, cv, offer);
-
-        ApplicationDTO applicationDTO = application.toDTO();
-
-        when(applicationRepository.save(any(Application.class))).thenReturn(application);
-        when(studentRepository.findById(anyLong())).thenReturn(Optional.of(student));
-        when(cvRepository.findById(anyLong())).thenReturn(Optional.of(cv));
-        when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
-
-        ApplicationDTO dto = studentService.createApplication(applicationDTO).get();
-
-        assertThat(dto).isEqualTo(applicationDTO);
-        verify(applicationRepository, times(1)).save(application);
     }
 }

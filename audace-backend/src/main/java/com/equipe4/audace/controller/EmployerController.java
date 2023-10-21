@@ -1,6 +1,7 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.GenericUserController;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -19,21 +21,21 @@ public class EmployerController extends GenericUserController<Employer, Employer
         super(employerService);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<EmployerDTO> getEmployerById(@PathVariable Long id){
+    @GetMapping("/{employerId}")
+    public ResponseEntity<EmployerDTO> getEmployerById(@PathVariable Long employerId){
         logger.info("getEmployerById");
-        return service.findEmployerById(id)
+        return service.findEmployerById(employerId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{id}/offers")
-    public ResponseEntity<List<OfferDTO>> getAllOffersByEmployerId(@PathVariable Long id) {
+    @GetMapping("offers/{employerId}")
+    public ResponseEntity<List<OfferDTO>> getAllOffersByEmployerId(@PathVariable Long employerId) {
         logger.info("getAllOffersByEmployerId");
-        return ResponseEntity.ok(service.findAllOffersByEmployerId(id));
+        return ResponseEntity.ok(service.findAllOffersByEmployerId(employerId));
     }
 
-    @PostMapping("/{id}/offers")
+    @PostMapping("offers/{employerId}")
     public ResponseEntity<OfferDTO> createOffer(@RequestBody OfferDTO offerDTO){
         logger.info("createOffer");
         return service.createOffer(offerDTO)
@@ -41,16 +43,23 @@ public class EmployerController extends GenericUserController<Employer, Employer
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @PutMapping("/{id}/offers")
+    @PutMapping("offers/{id}")
     public ResponseEntity<OfferDTO> updateOffer(@RequestBody OfferDTO offerDTO){
         logger.info("updateOffer");
         OfferDTO updatedOffer = service.updateOffer(offerDTO).orElseThrow();
         return ResponseEntity.ok(updatedOffer);
     }
 
-    @DeleteMapping("/{id}/offers")
+    @DeleteMapping("offers/{id}")
     public ResponseEntity<HttpStatus> deleteOffer(@RequestParam("offerId") Long offerId){
         service.deleteOffer(offerId);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("offers/applications/{employerId}")
+    public ResponseEntity<Map<Long, List<ApplicationDTO>>> getAllApplicationsByEmployerId(@PathVariable Long employerId) {
+        logger.info("getAllApplicationsByEmployerId");
+        return ResponseEntity.ok(service.findAllApplicationsByEmployerId(employerId));
+    }
+
 }
