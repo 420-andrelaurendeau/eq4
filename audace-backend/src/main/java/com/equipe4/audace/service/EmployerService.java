@@ -79,16 +79,25 @@ public class EmployerService extends GenericUserService<Employer> {
         offerRepository.delete(offer);
     }
     @Transactional
-    public Optional<ApplicationDTO> acceptApplication(Long applicationId) {
-        return setApplicationStatus(applicationId, Application.ApplicationStatus.ACCEPTED);
+    public Optional<ApplicationDTO> acceptApplication(Long employerId, Long applicationId) {
+        return setApplicationStatus(employerId, applicationId, Application.ApplicationStatus.ACCEPTED);
     }
     @Transactional
-    public Optional<ApplicationDTO> refuseApplication(Long applicationId) {
-        return setApplicationStatus(applicationId, Application.ApplicationStatus.REFUSED);
+    public Optional<ApplicationDTO> refuseApplication(Long employerId, Long applicationId) {
+        return setApplicationStatus(employerId, applicationId, Application.ApplicationStatus.REFUSED);
     }
 
-    private Optional<ApplicationDTO> setApplicationStatus(Long applicationId, Application.ApplicationStatus applicationStatus) {
+    private Optional<ApplicationDTO> setApplicationStatus(Long employerId, Long applicationId, Application.ApplicationStatus applicationStatus) {
         Application application = applicationRepository.findById(applicationId).orElseThrow();
+        if (!application.getOffer().getEmployer().getId().equals(employerId)) {
+            throw new IllegalArgumentException("Employer does not own this application");
+        }
+        if (applicationStatus == Application.ApplicationStatus.ACCEPTED) {
+            Offer offer = application.getOffer();
+            if (applicationRepository.countApplicationsByApplicationStatusAndOffer(Application.ApplicationStatus.ACCEPTED, offer) >= offer.getAvailablePlaces()) {
+                throw new IllegalArgumentException("No more places available");
+            }
+        }
         application.setApplicationStatus(applicationStatus);
         applicationRepository.save(application);
         return Optional.of(application.toDTO());

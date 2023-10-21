@@ -54,17 +54,17 @@ public class EmployerController extends GenericUserController<Employer, Employer
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/accept_application/{applicationId}")
-    public ResponseEntity<HttpStatus> acceptApplication(@PathVariable Long applicationId) {
+    @PostMapping("/{employerId}/accept_application/{applicationId}")
+    public ResponseEntity<HttpStatus> acceptApplication(@PathVariable Long employerId, @PathVariable Long applicationId) {
         logger.info("acceptApplication");
-        return service.acceptApplication(applicationId)
+        return service.acceptApplication(employerId, applicationId)
                 .map(applicationDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
-    @PostMapping("/refuse_application/{applicationId}")
-    public ResponseEntity<HttpStatus> refuseApplication(@PathVariable Long applicationId) {
+    @PostMapping("/{employerId}/refuse_application/{applicationId}")
+    public ResponseEntity<HttpStatus> refuseApplication(@PathVariable Long employerId, @PathVariable Long applicationId) {
         logger.info("refuseApplication");
-        return service.refuseApplication(applicationId)
+        return service.refuseApplication(employerId, applicationId)
                 .map(applicationDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }

@@ -261,10 +261,10 @@ public class EmployerControllerTest {
                 createCv(),
                 createOffer(createEmployer(), createDepartment())
         );
-        when(employerService.acceptApplication(anyLong())).thenReturn(Optional.of(application.toDTO()));
+        when(employerService.acceptApplication(anyLong(), anyLong())).thenReturn(Optional.of(application.toDTO()));
 
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/employers/accept_application/1").with(csrf())
+                .post("/employers/1/accept_application/1").with(csrf())
                 .accept(MediaType.APPLICATION_JSON)
                 .content(application.toString())
                 .contentType(MediaType.APPLICATION_JSON);
@@ -274,9 +274,9 @@ public class EmployerControllerTest {
     @Test
     @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
     public void acceptApplication_invalidId() throws Exception {
-        when(employerService.acceptApplication(anyLong())).thenReturn(Optional.empty());
+        when(employerService.acceptApplication(anyLong(), anyLong())).thenReturn(Optional.empty());
 
-        mockMvc.perform(post("/employers/accept_application/1").with(csrf()))
+        mockMvc.perform(post("/employers/1/accept_application/1").with(csrf()))
                 .andExpect(status().isBadRequest());
     }
 
@@ -289,10 +289,10 @@ public class EmployerControllerTest {
                 createCv(),
                 createOffer(createEmployer(), createDepartment())
         );
-        when(employerService.refuseApplication(anyLong())).thenReturn(Optional.of(application.toDTO()));
+        when(employerService.refuseApplication(anyLong(), anyLong())).thenReturn(Optional.of(application.toDTO()));
 
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/employers/refuse_application/1").with(csrf())
+                .post("/employers/1/refuse_application/1").with(csrf())
                 .accept(MediaType.APPLICATION_JSON)
                 .content(application.toString())
                 .contentType(MediaType.APPLICATION_JSON);
@@ -302,9 +302,9 @@ public class EmployerControllerTest {
     @Test
     @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
     public void refuseApplication_invalidId() throws Exception {
-        when(employerService.acceptApplication(anyLong())).thenReturn(Optional.empty());
+        when(employerService.refuseApplication(anyLong(), anyLong())).thenReturn(Optional.empty());
 
-        mockMvc.perform(post("/employers/refuse_application/1").with(csrf()))
+        mockMvc.perform(post("/employers/1/refuse_application/1").with(csrf()))
                 .andExpect(status().isBadRequest());
     }
     private Employer createEmployer() {

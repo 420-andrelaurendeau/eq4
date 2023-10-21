@@ -359,16 +359,60 @@ public class EmployerServiceTest {
         when(applicationRepository.findById(anyLong())).thenReturn(Optional.of(application));
         when(applicationRepository.save(any(Application.class))).thenReturn(application);
 
-        ApplicationDTO applicationDTO = employerService.acceptApplication(1L).orElseThrow();
+        ApplicationDTO applicationDTO = employerService.acceptApplication(1L, 1L).orElseThrow();
         assertThat(applicationDTO.getApplicationStatus()).isEqualTo(Application.ApplicationStatus.ACCEPTED);
     }
     @Test
     public void acceptApplication_invalidId() {
         when(applicationRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> employerService.acceptApplication(1L))
-                .isInstanceOf(NoSuchElementException.class)
-                .hasMessage("No value present");
+        assertThatThrownBy(() -> employerService.acceptApplication(1L, 1L))
+                    .isInstanceOf(NoSuchElementException.class)
+                    .hasMessage("No value present");
+    }
+    @Test
+    public void acceptApplication_noMorePlaces() {
+        Offer offer = createOffer(createEmployer(), createDepartment());
+        offer.setAvailablePlaces(0);
+        Application application = new Application(
+                1L,
+                createStudent(),
+                createCv(),
+                offer
+        );
+        when(applicationRepository.findById(anyLong())).thenReturn(Optional.of(application));
+
+        assertThatThrownBy(() -> employerService.acceptApplication(1L, 1L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("No more places available");
+    }
+    @Test
+    public void acceptApplication_notOwnedByEmployer() {
+        Application application = new Application(
+                1L,
+                createStudent(),
+                createCv(),
+                createOffer(createEmployer(), createDepartment())
+        );
+        when(applicationRepository.findById(anyLong())).thenReturn(Optional.of(application));
+
+        assertThatThrownBy(() -> employerService.acceptApplication(2L, 1L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Employer does not own this application");
+    }
+    @Test
+    public void refuseApplication_notOwnedByEmployer() {
+        Application application = new Application(
+                1L,
+                createStudent(),
+                createCv(),
+                createOffer(createEmployer(), createDepartment())
+        );
+        when(applicationRepository.findById(anyLong())).thenReturn(Optional.of(application));
+
+        assertThatThrownBy(() -> employerService.acceptApplication(2L, 1L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Employer does not own this application");
     }
     @Test
     public void refuseApplication_HappyPath() {
@@ -381,14 +425,14 @@ public class EmployerServiceTest {
         when(applicationRepository.findById(anyLong())).thenReturn(Optional.of(application));
         when(applicationRepository.save(any(Application.class))).thenReturn(application);
 
-        ApplicationDTO applicationDTO = employerService.refuseApplication(1L).orElseThrow();
+        ApplicationDTO applicationDTO = employerService.refuseApplication(1L, 1L).orElseThrow();
         assertThat(applicationDTO.getApplicationStatus()).isEqualTo(Application.ApplicationStatus.REFUSED);
     }
     @Test
     public void refuseApplication_invalidId() {
         when(applicationRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> employerService.refuseApplication(1L))
+        assertThatThrownBy(() -> employerService.refuseApplication(1L, 1L))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("No value present");
     }
