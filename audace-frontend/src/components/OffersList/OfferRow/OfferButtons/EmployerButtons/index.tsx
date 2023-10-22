@@ -20,10 +20,11 @@ const EmployerButtons = ({ disabled, offer }: Props) => {
     const editButtonClick = (event: React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();
         console.log("Edit button clicked");
+        console.log("Offer:", offer);
 
 
         if (offer?.id) {
-            navigate(`/employer/${offer.employerId}/editoffer/${offer.id}`); 
+            navigate(`/employer/editoffer/${offer.id}`); 
         }
 
     };

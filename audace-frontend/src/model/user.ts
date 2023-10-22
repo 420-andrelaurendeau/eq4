@@ -1,5 +1,4 @@
 import { Department } from "./department";
-import { Offer } from "./offer";
 
 export interface User {
     id?: number;
@@ -9,23 +8,22 @@ export interface User {
     phone?: string;
     address?: string;
     password: string;
-    type: string;
+    type?: string;
 }
 
-export interface Student extends User{
-    studentNumber: string;
-    department?: Department;
+export interface Student extends User {
+  studentNumber: string;
+  department?: Department;
 }
 
 export interface Employer extends User{
     organisation: string;
     position: string;
     extension: string;
-    offers: Offer[];
 }
 
 export interface Manager extends User {
-    department: Department;
+  department: Department;
 }
 
 export enum UserType {

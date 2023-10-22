@@ -8,11 +8,11 @@ interface Props {
     offers: Offer[];
     error: string;
     userType: UserType;
-    updateOffersState?: (offer : Offer, offerStatus : OfferStatus) => void;
+    updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
 }
 
-const OffersList = ({offers, error, userType, updateOffersState}: Props) => {
-    const {t} = useTranslation();
+const OffersList = ({ offers, error, userType, updateOffersState }: Props) => {
+    const { t } = useTranslation();
 
     return (
         <>
@@ -25,15 +25,15 @@ const OffersList = ({offers, error, userType, updateOffersState}: Props) => {
                         ?
                         <Table striped bordered hover size="sm">
                             <thead>
-                            <tr>
-                                <th>{t("offersList.title")}</th>
-                                <th>{t("offersList.internshipStartDate")}</th>
-                                <th>{t("offersList.internshipEndDate")}</th>
-                                <th></th>
-                            </tr>
+                                <tr>
+                                    <th>{t("offersList.title")}</th>
+                                    <th>{t("offersList.internshipStartDate")}</th>
+                                    <th>{t("offersList.internshipEndDate")}</th>
+                                    <th></th>
+                                </tr>
                             </thead>
                             <tbody>
-                            {offers.map((offer) => {return <OfferRow key={offer.id} offer={offer} userType={userType} updateOffersState={updateOffersState}/>})}
+                                {offers.map((offer) => { return <OfferRow key={offer.id} offer={offer} userType={userType} updateOffersState={updateOffersState} /> })}
                             </tbody>
                         </Table>
                         :

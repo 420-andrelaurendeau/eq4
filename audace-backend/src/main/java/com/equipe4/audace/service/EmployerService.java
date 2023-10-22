@@ -6,12 +6,11 @@ import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
-import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.equipe4.audace.repository.security.SaltRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,12 +18,25 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class EmployerService extends GenericUserService<Employer> {
     private final EmployerRepository employerRepository;
-    private OfferRepository offerRepository;
-    private DepartmentRepository departmentRepository;
+    private final OfferRepository offerRepository;
 
+    private final DepartmentRepository departmentRepository;
+
+    public EmployerService(
+            SaltRepository saltRepository,
+            EmployerRepository employerRepository,
+            OfferRepository offerRepository,
+            DepartmentRepository departmentRepository
+    ) {
+        super(saltRepository);
+        this.employerRepository = employerRepository;
+        this.offerRepository = offerRepository;
+        this.departmentRepository = departmentRepository;
+    }
+
+    @Transactional
     public Optional<EmployerDTO> createEmployer(EmployerDTO employerDTO){
         if (employerDTO == null) throw new IllegalArgumentException("Employer cannot be null");
 
@@ -32,14 +44,17 @@ public class EmployerService extends GenericUserService<Employer> {
 
         if(employerOptional.isPresent()) throw new IllegalArgumentException("Email already in use");
 
-        return Optional.of(new EmployerDTO(employerRepository.save(employerDTO.fromDTO())));
+        Employer newEmployer = employerDTO.fromDTO();
+        hashAndSaltPassword(newEmployer);
+        return Optional.of(employerRepository.save(newEmployer).toDTO());
     }
+
     public Optional<EmployerDTO> findEmployerById(Long employerId){
-        return employerRepository.findById(employerId).map(EmployerDTO::new);
+        return employerRepository.findById(employerId).map(Employer::toDTO);
     }
 
     public List<EmployerDTO> findAllEmployers(){
-        return employerRepository.findAll().stream().map(EmployerDTO::new).toList();
+        return employerRepository.findAll().stream().map(Employer::toDTO).toList();
     }
 
     public Optional<OfferDTO> createOffer(OfferDTO offerDTO){
@@ -48,23 +63,24 @@ public class EmployerService extends GenericUserService<Employer> {
         Employer employer = employerRepository.findById(offerDTO.getEmployerId()).orElseThrow();
         Department department = departmentRepository.findByCode(offerDTO.getDepartmentCode()).orElseThrow();
 
-        Offer offer = offerDTO.fromDto();
+        Offer offer = offerDTO.fromDTO();
         offer.setEmployer(employer);
         offer.setDepartment(department);
 
-        return Optional.of(new OfferDTO(offerRepository.save(offer)));
+        return Optional.of(offerRepository.save(offer).toDTO());
     }
 
     public Optional<OfferDTO> findOfferById(Long offerId){
-        return offerRepository.findById(offerId).map(OfferDTO::new);
+        return offerRepository.findById(offerId).map(Offer::toDTO);
     }
 
     public List<DepartmentDTO> findAllDepartments(){
-        return departmentRepository.findAll().stream().map(DepartmentDTO::new).toList();
+        return departmentRepository.findAll().stream().map(Department::toDTO).toList();
     }
+
     public List<OfferDTO> findAllOffersByEmployerId(Long employerId){
         Employer employer = employerRepository.findById(employerId).orElseThrow();
-        return offerRepository.findAllByEmployer(employer).stream().map(OfferDTO::new).toList();
+        return offerRepository.findAllByEmployer(employer).stream().map(Offer::toDTO).toList();
     }
     public Optional<OfferDTO> updateOffer(OfferDTO offerDTO) {
         Offer offer = offerRepository.findById(offerDTO.getId()).orElseThrow(() -> new NoSuchElementException("Offer with ID " + offerDTO.getId() + " not found."));
@@ -77,14 +93,13 @@ public class EmployerService extends GenericUserService<Employer> {
         offer.setAvailablePlaces(offerDTO.getAvailablePlaces());
         offer.setDepartment(departmentRepository.findByCode(offerDTO.getDepartmentCode()).orElseThrow());
 
-        return Optional.of(new OfferDTO(offerRepository.save(offer)));
+        return Optional.of(offerRepository.save(offer).toDTO());
     }
+
+
 
     public void deleteOffer(Long offerId){
         Offer offer = offerRepository.findById(offerId).orElseThrow();
-        offerRepository.deleteById(offerId);
+        offerRepository.delete(offer);
     }
-
-
-
 }

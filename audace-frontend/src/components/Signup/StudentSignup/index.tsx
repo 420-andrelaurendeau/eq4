@@ -5,19 +5,20 @@ import { Student, User } from "../../../model/user";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router";
 import Signup from "..";
-import FormInput from "../FormInput";
+import FormInput from "../../FormInput";
 
 const StudentSignup = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [studentId, setStudentId] = useState<string>("");
-  const {depCode} = useParams();
+  const { depCode } = useParams();
   const [errors, setErrors] = useState<string[]>([]);
 
   const handleSubmit = (user: User) => {
     let student: Student = {
       ...user,
       studentNumber: studentId,
-    }
+      type: "student",
+    };
 
     return studentSignup(student, depCode!);
   };
@@ -47,11 +48,12 @@ const StudentSignup = () => {
     <>
       <h3>{t("signup.studentFormTitle")}</h3>
       <Form>
-        <FormInput 
+        <FormInput
           label="signup.studentId"
           value={studentId}
           onChange={(e) => setStudentId(e.target.value)}
           errors={errors}
+          type="number"
           formError="signup.errors.studentId"
           controlId="formBasicStudentId"
         />

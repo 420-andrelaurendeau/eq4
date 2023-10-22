@@ -1,5 +1,6 @@
 {
-  "langCode": "en",
+  "langCode": "EN",
+  "signin": "Log in",
   "signup": {
     "employerFormTitle": "Employer Registration",
     "studentFormTitle": "Student Registration",
@@ -16,7 +17,7 @@
     "password": "Choose a Password",
     "passwordConfirmation": "Confirm Your Password",
     "studentId": "Student number",
-    "signup": "Sign Up",
+    "signup": "Sign up",
     "errors": {
       "organisation": "Please enter a valid organisation name",
       "position": "Position cannot be empty",
@@ -24,13 +25,24 @@
       "lastName": "Last name cannot be empty",
       "address": "Address cannot be empty",
       "city": "City cannot be empty",
-      "postalCode": "Postal code cannot be empty",
+      "postalCode": "Please enter a valid postal code",
       "phone": "Please enter a valid phone number",
       "extension": "Please enter a valid extension",
       "email": "Please enter a valid email address",
       "password": "Please enter a valid password",
-      "studentId": "Please enter a valid student number"
+      "passwordConfirmation": "Passwords do not match",
+      "studentId": "Please enter a valid student number",
+      "network": "There was an unexpected networking error"
     }
+  },
+  "cvsList": {
+    "errors": {
+      "departmentNotFound": "Department not found"
+    },
+    "name": "CV title",
+    "viewMore": "View the CV",
+    "noCvs": "No CVs available",
+    "studentName": "Student name"
   },
   "offersList": {
     "errors": {
@@ -40,7 +52,8 @@
     "internshipEndDate": "End Date",
     "internshipStartDate": "Start Date",
     "noOffers": "No offers available",
-    "viewTitle": "Available Offers"
+    "viewTitle": "Available Offers",
+    "viewMore": "View More"
   },
   "offer": {
     "modal": {
@@ -66,9 +79,22 @@
     "viewTitle": "Available Offers",
     "acceptButton": "Accept",
     "refuseButton": "Refuse",
-    "ACCEPTED" : "Accepted",
-    "REFUSED" : "Refused",
-    "noMorePendingOffers" : "There is no more pending offers"
+    "ACCEPTED": "Accepted",
+    "REFUSED": "Refused",
+    "noMorePendingOffers": "There are no more pending offers"
+  },
+  "managerCvsList": {
+    "errors": {
+      "cvNotFound": "CV not found",
+      "departmentNotFound": "Department not found",
+      "studentNotFound": "Student not found"
+    },
+    "viewTitle": "Available CVs",
+    "acceptButton": "Accept",
+    "refuseButton": "Refuse",
+    "ACCEPTED": "Accepted",
+    "REFUSED": "Refused",
+    "noMorePendingCvs": "There are no more pending CVs"
   },
   "employerOffersList": {
     "viewTitle": "Available Offers",
@@ -83,7 +109,8 @@
     "seeOffersButton": "See Offers"
   },
   "manager": {
-    "seeOffersButton": "See Offers"
+    "seeOffersButton": "See Offers",
+    "seeCvsButton": "See CVS"
   },
   "employer": {
     "errors": {
@@ -120,6 +147,25 @@
     "offerEndDate" : "Offer end date",
     "submit" : "Submit"
   }
-
+,
+  "upload": {
+    "CvFormTitle": "Upload CV",
+    "file": "Upload File",
+    "submit": "Submit",
+    "success": "Your CV has been uploaded successfully"
+  },
+  "login": {
+    "identification": "Email or Student Number",
+    "password": "Password",
+    "userCreated": "Account has been successfully created",
+    "errors": {
+      "emptyIdentification": "Please enter your email or student number",
+      "emptyPassword": "Please enter your password",
+      "invalidCredentials": "Email, student number or password is invalid",
+      "sessionExpired": "Your session has expired, please log in again"
+    }
+  },
+  "logout": "Log out",
+  "pageNotFound": "Error 404: Page Not Found"
 }
 

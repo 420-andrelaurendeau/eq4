@@ -2,10 +2,7 @@ package com.equipe4.audace.model;
 
 import com.equipe4.audace.dto.UserDTO;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Data
 @Entity
@@ -25,15 +22,6 @@ public abstract class User {
     protected String password;
     protected String address;
     protected String phone;
-
-    public User(String firstName, String lastName, String email, String password, String address, String phone) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.address = address;
-        this.phone = phone;
-    }
 
     public abstract UserDTO toDTO();
 }

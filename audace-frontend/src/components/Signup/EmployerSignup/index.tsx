@@ -4,7 +4,7 @@ import { employerSignup } from "../../../services/signupService";
 import { Employer, User } from "../../../model/user";
 import { useTranslation } from "react-i18next";
 import Signup from "..";
-import FormInput from "../FormInput";
+import FormInput from "../../FormInput";
 
 const EmployerSignup = () => {
   const { t } = useTranslation();
@@ -19,7 +19,7 @@ const EmployerSignup = () => {
       organisation: organisation,
       position: position,
       extension: extension,
-      offers: [],
+      type: "employer",
     };
 
     return employerSignup(employer);
@@ -56,39 +56,39 @@ const EmployerSignup = () => {
   };
 
   return (
-    <>
-      <h3>{t("signup.employerFormTitle")}</h3>
-      <Form>
-        <Row>
-          <FormInput 
-            label="signup.companyNameEntry"
-            value={organisation}
-            onChange={(e) => setOrganisation(e.target.value)}
-            errors={errors}
-            formError="signup.errors.organisation"
-            controlId="formBasicCompanyName"
-          />
+      <>
+        <h3>{t("signup.employerFormTitle")}</h3>
+        <Form>
+          <Row>
+            <FormInput
+                label="signup.companyNameEntry"
+                value={organisation}
+                onChange={(e) => setOrganisation(e.target.value)}
+                errors={errors}
+                formError="signup.errors.organisation"
+                controlId="formBasicCompanyName"
+            />
 
-          <FormInput 
-            label="signup.positionEntry"
-            value={position}
-            onChange={(e) => setPosition(e.target.value)}
-            errors={errors}
-            formError="signup.errors.position"
-            controlId="formBasicPosition"
-          />
-        </Row>
+            <FormInput
+                label="signup.positionEntry"
+                value={position}
+                onChange={(e) => setPosition(e.target.value)}
+                errors={errors}
+                formError="signup.errors.position"
+                controlId="formBasicPosition"
+            />
+          </Row>
 
-        <Signup
-          handleSubmit={handleSubmit}
-          extension={extension}
-          setExtension={setExtension}
-          validateExtraFormValues={validateForm}
-          errors={errors}
-          setErrors={setErrors}
-        />
-      </Form>
-    </>
+          <Signup
+              handleSubmit={handleSubmit}
+              extension={extension}
+              setExtension={setExtension}
+              validateExtraFormValues={validateForm}
+              errors={errors}
+              setErrors={setErrors}
+          />
+        </Form>
+      </>
   );
 };
 

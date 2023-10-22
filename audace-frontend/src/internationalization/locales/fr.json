@@ -1,5 +1,6 @@
 {
-  "langCode": "fr",
+  "langCode": "FR",
+  "signin": "Se connecter",
   "signup": {
     "employerFormTitle": "Inscription Employeur",
     "studentFormTitle": "Inscription Étudiant",
@@ -29,8 +30,19 @@
       "extension": "SVP entrez un numéro de poste valide",
       "email": "SVP entrez un courriel valide",
       "password": "SVP entrez un mot de passe valide",
-      "studentId": "SVP entrez une matricule valide"
+      "passwordConfirmation": "Les mots de passe ne correspondent pas",
+      "studentId": "SVP entrez une matricule valide",
+      "network": "Il y a eu une erreur de réseau inconnue"
     }
+  },
+  "cvsList": {
+    "errors": {
+      "departmentNotFound": "Département pas trouvé"
+    },
+    "name": "Titre du CV",
+    "viewMore": "Voir le CV",
+    "noCvs": "Aucun CV disponible",	
+    "studentName": "Nom de l'étudiant"
   },
   "offersList": {
     "errors": {
@@ -40,7 +52,9 @@
     "internshipEndDate": "Date de fin",
     "internshipStartDate": "Date de début",
     "noOffers": "Aucun offre disponible",
-    "viewTitle": "Offres disponibles"
+    "viewTitle": "Offres disponibles",
+    "viewMore": "Afficher plus"
+
   },
   "offer": {
     "modal": {
@@ -66,9 +80,22 @@
     "viewTitle": "Offres disponibles",
     "acceptButton": "Accepter",
     "refuseButton": "Refuser",
-    "ACCEPTED" : "Accepté",
-    "REFUSED" : "Refusé",
-    "noMorePendingOffers" : "Il n'y a plus d'offres en attente"
+    "ACCEPTED": "Accepté",
+    "REFUSED": "Refusé",
+    "noMorePendingOffers": "Il n'y a plus d'offres en attente"
+  },
+  "managerCvsList": {
+    "errors": {
+      "cvNotFound": "CV non trouvé",
+      "departmentNotFound": "Département non trouvé",
+      "studentNotFound": "Étudiant non trouvé"
+    },
+    "viewTitle": "CVs disponibles",
+    "acceptButton": "Accepter",
+    "refuseButton": "Refuser",
+    "ACCEPTED": "Accepté",
+    "REFUSED": "Refusé",
+    "noMorePendingCvs": "Il n'y a plus de CV en attente"
   },
   "employerOffersList": {
     "viewTitle": "Offres disponibles",
@@ -83,7 +110,8 @@
     "seeOffersButton": "Voir les offres"
   },
   "manager": {
-    "seeOffersButton": "Voir les offres"
+    "seeOffersButton": "Voir les offres",
+    "seeCvsButton": "See CVS"
   },
   "employer": {
     "errors": {
@@ -119,7 +147,26 @@
     "endDate": "Date de fin",
     "offerEndDate": "Date de fin de l'offre",
     "submit": "Modifier"
-  }
+  },
+  "upload": {
+    "CvFormTitle": "Téléverser votre CV",
+    "file": "Séléctionner un fichier",
+    "submit": "Téléverser",
+    "success": "Votre CV a été téléversé avec succès"
+  },
+  "login": {
+    "identification": "Courriel ou matricule",
+    "password": "Mot de passe",
+    "userCreated": "Le compte a été créé avec succès",
+    "errors": {
+      "emptyIdentification": "SVP entrez votre courriel ou votre matricule",
+      "emptyPassword": "SVP entrez votre mot de passe",
+      "invalidCredentials": "Courriel, matricule ou mot de passe invalide",
+      "sessionExpired": "Votre session est expirée, veuillez vous reconnecter"
+    }
+  },
+  "logout": "Se déconnecter",
+  "pageNotFound": "Erreur 404: Page pas trouvée"
 }
 
 

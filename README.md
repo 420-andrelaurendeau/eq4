@@ -1,13 +1,29 @@
 # Points d'action
-- Faire une daily chaque samedi à 10:00 A.M.
-- Communication entre ceux assignés au backend et frontend d'une story pour décider de l'API chaque fois qu'une story est commencée.
+- Faire une daily chaque samedi à 7 P.M. (période de disponibilités d'une heure après).
+- Après avoir fini chaque tâche, notifier l'équipe pour faire un code review dans discord. (Prendre des code reviews quand tu commences à travailler s'il y en a)
 
 # Définition de DONE
-- Respecte les normes de l'équipe
-- Code vérifiée par un pair (peer programming ou code review)
-- S'agence au projet existant
-- Interface utilisateur intuitive
-- Code granulaire
+- Le code compile
+- 80% de coverage dans le test
+- Le code est vérifiée par un pair (peer programming ou code review)
+- La branche est à jour depuis main
+- Changements faits ne doivent pas briser frontend/backend (Test yo shit yo)
+
+### Frontend:
+- Typage complet et logique (pas de any)
+- Navigation minimale
+- Texte, pas d'icones
+
+### Backend:
+- Pas de classes modèles dans le controller
+- Service prend DTO et retourne DTO (Wrapped dans un Optional ou Collection)
+
+### Normes de l'équipe:
+- Le code est cohérent entre les programmeurs
+- DRY
+- Respect des normes de la langue de prog
+- Pas de code obsolete
+- Pas d'imports non-utilisés
 
 # eq4
 meilleur que l'équipe 3
