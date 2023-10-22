@@ -3,6 +3,7 @@ import EmployerButtons from "./EmployerButtons";
 import StudentButtons from "./StudentButtons";
 import ManagerButtons from "./ManagerButtons";
 import { Offer, OfferStatus } from "../../../../model/offer";
+import {CV} from "../../../../model/cv";
 
 interface Props {
     userType : UserType;

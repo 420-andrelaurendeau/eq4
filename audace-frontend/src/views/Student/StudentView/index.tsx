@@ -12,6 +12,7 @@ import FileUploader from "../../../components/FileUploader";
 import {getCvsByStudentId} from "../../../services/studentApplicationService";
 import {CV} from "../../../model/cv";
 import CvsList from "../../../components/CVsListStudent";
+import {useCVContext} from "../../../contextsholders/CVContextHolder";
 
 interface StudentViewProps {
   viewOffers?: boolean;
@@ -27,6 +28,8 @@ const StudentView = ({ viewOffers = true, viewUpload = true }: StudentViewProps)
     const [cvsError, setCvsError] = useState<string>("");
     const {t} = useTranslation();
     const navigate = useNavigate();
+
+    const { setCv } = useCVContext();
 
     useEffect(() => {
         if (student !== undefined) return;
@@ -69,6 +72,7 @@ const StudentView = ({ viewOffers = true, viewUpload = true }: StudentViewProps)
         getCvsByStudentId(student.id!)
             .then((res) => {
                 setCvs(res.data);
+                setCv(res.data[0]);
             })
             .catch((err) => {
                 console.error(err);
@@ -80,6 +84,7 @@ const StudentView = ({ viewOffers = true, viewUpload = true }: StudentViewProps)
         getCvsByStudentId(student!.id!)
             .then((res) => {
                 setCvs(res.data);
+                setCv(res.data[0]);
             })
             .catch((err) => {
                 console.error(err);

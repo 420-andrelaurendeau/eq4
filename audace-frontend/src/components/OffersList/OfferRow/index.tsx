@@ -17,7 +17,7 @@ interface Props {
     updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
 }
 
-const OfferRow = ({ offer, userType, updateOffersState }: Props) => {
+const OfferRow = ({ offer, userType, updateOffersState}: Props) => {
     const [show, setShow] = useState<boolean>(false);
     const handleClick = () => setShow(true);
     const handleClose = () => setShow(false);

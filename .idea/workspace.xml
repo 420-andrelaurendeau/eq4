@@ -6,8 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/OfferRow/OfferButtons/StudentButtons/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/OfferRow/OfferButtons/StudentButtons/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/services/studentApplicationService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/services/studentApplicationService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/OfferRow/OfferButtons/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/OfferRow/OfferButtons/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/OfferRow/OfferModal/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/OfferRow/OfferModal/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/OfferRow/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/OfferRow/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/views/Employer/EmployerOfferView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/views/Employer/EmployerOfferView/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/views/Student/StudentView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/views/Student/StudentView/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +24,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
-        <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -214,6 +220,7 @@
       <workItem from="1697583336538" duration="10067000" />
       <workItem from="1697657792436" duration="1325000" />
       <workItem from="1697662754939" duration="20534000" />
+      <workItem from="1697923478207" duration="9661000" />
     </task>
     <servers />
   </component>

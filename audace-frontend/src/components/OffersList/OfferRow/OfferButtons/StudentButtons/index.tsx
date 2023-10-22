@@ -7,6 +7,7 @@ import {CV} from "../../../../../model/cv";
 import {Offer} from "../../../../../model/offer";
 import {Student} from "../../../../../model/user";
 import Application from "../../../../../model/application";
+import {useCVContext} from "../../../../../contextsholders/CVContextHolder";
 
 interface Props {
     disabled?: boolean;
@@ -18,8 +19,9 @@ const StudentButtons = ({disabled, offer}: Props) => {
     const [applicationMessage, setApplicationMessage] = useState("");
     const [applicationMessageColor, setApplicationMessageColor] = useState("");
     const studentId = getUserId();
-    const [cv, setCv] = useState<CV>();
+    const [cv2, setCv] = useState<CV>();
 
+    const { cv } = useCVContext();
     useEffect(() => {
         if (studentId === undefined) return;
 
