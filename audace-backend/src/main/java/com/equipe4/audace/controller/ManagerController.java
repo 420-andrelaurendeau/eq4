@@ -75,10 +75,19 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
     }
 
     @PostMapping("/contracts")
-    public ResponseEntity<ContractDTO> createContract(@RequestBody ContractDTO contractDTO){
+    public ResponseEntity<HttpStatus> createContract(@RequestBody ContractDTO contractDTO){
         logger.info("createContract");
-        return service.createContract(contractDTO).map(contract -> ResponseEntity.status(HttpStatus.CREATED).body(contractDTO))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        return service.createContract(contractDTO)
+                .map(contract -> new ResponseEntity<HttpStatus>(HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    }
+
+    @GetMapping("/contracts/{contractId}")
+    public ResponseEntity<ContractDTO> getContractById(@PathVariable Long contractId){
+        logger.info("getContractById");
+        return service.findContractById(contractId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 }

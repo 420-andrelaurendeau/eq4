@@ -99,4 +99,9 @@ public class ManagerService extends GenericUserService<Manager> {
 
         return Optional.of(contractRepository.save(contractDTO.fromDTO()).toDTO());
     }
+
+    public Optional<ContractDTO> findContractById(Long contractId){
+        Contract contract = contractRepository.findById(contractId).orElseThrow(() -> new NoSuchElementException("Contract not found"));
+        return Optional.of(contract.toDTO());
+    }
 }

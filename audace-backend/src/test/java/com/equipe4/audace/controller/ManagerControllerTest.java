@@ -50,6 +50,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -283,7 +284,7 @@ public class ManagerControllerTest {
 
     @Test
     @WithMockUser(username = "manager", authorities = {"Manager"})
-    public void givenContractObject_whenCreateContract_thenReturnSavedContract() throws Exception{
+    public void givenContractObject_whenCreateContract_thenReturnIsCreated() throws Exception{
         // given - precondition or setup
         ContractDTO contractDTO = createContractDTO();
 
@@ -297,9 +298,26 @@ public class ManagerControllerTest {
 
         // then - verify the result or output using assert statements
         response.andDo(print()).
-                andExpect(status().isCreated())
+                andExpect(status().isCreated());
+    }
+
+    @Test
+    @WithMockUser(username = "manager", authorities = {"Manager"})
+    public void givenContractId_whenGetContractById_thenReturnContractObject() throws Exception{
+        // given - precondition or setup
+        long contractId = 1L;
+        ContractDTO contractDTO = createContractDTO();
+
+        given(managerService.findContractById(contractId)).willReturn(Optional.of(contractDTO));
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/managers/contracts/{contractId}", contractId));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
                 .andExpect(jsonPath("$.id").value(contractDTO.getId()))
-                .andExpect(jsonPath("$.departmentName", is(contractDTO.getDepartmentName())))
+                .andExpect(jsonPath("$.officeName", is(contractDTO.getOfficeName())))
                 .andExpect(jsonPath("$.startHour", is(contractDTO.getStartHour().format(DateTimeFormatter.ofPattern("HH:mm:ss")))))
                 .andExpect(jsonPath("$.endHour", is(contractDTO.getEndHour().format(DateTimeFormatter.ofPattern("HH:mm:ss")))))
                 .andExpect(jsonPath("$.totalHoursPerWeek", is(contractDTO.getTotalHoursPerWeek())))
@@ -308,6 +326,7 @@ public class ManagerControllerTest {
                 .andExpect(jsonPath("$.supervisor.email", is(contractDTO.getSupervisor().getEmail())))
                 .andExpect(jsonPath("$.application.id", is(contractDTO.getApplication().getId().intValue())));
     }
+
 
     private Department createDepartment(){
         return new Department(1L, "GLO", "Génie logiciel");

@@ -8,11 +8,11 @@ import lombok.*;
 import java.time.LocalTime;
 
 @Data
-//@AllArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 public class ContractDTO {
     private Long id;
-    private String departmentName;
+    private String officeName;
     private LocalTime startHour;
     private LocalTime endHour;
     private int totalHoursPerWeek;
@@ -22,22 +22,10 @@ public class ContractDTO {
     private EmployerDTO supervisor;
     private ApplicationDTO application;
 
-    public ContractDTO(Long id, String departmentName, LocalTime startHour, LocalTime endHour, int totalHoursPerWeek, double salary, String internTasksAndResponsibilities, EmployerDTO supervisor, ApplicationDTO application) {
-        this.id = id;
-        this.departmentName = departmentName;
-        this.startHour = startHour;
-        this.endHour = endHour;
-        this.totalHoursPerWeek = totalHoursPerWeek;
-        this.salary = salary;
-        this.internTasksAndResponsibilities = internTasksAndResponsibilities;
-        this.supervisor = supervisor;
-        this.application = application;
-    }
-
     public Contract fromDTO(){
         return new Contract(
                 id,
-                departmentName,
+                officeName,
                 startHour,
                 endHour,
                 totalHoursPerWeek,
