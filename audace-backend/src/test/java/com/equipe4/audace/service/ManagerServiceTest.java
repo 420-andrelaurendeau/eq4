@@ -76,7 +76,6 @@ public class ManagerServiceTest {
 
         assert(offer.getOfferStatus() == Offer.OfferStatus.ACCEPTED);
     }
-
     @Test
     public void acceptOffer_InvalidId() {
         when(offerRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
@@ -96,7 +95,6 @@ public class ManagerServiceTest {
 
         assert(offer.getOfferStatus() == Offer.OfferStatus.REFUSED);
     }
-
     @Test
     public void refuseOffer_Invalid_Id() {
         when(offerRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
@@ -133,7 +131,6 @@ public class ManagerServiceTest {
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Department not found");
     }
-
     @Test
     void getOffersByDepartment_noOffers() {
         Department mockedDepartment = mock(Department.class);
@@ -162,7 +159,6 @@ public class ManagerServiceTest {
         assertThat(result.getLastName()).isEqualTo("managerman");
         assertThat(result.getEmail()).isEqualTo("manager@email.com");
     }
-
     @Test
     public void findManagerById_notFoundTest() {
         // Arrange
@@ -195,7 +191,6 @@ public class ManagerServiceTest {
 
         assertThat(managerService.getCvsByDepartment(1L).size()).isEqualTo(0);
     }
-
     @Test
     public void getCvsByDepartment_noCvs() {
         List<Cv> listCvs = new ArrayList<>();
@@ -222,7 +217,6 @@ public class ManagerServiceTest {
             assert(false);
         }
     }
-
     @Test
     public void acceptCv_InvalidId() {
         when(cvRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
@@ -244,7 +238,6 @@ public class ManagerServiceTest {
             assert(false);
         }
     }
-
     @Test
     public void refuseCv_Invalid_Id() {
         when(cvRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
@@ -269,6 +262,30 @@ public class ManagerServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Contract cannot be null");
     }
+
+    @Test
+    public void findContractById_happyPathTest() {
+        // Arrange
+        Contract contract = createContract();
+
+        when(contractRepository.findById(contract.getId())).thenReturn(Optional.of(contract));
+
+        // Act
+        ContractDTO contractDTO = managerService.findContractById(1L).orElseThrow();
+
+        // Assert
+        assertThat(contractDTO.equals(contract.toDTO()));
+    }
+    @Test
+    public void findContractById_notFoundTest() {
+        when(contractRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> managerService.findContractById(1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Contract not found");
+    }
+
+
 
     private Department createDepartment(){
         return new Department(1L, "GLO", "Génie logiciel");
@@ -300,7 +317,6 @@ public class ManagerServiceTest {
         Student student = createStudentDTO().fromDTO();
         return new Cv(1L, student, bytes, "cv");
     }
-
     private Contract createContract(){
         Employer employer = createEmployerDTO().fromDTO();
         Offer offer = createOffer();
