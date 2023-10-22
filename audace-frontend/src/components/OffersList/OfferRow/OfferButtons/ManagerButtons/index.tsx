@@ -2,7 +2,7 @@ import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { acceptOffer, refuseOffer } from "../../../../../services/offerService";
 import { Offer, OfferStatus } from "../../../../../model/offer";
-import React from "react";
+import { getUserId } from "../../../../../services/authService";
 
 interface Props {
     disabled? : boolean;
@@ -15,7 +15,7 @@ const ManagerButtons = ({disabled, offer, updateOffersState}: Props) => {
 
     const acceptButtonClick = (event : React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();
-        acceptOffer(offer.id!)
+        acceptOffer(parseInt(getUserId()!), offer.id!)
             .then((_) => {
                 updateOffersState!(offer, OfferStatus.ACCEPTED);
             }
@@ -24,7 +24,7 @@ const ManagerButtons = ({disabled, offer, updateOffersState}: Props) => {
 
     const refuseButtonClick = (event : React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();
-        refuseOffer(offer.id!)
+        refuseOffer(parseInt(getUserId()!), offer.id!)
             .then((_) => {
                 updateOffersState!(offer, OfferStatus.REFUSED);
             }
