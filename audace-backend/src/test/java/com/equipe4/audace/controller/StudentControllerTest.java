@@ -59,8 +59,6 @@ public class StudentControllerTest {
     @MockBean
     private DepartmentRepository departmentRepository;
     @MockBean
-    private StudentRepository studentRepository;
-    @MockBean
     private EmployerRepository employerRepository;
     @MockBean
     private ManagerRepository managerRepository;
@@ -70,8 +68,6 @@ public class StudentControllerTest {
     private JwtManipulator jwtManipulator;
     @MockBean
     private SaltRepository saltRepository;
-    @MockBean
-    private EmployerService employerService;
     @MockBean
     private CvRepository cvRepository;
 
