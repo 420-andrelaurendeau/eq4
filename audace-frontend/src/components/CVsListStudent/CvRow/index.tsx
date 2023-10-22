@@ -1,20 +1,17 @@
-import { UserType } from "../../../model/user";
-import { CV } from "../../../model/cv";
 import { Col } from "react-bootstrap";
 import { useState } from "react";
 import CvModal from "./CvModal";
 import { useTranslation } from "react-i18next";
+import {useCVContext} from "../../../contextsholders/CVContextHolder";
 
-interface Props {
-    cv: CV;
-    userType: UserType;
-}
 
-const CvRow = ({cv, userType}: Props) => {
+const CvRow = () => {
     const [show, setShow] = useState<boolean>(false);
     const handleClick = () => setShow(true);
     const handleClose = () => setShow(false);
     const {t} = useTranslation();
+    const {cvs} = useCVContext();
+    const cv = cvs[0];
 
     return (
         <>
@@ -28,7 +25,7 @@ const CvRow = ({cv, userType}: Props) => {
                     </Col>
                 </td>
             </tr>
-            {show && <CvModal cv={cv} show={show} handleClose={handleClose}/>}
+            {show && <CvModal show={show} handleClose={handleClose}/>}
         </>
     );
 };

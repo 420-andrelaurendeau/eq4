@@ -1,17 +1,15 @@
 import { Table } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { UserType } from "../../model/user";
-import { CV } from "../../model/cv";
 import CvRow from "./CvRow";
+import {useCVContext} from "../../contextsholders/CVContextHolder";
 
 interface Props {
-    cvs: CV[];
     error: string;
-    userType: UserType;
 }
 
-const CvsList = ({cvs, error, userType}: Props) => {
+const CvsList = ({ error}: Props) => {
     const {t} = useTranslation();
+    const {cvs } = useCVContext();
 
     return (
         <>
@@ -30,7 +28,7 @@ const CvsList = ({cvs, error, userType}: Props) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {cvs.map((cv) => {return <CvRow key={cv.id} cv={cv} userType={userType}/>})}
+                            {cvs.map((cv) => {return <CvRow key={cv.id}/>})}
                         </tbody>
                     </Table>
                     :

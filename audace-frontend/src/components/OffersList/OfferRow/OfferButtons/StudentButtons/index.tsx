@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import {apply, getCvsByStudentId} from "../../../../../services/studentApplicationService";
 import React, {useEffect, useState} from "react";
 import {getUserId} from "../../../../../services/authService";
-import {CV} from "../../../../../model/cv";
 import {Offer} from "../../../../../model/offer";
 import {Student} from "../../../../../model/user";
 import Application from "../../../../../model/application";
@@ -19,15 +18,14 @@ const StudentButtons = ({disabled, offer}: Props) => {
     const [applicationMessage, setApplicationMessage] = useState("");
     const [applicationMessageColor, setApplicationMessageColor] = useState("");
     const studentId = getUserId();
-    const [cv2, setCv] = useState<CV>();
+    const { cvs, setCvs } = useCVContext();
 
-    const { cv } = useCVContext();
     useEffect(() => {
         if (studentId === undefined) return;
 
         getCvsByStudentId(parseInt(studentId!))
             .then((res) => {
-                setCv(res.data[0]);
+                setCvs(res.data);
             })
             .catch((err) => {
                 console.log("getCvsByStudentId error", err);
@@ -36,7 +34,7 @@ const StudentButtons = ({disabled, offer}: Props) => {
 
     const handleApply = async (event: { stopPropagation: () => void; }) => {
         event.stopPropagation();
-        if (!studentId || !cv) {
+        if (!studentId || !cvs) {
             throw new Error("Student/CV null");
         }
 
@@ -56,7 +54,7 @@ const StudentButtons = ({disabled, offer}: Props) => {
             const applicationData: Application = {
                 id: 1000,
                 offer: offer,
-                cv: cv,
+                cv: cvs[0],
                 student: tempStudent,
             }
 

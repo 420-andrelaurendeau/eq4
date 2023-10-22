@@ -1,14 +1,15 @@
 import {Modal} from "react-bootstrap";
-import { CV } from "../../../../model/cv";
 import PDFViewer from "../../../PDFViewer";
+import {useCVContext} from "../../../../contextsholders/CVContextHolder";
 
 interface Props {
-    cv: CV;
     show: boolean;
     handleClose: () => void;
 }
 
-const CvModal = ({cv, show, handleClose}: Props) => {
+const CvModal = ({show, handleClose}: Props) => {
+    const {cvs} = useCVContext();
+    const cv = cvs[0];
 
     return (
         <>
