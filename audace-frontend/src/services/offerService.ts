@@ -3,6 +3,7 @@ import { Offer } from "../model/offer";
 import http from "../constants/http";
 import { EMPLOYER_PREFIX, MANAGER_PREFIX, STUDENT_PREFIX } from "../constants/apiPrefixes";
 
+
 export const getStudentOffersByDepartment = async (departmentId: number): Promise<AxiosResponse<Offer[]>> => {
     return http.get<Offer[]>(`${STUDENT_PREFIX}/offers/${departmentId}`);
 }
