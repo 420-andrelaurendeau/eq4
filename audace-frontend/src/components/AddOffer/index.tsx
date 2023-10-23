@@ -132,7 +132,7 @@ function isValidDate(d: any) {
     try {
        console.log("Offer data:", JSON.stringify(offerData));
        
-      const response = await http.post('/employers/1/offers', offerData);
+      const response = await http.post(`/employers/${employer.id}/offers`, offerData);
 
       
       const responseData = response.data;
