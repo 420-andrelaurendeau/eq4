@@ -7,19 +7,8 @@ import { Department } from "../../model/department";
 import { Employer } from "../../model/user";
 import { useNavigate } from 'react-router-dom';
 import http from "../../constants/http";
+import { getAllDepartments } from "../../services/departmentService";
 
-interface OfferFormData {
-  id: number,
-  title: string,
-  description: string,
-  department: Department,
-  internshipStartDate:  string,
-  internshipEndDate:  string,
-  offerEndDate:  string,
-  availablePlaces: number,
-  status: string,
-  employer: Employer
-  };
 
 
 const EditOffer: React.FC = () => {
@@ -35,7 +24,7 @@ const EditOffer: React.FC = () => {
   const [errors, setErrors] = useState<string[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
   const [employer, setEmployer] = useState<Employer>({} as Employer);
-  const [status, setStatus] = useState<string>("PENDING");
+  const [status, setStatus] = useState<OfferStatus>(OfferStatus.PENDING);
 
   const navigate = useNavigate();
 
@@ -46,11 +35,7 @@ const EditOffer: React.FC = () => {
 
   const fetchDepartments = async () => {
     try {
-      const response = await http.get("/employers/departments");
-
-      
-
-      const departmentData: Department[] = await response.data;
+      const departmentData: Department[] = (await getAllDepartments()).data;
       setDepartments(departmentData);
       setDepartment(departmentData[0]);
     } catch (error) {
@@ -118,24 +103,24 @@ const EditOffer: React.FC = () => {
       const offerId = paths[paths.length - 1];
       const employerId = paths[paths.length - 3];
 
-      const updatedOffer: OfferFormData = {
+      const updatedOffer: Offer = {
         id: parseInt(offerId),
         title,
         description,
         department,
-        internshipStartDate: formatDateForInput(internshipStartDate),
-        internshipEndDate: formatDateForInput(internshipEndDate),
-        offerEndDate: formatDateForInput(offerEndDate),
+        internshipStartDate,
+        internshipEndDate,
+        offerEndDate,
         availablePlaces,
         employer,
-        status
+        offerStatus: status as OfferStatus,
       };
       editOffer(updatedOffer, parseInt(offerId));
       navigate(`/`);
     }
   };
 
-  const editOffer = async (updatedOffer: OfferFormData, id: number) => {
+  const editOffer = async (updatedOffer: Offer, id: number) => {
     try {
         console.log("Offer to update:", updatedOffer);
         
@@ -150,7 +135,7 @@ const EditOffer: React.FC = () => {
     } catch (error) {
         console.error("There was an error sending the data:", error);
     }
-};
+  };
 
 
   const renderDateInputError = (formError: string) => {

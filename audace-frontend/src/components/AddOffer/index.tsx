@@ -2,26 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Button, Form, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import FormInput from "../Signup/FormInput";
-import { Offer } from "../../model/offer"; 
+import { Offer } from "../../model/offer";
 import { Department } from "../../model/department";
 import { OfferStatus } from "../../model/offer";
 import { useNavigate } from 'react-router-dom';
 import http from "../../constants/http";
 import { Employer } from "../../model/user";
 import { getUserId } from "../../services/authService";
-
-interface OfferFormData {
-    title: string,
-    description: string,
-    department: Department,
-    internshipStartDate:  string,
-    internshipEndDate:  string,
-    offerEndDate:  string,
-    availablePlaces: number,
-    status: string,
-    employer: Employer
-    };
-
+import { getEmployerById } from "../../services/userService";
+import { employerCreateOffer } from "../../services/offerService";
+import { getAllDepartments } from "../../services/departmentService";
 
 const AddOffer: React.FC = () => {
   const { t } = useTranslation();
@@ -46,10 +36,9 @@ const AddOffer: React.FC = () => {
 
   const fetchEmployer = async () => {
     try {
-      const response = await http.get(`/employers/${getUserId()}`);
-
-      const employerData: Employer = await response.data;
-      setEmployer(employerData);
+      getEmployerById(parseInt(getUserId()!)).then((response) => {
+        return setEmployer(response.data);
+      });
     } catch (error) {
       console.error("There was an error fetching the employer:", error);
     }
@@ -57,33 +46,12 @@ const AddOffer: React.FC = () => {
 
   const fetchDepartments = async () => {
     try {
-      const response = await http.get("/employers/departments");
-
       
-
-      const departmentData: Department[] = await response.data;
+      const departmentData: Department[] = (await getAllDepartments()).data;
       setDepartments(departmentData);
       setDepartment(departmentData[0]);
     } catch (error) {
       console.error("There was an error fetching the departments:", error);
-    }
-  };
-
-  const handleSubmit = () => {
-    if (validateForm()) {
-      const formData: OfferFormData = {
-        title,
-        description,
-        department,
-        internshipStartDate: internshipStartDate.toISOString(),
-        internshipEndDate: internshipEndDate.toISOString(),
-        offerEndDate: offerEndDate.toISOString(),
-        availablePlaces,
-        status: OfferStatus.PENDING,
-        employer
-      };
-      addOffer(formData);
-      navigate(`/`); 
     }
   };
 
@@ -96,12 +64,9 @@ const AddOffer: React.FC = () => {
 
 function isValidDate(d: any) {
     return d instanceof Date && !isNaN(d.getTime());
-  }
-  
+}
 
-
-
-  const renderDateInputError = (formError: string) => {
+const renderDateInputError = (formError: string) => {
     if (errors.includes(formError)) {
       return <Form.Control.Feedback type="invalid">{t(formError)}</Form.Control.Feedback>;
     }
@@ -121,25 +86,36 @@ function isValidDate(d: any) {
     if (!isValidDate(internshipStartDate)) errorsToDisplay.push("addOffer.errors.invalidStartDate");
     if (!isValidDate(internshipEndDate)) errorsToDisplay.push("addOffer.errors.invalidEndDate");
     if (!isValidDate(offerEndDate)) errorsToDisplay.push("addOffer.errors.invalidOfferEndDate");
-  
-
 
     setErrors(errorsToDisplay);
     return errorsToDisplay.length === 0;
   };
 
-  const addOffer = async (offerData: OfferFormData) => {
+  const handleSubmit = () => {
+    if (validateForm()) {
+      const formData: Offer = {
+        title,
+        description,
+        department,
+        internshipStartDate,
+        internshipEndDate,
+        offerEndDate,
+        availablePlaces,
+        offerStatus: OfferStatus.PENDING,
+        employer
+      };
+      addOffer(formData);
+      navigate(`/`);
+    }
+  };
+
+  const addOffer = async (offerData: Offer) => {
     try {
-       console.log("Offer data:", JSON.stringify(offerData));
-       
-      const response = await http.post(`/employers/${employer.id}/offers`, offerData);
-
+      console.log("Offer data:", JSON.stringify(offerData));
+      employerCreateOffer(offerData);
       
-      const responseData = response.data;
-      console.log(responseData);
-
     } catch (error) {
-       console.error("There was an error sending the data:", error);
+      console.error("There was an error sending the data:", error);
     }
 };
 

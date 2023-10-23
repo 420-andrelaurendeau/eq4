@@ -33,9 +33,6 @@ function App() {
                 path="employer"
                 element={<SignupView userType={UserType.Employer} />}
                 />
-             
-
-              
               <Route
                 path="student/:depCode"
                 element={<SignupView userType={UserType.Student} />}

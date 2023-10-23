@@ -26,7 +26,10 @@ const EmployerButtons = ({ disabled, offer }: Props) => {
 
         if (offer?.id) {
             navigate(`/employer/editoffer/${offer.id}`); 
+        } else {
+            console.error("No offerId provided");
         }
+
 
     };
 
@@ -50,7 +53,7 @@ const EmployerButtons = ({ disabled, offer }: Props) => {
             }
     
             console.log("Offer deleted successfully");
-            window.location.reload();
+           // window.location.reload();
         } catch (error) {
             console.error("Failed to delete offer:", error);
         } finally {
