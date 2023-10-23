@@ -4,19 +4,21 @@ import { useTranslation } from "react-i18next";
 import FormInput from "../Signup/FormInput";
 import { Offer, OfferStatus } from "../../model/offer";
 import { Department } from "../../model/department";
+import { Employer } from "../../model/user";
 import { useNavigate } from 'react-router-dom';
+import http from "../../constants/http";
 
 interface OfferFormData {
   id: number,
   title: string,
   description: string,
-  departmentCode: string,
+  department: Department,
   internshipStartDate:  string,
   internshipEndDate:  string,
   offerEndDate:  string,
   availablePlaces: number,
   status: string,
-  employerId: number
+  employer: Employer
   };
 
 
@@ -32,6 +34,8 @@ const EditOffer: React.FC = () => {
   const [availablePlaces, setAvailablePlaces] = useState<number>(3);
   const [errors, setErrors] = useState<string[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
+  const [employer, setEmployer] = useState<Employer>({} as Employer);
+  const [status, setStatus] = useState<string>("PENDING");
 
   const navigate = useNavigate();
 
@@ -42,15 +46,11 @@ const EditOffer: React.FC = () => {
 
   const fetchDepartments = async () => {
     try {
-      const response = await fetch("http://localhost:8080/employers/departments");
+      const response = await http.get("/employers/departments");
 
-      if (!response.ok) {
-        throw new Error(
-          `Backend returned code ${response.status}, body: ${response.statusText}`
-        );
-      }
+      
 
-      const departmentData: Department[] = await response.json();
+      const departmentData: Department[] = await response.data;
       setDepartments(departmentData);
       setDepartment(departmentData[0]);
     } catch (error) {
@@ -63,13 +63,11 @@ const EditOffer: React.FC = () => {
     const offerId = paths[paths.length - 1];
 
     try {
-      const response = await fetch(`http://localhost:8080/employers/offers/${offerId}`);
+      const response = await http.get(`/employers/offers/${offerId}`);
 
-      if (!response.ok) {
-        throw new Error(`Backend returned code ${response.status}, body: ${response.statusText}`);
-      }
+     
 
-      const offerData: Offer = await response.json();
+      const offerData: Offer = await response.data;
 
       setTitle(offerData.title);
       setDescription(offerData.description);
@@ -77,9 +75,11 @@ const EditOffer: React.FC = () => {
       setInternshipStartDate(new Date(offerData.internshipStartDate));
       setInternshipEndDate(new Date(offerData.internshipEndDate));
       setOfferEndDate(new Date(offerData.offerEndDate));
+      setEmployer(offerData.employer);
 
     } catch (error) {
       console.error("There was an error fetching the offer:", error);
+      
     }
   };
 
@@ -122,40 +122,36 @@ const EditOffer: React.FC = () => {
         id: parseInt(offerId),
         title,
         description,
-        departmentCode: department.code,
+        department,
         internshipStartDate: formatDateForInput(internshipStartDate),
         internshipEndDate: formatDateForInput(internshipEndDate),
         offerEndDate: formatDateForInput(offerEndDate),
         availablePlaces,
-        employerId: parseInt(employerId),
-        status: OfferStatus.PENDING
+        employer,
+        status
       };
       editOffer(updatedOffer, parseInt(offerId));
-      navigate(`/employer/${employerId}/offers`);
+      navigate(`/`);
     }
   };
 
   const editOffer = async (updatedOffer: OfferFormData, id: number) => {
     try {
-      console.log("Offer to update:", updatedOffer);
-      const response = await fetch(`http://localhost:8080/employers/offers`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedOffer),
-      });
+        console.log("Offer to update:", updatedOffer);
+        
+        const response = await http.put(`/employers/offers`, updatedOffer);
 
-      if (!response.ok) {
-        throw new Error(`Backend returned code ${response.status}, body: ${response.statusText}`);
-      }
+        if (response.status !== 200) {
+            throw new Error(`Backend returned code ${response.status}, body: ${response.statusText}`);
+        }
 
-      const responseData = await response.json();
-      console.log(responseData);
+        const responseData = response.data;
+        console.log(responseData);
     } catch (error) {
-      console.error("There was an error sending the data:", error);
+        console.error("There was an error sending the data:", error);
     }
-  };
+};
+
 
   const renderDateInputError = (formError: string) => {
     if (errors.includes(formError)) {

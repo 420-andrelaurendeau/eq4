@@ -88,7 +88,7 @@ function App() {
             <AuthorizedRoute requiredAuthority={Authority.EMPLOYER}>
               <Routes>
                 <Route index element={<EmployerView />} />
-                <Route path="addOffer" element={<EmployerOfferView />} />
+                <Route path="addOffer" element={<AddOffer/>} />
                 <Route path="editOffer/:id" element={<EditOffer />} />
                 <Route path="*" element={<PageNotFoundView />} />
 

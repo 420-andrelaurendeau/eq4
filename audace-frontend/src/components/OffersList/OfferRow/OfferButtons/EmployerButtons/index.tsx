@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Offer } from "../../../../../model/offer";
 import { Route } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
+import http from "../../../../../constants/http";
 
 
 interface Props {
@@ -33,31 +34,30 @@ const EmployerButtons = ({ disabled, offer }: Props) => {
         event.stopPropagation();
         console.log("Delete button clicked");
         console.log("Offer:", offer);
-
-
+    
         if (offer === undefined || offer.id === undefined) {
             console.error("No offerId provided");
             return;
         }
-
+    
         setIsDeleting(true);
-
+    
         try {
-            const response = await fetch(`http://localhost:8080/employers/offers/${offer.id}`, {
-                method: 'DELETE',
-            });
-
-            if (!response.ok) {
+            const response = await http.delete(`/employers/offers/${offer.id}`);
+    
+            if (response.status !== 200) {
                 throw new Error(`Failed to delete offer. Status: ${response.status}`);
             }
-
+    
             console.log("Offer deleted successfully");
+            window.location.reload();
         } catch (error) {
             console.error("Failed to delete offer:", error);
         } finally {
             setIsDeleting(false);
         }
     };
+    
 
     return (
         <>
