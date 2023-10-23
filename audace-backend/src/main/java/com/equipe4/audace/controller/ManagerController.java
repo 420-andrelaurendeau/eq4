@@ -74,6 +74,8 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
     @GetMapping("/acceptedApplications/{departmentId}")
     public ResponseEntity<List<ApplicationDTO>> getAcceptedApplicationsByDepartment(@PathVariable Long departmentId) {
         logger.info("getAcceptedApplicationsByDepartment");
-        return ResponseEntity.ok(service.getAcceptedApplicationsByDepartment(departmentId));
+        return ResponseEntity.ok(
+                service.getAcceptedApplicationsByDepartment(departmentId)
+        );
     }
 }

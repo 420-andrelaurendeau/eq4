@@ -111,7 +111,8 @@ public class ManagerService extends GenericUserService<Manager> {
 
     public List<ApplicationDTO> getAcceptedApplicationsByDepartment(Long departmentId) {
         return applicationRepository
-                .findApplicationsByApplicationStatusAndStudentDepartmentId(Application.ApplicationStatus.ACCEPTED, departmentId)
+                .findApplicationsByApplicationStatusAndStudentDepartmentId(
+                        Application.ApplicationStatus.ACCEPTED, departmentId)
                 .stream().map(Application::toDTO).toList();
     }
 }
