@@ -1,14 +1,17 @@
 package com.equipe4.audace.service;
 
+import com.equipe4.audace.dto.ApplicationDTO;
 import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.cv.Cv.CvStatus;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.offer.Offer.OfferStatus;
+import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
@@ -27,33 +30,41 @@ public class ManagerService extends GenericUserService<Manager> {
     private final OfferRepository offerRepository;
     private final DepartmentRepository departmentRepository;
     private final CvRepository cvRepository;
+    private final ApplicationRepository applicationRepository;
 
     public ManagerService(
             SaltRepository saltRepository,
             ManagerRepository managerRepository,
             OfferRepository offerRepository,
             DepartmentRepository departmentRepository,
-            CvRepository cvRepository
+            CvRepository cvRepository,
+            ApplicationRepository applicationRepository
     ) {
         super(saltRepository);
         this.managerRepository = managerRepository;
         this.offerRepository = offerRepository;
         this.departmentRepository = departmentRepository;
         this.cvRepository = cvRepository;
+        this.applicationRepository = applicationRepository;
     }
 
     @Transactional
-    public Optional<OfferDTO> acceptOffer(Long offerId) {
-        return setOfferStatus(offerId, OfferStatus.ACCEPTED);
+    public Optional<OfferDTO> acceptOffer(Long managerId, Long offerId) {
+        return setOfferStatus(managerId, offerId, OfferStatus.ACCEPTED);
     }
 
     @Transactional
-    public Optional<OfferDTO> refuseOffer(Long offerId) {
-        return setOfferStatus(offerId, OfferStatus.REFUSED);
+    public Optional<OfferDTO> refuseOffer(Long managerId, Long offerId) {
+        return setOfferStatus(managerId, offerId, OfferStatus.REFUSED);
     }
 
-    private Optional<OfferDTO> setOfferStatus(Long offerId, OfferStatus offerStatus) {
+    private Optional<OfferDTO> setOfferStatus(Long managerId, Long offerId, OfferStatus offerStatus) {
         Offer offer = offerRepository.findById(offerId).orElseThrow();
+        Department managerDepartment = managerRepository.findById(managerId).orElseThrow().getDepartment();
+        Department offerDepartment = offer.getDepartment();
+        if (!managerDepartment.equals(offerDepartment)) {
+            throw new IllegalArgumentException("The manager isn't in the right department");
+        }
         offer.setOfferStatus(offerStatus);
         return Optional.of(offerRepository.save(offer).toDTO());
     }
@@ -72,17 +83,22 @@ public class ManagerService extends GenericUserService<Manager> {
     }
 
     @Transactional
-    public Optional<CvDTO> acceptCv(Long cvId) {
-        return setCvStatus(cvId, Cv.CvStatus.ACCEPTED);
+    public Optional<CvDTO> acceptCv(Long managerId, Long cvId) {
+        return setCvStatus(managerId, cvId, Cv.CvStatus.ACCEPTED);
     }
 
     @Transactional
-    public Optional<CvDTO> refuseCv(Long cvId) {
-        return setCvStatus(cvId, CvStatus.REFUSED);
+    public Optional<CvDTO> refuseCv(Long managerId, Long cvId) {
+        return setCvStatus(managerId, cvId, CvStatus.REFUSED);
     }
 
-    private Optional<CvDTO> setCvStatus(Long cvId, CvStatus cvStatus) {
+    private Optional<CvDTO> setCvStatus(Long managerId, Long cvId, CvStatus cvStatus) {
         Cv cv = cvRepository.findById(cvId).orElseThrow();
+        Department studentDepartment = cv.getStudent().getDepartment();
+        Department managerDepartment = managerRepository.findById(managerId).orElseThrow().getDepartment();
+        if (!studentDepartment.equals(managerDepartment)) {
+            throw new IllegalArgumentException("The manager isn't in the right department");
+        }
         cv.setCvStatus(cvStatus);
         return Optional.of(cvRepository.save(cv).toDTO());
     }
@@ -91,5 +107,11 @@ public class ManagerService extends GenericUserService<Manager> {
         return cvRepository
                 .findAllByStudentDepartmentId(departmentId)
                 .stream().map(Cv::toDTO).toList();
+    }
+
+    public List<ApplicationDTO> getAcceptedApplicationsByDepartment(Long departmentId) {
+        return applicationRepository
+                .findApplicationsByApplicationStatusAndStudentDepartmentId(Application.ApplicationStatus.ACCEPTED, departmentId)
+                .stream().map(Application::toDTO).toList();
     }
 }

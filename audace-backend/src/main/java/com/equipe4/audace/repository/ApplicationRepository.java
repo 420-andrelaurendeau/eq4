@@ -10,4 +10,5 @@ import java.util.List;
 public interface ApplicationRepository extends JpaRepository<Application, Long> {
     List<Application> findApplicationsByStudentId(Long studentId);
     Long countApplicationsByApplicationStatusAndOffer(Application.ApplicationStatus applicationStatus, Offer offer);
+    List<Application> findApplicationsByApplicationStatusAndStudentDepartmentId(Application.ApplicationStatus applicationStatus, Long departmentId);
 }

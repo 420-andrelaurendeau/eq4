@@ -14,13 +14,14 @@ export const employerCreateOffer = async (offer: Offer): Promise<AxiosResponse> 
 }
 
 export const getManagerOffersByDepartment = async (departmentId: number): Promise<AxiosResponse<Offer[]>> => {
-    return http.get<Offer[]>(`${MANAGER_PREFIX}/offers/${departmentId}`);
+    return http.get<Offer[]>(`/managers/offers/${departmentId}`);
 }
 
-export const acceptOffer = async (offerId: number): Promise<AxiosResponse<Offer>> => {
-    return http.post<Offer>(`${MANAGER_PREFIX}/accept_offer/${offerId}`);
+//OfferButton
+export const acceptOffer = async (managerId : number, offerId: number): Promise<AxiosResponse<Offer>> => {
+    return http.post<Offer>(`${MANAGER_PREFIX}/${managerId}/accept_offer/${offerId}`);
 }
 
-export const refuseOffer = async (offerId: number): Promise<AxiosResponse<Offer>> => {
-    return http.post<Offer>(`${MANAGER_PREFIX}/refuse_offer/${offerId}`);
+export const refuseOffer = async (managerId : number, offerId: number): Promise<AxiosResponse<Offer>> => {
+    return http.post<Offer>(`${MANAGER_PREFIX}/${managerId}/refuse_offer/${offerId}`);
 }

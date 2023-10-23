@@ -1,6 +1,7 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.GenericUserController;
+import com.equipe4.audace.dto.ApplicationDTO;
 import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
@@ -28,18 +29,18 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/accept_offer/{offerId}")
-    public ResponseEntity<HttpStatus> acceptOffer(@PathVariable Long offerId) {
+    @PostMapping("/{managerId}/accept_offer/{offerId}")
+    public ResponseEntity<HttpStatus> acceptOffer(@PathVariable Long managerId, @PathVariable Long offerId) {
         logger.info("acceptOffer");
-        return service.acceptOffer(offerId)
+        return service.acceptOffer(managerId, offerId)
                 .map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
-    @PostMapping("/refuse_offer/{offerId}")
-    public ResponseEntity<HttpStatus> refuseOffer(@PathVariable Long offerId) {
+    @PostMapping("/{managerId}/refuse_offer/{offerId}")
+    public ResponseEntity<HttpStatus> refuseOffer(@PathVariable Long managerId, @PathVariable Long offerId) {
         logger.info("refuseOffer");
-        return service.refuseOffer(offerId)
+        return service.refuseOffer(managerId, offerId)
                 .map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
@@ -55,19 +56,24 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
         return ResponseEntity.ok(service.getCvsByDepartment(departmentId));
     }
 
-    @PostMapping("/accept_cv/{cvId}")
-    public ResponseEntity<HttpStatus> acceptCv(@PathVariable Long cvId) {
+    @PostMapping("/{managerId}/accept_cv/{cvId}")
+    public ResponseEntity<HttpStatus> acceptCv(@PathVariable Long managerId, @PathVariable Long cvId) {
         logger.info("acceptCv");
-        return service.acceptCv(cvId)
+        return service.acceptCv(managerId, cvId)
                 .map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
-    @PostMapping("/refuse_cv/{cvId}")
-    public ResponseEntity<HttpStatus> refuseCv(@PathVariable Long cvId) {
+    @PostMapping("/{managerId}/refuse_cv/{cvId}")
+    public ResponseEntity<HttpStatus> refuseCv(@PathVariable Long managerId, @PathVariable Long cvId) {
         logger.info("refuseCv");
-        return service.refuseCv(cvId)
+        return service.refuseCv(managerId, cvId)
                 .map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    }
+    @GetMapping("/acceptedApplications/{departmentId}")
+    public ResponseEntity<List<ApplicationDTO>> getAcceptedApplicationsByDepartment(@PathVariable Long departmentId) {
+        logger.info("getAcceptedApplicationsByDepartment");
+        return ResponseEntity.ok(service.getAcceptedApplicationsByDepartment(departmentId));
     }
 }
