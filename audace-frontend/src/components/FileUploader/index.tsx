@@ -20,16 +20,6 @@ const FileUploader = ({ student }: Props) => {
     return file !== undefined;
   };
 
-  const handleUploadSuccess = () => {
-    getCvsByStudentId(student!.id!)
-      .then((res) => {
-        setCvs(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
   const submitForm = () => {
     if (!validateForm()) return;
 
@@ -40,6 +30,16 @@ const FileUploader = ({ student }: Props) => {
       })
       .catch((err) => {
         console.log(err);
+      });
+  };
+
+  const handleUploadSuccess = () => {
+    getCvsByStudentId(student!.id!)
+      .then((res) => {
+        setCvs(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
       });
   };
 

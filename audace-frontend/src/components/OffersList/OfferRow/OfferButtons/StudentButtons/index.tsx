@@ -2,6 +2,7 @@ import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import {
   apply,
+  getApplicationsByStudentId,
   getCvsByStudentId,
 } from "../../../../../services/studentApplicationService";
 import { useEffect, useState } from "react";
@@ -9,6 +10,7 @@ import { getUserId } from "../../../../../services/authService";
 import { Offer } from "../../../../../model/offer";
 import Application from "../../../../../model/application";
 import { useCVContext } from "../../../../../contextsholders/providers/CVContextHolder";
+import { useApplicationContext } from "../../../../../contextsholders/providers/ApplicationsContextHolder";
 
 interface Props {
   disabled?: boolean;
@@ -21,6 +23,7 @@ const StudentButtons = ({ disabled, offer }: Props) => {
   const [applicationMessageColor, setApplicationMessageColor] = useState("");
   const studentId = getUserId();
   const { cvs, setCvs } = useCVContext();
+  const { setApplications } = useApplicationContext();
 
   useEffect(() => {
     if (studentId === undefined) return;
@@ -47,8 +50,9 @@ const StudentButtons = ({ disabled, offer }: Props) => {
         cv: cvs[0],
       };
 
-      const response = await apply(applicationData);
-      console.log(response);
+      await apply(applicationData);
+
+      handleApplicationsUpdate(studentId);
 
       setApplicationMessage(t("offersList.applicationMessageSuccess"));
       setApplicationMessageColor("green");
@@ -56,6 +60,16 @@ const StudentButtons = ({ disabled, offer }: Props) => {
       setApplicationMessage(t("offersList.applicationMessageFailure") + error);
       setApplicationMessageColor("red");
     }
+  };
+
+  const handleApplicationsUpdate = (student: string) => {
+    getApplicationsByStudentId(parseInt(studentId!))
+      .then((res) => {
+        setApplications(res.data);
+      })
+      .catch((err) => {
+        console.log("getApplicationsByStudentId error", err);
+      });
   };
 
   return (
