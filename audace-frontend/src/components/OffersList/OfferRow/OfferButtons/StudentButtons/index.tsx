@@ -52,7 +52,7 @@ const StudentButtons = ({ disabled, offer }: Props) => {
 
       await apply(applicationData);
 
-      handleApplicationsUpdate(studentId);
+      handleApplicationsUpdate();
 
       setApplicationMessage(t("offersList.applicationMessageSuccess"));
       setApplicationMessageColor("green");
@@ -62,7 +62,7 @@ const StudentButtons = ({ disabled, offer }: Props) => {
     }
   };
 
-  const handleApplicationsUpdate = (student: string) => {
+  const handleApplicationsUpdate = () => {
     getApplicationsByStudentId(parseInt(studentId!))
       .then((res) => {
         setApplications(res.data);
