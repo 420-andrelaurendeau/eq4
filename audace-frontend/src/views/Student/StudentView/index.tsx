@@ -10,11 +10,11 @@ import { getUserId } from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
 import FileUploader from "../../../components/FileUploader";
 import ApplicationsList from "../../../components/ApplicationsList";
-import Application from "../../../model/application";
 import { getApplicationsByStudentId } from "../../../services/studentApplicationService";
 import { getCvsByStudentId } from "../../../services/studentApplicationService";
 import { useCVContext } from "../../../contextsholders/providers/CVContextHolder";
 import CvsList from "../../../components/CVsList";
+import { useApplicationContext } from "../../../contextsholders/providers/ApplicationsContextHolder";
 
 interface StudentViewProps {
   viewOffers?: boolean;
@@ -29,11 +29,11 @@ const StudentView = ({
   const [offers, setOffers] = useState<Offer[]>([]);
   const [offersError, setOffersError] = useState<string>("");
   const [cvsError, setCvsError] = useState<string>("");
-  const [applications, setApplications] = useState<Application[]>([]);
   const [applicationsError, setApplicationsError] = useState<string>("");
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { cvs, setCvs } = useCVContext();
+  const { applications, setApplications } = useApplicationContext();
 
   useEffect(() => {
     if (student !== undefined) return;
@@ -82,16 +82,6 @@ const StudentView = ({
       });
   }, [student, t, setCvs]);
 
-  const handleUploadSuccess = () => {
-    getCvsByStudentId(student!.id!)
-      .then((res) => {
-        setCvs(res.data);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  };
-
   useEffect(() => {
     if (student === undefined) return;
 
@@ -104,7 +94,7 @@ const StudentView = ({
         if (err.request.status === 404)
           setApplicationsError(t("applicationsList.errors.studentNotFound"));
       });
-  }, [student, t]);
+  }, [student, t, setApplications]);
 
   return (
     <Container>
@@ -122,12 +112,7 @@ const StudentView = ({
         </>
       )}
       <CvsList cvs={cvs} error={cvsError} userType={UserType.Student} />
-      {viewUpload && (
-        <FileUploader
-          student={student!}
-          onUploadSuccess={handleUploadSuccess}
-        />
-      )}
+      {viewUpload && <FileUploader student={student!} />}
       <ApplicationsList applications={applications} error={applicationsError} />
     </Container>
   );
