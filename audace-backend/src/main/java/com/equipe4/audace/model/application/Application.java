@@ -1,10 +1,9 @@
-package com.equipe4.audace.model;
+package com.equipe4.audace.model.application;
 
-import com.equipe4.audace.dto.ApplicationDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.offer.Offer;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -20,11 +19,6 @@ public class Application {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "student_id")
-    @ToString.Exclude
-    private Student student;
-
-    @ManyToOne
     @JoinColumn(name = "cv_id")
     @ToString.Exclude
     private Cv cv;
@@ -37,12 +31,10 @@ public class Application {
 
     public Application(
             Long id,
-            Student student,
             Cv cv,
             Offer offer
     ) {
         this.id = id;
-        this.student = student;
         this.cv = cv;
         this.offer = offer;
         this.applicationStatus = ApplicationStatus.PENDING;
@@ -57,7 +49,6 @@ public class Application {
     public ApplicationDTO toDTO(){
         return new ApplicationDTO(
                 id,
-                student.toDTO(),
                 offer.toDTO(),
                 cv.toDTO(),
                 applicationStatus

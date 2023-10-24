@@ -1,6 +1,7 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.GenericUserController;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -19,10 +21,10 @@ public class EmployerController extends GenericUserController<Employer, Employer
         super(employerService);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<EmployerDTO> getEmployerById(@PathVariable Long id){
+    @GetMapping("/{employerId}")
+    public ResponseEntity<EmployerDTO> getEmployerById(@PathVariable Long employerId){
         logger.info("getEmployerById");
-        return service.findEmployerById(id)
+        return service.findEmployerById(employerId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -52,5 +54,11 @@ public class EmployerController extends GenericUserController<Employer, Employer
     public ResponseEntity<HttpStatus> deleteOffer(@RequestParam("offerId") Long offerId){
         service.deleteOffer(offerId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}/offers/applications")
+    public ResponseEntity<Map<Long, List<ApplicationDTO>>> getAllApplicationsByEmployerId(@PathVariable Long id) {
+        logger.info("getAllApplicationsByEmployerId");
+        return ResponseEntity.ok(service.findAllApplicationsByEmployerId(id));
     }
 }

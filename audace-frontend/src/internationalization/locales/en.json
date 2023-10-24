@@ -17,7 +17,7 @@
     "password": "Choose a Password",
     "passwordConfirmation": "Confirm Your Password",
     "studentId": "Student number",
-    "signup": "Sign up",
+    "signup": "Sign Up",
     "errors": {
       "organisation": "Please enter a valid organisation name",
       "position": "Position cannot be empty",
@@ -39,10 +39,10 @@
     "errors": {
       "departmentNotFound": "Department not found"
     },
-    "name": "CV title",
+    "name": "CV",
     "viewMore": "View the CV",
     "noCvs": "No CVs available",
-    "studentName": "Student name"
+    "studentName": "Student"
   },
   "offersList": {
     "errors": {
@@ -52,6 +52,10 @@
     "internshipEndDate": "End Date",
     "internshipStartDate": "Start Date",
     "noOffers": "No offers available",
+    "viewTitle": "Available Offers",
+    "applyButton": "Apply",
+    "applicationMessageSuccess": "Application submitted successfully",
+    "applicationMessageFailure": "Error submitting application",
     "viewTitle": "Available Offers",
     "viewMore": "View More"
   },
@@ -96,6 +100,13 @@
     "REFUSED": "Refused",
     "noMorePendingCvs": "There are no more pending CVs"
   },
+  "employerCvsList": {
+    "title": "Applications",
+    "acceptButton": "Accept",
+    "refuseButton": "Refuse",
+    "ACCEPTED": "Accepted",
+    "REFUSED": "Refused"
+  },
   "employerOffersList": {
     "viewTitle": "Available Offers",
     "status": "Status",
@@ -116,7 +127,8 @@
     "errors": {
       "employerNotFound": "Employer not found"
     },
-    "seeOffersButton": "See Offers"
+    "seeOffersButton": "See Offers",
+    "seeApplicationsButton": "See Applications"
   },
   "upload": {
     "CvFormTitle": "Upload CV",

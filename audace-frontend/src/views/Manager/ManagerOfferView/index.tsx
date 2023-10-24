@@ -38,8 +38,8 @@ const ManagerOfferView = () => {
       });
   }, [manager, t, navigate]);
 
-  useEffect(() => {
-    if (manager === undefined) return;
+    useEffect(() => {
+        if (manager === undefined) return;
 
     getManagerOffersByDepartment(manager.department!.id!)
       .then((res) => {

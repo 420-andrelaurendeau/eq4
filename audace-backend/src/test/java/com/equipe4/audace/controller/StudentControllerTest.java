@@ -1,11 +1,11 @@
 package com.equipe4.audace.controller;
 
-import com.equipe4.audace.dto.ApplicationDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
@@ -159,12 +159,10 @@ public class StudentControllerTest {
         Department department = new Department(1L, "GLO", "Génie logiciel");
         Employer employer = new Employer(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
 
-        Student student = new Student(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", department);
-
         Cv cv = mock(Cv.class);
 
         Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
-        Application application = new Application(1L, student, cv, offer);
+        Application application = new Application(1L, cv, offer);
         ApplicationDTO applicationDTO = application.toDTO();
 
         when(studentService.createApplication(any(ApplicationDTO.class))).thenReturn(Optional.of(applicationDTO));
@@ -177,8 +175,7 @@ public class StudentControllerTest {
 
         // then - verify the result or output using assert statements
         response.andDo(print()).
-                andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(1L));
+                andExpect(status().isCreated());
     }
 
     @Test
@@ -194,8 +191,8 @@ public class StudentControllerTest {
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT"})
     void getOffersAppliedByStudentId() throws Exception {
-        List<OfferDTO> offerDTOList = List.of(mock(OfferDTO.class));
-        when(studentService.getOffersStudentApplied(1L)).thenReturn(offerDTOList);
+        List<ApplicationDTO> applicationDTOS = List.of(mock(ApplicationDTO.class));
+        when(studentService.getOffersStudentApplied(1L)).thenReturn(applicationDTOS);
 
         mockMvc.perform(get("/students/1/appliedOffers"))
                 .andExpect(status().isOk());

@@ -70,19 +70,20 @@ const LoginForm = () => {
             return;
           }
 
-          getUserById(parseInt(id))
-              .then((res) => {
-                navigateToUserTypeHomePage(res.data.type!);
-              })
-              .catch((err) => {
-                console.log(err);
-                logout();
-                navigate("/pageNotFound");
-              });
-        })
-        .catch((error) => {
-          if (error.response.status === 401 || error.response.status === 403)
-            setAreCredentialsValid(false);
+        getUserById(parseInt(id))
+          .then((res) => {
+            navigateToUserTypeHomePage(res.data.type!);
+          })
+          .catch((err) => {
+            console.log(err);
+            logout();
+            navigate("/pageNotFound");
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.response.status === 401 || error.response.status === 403)
+          setAreCredentialsValid(false);
 
           setIsDisabled(false);
         });

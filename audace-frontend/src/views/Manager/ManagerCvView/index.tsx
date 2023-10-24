@@ -7,7 +7,7 @@ import { getManagerById } from "../../../services/userService";
 import { getUserId } from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
 import { CV, CVStatus } from "../../../model/cv";
-import CvsList from "../../../components/CvsList";
+import CvsList from "../../../components/CVsList";
 
 const ManagerCvView = () => {
   const [manager, setManager] = useState<Manager>();
