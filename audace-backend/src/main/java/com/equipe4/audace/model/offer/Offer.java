@@ -1,17 +1,20 @@
 package com.equipe4.audace.model.offer;
 
 import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.department.Department;
 import jakarta.persistence.*;
-import lombok.*;
-import java.time.*;
-import java.util.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class Offer {
     @Id
@@ -20,6 +23,7 @@ public class Offer {
     @Column(name = "offer_id")
     private Long id;
     private String title;
+
     @Column(length = 2048)
     private String description;
     private LocalDate internshipStartDate;
@@ -86,5 +90,4 @@ public class Offer {
                 employer.toDTO()
         );
     }
-
 }

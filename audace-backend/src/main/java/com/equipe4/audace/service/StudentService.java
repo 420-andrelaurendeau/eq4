@@ -1,17 +1,17 @@
 package com.equipe4.audace.service;
 
-import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.offer.Offer.OfferStatus;
-import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.StudentRepository;
+import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
@@ -126,10 +126,6 @@ public class StudentService extends GenericUserService<Student> {
             throw new IllegalArgumentException("Student ID cannot be null");
         }
         List<Cv> cvs = cvRepository.findAllByStudentId(studentId);
-
-        if (cvs.isEmpty()) {
-            throw new NoSuchElementException("No CVs found for student ID: " + studentId);
-        }
 
         return cvs.stream().map(Cv::toDTO).toList();
     }

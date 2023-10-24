@@ -21,7 +21,17 @@ public class Student extends User {
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<Cv> cvs = new ArrayList<>();
 
-    public Student(Long id, String firstname, String lastname, String email, String password, String address, String phone, String studentNumber, Department department) {
+    public Student(
+            Long id,
+            String firstname,
+            String lastname,
+            String email,
+            String password,
+            String address,
+            String phone,
+            String studentNumber,
+            Department department
+    ) {
         super(id, firstname, lastname, email, password, address, phone);
         this.studentNumber = studentNumber;
         this.department = department;

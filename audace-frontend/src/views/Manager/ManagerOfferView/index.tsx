@@ -10,32 +10,33 @@ import { getUserId } from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
 
 const ManagerOfferView = () => {
-    const [manager, setManager] = useState<Manager>();
-    const [offers, setOffers] = useState<Offer[]>([]);
-    const [offersAccepted, setOffersAccepted] = useState<Offer[]>([]);
-    const [offersRefused, setOffersRefused] = useState<Offer[]>([]);
-    const [error, setError] = useState<string>("");
-    const {t} = useTranslation();
-    const navigate = useNavigate();
+  const [manager, setManager] = useState<Manager>();
+  const [offers, setOffers] = useState<Offer[]>([]);
+  const [offersAccepted, setOffersAccepted] = useState<Offer[]>([]);
+  const [offersRefused, setOffersRefused] = useState<Offer[]>([]);
+  const [error, setError] = useState<string>("");
+  const { t } = useTranslation();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const id = getUserId();
+  useEffect(() => {
+    if (manager !== undefined) return;
+    const id = getUserId();
 
-        if (id == null) {
-            navigate("/pageNotFound");
-            return;
-        }
+    if (id == null) {
+      navigate("/pageNotFound");
+      return;
+    }
 
-        getManagerById(parseInt(id!))
-            .then((res) => {
-                setManager(res.data);
-            })
-            .catch((err) => {
-                console.log(err);
-                if (err.request.status === 404)
-                    setError(t("managerOffersList.errors.managerNotFound"));
-            });
-    }, [manager, t, navigate]);
+    getManagerById(parseInt(id!))
+      .then((res) => {
+        setManager(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.request && err.request.status === 404)
+          setError(t("managerOffersList.errors.managerNotFound"));
+      });
+  }, [manager, t, navigate]);
 
     useEffect(() => {
         if (manager === undefined) return;
@@ -60,7 +61,7 @@ const ManagerOfferView = () => {
       })
       .catch((err) => {
         console.log(err);
-        if (err.request.status === 404)
+        if (err.request && err.request.status === 404)
           setError(t("offersList.errors.departmentNotFound"));
       });
   }, [manager, t]);

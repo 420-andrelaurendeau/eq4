@@ -15,7 +15,7 @@ const OfferButtons = ({userType, disabled, offer, updateOffersState} : Props) =>
     const selectButtons = () => {
         switch (userType) {
             case UserType.Student:
-                return <StudentButtons disabled={disabled}/>;
+                return <StudentButtons disabled={disabled} offer={offer}/>;
             case UserType.Manager:
                 return <ManagerButtons disabled={disabled} offer={offer} updateOffersState={updateOffersState}/>;
             case UserType.Employer:

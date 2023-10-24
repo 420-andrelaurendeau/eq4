@@ -2,6 +2,7 @@ import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { CV, CVStatus } from "../../../../../model/cv";
 import { acceptCv, refuseCv } from "../../../../../services/cvService";
+import { getUserId } from "../../../../../services/authService";
 
 interface Props {
     disabled? : boolean;
@@ -14,7 +15,7 @@ const ManagerButtons = ({disabled, cv, updateCvsState}: Props) => {
 
     const acceptButtonClick = (event : React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();
-        acceptCv(cv.id!)
+        acceptCv(parseInt(getUserId()!), cv.id!)
             .then((_) => {
                 updateCvsState!(cv, CVStatus.ACCEPTED);
             }
@@ -23,7 +24,7 @@ const ManagerButtons = ({disabled, cv, updateCvsState}: Props) => {
 
     const refuseButtonClick = (event : React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();
-        refuseCv(cv.id!)
+        refuseCv(parseInt(getUserId()!), cv.id!)
             .then((_) => {
                 updateCvsState!(cv, CVStatus.REFUSED);
             }

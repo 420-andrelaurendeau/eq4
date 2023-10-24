@@ -1,6 +1,6 @@
 {
-  "langCode": "en",
-  "signin": "Sign In",
+  "langCode": "EN",
+  "signin": "Log in",
   "signup": {
     "employerFormTitle": "Employer Registration",
     "studentFormTitle": "Student Registration",
@@ -25,12 +25,14 @@
       "lastName": "Last name cannot be empty",
       "address": "Address cannot be empty",
       "city": "City cannot be empty",
-      "postalCode": "Postal code cannot be empty",
+      "postalCode": "Please enter a valid postal code",
       "phone": "Please enter a valid phone number",
       "extension": "Please enter a valid extension",
       "email": "Please enter a valid email address",
       "password": "Please enter a valid password",
-      "studentId": "Please enter a valid student number"
+      "passwordConfirmation": "Passwords do not match",
+      "studentId": "Please enter a valid student number",
+      "network": "There was an unexpected networking error"
     }
   },
   "cvsList": {
@@ -50,7 +52,12 @@
     "internshipEndDate": "End Date",
     "internshipStartDate": "Start Date",
     "noOffers": "No offers available",
-    "viewTitle": "Available Offers"
+    "viewTitle": "Available Offers",
+    "applyButton": "Apply",
+    "applicationMessageSuccess": "Application submitted successfully",
+    "applicationMessageFailure": "Error submitting application",
+    "viewTitle": "Available Offers",
+    "viewMore": "View More"
   },
   "offer": {
     "modal": {
@@ -132,6 +139,7 @@
   "login": {
     "identification": "Email or Student Number",
     "password": "Password",
+    "userCreated": "Account has been successfully created",
     "errors": {
       "emptyIdentification": "Please enter your email or student number",
       "emptyPassword": "Please enter your password",

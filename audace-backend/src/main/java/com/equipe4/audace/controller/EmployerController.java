@@ -29,13 +29,13 @@ public class EmployerController extends GenericUserController<Employer, Employer
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("offers/{employerId}")
-    public ResponseEntity<List<OfferDTO>> getAllOffersByEmployerId(@PathVariable Long employerId) {
+    @GetMapping("/{id}/offers")
+    public ResponseEntity<List<OfferDTO>> getAllOffersByEmployerId(@PathVariable Long id) {
         logger.info("getAllOffersByEmployerId");
-        return ResponseEntity.ok(service.findAllOffersByEmployerId(employerId));
+        return ResponseEntity.ok(service.findAllOffersByEmployerId(id));
     }
 
-    @PostMapping("offers/{employerId}")
+    @PostMapping("/{id}/offers")
     public ResponseEntity<OfferDTO> createOffer(@RequestBody OfferDTO offerDTO){
         logger.info("createOffer");
         return service.createOffer(offerDTO)
@@ -43,23 +43,22 @@ public class EmployerController extends GenericUserController<Employer, Employer
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @PutMapping("offers/{id}")
+    @PutMapping("/{id}/offers")
     public ResponseEntity<OfferDTO> updateOffer(@RequestBody OfferDTO offerDTO){
         logger.info("updateOffer");
         OfferDTO updatedOffer = service.updateOffer(offerDTO).orElseThrow();
         return ResponseEntity.ok(updatedOffer);
     }
 
-    @DeleteMapping("offers/{id}")
+    @DeleteMapping("/{id}/offers")
     public ResponseEntity<HttpStatus> deleteOffer(@RequestParam("offerId") Long offerId){
         service.deleteOffer(offerId);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("offers/applications/{employerId}")
-    public ResponseEntity<Map<Long, List<ApplicationDTO>>> getAllApplicationsByEmployerId(@PathVariable Long employerId) {
+    @GetMapping("/{id}/offers/applications")
+    public ResponseEntity<Map<Long, List<ApplicationDTO>>> getAllApplicationsByEmployerId(@PathVariable Long id) {
         logger.info("getAllApplicationsByEmployerId");
-        return ResponseEntity.ok(service.findAllApplicationsByEmployerId(employerId));
+        return ResponseEntity.ok(service.findAllApplicationsByEmployerId(id));
     }
-
 }
