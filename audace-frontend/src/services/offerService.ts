@@ -25,3 +25,7 @@ export const acceptOffer = async (offerId: number): Promise<AxiosResponse<Offer>
 export const refuseOffer = async (offerId: number): Promise<AxiosResponse<Offer>> => {
     return http.post<Offer>(`/managers/refuse_offer/${offerId}`);
 }
+
+export const getEmployersOfferById = async (offerId: number): Promise<AxiosResponse<Offer>> => {
+    return http.get<Offer>(`/employers/offers/${offerId}`);
+}

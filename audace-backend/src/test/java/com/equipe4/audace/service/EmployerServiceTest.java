@@ -39,12 +39,6 @@ public class EmployerServiceTest {
     @Test
     public void createEmployer_HappyPath(){
         // Arrange
-<<<<<<< HEAD
-        EmployerDTO employerDTO = EmployerDTO.employerDTOBuilder()
-                .firstName("Employer1").lastName("Employer1").email("employer1@gmail.com").password("123456eE")
-                .organisation("Organisation1").position("Position1").phone("123-456-7890").extension("12345")
-                .address("Class Service, Javatown, Qc H8N1C1").build();
-=======
         EmployerDTO employerDTO = new EmployerDTO(
                 1L,
                 "Employer1",
@@ -57,7 +51,6 @@ public class EmployerServiceTest {
                 "12345",
                 "Class Service, Javatown, Qc H8N1C1"
         );
->>>>>>> origin/main
         when(employerRepository.save(any(Employer.class))).thenReturn(employerDTO.fromDTO());
         when(saltRepository.save(any())).thenReturn(mock(Salt.class));
 

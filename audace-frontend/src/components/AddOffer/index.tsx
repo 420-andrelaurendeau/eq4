@@ -30,30 +30,25 @@ const AddOffer: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchDepartments();
-    fetchEmployer();
-  }, []);
+    getEmployerById(parseInt(getUserId()!))
+    .then((employerResponse) => {
+        setEmployer(employerResponse.data);
+    })
+    .catch((error) => {
+        console.error("There was an error fetching the employer:", error);
+    });
 
-  const fetchEmployer = async () => {
-    try {
-      getEmployerById(parseInt(getUserId()!)).then((response) => {
-        return setEmployer(response.data);
-      });
-    } catch (error) {
-      console.error("There was an error fetching the employer:", error);
-    }
-  }
+    getAllDepartments()
+    .then((res) => {
+        const departmentData: Department[] = res.data;
+        setDepartments(departmentData);
+        setDepartment(departmentData[0]);
+    })
+    .catch((error) => {
+        console.error("There was an error fetching the departments:", error);
+    });
 
-  const fetchDepartments = async () => {
-    try {
-      
-      const departmentData: Department[] = (await getAllDepartments()).data;
-      setDepartments(departmentData);
-      setDepartment(departmentData[0]);
-    } catch (error) {
-      console.error("There was an error fetching the departments:", error);
-    }
-  };
+}, []);
 
   const formatDateForInput = (date: Date | null): string => {
     if (date instanceof Date) {
@@ -118,7 +113,6 @@ const renderDateInputError = (formError: string) => {
       console.error("There was an error sending the data:", error);
     }
 };
-
 
   return (
     <>

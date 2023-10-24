@@ -21,6 +21,9 @@ const OfferRow = ({ offer, userType, updateOffersState }: Props) => {
     const [employer, setEmployer] = useState<Employer | undefined>(undefined);
     const { t } = useTranslation();
 
+
+    
+
     return (
         <>
             <tr className="hovered" onClick={handleClick}>

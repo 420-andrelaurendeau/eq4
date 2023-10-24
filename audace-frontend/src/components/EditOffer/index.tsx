@@ -8,6 +8,7 @@ import { Employer } from "../../model/user";
 import { useNavigate } from 'react-router-dom';
 import http from "../../constants/http";
 import { getAllDepartments } from "../../services/departmentService";
+import { getEmployersOfferById } from "../../services/offerService";
 
 
 
@@ -29,44 +30,36 @@ const EditOffer: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchOffer();
-    fetchDepartments();
-  }, []);
-
-  const fetchDepartments = async () => {
-    try {
-      const departmentData: Department[] = (await getAllDepartments()).data;
-      setDepartments(departmentData);
-      setDepartment(departmentData[0]);
-    } catch (error) {
-      console.error("There was an error fetching the departments:", error);
-    }
-  };
-
-  const fetchOffer = async () => {
+    getAllDepartments()
+    .then((res) => {
+        setDepartments(res.data);
+        setDepartment(res.data[0]);
+    })
+    .catch((error) => {
+        console.error("There was an error fetching the departments:", error);
+    });
+    
     const paths = window.location.pathname.split("/");
     const offerId = paths[paths.length - 1];
 
-    try {
-      const response = await http.get(`/employers/offers/${offerId}`);
+    getEmployersOfferById(parseInt(offerId))
+    .then((res) => {
+        const offerData: Offer = res.data;
 
-     
+        setTitle(offerData.title);
+        setDescription(offerData.description);
+        setDepartment(offerData.department || {id:1, code:"GLO", name:"Genie"} as Department);
+        setInternshipStartDate(new Date(offerData.internshipStartDate));
+        setInternshipEndDate(new Date(offerData.internshipEndDate));
+        setOfferEndDate(new Date(offerData.offerEndDate));
+        setEmployer(offerData.employer);
+    })
+    .catch((error) => {
+        console.error("There was an error fetching the offer:", error);
+    });
+}, []);
 
-      const offerData: Offer = await response.data;
 
-      setTitle(offerData.title);
-      setDescription(offerData.description);
-      setDepartment(offerData.department || {id:1, code:"GLO", name:"Genie"} as Department);
-      setInternshipStartDate(new Date(offerData.internshipStartDate));
-      setInternshipEndDate(new Date(offerData.internshipEndDate));
-      setOfferEndDate(new Date(offerData.offerEndDate));
-      setEmployer(offerData.employer);
-
-    } catch (error) {
-      console.error("There was an error fetching the offer:", error);
-      
-    }
-  };
 
   const formatDateForInput = (date: Date | null): string => {
     if (date instanceof Date) {

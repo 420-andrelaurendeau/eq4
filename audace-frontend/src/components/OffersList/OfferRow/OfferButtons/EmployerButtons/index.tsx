@@ -2,7 +2,6 @@ import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { Offer } from "../../../../../model/offer";
-import { Route } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import http from "../../../../../constants/http";
 
@@ -51,6 +50,8 @@ const EmployerButtons = ({ disabled, offer }: Props) => {
             if (response.status !== 200) {
                 throw new Error(`Failed to delete offer. Status: ${response.status}`);
             }
+            
+           
     
             console.log("Offer deleted successfully");
            // window.location.reload();
