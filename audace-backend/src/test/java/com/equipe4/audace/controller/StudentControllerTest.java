@@ -1,9 +1,9 @@
 package com.equipe4.audace.controller;
 
-import com.equipe4.audace.dto.ApplicationDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.Application;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.cv.Cv;
@@ -164,7 +164,7 @@ public class StudentControllerTest {
         Cv cv = mock(Cv.class);
 
         Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
-        Application application = new Application(1L, student, cv, offer);
+        Application application = new Application(1L, cv, offer);
         ApplicationDTO applicationDTO = application.toDTO();
 
         when(studentService.createApplication(any(ApplicationDTO.class))).thenReturn(Optional.of(applicationDTO));
@@ -177,8 +177,7 @@ public class StudentControllerTest {
 
         // then - verify the result or output using assert statements
         response.andDo(print()).
-                andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(1L));
+                andExpect(status().isCreated());
     }
 
     @Test

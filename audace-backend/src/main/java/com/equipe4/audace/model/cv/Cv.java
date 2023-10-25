@@ -1,7 +1,7 @@
 package com.equipe4.audace.model.cv;
 
 import com.equipe4.audace.dto.cv.CvDTO;
-import com.equipe4.audace.model.Application;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.Student;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

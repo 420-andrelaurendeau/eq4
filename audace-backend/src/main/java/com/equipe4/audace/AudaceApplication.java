@@ -12,6 +12,7 @@ import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.security.Salt;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
+import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
@@ -81,6 +82,26 @@ public class AudaceApplication implements CommandLineRunner {
 						employerDTO
 				)
 		);
+
+		Student backOfTheClassStudent = new Student(
+				null,
+				"Chad",
+				"The Mad Lad",
+				"chadisamadlad@live.ca",
+				"password",
+				"Omega Fraternity House",
+				"5147076969",
+				"2080350",
+				department
+		);
+
+		Optional<StudentDTO> indispensableStudent = studentService.createStudent(backOfTheClassStudent.toDTO(), department.getCode());
+
+		if (indispensableStudent.isEmpty()) {
+			return;
+		}
+
+		backOfTheClassStudent = indispensableStudent.get().fromDTO();
 
 		Student student = new Student(
 				null,
