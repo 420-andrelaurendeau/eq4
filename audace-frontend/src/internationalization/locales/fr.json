@@ -41,7 +41,7 @@
     },
     "name": "CV",
     "viewMore": "Voir le CV",
-    "noCvs": "Aucun CV disponible",	
+    "noCvs": "Aucun CV disponible",
     "studentName": "Étudiant"
   },
   "offersList": {
@@ -54,7 +54,6 @@
     "noOffers": "Aucun offre disponible",
     "viewTitle": "Offres disponibles",
     "viewMore": "Afficher plus"
-
   },
   "offer": {
     "modal": {
@@ -74,7 +73,7 @@
   },
   "studentOffersList": {
     "viewTitle": "Offres disponibles",
-    "applyButton":"Appliquer"
+    "applyButton": "Appliquer"
   },
   "managerOffersList": {
     "viewTitle": "Offres disponibles",
@@ -118,7 +117,8 @@
   },
   "manager": {
     "seeOffersButton": "Voir les offres",
-    "seeCvsButton": "See CVS"
+    "seeCvsButton": "See CVS",
+    "createContractButton": "Créer un contrat"
   },
   "employer": {
     "errors": {

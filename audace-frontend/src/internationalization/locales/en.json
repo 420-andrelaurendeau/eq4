@@ -117,7 +117,8 @@
   },
   "manager": {
     "seeOffersButton": "See Offers",
-    "seeCvsButton": "See CVS"
+    "seeCvsButton": "See CVS",
+    "createContractButton": "Create Contract"
   },
   "employer": {
     "errors": {
