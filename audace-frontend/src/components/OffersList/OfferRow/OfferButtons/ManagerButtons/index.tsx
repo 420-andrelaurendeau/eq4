@@ -15,7 +15,7 @@ const ManagerButtons = ({disabled, offer, updateOffersState}: Props) => {
 
     const acceptButtonClick = (event : React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();
-        acceptOffer(parseInt(getUserId()!), offer.id!)
+        acceptOffer(offer.id!)
             .then((_) => {
                 updateOffersState!(offer, OfferStatus.ACCEPTED);
             }
@@ -24,7 +24,7 @@ const ManagerButtons = ({disabled, offer, updateOffersState}: Props) => {
 
     const refuseButtonClick = (event : React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();
-        refuseOffer(parseInt(getUserId()!), offer.id!)
+        refuseOffer(offer.id!)
             .then((_) => {
                 updateOffersState!(offer, OfferStatus.REFUSED);
             }

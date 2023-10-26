@@ -1,15 +1,14 @@
-import { Button } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import {
-  apply,
-  getCvsByStudentId,
-} from "../../../../../services/studentApplicationService";
-import React, { useEffect, useState } from "react";
-import { getUserId } from "../../../../../services/authService";
-import { Offer } from "../../../../../model/offer";
-import { Student } from "../../../../../model/user";
-import Application from "../../../../../model/application";
-import { useCVContext } from "../../../../../contextsholders/providers/CVContextHolder";
+import {Button} from "react-bootstrap";
+import {useTranslation} from "react-i18next";
+import {studentApplyToOffer} from "../../../../../services/applicationService";
+import {getApplicationsByStudentId} from "../../../../../services/applicationService";
+import {getCvsByStudentId} from "../../../../../services/cvService";
+import React, {useEffect, useState} from "react";
+import {getUserId} from "../../../../../services/authService";
+import {Offer} from "../../../../../model/offer";
+import {Student} from "../../../../../model/user";
+import Application, {ApplicationStatus} from "../../../../../model/application";
+import {useCVContext} from "../../../../../contextsholders/providers/CVContextHolder";
 
 interface Props {
   disabled?: boolean;
@@ -59,9 +58,10 @@ const StudentButtons = ({ disabled, offer }: Props) => {
         offer: offer,
         cv: cvs[0],
         student: tempStudent,
+        applicationStatus: ApplicationStatus.PENDING
       };
 
-      const response = await apply(applicationData);
+      const response = await studentApplyToOffer(applicationData);
       console.log(response);
 
       setApplicationMessage(t("offersList.applicationMessageSuccess"));

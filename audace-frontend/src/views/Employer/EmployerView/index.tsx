@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import {Container} from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import {Button, Container} from "react-bootstrap";
 import {useTranslation} from "react-i18next";
 import { Offer } from "../../../model/offer";
 import { Employer, UserType } from "../../../model/user";
@@ -7,8 +7,6 @@ import { useNavigate } from "react-router";
 import { getUserId } from "../../../services/authService";
 import { getEmployerById } from "../../../services/userService";
 import { getAllOffersByEmployerId } from "../../../services/offerService";
-import OffersList from "../../../components/OffersList";
-
 
 const EmployerView = () => {
     const [employer, setEmployer] = useState<Employer>();
@@ -35,22 +33,18 @@ const EmployerView = () => {
             })
     }, [employer, navigate, t]);
 
-    useEffect(() => {
-        if (employer === undefined) return;
-
-        getAllOffersByEmployerId(employer.id!)
-            .then((res) => {
-                setOffers(res.data);
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-    }, [employer]);
+    const seeOffers = () => {
+        navigate(`/employer/offers`);
+    };
+    const seeApplications = () => {
+        navigate(`/employer/applications`);
+    };
 
     return (
         <Container>
-            <h1>{t("studentOffersList.viewTitle")}</h1>
-            <OffersList offers={offers} error={error} userType={UserType.Employer} />
+            <h1 className="my-3">{employer!.firstName} {employer!.lastName}</h1>
+            <Button onClick={seeOffers}>{t("employer.seeOffersButton")}</Button>
+            <Button className="mx-2" onClick={seeApplications}>{t("employer.seeApplicationsButton")}</Button>
         </Container>
     )
 }

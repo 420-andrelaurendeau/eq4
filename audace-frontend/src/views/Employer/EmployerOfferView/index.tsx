@@ -6,16 +6,24 @@ import { Offer } from "../../../model/offer";
 import OffersList from "../../../components/OffersList";
 import {getEmployerById,} from "../../../services/userService";
 import {getAllOffersByEmployerId} from "../../../services/offerService";
-import {useParams} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import {getUserId} from "../../../services/authService";
 
 const EmployerOfferView = () => {
     const [employer, setEmployer] = useState<Employer>();
-    const {id} = useParams();
     const [offers, setOffers] = useState<Offer[]>([]);
     const [error, setError] = useState<string>("");
     const {t} = useTranslation();
+    const navigate = useNavigate();
 
     useEffect(() => {
+        if (employer !== undefined) return;
+        const id = getUserId();
+        if (id == null) {
+            navigate("/pageNotFound");
+            return;
+        }
+
         getEmployerById(parseInt(id!))
             .then((res) => {
                 setEmployer(res.data);
@@ -24,7 +32,7 @@ const EmployerOfferView = () => {
                 console.log(err)
                 if (err.request.status === 404) setError(t("employer.errors.employerNotFound"));
             })
-    }, [employer, id, t]);
+    }, [employer, navigate, t]);
 
     useEffect(() => {
         if (employer === undefined) return;
@@ -36,11 +44,11 @@ const EmployerOfferView = () => {
             .catch((err) => {
                 console.log(err)
             })
-    }, [employer, t]);
+    }, [employer]);
 
     return (
         <Container>
-            <h1>{t("studentOffersList.viewTitle")}</h1>
+            <h1>{t("employerOffersList.viewTitle")}</h1>
             <OffersList offers={offers} error={error} userType={UserType.Employer} />
         </Container>
     );

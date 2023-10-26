@@ -15,7 +15,7 @@ const ManagerButtons = ({disabled, cv, updateCvsState}: Props) => {
 
     const acceptButtonClick = (event : React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();
-        acceptCv(parseInt(getUserId()!), cv.id!)
+        acceptCv(cv.id!)
             .then((_) => {
                 updateCvsState!(cv, CVStatus.ACCEPTED);
             }
@@ -24,7 +24,7 @@ const ManagerButtons = ({disabled, cv, updateCvsState}: Props) => {
 
     const refuseButtonClick = (event : React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();
-        refuseCv(parseInt(getUserId()!), cv.id!)
+        refuseCv(cv.id!)
             .then((_) => {
                 updateCvsState!(cv, CVStatus.REFUSED);
             }

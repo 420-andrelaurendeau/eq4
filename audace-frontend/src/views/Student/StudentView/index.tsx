@@ -9,13 +9,13 @@ import OffersList from "../../../components/OffersList";
 import { getUserId } from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
 import FileUploader from "../../../components/FileUploader";
-import { getCvsByStudentId } from "../../../services/studentApplicationService";
+import { getCvsByStudentId } from "../../../services/cvService";
 import CvsList from "../../../components/CVsListStudent";
 import { useCVContext } from "../../../contextsholders/providers/CVContextHolder";
 import ApplicationsList from "../../../components/ApplicationsList";
 import Application from "../../../model/application";
-import { getApplicationsByStudentId } from "../../../services/studentApplicationService";
-import { error } from "console";
+import { getApplicationsByStudentId } from "../../../services/applicationService";
+
 
 interface StudentViewProps {
   viewOffers?: boolean;

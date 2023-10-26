@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Offer, OfferStatus } from "../../../../model/offer";
-import { Employer, UserType } from "../../../../model/user";
+import { Employer, Student, UserType } from "../../../../model/user";
 import {Col, Modal, Row} from "react-bootstrap";
 import { getEmployerById } from "../../../../services/userService";
 import { useTranslation } from "react-i18next";
 import { formatDate } from "../../../../services/formatService";
-import { apply } from "../../../../services/studentApplicationService"
+import {studentApplyToOffer} from "../../../../services/applicationService";
 import { useParams } from "react-router";
 import Application, { ApplicationStatus } from "../../../../model/application";
 import { CV, CVStatus } from "../../../../model/cv";
@@ -74,7 +74,7 @@ const  OfferModal = ({offer, show, handleClose, userType, employer, setEmployer,
             applicationStatus: ApplicationStatus.PENDING,
         };
 
-        apply(applicationData).then((response) => {
+        studentApplyToOffer(applicationData).then((response) => {
                 setApplicationMessage("Application submitted successfully");
                 setApplicationMessageColor("green");
         }).catch((error) => {
@@ -93,25 +93,22 @@ const  OfferModal = ({offer, show, handleClose, userType, employer, setEmployer,
                     <Row>
                         <Col>
                             <div>{t("offer.modal.org")}: {
-                                createBoldText(
-                                    employer !== undefined ?
-                                        employer.organisation! :
-                                        t("offer.modal.orgNotFound")
+                                createBoldText(employer !== undefined ?
+                                    employer.organisation! :
+                                    t("offer.modal.orgNotFound")
                                 )
                             }
                             </div>
                             <div>{t("offer.modal.address")}:&nbsp;
-                                {createBoldText(
-                                    employer !== undefined ?
-                                        employer.address! :
-                                        t("offer.modal.orgNotFound")
+                                {createBoldText(employer !== undefined ?
+                                    employer.address! :
+                                    t("offer.modal.orgNotFound")
                                 )}
                             </div>
                             <div>{t("offer.modal.phone")}:&nbsp;
-                                {createBoldText(
-                                    employer !== undefined ?
-                                        employer.phone! :
-                                        t("offer.modal.orgNotFound")
+                                {createBoldText(employer !== undefined ?
+                                    employer.phone! :
+                                    t("offer.modal.orgNotFound")
                                 )}
                             </div>
                         </Col>
