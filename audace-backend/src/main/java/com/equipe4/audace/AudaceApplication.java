@@ -6,14 +6,17 @@ import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.security.Salt;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
+import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
+import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.StudentService;
@@ -36,6 +39,8 @@ public class AudaceApplication implements CommandLineRunner {
 	private SaltRepository saltRepository;
 	private ManagerRepository managerRepository;
 	private StudentService studentService;
+	private ApplicationRepository applicationRepository;
+	private final OfferRepository offerRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AudaceApplication.class, args);
@@ -79,6 +84,18 @@ public class AudaceApplication implements CommandLineRunner {
 
 		Cv cv = new Cv(1L, "cv.pdf", content, student);
 		cvRepository.save(cv);
+
+		offerRepository.save(offer1);
+
+		Application application1 = new Application(1L, cv, offer1);
+		Application application2 = new Application(2L, cv, offer1);
+		Application application3 = new Application(3L, cv, offer1);
+
+		offer1.getApplications().add(application1);
+		offer1.getApplications().add(application2);
+		offer1.getApplications().add(application3);
+		offerRepository.save(offer1);
+
 
 		Manager manager = new Manager(null, "manager", "managerman", "manager@email.com", "password", "yeete", "1234567890", department);
 		managerRepository.save(manager);
