@@ -9,6 +9,9 @@ import OffersList from "../../../components/OffersList";
 import { getUserId } from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
 import FileUploader from "../../../components/FileUploader";
+import { getCvsByStudentId } from "../../../services/studentApplicationService";
+import CvsList from "../../../components/CVsListStudent";
+import { useCVContext } from "../../../contextsholders/providers/CVContextHolder";
 import ApplicationsList from "../../../components/ApplicationsList";
 import Application from "../../../model/application";
 import { getApplicationsByStudentId } from "../../../services/studentApplicationService";
@@ -19,17 +22,16 @@ interface StudentViewProps {
   viewUpload?: boolean;
 }
 
-const StudentView = ({
-  viewOffers = true,
-  viewUpload = true,
-}: StudentViewProps) => {
+const StudentView = ({ viewOffers = true, viewUpload = true }: StudentViewProps) => {
   const [student, setStudent] = useState<Student>();
   const [offers, setOffers] = useState<Offer[]>([]);
   const [offersError, setOffersError] = useState<string>("");
+  const [cvsError, setCvsError] = useState<string>("");
   const [applications, setApplications] = useState<Application[]>([]);
   const [applicationsError, setApplicationsError] = useState<string>("");
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { setCvs } = useCVContext();
 
   useEffect(() => {
     if (student !== undefined) return;
@@ -46,9 +48,11 @@ const StudentView = ({
         setStudent(res.data);
       })
       .catch((err) => {
-        console.log(err);
-        if (err.request.status === 404)
+        console.error(err);
+        if (err.request && err.request.status === 404) {
           setOffersError(t("studentOffersList.errors.studentNotFound"));
+          setCvsError(t("studentOffersList.errors.studentNotFound"));
+        }
       });
   }, [student, navigate, t]);
 
@@ -60,41 +64,57 @@ const StudentView = ({
         setOffers(res.data);
       })
       .catch((err) => {
-        console.log(err);
-        if (err.request.status === 404)
-          setOffersError(t("offersList.errors.departmentNotFound"));
+        console.error(err);
+
+        if (err.request && err.request.status === 404) setOffersError(t("offersList.errors.departmentNotFound"));
       });
-  }, [student, t]);
 
-  useEffect(() => {
-    if (student === undefined) return;
-
-    getApplicationsByStudentId(student?.id!)
+    getCvsByStudentId(student.id!)
       .then((res) => {
-        setApplications(res.data);
+        setCvs(res.data);
       })
       .catch((err) => {
-        console.log(err);
-        if (err.request.status === 404)
-          setApplicationsError(t("applicationsList.errors.studentNotFound"));
+        console.error(err);
       });
-  }, [student, t]);
+  }, [student, t, setCvs]);
+
+    useEffect(() => {
+        if (student === undefined) return;
+
+        getApplicationsByStudentId(student?.id!)
+            .then((res) => {
+                setApplications(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+                if (err.request.status === 404)
+                    setApplicationsError(t("applicationsList.errors.studentNotFound"));
+            });
+    }, [student, t]);
+  const handleUploadSuccess = () => {
+    getCvsByStudentId(student!.id!)
+      .then((res) => {
+        setCvs(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   return (
     <Container>
-      <h1 className="my-3">Student view</h1>
-      {viewOffers && (
-        <>
-          <h2>{t("studentOffersList.viewTitle")}</h2>
-          <OffersList
-            offers={offers}
-            error={offersError}
-            userType={UserType.Student}
-          />
-        </>
-      )}
-      {viewUpload && <FileUploader student={student!} />}
-      <ApplicationsList applications={applications} error={applicationsError} />
+        <h1 className="my-3" style={{ textTransform: "capitalize" }}>
+            {student?.firstName} {student?.lastName}
+        </h1>
+        {viewOffers && (
+            <>
+                <h2>{t("studentOffersList.viewTitle")}</h2>
+                <OffersList offers={offers} error={offersError} userType={UserType.Student}/>
+            </>
+        )}
+        <CvsList error={cvsError} />
+        {viewUpload && (<FileUploader student={student!} onUploadSuccess={handleUploadSuccess}/>)}
+        <ApplicationsList applications={applications} error={applicationsError} />
     </Container>
   );
 };

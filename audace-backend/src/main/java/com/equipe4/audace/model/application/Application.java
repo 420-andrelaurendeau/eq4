@@ -1,6 +1,6 @@
-package com.equipe4.audace.model;
+package com.equipe4.audace.model.application;
 
-import com.equipe4.audace.dto.ApplicationDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.offer.Offer;
 import jakarta.persistence.*;
@@ -18,11 +18,6 @@ public class Application {
     @SequenceGenerator(name = "application_gen", sequenceName = "application_sec", allocationSize = 1)
     @Column(name = "application_id")
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "student_id")
-    @ToString.Exclude
-    private Student student;
 
     @ManyToOne
     @JoinColumn(name = "cv_id")
@@ -57,7 +52,6 @@ public class Application {
     public ApplicationDTO toDTO(){
         return new ApplicationDTO(
                 id,
-                student.toDTO(),
                 offer.toDTO(),
                 cv.toDTO(),
                 applicationStatus

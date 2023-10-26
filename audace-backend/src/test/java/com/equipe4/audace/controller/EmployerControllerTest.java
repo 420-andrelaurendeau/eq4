@@ -2,17 +2,20 @@ package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.ApplicationDTO;
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
-import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
@@ -37,19 +40,15 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(EmployerController.class)
@@ -307,20 +306,63 @@ public class EmployerControllerTest {
         mockMvc.perform(post("/employers/1/refuse_application/1").with(csrf()))
                 .andExpect(status().isBadRequest());
     }
-    private Employer createEmployer() {
-        return new Employer(
-                1L,
-                "Employer1",
-                "Employer1",
-                "employer1@gmail.com",
-                "123456eE",
-                "Organisation1",
-                "Position1",
-                "Class Service, Javatown, Qc H8N1C1",
-                "123-456-7890",
-                "12345"
-        );
+    @Test
+    @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
+    public void givenMapOfOffersAndApplications_whenGetAllApplicationsByEmployerId_thenReturnOffersAndApplicationsMap() throws Exception{
+        // given - precondition or setup
+        Map<Long, List<ApplicationDTO>> map = new HashMap<>();
+        EmployerDTO employerDTO = createEmployerDTO();
+
+        Offer offer = createOffer();
+        Offer offer2 = createOffer();
+        offer2.setId(2L);
+
+        List<ApplicationDTO> applicationDTOList = new ArrayList<>();
+        applicationDTOList.add(createApplication(offer).toDTO());
+        applicationDTOList.add(createApplication(offer).toDTO());
+
+        List<ApplicationDTO> applicationDTOList2 = new ArrayList<>();
+        applicationDTOList2.add(createApplication(offer2).toDTO());
+        applicationDTOList2.add(createApplication(offer2).toDTO());
+
+        map.put(offer.getId(), applicationDTOList);
+        map.put(offer2.getId(), applicationDTOList2);
+
+        given(employerService.findAllApplicationsByEmployerId(employerDTO.getId())).willReturn(map);
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/employers/{employerId}/offers/applications", 1L));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.size()",
+                        is(applicationDTOList.size())));
     }
+
+
+    private Department createDepartment(){
+        return new Department(1L, "GLO", "Génie logiciel");
+    }
+    private EmployerDTO createEmployerDTO() {
+        return new EmployerDTO(1L, "Employer1", "Employer1", "employer1@gmail.com", "123456eE", "Organisation1", "Position1", "Class Service, Javatown, Qc H8N1C1", "123-456-7890", "12345");
+    }
+    private StudentDTO createStudentDTO() {
+        DepartmentDTO departmentDTO = createDepartment().toDTO();
+        return new StudentDTO(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", departmentDTO);
+    }
+    private Offer createOffer() {
+        Employer employer = createEmployerDTO().fromDTO();
+        Department department = createDepartment();
+        return new Offer(1L,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
+    }
+    private Application createApplication(Offer offer) {
+        Student student = createStudentDTO().fromDTO();
+        Cv cv = mock(Cv.class);
+
+        return new Application(1L, cv, offer);
+    }
+
 
     private Offer createOffer(Employer employer, Department department) {
         return new Offer(

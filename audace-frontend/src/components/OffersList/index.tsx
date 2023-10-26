@@ -11,7 +11,7 @@ interface Props {
     updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
 }
 
-const OffersList = ({ offers, error, userType, updateOffersState }: Props) => {
+const OffersList = ({ offers, error, userType, updateOffersState}: Props) => {
     const { t } = useTranslation();
 
     return (

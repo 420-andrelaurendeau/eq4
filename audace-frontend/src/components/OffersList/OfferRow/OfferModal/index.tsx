@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Offer, OfferStatus } from "../../../../model/offer";
-import { Employer, Student, UserType } from "../../../../model/user";
-import { Button, Col, Modal, Row } from "react-bootstrap";
+import { Employer, UserType } from "../../../../model/user";
+import {Col, Modal, Row} from "react-bootstrap";
 import { getEmployerById } from "../../../../services/userService";
 import { useTranslation } from "react-i18next";
 import { formatDate } from "../../../../services/formatService";
@@ -22,7 +22,7 @@ interface Props {
     updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
 }
 
-const OfferModal = ({ offer, show, handleClose, userType, employer, setEmployer, updateOffersState }: Props) => {
+const  OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, updateOffersState}: Props) => {
     const { t } = useTranslation();
     const [applicationMessage, setApplicationMessage] = useState("");
     const [applicationMessageColor, setApplicationMessageColor] = useState("");

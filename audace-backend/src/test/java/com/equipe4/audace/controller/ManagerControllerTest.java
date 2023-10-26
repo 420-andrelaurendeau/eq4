@@ -73,6 +73,7 @@ public class ManagerControllerTest {
     @MockBean
     private SaltRepository saltRepository;
 
+
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void acceptOffer() throws Exception {

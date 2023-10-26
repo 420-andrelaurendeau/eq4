@@ -122,8 +122,8 @@ public class AudaceApplication implements CommandLineRunner {
 				LocalDate.now(),
 				LocalDate.now(),
 				3,
-				department,
-				employer
+                department,
+                employer
 		);
 		offer2.setOfferStatus(Offer.OfferStatus.ACCEPTED);
 
@@ -157,8 +157,14 @@ public class AudaceApplication implements CommandLineRunner {
 		employer.getOffers().add(offer4);
 		employerRepository.save(employer);
 
+		String cvContent = "cv content for fun";
+		byte[] content = cvContent.getBytes();
+
+		Cv cv = new Cv(1L, student, content, "cv.pdf");
+		cvRepository.save(cv);
+
 		Manager manager = new Manager(null, "manager", "managerman", "manager@email.com", "password", "yeete", "1234567890", department);
-		manager = managerRepository.save(manager);
+		managerRepository.save(manager);
 
 		String managerPassword = manager.getPassword();
 		String managerSalt = BCrypt.gensalt();
