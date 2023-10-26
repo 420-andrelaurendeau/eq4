@@ -13,7 +13,7 @@ import { getAllOffersByEmployerId } from "../../../services/offerService";
 
 const EmployerApplicationView = () => {
     const [error, setError] = useState<string>("");
-    const [cvs, setCvs] = useState<Map<Offer, Application[]>>(new Map<Offer, Application[]>());
+    const [applications, setApplications] = useState<Map<Offer, Application[]>>(new Map<Offer, Application[]>());
     const {t} = useTranslation();
     const [cvsApplicationsApplied, setCvsApplicationsApplied] = useState<boolean>(false);
     const navigate = useNavigate();
@@ -24,7 +24,7 @@ const EmployerApplicationView = () => {
             navigate("/pageNotFound");
             return;
         }
-        if (cvs.size !== 0) {
+        if (applications.size !== 0) {
             return;
         }
         getAllOffersByEmployerId(parseInt(id))
@@ -33,13 +33,13 @@ const EmployerApplicationView = () => {
                 res.data.forEach((offer) => {
                     map.set(offer, []);
                 })
-                setCvs(map);
+                setApplications(map);
             })
             .catch((err) => {
                 setError(err.response.data);
                 console.log(err)
             })
-    }, [navigate, cvs]);
+    }, [navigate, applications]);
 
     useEffect(() => {
         const id = getUserId();
@@ -47,7 +47,7 @@ const EmployerApplicationView = () => {
             navigate("/pageNotFound");
             return;
         }
-        if (cvs.size === 0) {
+        if (applications.size === 0) {
             return;
         };
         if (cvsApplicationsApplied) {
@@ -56,24 +56,24 @@ const EmployerApplicationView = () => {
         getAllApplicationsByEmployerId(parseInt(id!))
             .then((res) => {
                 const dataMap = new Map(Object.entries(res.data));
-                let map2 = new Map(cvs);
+                let map2 = new Map(applications);
                 map2.forEach((value, key) => {
                     if (dataMap.has(key.id!.toString())) {
                         map2.set(key, dataMap.get(key.id!.toString()));
                     }
                 })
-                setCvs(map2);
+                setApplications(map2);
                 setCvsApplicationsApplied(true);
             })
             .catch((err) => {
                 setError(err.response.data);
                 console.log(err)
             })
-    }, [navigate, t, cvs, cvsApplicationsApplied]);
+    }, [navigate, t, applications, cvsApplicationsApplied]);
 
     const getReactElements = () => {
         let elements : ReactElement<any, any>[] = []
-        cvs.forEach((value, key) => {elements.push(makeOfferList(value, key))});
+        applications.forEach((value, key) => {elements.push(makeOfferList(value, key))});
         return elements
     }
 
