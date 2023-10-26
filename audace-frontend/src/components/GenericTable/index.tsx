@@ -21,7 +21,7 @@ const GenericTable = <T,>({
 
   return (
     <>
-    <h2>{t(title)}</h2>
+      <h2 className="mb-3">{t(title)}</h2>
       {error !== "" ? (
         <p className="text-center">{error}</p>
       ) : list.length > 0 ? (
