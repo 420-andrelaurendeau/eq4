@@ -171,4 +171,28 @@ public class SessionManipulatorTest {
 
         assertThat(result).isEqualTo(expected);
     }
+
+    @Test
+    public void getCurrentSessionTest() {
+        Session session = new Session(1L, LocalDate.now(), LocalDate.now().plusMonths(6));
+        when(sessionRepository.findAllByDateBetween(any())).thenReturn(
+                List.of(session)
+        );
+
+        Session result = sessionManipulator.getCurrentSession();
+
+        assertThat(result).isEqualTo(session);
+    }
+
+    @Test
+    public void getSessionByIdTest() {
+        Session session = new Session(1L, LocalDate.now(), LocalDate.now().plusMonths(6));
+        when(sessionRepository.findById(1L)).thenReturn(
+                java.util.Optional.of(session)
+        );
+
+        Session result = sessionManipulator.getSessionById(1L).get();
+
+        assertThat(result).isEqualTo(session);
+    }
 }
