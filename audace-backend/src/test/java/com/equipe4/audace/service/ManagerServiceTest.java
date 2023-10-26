@@ -1,13 +1,13 @@
 package com.equipe4.audace.service;
 
-import com.equipe4.audace.dto.ApplicationDTO;
 import com.equipe4.audace.dto.ManagerDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
@@ -425,12 +425,11 @@ public class ManagerServiceTest {
         Offer offer = new Offer(1L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, department, employer);
         applications.add(new Application(
                 1L,
-                student,
                 cv,
                 offer
         ));
 
-        when(applicationRepository.findApplicationsByApplicationStatusAndStudentDepartmentId(any(), anyLong())).thenReturn(applications);
+        when(applicationRepository.findApplicationsByApplicationStatusAndCv_StudentDepartmentId(any(), anyLong())).thenReturn(applications);
 
         List<ApplicationDTO> result = managerService.getAcceptedApplicationsByDepartment(1L);
 

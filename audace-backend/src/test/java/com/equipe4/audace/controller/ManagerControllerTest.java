@@ -1,12 +1,12 @@
 package com.equipe4.audace.controller;
 
-import com.equipe4.audace.dto.ApplicationDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
@@ -318,7 +318,7 @@ public class ManagerControllerTest {
         Student student = new Student(1L, "firstName", "lastName", "email", "password", "address", "phone", "studentNumber", department);
         Cv cv = new Cv(1L, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
         Offer offer = new Offer(1L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, department, mock(Employer.class));
-        Application application = new Application(1L, student, cv, offer);
+        Application application = new Application(1L, cv, offer);
         applicationDTOList.add(application.toDTO());
         when(managerService.getAcceptedApplicationsByDepartment(1L)).thenReturn(applicationDTOList);
 
@@ -326,16 +326,6 @@ public class ManagerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].id").value(1L))
-                .andExpect(jsonPath("$[0].student.id").value(student.getId()))
-                .andExpect(jsonPath("$[0].student.firstName").value(student.getFirstName()))
-                .andExpect(jsonPath("$[0].student.lastName").value(student.getLastName()))
-                .andExpect(jsonPath("$[0].student.email").value(student.getEmail()))
-                .andExpect(jsonPath("$[0].student.password").value(student.getPassword()))
-                .andExpect(jsonPath("$[0].student.address").value(student.getAddress()))
-                .andExpect(jsonPath("$[0].student.phone").value(student.getPhone()))
-                .andExpect(jsonPath("$[0].student.studentNumber").value(student.getStudentNumber()))
-                .andExpect(jsonPath("$[0].student.department.id").value(student.getDepartment().getId()))
-                .andExpect(jsonPath("$[0].student.department.name").value(student.getDepartment().getName()))
                 .andExpect(jsonPath("$[0].offer.id").value(offer.getId()))
                 .andExpect(jsonPath("$[0].offer.title").value(offer.getTitle()))
                 .andExpect(jsonPath("$[0].offer.description").value(offer.getDescription()))

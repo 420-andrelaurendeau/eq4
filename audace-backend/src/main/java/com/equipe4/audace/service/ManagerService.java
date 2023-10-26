@@ -1,10 +1,10 @@
 package com.equipe4.audace.service;
 
-import com.equipe4.audace.dto.ApplicationDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.Application;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.cv.Cv.CvStatus;
@@ -111,7 +111,7 @@ public class ManagerService extends GenericUserService<Manager> {
 
     public List<ApplicationDTO> getAcceptedApplicationsByDepartment(Long departmentId) {
         return applicationRepository
-                .findApplicationsByApplicationStatusAndStudentDepartmentId(
+                .findApplicationsByApplicationStatusAndCv_StudentDepartmentId(
                         Application.ApplicationStatus.ACCEPTED, departmentId)
                 .stream().map(Application::toDTO).toList();
     }

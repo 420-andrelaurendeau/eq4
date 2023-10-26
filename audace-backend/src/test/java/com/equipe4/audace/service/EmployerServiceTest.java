@@ -1,11 +1,11 @@
 package com.equipe4.audace.service;
 
-import com.equipe4.audace.dto.ApplicationDTO;
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
@@ -352,7 +352,6 @@ public class EmployerServiceTest {
     public void acceptApplication_HappyPath() {
         Application application = new Application(
                 1L,
-                createStudent(),
                 createCv(),
                 createOffer(createEmployer(), createDepartment())
         );
@@ -376,7 +375,6 @@ public class EmployerServiceTest {
         offer.setAvailablePlaces(0);
         Application application = new Application(
                 1L,
-                createStudent(),
                 createCv(),
                 offer
         );
@@ -390,7 +388,6 @@ public class EmployerServiceTest {
     public void acceptApplication_notOwnedByEmployer() {
         Application application = new Application(
                 1L,
-                createStudent(),
                 createCv(),
                 createOffer(createEmployer(), createDepartment())
         );
@@ -404,7 +401,6 @@ public class EmployerServiceTest {
     public void refuseApplication_notOwnedByEmployer() {
         Application application = new Application(
                 1L,
-                createStudent(),
                 createCv(),
                 createOffer(createEmployer(), createDepartment())
         );
@@ -418,7 +414,6 @@ public class EmployerServiceTest {
     public void refuseApplication_HappyPath() {
         Application application = new Application(
                 1L,
-                createStudent(),
                 createCv(),
                 createOffer(createEmployer(), createDepartment())
         );

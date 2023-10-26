@@ -1,10 +1,10 @@
 package com.equipe4.audace.service;
 
-import com.equipe4.audace.dto.ApplicationDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.Application;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
@@ -111,15 +111,13 @@ public class StudentService extends GenericUserService<Student> {
     public Optional<ApplicationDTO> createApplication(ApplicationDTO applicationDTO){
         if(applicationDTO == null) throw new IllegalArgumentException("Application cannot be null");
 
-        Long studentId = applicationDTO.getStudent().getId();
         Long cvId = applicationDTO.getCv().getId();
         Long offerId = applicationDTO.getOffer().getId();
 
-        Student student = studentRepository.findById(studentId).orElseThrow(() -> new NoSuchElementException("Student not found"));
         Cv cv = cvRepository.findById(cvId).orElseThrow(() -> new NoSuchElementException("Cv not found"));
         Offer offer = offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
 
-        Application application = new Application(null, student, cv, offer);
+        Application application = new Application(null, cv, offer);
 
         return Optional.of(applicationRepository.save(application).toDTO());
     }
@@ -130,10 +128,6 @@ public class StudentService extends GenericUserService<Student> {
         }
         List<Cv> cvs = cvRepository.findAllByStudentId(studentId);
 
-        if (cvs.isEmpty()) {
-            throw new NoSuchElementException("No CVs found for student ID: " + studentId);
-        }
-
         return cvs.stream().map(Cv::toDTO).toList();
     }
 
@@ -141,7 +135,7 @@ public class StudentService extends GenericUserService<Student> {
         if (studentId == null) {
             throw new IllegalArgumentException("Student ID cannot be null");
         }
-        return applicationRepository.findApplicationsByStudentId(studentId)
+        return applicationRepository.findApplicationsByCv_StudentDepartmentId(studentId)
                 .stream()
                 .map(Application::toDTO)
                 .map(ApplicationDTO::getOffer)

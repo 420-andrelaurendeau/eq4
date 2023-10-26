@@ -9,6 +9,9 @@ import OffersList from "../../../components/OffersList";
 import { getUserId } from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
 import FileUploader from "../../../components/FileUploader";
+import { getCvsByStudentId } from "../../../services/studentApplicationService";
+import CvsList from "../../../components/CVsListStudent";
+import { useCVContext } from "../../../contextsholders/providers/CVContextHolder";
 import ApplicationsList from "../../../components/ApplicationsList";
 import Application from "../../../model/application";
 import { getApplicationsByStudentId } from "../../../services/studentApplicationService";
@@ -28,8 +31,10 @@ const StudentView = ({
   const [offersError, setOffersError] = useState<string>("");
   const [applications, setApplications] = useState<Application[]>([]);
   const [applicationsError, setApplicationsError] = useState<string>("");
+  const [cvsError, setCvsError] = useState<string>("");
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { setCvs } = useCVContext();
 
   useEffect(() => {
     if (student !== undefined) return;
@@ -46,9 +51,11 @@ const StudentView = ({
         setStudent(res.data);
       })
       .catch((err) => {
-        console.log(err);
-        if (err.request.status === 404)
+        console.error(err);
+        if (err.request && err.request.status === 404) {
           setOffersError(t("studentOffersList.errors.studentNotFound"));
+          setCvsError(t("studentOffersList.errors.studentNotFound"));
+        }
       });
   }, [student, navigate, t]);
 
@@ -60,11 +67,34 @@ const StudentView = ({
         setOffers(res.data);
       })
       .catch((err) => {
+        console.error(err);
+
+        if (err.request && err.request.status === 404) {
+          setOffersError(t("offersList.errors.departmentNotFound"));
+        }
+      });
+
+    getCvsByStudentId(student.id!)
+      .then((res) => {
+        setCvs(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [student, t, setCvs]);
+
+  const handleUploadSuccess = () => {
+    getCvsByStudentId(student!.id!)
+      .then((res) => {
+        setCvs(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
         console.log(err);
         if (err.request.status === 404)
           setOffersError(t("offersList.errors.departmentNotFound"));
       });
-  }, [student, t]);
+  };
 
   useEffect(() => {
     if (student === undefined) return;
@@ -78,11 +108,13 @@ const StudentView = ({
         if (err.request.status === 404)
           setApplicationsError(t("applicationsList.errors.studentNotFound"));
       });
-  }, [student, t]);
+  };
 
   return (
     <Container>
-      <h1 className="my-3">Student view</h1>
+      <h1 className="my-3" style={{ textTransform: "capitalize" }}>
+        {student?.firstName} {student?.lastName}
+      </h1>
       {viewOffers && (
         <>
           <h2>{t("studentOffersList.viewTitle")}</h2>
@@ -93,8 +125,13 @@ const StudentView = ({
           />
         </>
       )}
-      {viewUpload && <FileUploader student={student!} />}
-      <ApplicationsList applications={applications} error={applicationsError} />
+      <CvsList error={cvsError} />
+      {viewUpload && (
+        <FileUploader
+          student={student!}
+          onUploadSuccess={handleUploadSuccess}
+        />
+      )}
     </Container>
   );
 };
