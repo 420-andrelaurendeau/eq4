@@ -168,7 +168,7 @@ public class StudentControllerTest {
         when(studentService.createApplication(any(ApplicationDTO.class))).thenReturn(Optional.of(applicationDTO));
 
         // when - action or behaviour that we are going test
-        ResultActions response = mockMvc.perform(post("/students/{id}/applications", 1L)
+        ResultActions response = mockMvc.perform(post("/students/applications")
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(Optional.of(applicationDTO))));
@@ -194,7 +194,7 @@ public class StudentControllerTest {
         List<OfferDTO> offerDTOList = List.of(mock(OfferDTO.class));
         when(studentService.getOffersStudentApplied(1L)).thenReturn(offerDTOList);
 
-        mockMvc.perform(get("/students/1/appliedOffers"))
+        mockMvc.perform(get("/students/appliedOffers").param("studentId", "1"))
                 .andExpect(status().isOk());
     }
 }

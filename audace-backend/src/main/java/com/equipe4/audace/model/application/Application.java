@@ -12,6 +12,7 @@ import lombok.ToString;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "application_gen")
@@ -30,14 +31,8 @@ public class Application {
     private Offer offer;
     private ApplicationStatus applicationStatus;
 
-    public Application(
-            Long id,
-            Student student,
-            Cv cv,
-            Offer offer
-    ) {
+    public Application(Long id, Cv cv, Offer offer) {
         this.id = id;
-        this.student = student;
         this.cv = cv;
         this.offer = offer;
         this.applicationStatus = ApplicationStatus.PENDING;
@@ -50,11 +45,6 @@ public class Application {
     }
 
     public ApplicationDTO toDTO(){
-        return new ApplicationDTO(
-                id,
-                offer.toDTO(),
-                cv.toDTO(),
-                applicationStatus
-        );
+        return new ApplicationDTO(id, cv.toDTO(), offer.toDTO(), applicationStatus);
     }
 }

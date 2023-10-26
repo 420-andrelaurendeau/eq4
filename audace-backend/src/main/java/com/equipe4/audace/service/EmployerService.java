@@ -1,14 +1,11 @@
 package com.equipe4.audace.service;
 
-import com.equipe4.audace.dto.ApplicationDTO;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.offer.Offer;
-import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
@@ -78,11 +75,9 @@ public class EmployerService extends GenericUserService<Employer> {
 
     public Map<Long, List<ApplicationDTO>> findAllApplicationsByEmployerId(Long employerId){
         Map<Long, List<ApplicationDTO>> map = new HashMap<>();
-
         for (OfferDTO offerDTO: findAllOffersByEmployerId(employerId)) {
             map.put(offerDTO.getId(), applicationRepository.findAllByOffer(offerDTO.fromDTO()).stream().map(Application::toDTO).toList());
         }
-
         return map;
     }
 
@@ -96,24 +91,18 @@ public class EmployerService extends GenericUserService<Employer> {
     }
 
     private Optional<ApplicationDTO> setApplicationStatus(Long employerId, Long applicationId, Application.ApplicationStatus applicationStatus) {
-        Application application = applicationRepository.findById(applicationId).orElseThrow();
-        if (!application.getOffer().getEmployer().getId().equals(employerId)) {
-            throw new IllegalArgumentException("Employer does not own this application");
-        }
+        Application application = applicationRepository.findById(applicationId).orElseThrow(() -> new NoSuchElementException("Application not found"));
+
+        if (!application.getOffer().getEmployer().getId().equals(employerId)) throw new IllegalArgumentException("Employer does not own this application");
+
         if (applicationStatus == Application.ApplicationStatus.ACCEPTED) {
             Offer offer = application.getOffer();
-            Long placesUsed = applicationRepository
-                    .countApplicationsByApplicationStatusAndOffer(
-                            Application.ApplicationStatus.ACCEPTED,
-                            offer
-                    );
-            if (placesUsed >= offer.getAvailablePlaces()) {
-                throw new IllegalArgumentException("No more places available");
-            }
+            Long placesUsed = applicationRepository.countApplicationsByApplicationStatusAndAndOffer(Application.ApplicationStatus.ACCEPTED, offer);
+
+            if (placesUsed >= offer.getAvailablePlaces()) throw new IllegalArgumentException("No more places available");
         }
         application.setApplicationStatus(applicationStatus);
         applicationRepository.save(application);
         return Optional.of(application.toDTO());
     }
-
 }

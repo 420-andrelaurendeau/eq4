@@ -103,7 +103,7 @@ public class StudentService extends GenericUserService<Student> {
             throw new IllegalArgumentException("File cannot be read");
         }
 
-        Cv cv = new Cv(null, student, bytes, fileName);
+        Cv cv = new Cv(null, fileName, bytes, student);
         return Optional.of(cvRepository.save(cv).toDTO());
     }
 
@@ -122,20 +122,17 @@ public class StudentService extends GenericUserService<Student> {
     }
 
     public List<CvDTO> getCvsByStudent(Long studentId) {
-        if (studentId == null) {
-            throw new IllegalArgumentException("Student ID cannot be null");
-        }
+        if (studentId == null) throw new IllegalArgumentException("Student ID cannot be null");
+
         List<Cv> cvs = cvRepository.findAllByStudentId(studentId);
 
         return cvs.stream().map(Cv::toDTO).toList();
     }
 
     public List<OfferDTO> getOffersStudentApplied(Long studentId) {
-        if (studentId == null) {
-            throw new IllegalArgumentException("Student ID cannot be null");
-        }
-        return applicationRepository.findApplicationsByStudentId(studentId)
-                .stream()
+        if (studentId == null) throw new IllegalArgumentException("Student ID cannot be null");
+        Student student = studentRepository.findById(studentId).orElseThrow(() -> new NoSuchElementException("Student not found"));
+        return applicationRepository.findApplicationsByCv_Student(student).stream()
                 .map(Application::toDTO)
                 .map(ApplicationDTO::getOffer)
                 .toList();

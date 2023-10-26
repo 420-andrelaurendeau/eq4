@@ -58,30 +58,18 @@ public class StudentServiceTest {
 
     @Test
     void getOffersByDepartmentAndStatus_happyPath() {
-        Department mockedDepartment = mock(Department.class);
+        Department department = createDepartment();
+        Employer employer = createEmployer();
+
         List<Offer> offers = new ArrayList<>();
+        for (int i = 0; i < 3; i++){
+            Offer offer = createOffer(Long.valueOf(i+1), createEmployer());
+            offer.setOfferStatus(Offer.OfferStatus.ACCEPTED);
+            offers.add(offer);
+        }
 
-        Employer fakeEmployer = new Employer(
-                null,
-                "employer",
-                "employerMan",
-                "employer@email.com",
-                "password",
-                "organisation",
-                "position",
-                "123 Street Street",
-                "1234567890",
-                "-123"
-        );
-
-        Offer mockedOffer = mock(Offer.class);
-        fakeEmployer.getOffers().add(mockedOffer);
-
-        for (int i = 0; i < 3; i++)
-            offers.add(mockedOffer);
-
-        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
-        when(offerRepository.findAllByDepartmentAndOfferStatus(mockedDepartment, Offer.OfferStatus.ACCEPTED)).thenReturn(offers);
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(department));
+        when(offerRepository.findAllByDepartmentAndOfferStatus(department, Offer.OfferStatus.ACCEPTED)).thenReturn(offers);
 
         List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
 
@@ -111,7 +99,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    void createStudent() {
+    void createStudent_HappyPath() {
         StudentDTO studentDTO = createStudentDTO();
 
         when(studentRepository.save(any())).thenReturn(studentDTO.fromDTO());
@@ -126,14 +114,14 @@ public class StudentServiceTest {
     }
 
     @Test
-    void createStudentNullStudent() {
+    void createStudent_NullStudent() {
         assertThatThrownBy(() -> studentService.createStudent(null, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Student cannot be null");
     }
 
     @Test
-    void createStudentAlreadyExists() {
+    void createStudent_AlreadyExists() {
         StudentDTO studentDTO = createStudentDTO();
 
         when(studentRepository.findStudentByStudentNumberOrEmail(anyString(), anyString())).thenReturn(Optional.of(studentDTO.fromDTO()));
@@ -144,7 +132,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    void createStudentDepartmentInvalid() {
+    void createStudent_DepartmentInvalid() {
         StudentDTO studentDTO = createStudentDTO();
 
         when(departmentRepository.findByCode(anyString())).thenReturn(Optional.empty());
@@ -199,7 +187,7 @@ public class StudentServiceTest {
             throw new RuntimeException("Failed to read file");
         }
 
-        Cv cv = new Cv(null, studentDTO.fromDTO(), bytes, fileName);
+        Cv cv = new Cv(null, fileName, bytes, studentDTO.fromDTO());
         CvDTO expected = cv.toDTO();
 
         when(cvRepository.save(any())).thenReturn(cv);
@@ -287,9 +275,8 @@ public class StudentServiceTest {
 
     @Test
     public void createApplication_HappyPath(){
-        Student student = createStudentDTO().fromDTO();
-        Offer offer = createOffer();
-        Cv cv = new Cv(1L, student, new byte[0], "fileName");
+        Offer offer = createOffer(1L, createEmployer());
+        Cv cv = createCv();
         Application application = new Application(null, cv, offer);
 
         ApplicationDTO applicationDTO = application.toDTO();
@@ -312,15 +299,18 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void getOffersStudentApplied() {
-        Student student = mock(Student.class);
-        Offer offer = mock(Offer.class);
-        List<Offer> offers = new ArrayList<>();
-        offers.add(offer);
-        List<Application> applications = new ArrayList<>();
-        applications.add(new Application(1L, student, mock(Cv.class), offer));
+    public void getOffersStudentApplied_HappyPath() {
+        Employer employer = createEmployer();
+        Student student = createStudent();
 
-        when(applicationRepository.findApplicationsByStudentId(anyLong())).thenReturn(applications);
+        List<Offer> offers = new ArrayList<>();
+        offers.add(createOffer(1L, employer));
+
+        List<Application> applications = new ArrayList<>();
+        applications.add(new Application(1L, createCv(), offers.get(0)));
+
+        when(studentRepository.findById(1L)).thenReturn(Optional.of(student));
+        when(applicationRepository.findApplicationsByCv_Student(any(Student.class))).thenReturn(applications);
 
         List<OfferDTO> result = studentService.getOffersStudentApplied(1L);
 
@@ -339,13 +329,21 @@ public class StudentServiceTest {
         return new Department(1L, "GLO", "Génie logiciel");
     }
 
-    private EmployerDTO createEmployerDTO() {
-        return new EmployerDTO(1L, "Employer1", "Employer1", "employer1@gmail.com", "123456eE", "Organisation1", "Position1", "Class Service, Javatown, Qc H8N1C1", "123-456-7890", "12345");
+    private Employer createEmployer() {
+        return new Employer(1L, "Employer1", "Employer1", "employer1@gmail.com", "123456eE", "Organisation1", "Position1", "Class Service, Javatown, Qc H8N1C1", "123-456-7890", "12345");
+    }
+    private Student createStudent() {
+        Department department = createDepartment();
+        return new Student(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", department);
     }
 
-    private Offer createOffer() {
-        Employer employer = createEmployerDTO().fromDTO();
-        Department department = createDepartment();
-        return new Offer(1L,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
+    private Cv createCv() {
+        return new Cv(1L,"fileName", "content".getBytes(),createStudent());
     }
+
+    private Offer createOffer(Long id, Employer employer) {
+        Department department = createDepartment();
+        return new Offer(id,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
+    }
+
 }

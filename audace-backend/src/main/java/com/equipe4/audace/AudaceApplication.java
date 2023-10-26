@@ -45,111 +45,28 @@ public class AudaceApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Department department = departmentRepository.save(new Department(null, "GLO", "Génie logiciel"));
 
-		Optional<EmployerDTO> optionalEmployerDTO = employerService.createEmployer(
-				new EmployerDTO(
-						null,
-						"employer",
-						"employerMan",
-						"employer@email.com",
-						"password",
-						"organisation",
-						"position",
-						"123 Street Street",
-						"1234567890",
-						"-123"
-				)
-		);
-
-		if (optionalEmployerDTO.isEmpty()) {
-			return;
-		}
-
+		Optional<EmployerDTO> optionalEmployerDTO = employerService.createEmployer(new EmployerDTO(1L, "employer", "employerman", "employer@email.com", "password", "Temp Baklungel", "Big Baklunger", "123 Street Street", "1234567890", "-123"));
+		if (optionalEmployerDTO.isEmpty()) return;
 		EmployerDTO employerDTO = optionalEmployerDTO.get();
 		Employer employer = employerDTO.fromDTO();
 
-		employerService.createOffer(
-				new OfferDTO(
-						null,
-						"Stage en génie logiciel PROTOTYPE",
-						"Stage en génie logiciel",
-						LocalDate.now(),
-						LocalDate.now(),
-						LocalDate.now(),
-						3,
-						Offer.OfferStatus.ACCEPTED,
-						department.toDTO(),
-						employerDTO
-				)
-		);
+		employerService.createOffer(new OfferDTO(null, "Stage en génie logiciel PROTOTYPE", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, Offer.OfferStatus.ACCEPTED, department.toDTO(), employerDTO));
 
-		Student student = new Student(
-				null,
-				"student",
-				"studentman",
-				"student@email.com",
-				"password",
-				"123 Street Street",
-				"1234567890",
-				"123456789",
-				department
-		);
-
+		Student student = new Student(2L, "Kylian", "Mbappe", "kylian@live.fr", "123123", "34 de Montpellier", "4387654545", "2080350", department);
 		Optional<StudentDTO> optionalStudent = studentService.createStudent(student.toDTO(), department.getCode());
-
-		if (optionalStudent.isEmpty()) {
-			return;
-		}
-
+		if (optionalStudent.isEmpty()) return;
 		student = optionalStudent.get().fromDTO();
 
-		Offer offer1 = new Offer(
-				null,
-				"Stage en génie logiciel PROTOTYPE",
-				"Stage en génie logiciel",
-				LocalDate.now(),
-				LocalDate.now(),
-				LocalDate.now(),
-				3,
-				department,
-				employer
-		);
+		Offer offer1 = new Offer(null,"Stage en génie spaget car c'est bon du spaget pour le dîner miam", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
+		offer1.setOfferStatus(Offer.OfferStatus.ACCEPTED);
 
-		Offer offer2 = new Offer(
-				null,
-				"Stage en génie logiciel chez Roc-a-Fella Records",
-				"Stage en génie logiciel",
-				LocalDate.now(),
-				LocalDate.now(),
-				LocalDate.now(),
-				3,
-                department,
-                employer
-		);
+		Offer offer2 = new Offer(null,"Stage en génie logiciel chez Roc-a-Fella Records", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
 		offer2.setOfferStatus(Offer.OfferStatus.ACCEPTED);
 
-		Offer offer3 = new Offer(
-				null,
-				"Stage en génie logiciel chez Google",
-				"Stage en génie logiciel",
-				LocalDate.now(),
-				LocalDate.now(),
-				LocalDate.now(),
-				3,
-				department,
-				employer
-		);
+		Offer offer3 = new Offer(null,"Stage en génie logiciel chez Google", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
 
-		Offer offer4 = new Offer(
-				null,
-				"Stage en génie logiciel chez Microsoft",
-				"Stage en génie logiciel",
-				LocalDate.now(),
-				LocalDate.now(),
-				LocalDate.now(),
-				3,
-				department,
-				employer
-		);
+		Offer offer4 = new Offer(null,"Stage en génie logiciel chez Microsoft", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
+		offer4.setOfferStatus(Offer.OfferStatus.ACCEPTED);
 
 		employer.getOffers().add(offer1);
 		employer.getOffers().add(offer2);
@@ -160,7 +77,7 @@ public class AudaceApplication implements CommandLineRunner {
 		String cvContent = "cv content for fun";
 		byte[] content = cvContent.getBytes();
 
-		Cv cv = new Cv(1L, student, content, "cv.pdf");
+		Cv cv = new Cv(1L, "cv.pdf", content, student);
 		cvRepository.save(cv);
 
 		Manager manager = new Manager(null, "manager", "managerman", "manager@email.com", "password", "yeete", "1234567890", department);

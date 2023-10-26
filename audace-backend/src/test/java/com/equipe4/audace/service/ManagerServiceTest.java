@@ -287,7 +287,7 @@ public class ManagerServiceTest {
         Department mockedDepartment = mock(Department.class);
         Student student = new Student(1L, "firstName", "lastName", "email", "password", "address", "phone", "studentNumber", mockedDepartment);
         List<Cv> listCvs = new ArrayList<>();
-        listCvs.add(new Cv(null, student, new byte[10], "cv"));
+        listCvs.add(new Cv(null, "cv", new byte[10], student));
 
         when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(listCvs);
 
@@ -316,22 +316,12 @@ public class ManagerServiceTest {
 
     @Test
     public void acceptCv() {
-        Student student = mock(Student.class);
-        Cv cv = new Cv(null, student, "Monkey Enthusiast needs more sleep".getBytes(), "cv");
-        Department department = new Department(2L, "code", "name");
-        Manager manager = new Manager(
-                1L,
-                "firstName",
-                "lastName",
-                "email",
-                "password",
-                "address",
-                "phone",
-                department
-        );
+        Cv cv = createCv();
+        Department department = createDepartment();
+        Manager manager = new Manager(1L, "firstName", "lastName", "email", "password", "address", "phone", department);
+
         when(cvRepository.findById(1L)).thenReturn(Optional.of(cv));
         when(cvRepository.save(any())).thenReturn(cv);
-        when(cv.getStudent().getDepartment()).thenReturn(department);
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
         Optional<CvDTO> cvDTO = managerService.acceptCv(1L, 1L);
@@ -351,22 +341,11 @@ public class ManagerServiceTest {
 
     @Test
     public void acceptCv_wrongDepartment() {
-        Student student = mock(Student.class);
-        Cv cv = new Cv(null, student, "Monkey Enthusiast needs more sleep".getBytes(), "cv");
-        Department department = new Department(2L, "code", "name");
+        Cv cv = createCv();
         Department department2 = new Department(3L, "code2", "name2");
-        Manager manager = new Manager(
-                1L,
-                "firstName",
-                "lastName",
-                "email",
-                "password",
-                "address",
-                "phone",
-                department2
-        );
+        Manager manager = new Manager(1L, "firstName", "lastName", "email", "password", "address", "phone", department2);
+
         when(cvRepository.findById(1L)).thenReturn(Optional.of(cv));
-        when(cv.getStudent().getDepartment()).thenReturn(department);
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
         assertThatThrownBy(() -> managerService.acceptCv(1L, 1L))
@@ -375,23 +354,13 @@ public class ManagerServiceTest {
     }
 
     @Test
-    public void refuseCv() {
-        Student student = mock(Student.class);
-        Cv cv = new Cv(null, student, "Monkey Enthusiast needs more sleep".getBytes(), "cv");
-        Department department = new Department(2L, "code", "name");
-        Manager manager = new Manager(
-                1L,
-                "firstName",
-                "lastName",
-                "email",
-                "password",
-                "address",
-                "phone",
-                department
-        );
+    public void refuseCv_HappyPath() {
+        Cv cv = createCv();
+        Department department = createDepartment();
+        Manager manager = new Manager(1L, "firstName", "lastName", "email", "password", "address", "phone", department);
+
         when(cvRepository.findById(1L)).thenReturn(Optional.of(cv));
         when(cvRepository.save(any())).thenReturn(cv);
-        when(cv.getStudent().getDepartment()).thenReturn(department);
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
         Optional<CvDTO> cvDTO = managerService.refuseCv(1L, 1L);
@@ -402,18 +371,14 @@ public class ManagerServiceTest {
             assert(false);
         }
     }
-
     @Test
     public void refuseCv_Invalid_Id() {
         when(cvRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
         assertThrows(EntityNotFoundException.class, () -> managerService.refuseCv(1L, 1L));
     }
-
     @Test
     public void refuseCv_wrongDepartment() {
-        Student student = mock(Student.class);
-        Cv cv = new Cv(null, student, "Monkey Enthusiast needs more sleep".getBytes(), "cv");
-        Department department = new Department(2L, "code", "name");
+        Cv cv = createCv();
         Department department2 = new Department(3L, "code2", "name2");
         Manager manager = new Manager(
                 1L,
@@ -426,11 +391,31 @@ public class ManagerServiceTest {
                 department2
         );
         when(cvRepository.findById(1L)).thenReturn(Optional.of(cv));
-        when(cv.getStudent().getDepartment()).thenReturn(department);
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
         assertThatThrownBy(() -> managerService.refuseCv(1L, 1L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("The manager isn't in the right department");
+    }
+
+    private Department createDepartment(){
+        return new Department(1L, "GLO", "Génie logiciel");
+    }
+
+    private Employer createEmployer() {
+        return new Employer(1L, "Employer1", "Employer1", "employer1@gmail.com", "123456eE", "Organisation1", "Position1", "Class Service, Javatown, Qc H8N1C1", "123-456-7890", "12345");
+    }
+    private Student createStudent() {
+        Department department = createDepartment();
+        return new Student(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", department);
+    }
+
+    private Cv createCv() {
+        return new Cv(1L,"fileName", "content".getBytes(),createStudent());
+    }
+
+    private Offer createOffer(Long id, Employer employer) {
+        Department department = createDepartment();
+        return new Offer(id,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
     }
 }

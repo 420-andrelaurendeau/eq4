@@ -201,7 +201,7 @@ public class ManagerControllerTest {
     public void acceptCv() throws Exception {
         Student student = mock(Student.class);
         CvDTO cvDTO = mock(CvDTO.class);
-        Cv cv = new Cv(null, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
+        Cv cv = new Cv(null, "One must imagine whoever puts the rock on top of the mountain happy", "cv".getBytes(), student);
         when(managerService.acceptCv(1L, 1L)).thenReturn(Optional.of(cvDTO));
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -217,7 +217,7 @@ public class ManagerControllerTest {
     public void refuseCv() throws Exception {
         Student student = mock(Student.class);
         CvDTO cvDTO = mock(CvDTO.class);
-        Cv cv = new Cv(null, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
+        Cv cv = new Cv(null, "One must imagine whoever puts the rock on top of the mountain happy", "cv".getBytes(), student);
         when(managerService.refuseCv(1L, 1L)).thenReturn(Optional.of(cvDTO));
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -232,7 +232,7 @@ public class ManagerControllerTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void acceptCv_invalidId() throws Exception {
         Student student = new Student();
-        Cv cv = new Cv(null, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
+        Cv cv = new Cv(null, "One must imagine whoever puts the rock on top of the mountain happy", "cv".getBytes(), student);
         when(managerService.acceptCv(1L, 1L)).thenReturn(Optional.empty());
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -248,7 +248,7 @@ public class ManagerControllerTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void refuseCv_invalidId() throws Exception {
         Student student = new Student();
-        Cv cv = new Cv(null, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
+        Cv cv = new Cv(null, "One must imagine whoever puts the rock on top of the mountain happy", "cv".getBytes(), student);
         when(managerService.refuseCv(1L, 1L)).thenReturn(Optional.empty());
 
         RequestBuilder request = MockMvcRequestBuilders

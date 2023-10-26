@@ -24,9 +24,9 @@ public class StudentController extends GenericUserController<Student, StudentSer
         super(studentService);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<StudentDTO> getStudentById(@PathVariable Long id) {
-        return service.getStudentById(id)
+    @GetMapping("/{studentId}")
+    public ResponseEntity<StudentDTO> getStudentById(@PathVariable Long studentId) {
+        return service.getStudentById(studentId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -66,9 +66,9 @@ public class StudentController extends GenericUserController<Student, StudentSer
         }
     }
 
-    @PostMapping("/{id}/applications")
+    @PostMapping("/applications")
     public ResponseEntity<HttpStatus> createApplication(@RequestBody ApplicationDTO applicationDTO){
-        logger.info("createOffer");
+        logger.info("createApplication");
         try {
             service.createApplication(applicationDTO);
         } catch (NoSuchElementException e) {
@@ -81,8 +81,8 @@ public class StudentController extends GenericUserController<Student, StudentSer
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("{studentId}/appliedOffers")
-    public ResponseEntity<List<OfferDTO>> getOffersStudentApplied(@PathVariable Long studentId) {
+    @GetMapping("/appliedOffers")
+    public ResponseEntity<List<OfferDTO>> getOffersStudentApplied(@RequestParam("studentId") Long studentId) {
         logger.info("getOffersStudentApplied");
 
         List<OfferDTO> offersList;
