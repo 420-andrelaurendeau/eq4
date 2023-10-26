@@ -10,7 +10,6 @@ import {
   getAllSessions,
   getCurrentSession,
 } from "../../services/sessionService";
-import { isConnected } from "../../services/authService";
 
 interface SessionProviderProps {
   children: ReactNode;
