@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import CvsList from '../components/CvsList';
 import { UserType } from '../model/user';
 import { CVStatus } from '../model/cv';
