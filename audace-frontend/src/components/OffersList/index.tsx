@@ -17,11 +17,11 @@ const OffersList = ({ offers, error, userType, updateOffersState }: Props) => {
 
   return (
     <>
+      <SessionSelector />
       {error !== "" ? (
         <p>{error}</p>
       ) : offers.length > 0 ? (
         <>
-        <SessionSelector />
           <Table striped bordered hover size="sm">
             <thead>
               <tr>
