@@ -8,7 +8,11 @@ export const getStudentOffersByDepartment = async (departmentId: number): Promis
     return http.get<Offer[]>(`${STUDENT_PREFIX}/offers/${departmentId}`);
 }
 export const getAllOffersByEmployerId = async (employerId: number): Promise<AxiosResponse<Offer[]>> =>{
-    return http.get(`${EMPLOYER_PREFIX}/offers`);
+    return http.get(`${EMPLOYER_PREFIX}/offers`, {
+        params: {
+            employerId
+        }
+    });
 }
 export const employerCreateOffer = async (offer: Offer): Promise<AxiosResponse> => {
     return http.post(`${EMPLOYER_PREFIX}/offers`, offer)

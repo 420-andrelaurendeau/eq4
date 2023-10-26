@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {Button, Container} from "react-bootstrap";
 import {useTranslation} from "react-i18next";
-import { Offer } from "../../../model/offer";
 import { Employer, UserType } from "../../../model/user";
 import { useNavigate } from "react-router";
 import { getUserId } from "../../../services/authService";
 import { getEmployerById } from "../../../services/userService";
-import { getAllOffersByEmployerId } from "../../../services/offerService";
 
 const EmployerView = () => {
     const [employer, setEmployer] = useState<Employer>();
-    const [offers, setOffers] = useState<Offer[]>([]);
     const [error, setError] = useState<string>("");
     const {t} = useTranslation();
     const navigate = useNavigate();
@@ -26,6 +23,7 @@ const EmployerView = () => {
         getEmployerById(parseInt(id!))
             .then((res) => {
                 setEmployer(res.data);
+                console.log(employer);
             })
             .catch((err) => {
                 console.log(err)
@@ -42,7 +40,7 @@ const EmployerView = () => {
 
     return (
         <Container>
-            <h1 className="my-3">{employer!.firstName} {employer!.lastName}</h1>
+            <h1 className="my-3">Employer</h1>
             <Button onClick={seeOffers}>{t("employer.seeOffersButton")}</Button>
             <Button className="mx-2" onClick={seeApplications}>{t("employer.seeApplicationsButton")}</Button>
         </Container>
