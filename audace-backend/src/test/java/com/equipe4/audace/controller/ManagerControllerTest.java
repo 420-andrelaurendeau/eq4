@@ -307,7 +307,7 @@ public class ManagerControllerTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void getCvsByDepartment() throws Exception {
         List<CvDTO> cvDTOList = List.of(mock(CvDTO.class));
-        when(managerService.getCvsByDepartment(1L)).thenReturn(cvDTOList);
+        when(managerService.getCvsByDepartment(1L, 1L)).thenReturn(cvDTOList);
 
         mockMvc.perform(get("/managers/cvs/1"))
                 .andExpect(status().isOk());

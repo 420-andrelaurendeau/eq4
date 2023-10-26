@@ -110,9 +110,13 @@ public class ManagerService extends GenericUserService<Manager> {
         return Optional.of(cvRepository.save(cv).toDTO());
     }
 
-    public List<CvDTO> getCvsByDepartment(Long departmentId) {
-        return cvRepository
-                .findAllByStudentDepartmentId(departmentId)
-                .stream().map(Cv::toDTO).toList();
+    public List<CvDTO> getCvsByDepartment(Long departmentId, Long sessionId) {
+        List<Cv> cvs = cvRepository.findAllByStudentDepartmentId(departmentId);
+
+        return sessionManipulator
+                .removeCvsBelongingToStudentNotInSession(cvs, sessionId)
+                .stream()
+                .map(Cv::toDTO)
+                .toList();
     }
 }

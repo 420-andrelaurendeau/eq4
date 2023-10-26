@@ -279,7 +279,7 @@ public class ManagerServiceTest {
 
         when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(listCvs);
 
-        List<CvDTO> result = managerService.getCvsByDepartment(1L);
+        List<CvDTO> result = managerService.getCvsByDepartment(1L, 1L);
 
         assertThat(result.size()).isEqualTo(1);
     }
@@ -288,7 +288,7 @@ public class ManagerServiceTest {
     public void getCvsByDepartment_invalidDepartmentId() {
         when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(new ArrayList<>());
 
-        assertThat(managerService.getCvsByDepartment(1L).size()).isEqualTo(0);
+        assertThat(managerService.getCvsByDepartment(1L, 1L).size()).isEqualTo(0);
     }
 
     @Test
@@ -297,7 +297,7 @@ public class ManagerServiceTest {
 
         when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(listCvs);
 
-        List<CvDTO> result = managerService.getCvsByDepartment(1L);
+        List<CvDTO> result = managerService.getCvsByDepartment(1L, 1L);
 
         assertThat(result.size()).isEqualTo(0);
     }

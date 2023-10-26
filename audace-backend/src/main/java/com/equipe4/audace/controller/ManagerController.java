@@ -49,10 +49,10 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
         return ResponseEntity.ok(service.getOffersByDepartment(departmentId, sessionId));
     }
 
-    @GetMapping("/cvs/{departmentId}")
-    public ResponseEntity<List<CvDTO>> getCvsByDepartment(@PathVariable Long departmentId) {
+    @GetMapping("/cvs/{departmentId}/{sessionId}")
+    public ResponseEntity<List<CvDTO>> getCvsByDepartment(@PathVariable Long departmentId, @PathVariable Long sessionId) {
         logger.info("getCvsByDepartment");
-        return ResponseEntity.ok(service.getCvsByDepartment(departmentId));
+        return ResponseEntity.ok(service.getCvsByDepartment(departmentId, sessionId));
     }
 
     @PostMapping("/{managerId}/accept_cv/{cvId}")
