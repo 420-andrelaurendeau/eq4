@@ -37,11 +37,9 @@ public class AudaceApplication implements CommandLineRunner {
 	private DepartmentRepository departmentRepository;
 	private EmployerRepository employerRepository;
 	private EmployerService employerService;
-	private CvRepository cvRepository;
 	private SaltRepository saltRepository;
 	private ManagerRepository managerRepository;
 	private StudentService studentService;
-	private ApplicationRepository applicationRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AudaceApplication.class, args);

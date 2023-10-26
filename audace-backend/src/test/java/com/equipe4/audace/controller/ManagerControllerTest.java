@@ -2,6 +2,7 @@ package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
@@ -335,5 +336,25 @@ public class ManagerControllerTest {
                 .andExpect(jsonPath("$[0].offer.department.id").value(offer.getDepartment().getId()))
                 .andExpect(jsonPath("$[0].offer.department.name").value(offer.getDepartment().getName()))
                 .andExpect(jsonPath("$[0].applicationStatus").value(application.getApplicationStatus().toString()));
+    }
+    @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
+    public void getDepartments() throws Exception {
+        List<DepartmentDTO> departmentDTOList = List.of(
+                new DepartmentDTO(1L, "Department 1", "Department 1"),
+                new DepartmentDTO(2L, "Department 2", "Department 2")
+        );
+
+        when(managerService.getDepartments()).thenReturn(departmentDTOList);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/managers/departments")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].name").value("Department 1"))
+                .andExpect(jsonPath("$[1].id").value(2L))
+                .andExpect(jsonPath("$[1].name").value("Department 2"));
     }
 }

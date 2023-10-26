@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/ManagerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/ManagerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/ManagerServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/ManagerServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/AudaceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/AudaceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/controller/ManagerControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/controller/ManagerControllerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +95,38 @@
       <recent name="com.equipe4.audace.controller" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ManagerServiceTest.getDepartments_happyPath">
+  <component name="RunManager" selected="JUnit.ManagerControllerTest.getDepartments">
+    <configuration name="ManagerControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="audace" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.equipe4.audace.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.equipe4.audace.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.controller.ManagerControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ManagerControllerTest.getDepartments" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="audace" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.equipe4.audace.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.equipe4.audace.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.controller.ManagerControllerTest" />
+      <option name="METHOD_NAME" value="getDepartments" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ManagerServiceTest.getDepartments_happyPath" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="audace" />
       <extension name="coverage">
@@ -107,21 +139,6 @@
       <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.service.ManagerServiceTest" />
       <option name="METHOD_NAME" value="getDepartments_happyPath" />
       <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="StudentControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="audace" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.equipe4.audace.controller.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.equipe4.audace.controller" />
-      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.controller.StudentControllerTest" />
-      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -141,22 +158,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="StudentServiceTest.getCvsByStudent" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="audace" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.equipe4.audace.service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.equipe4.audace.service" />
-      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.service.StudentServiceTest" />
-      <option name="METHOD_NAME" value="getCvsByStudent" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="AudaceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
       <module name="audace" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.equipe4.audace.AudaceApplication" />
@@ -172,11 +173,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ManagerControllerTest.getDepartments" />
+        <item itemvalue="JUnit.ManagerControllerTest" />
         <item itemvalue="JUnit.ManagerServiceTest.getDepartments_happyPath" />
         <item itemvalue="Spring Boot.AudaceApplication" />
         <item itemvalue="JUnit.StudentServiceTest" />
-        <item itemvalue="JUnit.StudentControllerTest" />
-        <item itemvalue="JUnit.StudentServiceTest.getCvsByStudent" />
       </list>
     </recent_temporary>
   </component>
@@ -216,7 +217,7 @@
       <workItem from="1697923478207" duration="11307000" />
       <workItem from="1698333330390" duration="160000" />
       <workItem from="1698333584907" duration="1872000" />
-      <workItem from="1698335490905" duration="7102000" />
+      <workItem from="1698335490905" duration="7730000" />
     </task>
     <servers />
   </component>
