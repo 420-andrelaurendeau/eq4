@@ -20,6 +20,7 @@ const OffersList = ({ offers, error, userType, updateOffersState }: Props) => {
         list={offers}
         error={error}
         emptyListMessage="offersList.noOffers"
+        title="studentOffersList.viewTitle"
       >
         <thead>
           <tr>

@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import SessionSelector from "../SessionSelector";
 import { useTranslation } from "react-i18next";
 import { Table } from "react-bootstrap";
 
@@ -8,6 +7,7 @@ interface Props<T> {
   error: string;
   children: ReactNode;
   emptyListMessage: string;
+  title: string;
 }
 
 const GenericTable = <T,>({
@@ -15,12 +15,13 @@ const GenericTable = <T,>({
   error,
   children,
   emptyListMessage,
+  title,
 }: Props<T>) => {
   const { t } = useTranslation();
 
   return (
     <>
-      <SessionSelector />
+    <h2>{t(title)}</h2>
       {error !== "" ? (
         <p className="text-center">{error}</p>
       ) : list.length > 0 ? (

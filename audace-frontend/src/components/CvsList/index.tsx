@@ -16,7 +16,12 @@ const CvsList = ({ cvs, error, userType, updateCvsState }: Props) => {
 
   return (
     <>
-      <GenericTable list={cvs} error={error} emptyListMessage="cvsList.noCvs">
+      <GenericTable
+        list={cvs}
+        error={error}
+        emptyListMessage="cvsList.noCvs"
+        title="cvsList.name"
+      >
         <thead>
           <tr>
             <th>{t("cvsList.studentName")}</th>
