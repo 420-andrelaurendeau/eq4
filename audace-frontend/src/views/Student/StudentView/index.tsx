@@ -12,6 +12,7 @@ import FileUploader from "../../../components/FileUploader";
 import { getCvsByStudentId } from "../../../services/studentApplicationService";
 import CvsList from "../../../components/CVsListStudent";
 import { useCVContext } from "../../../contextsholders/providers/CVContextHolder";
+import { useSessionContext } from "../../../contextsholders/providers/SessionContextHolder";
 
 interface StudentViewProps {
   viewOffers?: boolean;
@@ -29,6 +30,7 @@ const StudentView = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { setCvs } = useCVContext();
+  const { currentSession, setCurrentSession } = useSessionContext();
 
   useEffect(() => {
     if (student !== undefined) return;
