@@ -9,18 +9,29 @@ import OffersList from "../../../components/OffersList";
 import { getUserId } from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
 import FileUploader from "../../../components/FileUploader";
+import { getCvsByStudentId } from "../../../services/studentApplicationService";
+import { useCVContext } from "../../../contextsholders/providers/CVContextHolder";
+import { useSessionContext } from "../../../contextsholders/providers/SessionContextHolder";
+import CvsList from "../../../components/CvsList";
+import SessionSelector from "../../../components/SessionSelector";
 
 interface StudentViewProps {
   viewOffers?: boolean;
   viewUpload?: boolean;
 }
 
-const StudentView = ({ viewOffers = true, viewUpload = true }: StudentViewProps) => {
+const StudentView = ({
+  viewOffers = true,
+  viewUpload = true,
+}: StudentViewProps) => {
   const [student, setStudent] = useState<Student>();
   const [offers, setOffers] = useState<Offer[]>([]);
-  const [error, setError] = useState<string>("");
+  const [offersError, setOffersError] = useState<string>("");
+  const [cvsError, setCvsError] = useState<string>("");
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { setCvs, cvs } = useCVContext();
+  const { currentSession } = useSessionContext();
 
   useEffect(() => {
     if (student !== undefined) return;
@@ -37,37 +48,72 @@ const StudentView = ({ viewOffers = true, viewUpload = true }: StudentViewProps)
         setStudent(res.data);
       })
       .catch((err) => {
-        console.log(err);
-        if (err.request.status === 404)
-          setError(t("studentOffersList.errors.studentNotFound"));
+        console.error(err);
+        if (err.request && err.request.status === 404) {
+          setOffersError(t("studentOffersList.errors.studentNotFound"));
+          setCvsError(t("studentOffersList.errors.studentNotFound"));
+        }
       });
   }, [student, navigate, t]);
 
   useEffect(() => {
     if (student === undefined) return;
+    if (currentSession === undefined) return;
 
-    getStudentOffersByDepartment(student.department!.id!)
+    getStudentOffersByDepartment(student.department!.id!, currentSession.id)
       .then((res) => {
         setOffers(res.data);
       })
       .catch((err) => {
-        console.log(err);
-        if (err.request.status === 404)
-          setError(t("offersList.errors.departmentNotFound"));
+        console.error(err);
+
+        if (err.request && err.request.status === 404) {
+          setOffersError(t("offersList.errors.departmentNotFound"));
+        }
       });
-  }, [student, t]);
+
+    getCvsByStudentId(student.id!)
+      .then((res) => {
+        setCvs(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [student, t, setCvs, currentSession]);
+
+  const handleUploadSuccess = () => {
+    getCvsByStudentId(student!.id!)
+      .then((res) => {
+        setCvs(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   return (
     <Container>
-      <h1 className="my-3">Student view</h1>
+      <h1 className="my-3" style={{ textTransform: "capitalize" }}>
+        {student?.firstName} {student?.lastName}
+      </h1>
+
+      <SessionSelector />
+
       {viewOffers && (
         <>
-          <h2>{t("studentOffersList.viewTitle")}</h2>
-          <OffersList offers={offers} error={error} userType={UserType.Student} />
+          <OffersList
+            offers={offers}
+            error={offersError}
+            userType={UserType.Student}
+          />
         </>
       )}
+      <CvsList error={cvsError} cvs={cvs} userType={UserType.Student} />
       {viewUpload && (
-        <FileUploader student={student!} />
+        <FileUploader
+          student={student!}
+          onUploadSuccess={handleUploadSuccess}
+        />
       )}
     </Container>
   );

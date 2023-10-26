@@ -8,14 +8,14 @@ import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
-import com.equipe4.audace.model.offer.OfferSession;
 import com.equipe4.audace.model.security.Salt;
+import com.equipe4.audace.model.session.OfferSession;
 import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
-import com.equipe4.audace.repository.offer.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.StudentService;
@@ -47,6 +47,7 @@ public class AudaceApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		Session session = sessionRepository.save(new Session(null, LocalDate.now(), LocalDate.now().plusMonths(6)));
+		Session session2 = sessionRepository.save(new Session(null, LocalDate.now().plusMonths(-6), LocalDate.now().plusMonths(-1)));
 
 		Department department = departmentRepository.save(new Department(null, "GLO", "Génie logiciel"));
 

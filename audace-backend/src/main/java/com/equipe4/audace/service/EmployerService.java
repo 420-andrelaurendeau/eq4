@@ -4,11 +4,11 @@ import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.offer.Offer;
-import com.equipe4.audace.model.offer.OfferSession;
+import com.equipe4.audace.model.session.OfferSession;
 import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
-import com.equipe4.audace.repository.offer.OfferSessionRepository;
+import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.transaction.Transactional;
@@ -68,12 +68,12 @@ public class EmployerService extends GenericUserService<Employer> {
     }
 
     @Transactional
-    public List<OfferDTO> findAllOffersByEmployerId(Long employerId){
+    public List<OfferDTO> findAllOffersByEmployerId(Long employerId, Long sessionId){
         Employer employer = employerRepository.findById(employerId).orElseThrow();
         List<Offer> offers = offerRepository.findAllByEmployer(employer);
 
         return sessionManipulator
-                .removeOffersNotInCurrentSession(offers)
+                .removeOffersNotInSession(offers, sessionId)
                 .stream()
                 .map(Offer::toDTO)
                 .toList();

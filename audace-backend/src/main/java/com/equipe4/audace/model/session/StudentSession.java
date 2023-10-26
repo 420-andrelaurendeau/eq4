@@ -1,6 +1,6 @@
-package com.equipe4.audace.model.offer;
+package com.equipe4.audace.model.session;
 
-import com.equipe4.audace.model.session.Session;
+import com.equipe4.audace.model.Student;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OfferSession {
+public class StudentSession {
     @Id
     @GeneratedValue
     private Long id;
 
     @OneToOne
-    private Offer offer;
+    private Student student;
 
     @ManyToOne
     private Session session;

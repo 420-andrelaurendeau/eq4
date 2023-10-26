@@ -1,9 +1,9 @@
 package com.equipe4.audace.controller;
 
-import com.equipe4.audace.dto.ApplicationDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.Application;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.cv.Cv;
@@ -16,7 +16,7 @@ import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
-import com.equipe4.audace.repository.offer.OfferSessionRepository;
+import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.service.EmployerService;
@@ -102,9 +102,9 @@ public class StudentControllerTest {
     @WithMockUser(username = "student", authorities = {"STUDENT"})
     public void getOffersByDepartment_happyPath() throws Exception {
         List<OfferDTO> offerDTOList = List.of(mock(OfferDTO.class));
-        when(studentService.getAcceptedOffersByDepartment(1L)).thenReturn(offerDTOList);
+        when(studentService.getAcceptedOffersByDepartment(1L, 1L)).thenReturn(offerDTOList);
 
-        mockMvc.perform(get("/students/offers/1"))
+        mockMvc.perform(get("/students/offers/1/1"))
                 .andExpect(status().isOk());
     }
 
@@ -170,7 +170,7 @@ public class StudentControllerTest {
         Cv cv = mock(Cv.class);
 
         Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
-        Application application = new Application(1L, student, cv, offer);
+        Application application = new Application(1L, cv, offer);
         ApplicationDTO applicationDTO = application.toDTO();
 
         when(studentService.createApplication(any(ApplicationDTO.class))).thenReturn(Optional.of(applicationDTO));
@@ -183,8 +183,7 @@ public class StudentControllerTest {
 
         // then - verify the result or output using assert statements
         response.andDo(print()).
-                andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(1L));
+                andExpect(status().isCreated());
     }
 
     @Test

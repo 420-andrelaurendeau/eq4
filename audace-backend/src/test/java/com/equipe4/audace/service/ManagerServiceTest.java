@@ -87,6 +87,7 @@ public class ManagerServiceTest {
         when(offerRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
         assertThrows(EntityNotFoundException.class, () -> managerService.acceptOffer(1L, 1L));
     }
+
     @Test
     public void acceptOffer_wrongDepartment() {
         Employer employer = mock(Employer.class);
@@ -161,6 +162,7 @@ public class ManagerServiceTest {
         when(offerRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
         assertThrows(EntityNotFoundException.class, () -> managerService.refuseOffer(1L, 1L));
     }
+
     @Test
     public void refuseOffer_wrongDepartment() {
         Employer employer = mock(Employer.class);
@@ -210,9 +212,9 @@ public class ManagerServiceTest {
 
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
         when(offerRepository.findAllByDepartment(mockedDepartment)).thenReturn(offers);
-        when(sessionManipulator.removeOffersNotInCurrentSession(offers)).thenReturn(offers);
+        when(sessionManipulator.removeOffersNotInSession(offers, 1L)).thenReturn(offers);
 
-        List<OfferDTO> result = managerService.getOffersByDepartment(1L);
+        List<OfferDTO> result = managerService.getOffersByDepartment(1L, 1L);
 
         assertThat(result.size()).isEqualTo(offers.size());
         assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
@@ -222,7 +224,7 @@ public class ManagerServiceTest {
     void getOffersByDepartment_departmentNotFound() {
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> managerService.getOffersByDepartment(1L))
+        assertThatThrownBy(() -> managerService.getOffersByDepartment(1L, 1L))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Department not found");
     }
@@ -234,7 +236,7 @@ public class ManagerServiceTest {
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
         when(offerRepository.findAllByDepartment(mockedDepartment)).thenReturn(new ArrayList<>());
 
-        List<OfferDTO> result = managerService.getOffersByDepartment(1L);
+        List<OfferDTO> result = managerService.getOffersByDepartment(1L, 1L);
 
         assertThat(result.size()).isEqualTo(0);
     }
@@ -277,7 +279,7 @@ public class ManagerServiceTest {
 
         when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(listCvs);
 
-        List<CvDTO> result = managerService.getCvsByDepartment(1L);
+        List<CvDTO> result = managerService.getCvsByDepartment(1L, 1L);
 
         assertThat(result.size()).isEqualTo(1);
     }
@@ -286,7 +288,7 @@ public class ManagerServiceTest {
     public void getCvsByDepartment_invalidDepartmentId() {
         when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(new ArrayList<>());
 
-        assertThat(managerService.getCvsByDepartment(1L).size()).isEqualTo(0);
+        assertThat(managerService.getCvsByDepartment(1L, 1L).size()).isEqualTo(0);
     }
 
     @Test
@@ -295,7 +297,7 @@ public class ManagerServiceTest {
 
         when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(listCvs);
 
-        List<CvDTO> result = managerService.getCvsByDepartment(1L);
+        List<CvDTO> result = managerService.getCvsByDepartment(1L, 1L);
 
         assertThat(result.size()).isEqualTo(0);
     }

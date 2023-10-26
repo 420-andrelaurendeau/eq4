@@ -1,9 +1,9 @@
 package com.equipe4.audace.utils;
 
 import com.equipe4.audace.model.offer.Offer;
-import com.equipe4.audace.model.offer.OfferSession;
+import com.equipe4.audace.model.session.OfferSession;
 import com.equipe4.audace.model.session.Session;
-import com.equipe4.audace.repository.offer.OfferSessionRepository;
+import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.session.SessionRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -83,9 +83,9 @@ public class SessionManipulatorTest {
                 new OfferSession(2L, expected.get(1), session)
         );
 
-        when(offerSessionRepository.findAllByOfferInAndSession(expected, session)).thenReturn(offerSessions);
+        when(offerSessionRepository.findAllByOfferInAndSessionId(expected, session.getId())).thenReturn(offerSessions);
 
-        List<Offer> result = sessionManipulator.removeOffersNotInSession(expected, session);
+        List<Offer> result = sessionManipulator.removeOffersNotInSession(expected, session.getId());
         assertThat(result).isEqualTo(expected);
     }
 
@@ -97,9 +97,9 @@ public class SessionManipulatorTest {
                 new Offer(2L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, null, null)
         );
 
-        when(offerSessionRepository.findAllByOfferInAndSession(expected, session)).thenReturn(List.of());
+        when(offerSessionRepository.findAllByOfferInAndSessionId(expected, session.getId())).thenReturn(List.of());
 
-        List<Offer> result = sessionManipulator.removeOffersNotInSession(expected, session);
+        List<Offer> result = sessionManipulator.removeOffersNotInSession(expected, session.getId());
         assertThat(result).isEqualTo(List.of());
     }
 
@@ -115,9 +115,9 @@ public class SessionManipulatorTest {
                 new OfferSession(1L, expected.get(0), session)
         );
 
-        when(offerSessionRepository.findAllByOfferInAndSession(expected, session)).thenReturn(offerSessions);
+        when(offerSessionRepository.findAllByOfferInAndSessionId(expected, session.getId())).thenReturn(offerSessions);
 
-        List<Offer> result = sessionManipulator.removeOffersNotInSession(expected, session);
+        List<Offer> result = sessionManipulator.removeOffersNotInSession(expected, session.getId());
         assertThat(result).isEqualTo(List.of(expected.get(0)));
     }
 
@@ -165,13 +165,34 @@ public class SessionManipulatorTest {
                 new OfferSession(2L, expected.get(1), session)
         );
 
+        when(offerSessionRepository.findAllByOfferInAndSessionId(expected, session.getId())).thenReturn(offerSessions);
+
+        List<Offer> result = sessionManipulator.removeOffersNotInSession(expected, session.getId());
+
+        assertThat(result).isEqualTo(expected);
+    }
+
+    @Test
+    public void getCurrentSessionTest() {
+        Session session = new Session(1L, LocalDate.now(), LocalDate.now().plusMonths(6));
         when(sessionRepository.findAllByDateBetween(any())).thenReturn(
                 List.of(session)
         );
-        when(offerSessionRepository.findAllByOfferInAndSession(expected, session)).thenReturn(offerSessions);
 
-        List<Offer> result = sessionManipulator.removeOffersNotInCurrentSession(expected);
+        Session result = sessionManipulator.getCurrentSession();
 
-        assertThat(result).isEqualTo(expected);
+        assertThat(result).isEqualTo(session);
+    }
+
+    @Test
+    public void getSessionByIdTest() {
+        Session session = new Session(1L, LocalDate.now(), LocalDate.now().plusMonths(6));
+        when(sessionRepository.findById(1L)).thenReturn(
+                java.util.Optional.of(session)
+        );
+
+        Session result = sessionManipulator.getSessionById(1L).get();
+
+        assertThat(result).isEqualTo(session);
     }
 }

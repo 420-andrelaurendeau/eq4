@@ -1,7 +1,7 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.GenericUserController;
-import com.equipe4.audace.dto.ApplicationDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
@@ -30,9 +30,9 @@ public class StudentController extends GenericUserController<Student, StudentSer
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/offers/{departmentId}")
-    public ResponseEntity<List<OfferDTO>> getOffersByDepartment(@PathVariable Long departmentId) {
-        return ResponseEntity.ok(service.getAcceptedOffersByDepartment(departmentId));
+    @GetMapping("/offers/{departmentId}/{sessionId}")
+    public ResponseEntity<List<OfferDTO>> getOffersByDepartment(@PathVariable Long departmentId, @PathVariable Long sessionId) {
+        return ResponseEntity.ok(service.getAcceptedOffersByDepartment(departmentId, sessionId));
     }
 
     @PostMapping("/upload/{studentId}")
@@ -61,16 +61,22 @@ public class StudentController extends GenericUserController<Student, StudentSer
             List<CvDTO> cvDTOs = service.getCvsByStudent(studentId);
             return ResponseEntity.ok(cvDTOs);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().build();
         }
     }
 
     @PostMapping("/{id}/applications")
-    public ResponseEntity<ApplicationDTO> createApplication(@RequestBody ApplicationDTO applicationDTO){
+    public ResponseEntity<HttpStatus> createApplication(@RequestBody ApplicationDTO applicationDTO){
         logger.info("createOffer");
-        return service.createApplication(applicationDTO).map(application -> ResponseEntity.status(HttpStatus.CREATED).body(applicationDTO))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        try {
+            service.createApplication(applicationDTO);
+        } catch (NoSuchElementException e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

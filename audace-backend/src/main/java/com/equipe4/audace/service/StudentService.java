@@ -1,21 +1,24 @@
 package com.equipe4.audace.service;
 
-import com.equipe4.audace.dto.ApplicationDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.Application;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.offer.Offer.OfferStatus;
+import com.equipe4.audace.model.session.Session;
+import com.equipe4.audace.model.session.StudentSession;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.StudentSessionRepository;
 import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -33,6 +36,7 @@ public class StudentService extends GenericUserService<Student> {
     private final StudentRepository studentRepository;
     private final CvRepository cvRepository;
     private final ApplicationRepository applicationRepository;
+    private final StudentSessionRepository studentSessionRepository;
     private final SessionManipulator sessionManipulator;
 
     public StudentService(
@@ -42,6 +46,7 @@ public class StudentService extends GenericUserService<Student> {
             StudentRepository studentRepository,
             CvRepository cvRepository,
             ApplicationRepository applicationRepository,
+            StudentSessionRepository studentSessionRepository,
             SessionManipulator sessionManipulator
     ) {
         super(saltRepository);
@@ -50,6 +55,7 @@ public class StudentService extends GenericUserService<Student> {
         this.studentRepository = studentRepository;
         this.cvRepository = cvRepository;
         this.applicationRepository = applicationRepository;
+        this.studentSessionRepository = studentSessionRepository;
         this.sessionManipulator = sessionManipulator;
     }
 
@@ -71,20 +77,24 @@ public class StudentService extends GenericUserService<Student> {
         }
         studentDTO.setDepartment(departmentOptional.get().toDTO());
 
+        Session session = sessionManipulator.getCurrentSession();
+
         Student student = studentDTO.fromDTO();
         hashAndSaltPassword(student);
+
+        studentSessionRepository.save(new StudentSession(null, student, session));
 
         return Optional.of(studentRepository.save(student).toDTO());
     }
 
     @Transactional
-    public List<OfferDTO> getAcceptedOffersByDepartment(Long departmentId) {
+    public List<OfferDTO> getAcceptedOffersByDepartment(Long departmentId, Long sessionId) {
         Department department = departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
         List<Offer> offers = offerRepository.findAllByDepartmentAndOfferStatus(department, OfferStatus.ACCEPTED);
 
         return sessionManipulator
-                .removeOffersNotInCurrentSession(offers)
+                .removeOffersNotInSession(offers, sessionId)
                 .stream()
                 .map(Offer::toDTO)
                 .toList();
@@ -118,15 +128,13 @@ public class StudentService extends GenericUserService<Student> {
     public Optional<ApplicationDTO> createApplication(ApplicationDTO applicationDTO){
         if(applicationDTO == null) throw new IllegalArgumentException("Application cannot be null");
 
-        Long studentId = applicationDTO.getStudent().getId();
         Long cvId = applicationDTO.getCv().getId();
         Long offerId = applicationDTO.getOffer().getId();
 
-        Student student = studentRepository.findById(studentId).orElseThrow(() -> new NoSuchElementException("Student not found"));
         Cv cv = cvRepository.findById(cvId).orElseThrow(() -> new NoSuchElementException("Cv not found"));
         Offer offer = offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
 
-        Application application = new Application(null, student, cv, offer);
+        Application application = new Application(null, cv, offer);
 
         return Optional.of(applicationRepository.save(application).toDTO());
     }
@@ -136,10 +144,6 @@ public class StudentService extends GenericUserService<Student> {
             throw new IllegalArgumentException("Student ID cannot be null");
         }
         List<Cv> cvs = cvRepository.findAllByStudentId(studentId);
-
-        if (cvs.isEmpty()) {
-            throw new NoSuchElementException("No CVs found for student ID: " + studentId);
-        }
 
         return cvs.stream().map(Cv::toDTO).toList();
     }
