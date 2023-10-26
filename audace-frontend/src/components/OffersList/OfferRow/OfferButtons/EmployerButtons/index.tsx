@@ -8,7 +8,7 @@ import http from "../../../../../constants/http";
 
 interface Props {
     disabled?: boolean;
-    offer?: Offer;  
+    offer?: Offer;
     hideRow?: () => void;
 }
 
@@ -25,7 +25,7 @@ const EmployerButtons = ({ disabled, offer, hideRow }: Props) => {
 
 
         if (offer?.id) {
-            navigate(`/employer/editoffer/${offer.id}`); 
+            navigate(`/employer/offers/${offer.id}`);
         } else {
             console.error("No offerId provided");
         }
@@ -37,34 +37,34 @@ const EmployerButtons = ({ disabled, offer, hideRow }: Props) => {
         event.stopPropagation();
         console.log("Delete button clicked");
         console.log("Offer:", offer);
-    
+
         if (offer === undefined || offer.id === undefined) {
             console.error("No offerId provided");
             return;
         }
-    
+
         hideRow!();
         setIsDeleting(true);
-    
+
         try {
             const response = await http.delete(`/employers/offers/${offer.id}`);
-    
+
             if (response.status !== 200) {
                 throw new Error(`Failed to delete offer. Status: ${response.status}`);
             }
-            
-           
-    
+
+
+
             console.log("Offer deleted successfully");
-            
-           // window.location.reload();
+
+            // window.location.reload();
         } catch (error) {
             console.error("Failed to delete offer:", error);
         } finally {
             setIsDeleting(false);
         }
     };
-    
+
 
     return (
         <>
@@ -72,15 +72,14 @@ const EmployerButtons = ({ disabled, offer, hideRow }: Props) => {
                 {t("employerOffersList.editButton")}
             </Button>
             <Button
-                disabled={disabled || isDeleting} 
-                onClick={deleteButtonClick} 
+                disabled={disabled || isDeleting}
+                onClick={deleteButtonClick}
                 className="btn-danger"
             >
                 {isDeleting ? t("employerOffersList.deletingButton") : t("employerOffersList.deleteButton")}
-            </Button> 
-        </> 
-    ); 
-}; 
- 
-export default EmployerButtons; 
- 
+            </Button>
+        </>
+    );
+};
+
+export default EmployerButtons;
