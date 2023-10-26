@@ -42,8 +42,8 @@ public class Contract {
         return new ContractDTO(
                 id,
                 officeName,
-                startHour,
-                endHour,
+                startHour.toString(),
+                endHour.toString(),
                 totalHoursPerWeek,
                 salary,
                 internTasksAndResponsibilities,

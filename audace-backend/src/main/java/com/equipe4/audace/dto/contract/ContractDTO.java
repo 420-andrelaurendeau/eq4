@@ -13,8 +13,8 @@ import java.time.LocalTime;
 public class ContractDTO {
     private Long id;
     private String officeName;
-    private LocalTime startHour;
-    private LocalTime endHour;
+    private String startHour;
+    private String endHour;
     private int totalHoursPerWeek;
     private double salary;
     private String internTasksAndResponsibilities;
@@ -26,8 +26,8 @@ public class ContractDTO {
         return new Contract(
                 id,
                 officeName,
-                startHour,
-                endHour,
+                LocalTime.parse(startHour),
+                LocalTime.parse(endHour),
                 totalHoursPerWeek,
                 salary,
                 internTasksAndResponsibilities,

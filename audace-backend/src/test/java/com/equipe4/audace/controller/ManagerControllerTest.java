@@ -318,8 +318,8 @@ public class ManagerControllerTest {
                 .andDo(print())
                 .andExpect(jsonPath("$.id").value(contractDTO.getId()))
                 .andExpect(jsonPath("$.officeName", is(contractDTO.getOfficeName())))
-                .andExpect(jsonPath("$.startHour", is(contractDTO.getStartHour().format(DateTimeFormatter.ofPattern("HH:mm:ss")))))
-                .andExpect(jsonPath("$.endHour", is(contractDTO.getEndHour().format(DateTimeFormatter.ofPattern("HH:mm:ss")))))
+                .andExpect(jsonPath("$.startHour", is(contractDTO.getStartHour())))
+                .andExpect(jsonPath("$.endHour", is(contractDTO.getEndHour())))
                 .andExpect(jsonPath("$.totalHoursPerWeek", is(contractDTO.getTotalHoursPerWeek())))
                 .andExpect(jsonPath("$.salary", is(contractDTO.getSalary())))
                 .andExpect(jsonPath("$.internTasksAndResponsibilities", is(contractDTO.getInternTasksAndResponsibilities())))
@@ -354,6 +354,6 @@ public class ManagerControllerTest {
         EmployerDTO employerDTO = createEmployerDTO();
         OfferDTO offerDTO = createOffer().toDTO();
         ApplicationDTO applicationDTO = createApplication(offerDTO.fromDTO()).toDTO();
-        return new ContractDTO(1L, "Construction", LocalTime.parse("08:00"),LocalTime.parse("17:00"), 40, 18.35, "TODO", employerDTO, applicationDTO);
+        return new ContractDTO(1L, "Construction", "08:00","17:00", 40, 18.35, "TODO", employerDTO, applicationDTO);
     }
 }
