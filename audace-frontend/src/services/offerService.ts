@@ -5,8 +5,8 @@ import http from "../constants/http";
 export const getStudentOffersByDepartment = async (departmentId: number, sessionId: number): Promise<AxiosResponse<Offer[]>> => {
     return http.get<Offer[]>(`/students/offers/${departmentId}/${sessionId}`);
 }
-export const getAllOffersByEmployerId = async (employerId: number): Promise<AxiosResponse<Offer[]>> =>{
-    return http.get(`/employers/${employerId}/offers`);
+export const getAllOffersByEmployerId = async (employerId: number, sessionId: number): Promise<AxiosResponse<Offer[]>> =>{
+    return http.get(`/employers/${employerId}/offers/${sessionId}`);
 }
 export const employerCreateOffer = async (offer: Offer): Promise<AxiosResponse> => {
     return http.post(`/employers/${offer.employer.id}/offers`)
