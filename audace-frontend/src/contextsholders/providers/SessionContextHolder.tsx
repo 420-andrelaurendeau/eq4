@@ -6,7 +6,10 @@ import {
   useState,
 } from "react";
 import { Session } from "../../model/session";
-import { getCurrentSession } from "../../services/sessionService";
+import {
+  getAllSessions,
+  getCurrentSession,
+} from "../../services/sessionService";
 import { isConnected } from "../../services/authService";
 
 interface SessionProviderProps {
@@ -39,6 +42,18 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
     getCurrentSession()
       .then((res) => {
         setCurrentSession(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (!isConnected()) return;
+
+    getAllSessions()
+      .then((res) => {
+        setSessions(res.data);
       })
       .catch((err) => {
         console.error(err);
