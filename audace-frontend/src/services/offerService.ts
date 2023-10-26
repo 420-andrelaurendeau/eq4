@@ -5,7 +5,6 @@ import { EMPLOYER_PREFIX, MANAGER_PREFIX, STUDENT_PREFIX } from "../constants/ap
 import Application from "../model/application";
 import {CV} from "../model/cv";
 import {Student} from "../model/user";
-import {getStudentById} from "./userService";
 
 export const getStudentOffersByDepartment = async (departmentId: number): Promise<AxiosResponse<Offer[]>> => {
     return http.get<Offer[]>(`${STUDENT_PREFIX}/offers/${departmentId}`);
