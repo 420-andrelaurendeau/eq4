@@ -43,7 +43,7 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
       .catch((err) => {
         console.error(err);
       });
-  });
+  }, []);
 
   return (
     <SessionContext.Provider

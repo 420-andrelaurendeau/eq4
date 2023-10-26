@@ -30,7 +30,7 @@ const StudentView = ({
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { setCvs } = useCVContext();
-  const { currentSession, setCurrentSession } = useSessionContext();
+  const { currentSession } = useSessionContext();
 
   useEffect(() => {
     if (student !== undefined) return;
@@ -57,8 +57,9 @@ const StudentView = ({
 
   useEffect(() => {
     if (student === undefined) return;
+    if (currentSession === undefined) return;
 
-    getStudentOffersByDepartment(student.department!.id!)
+    getStudentOffersByDepartment(student.department!.id!, currentSession.id)
       .then((res) => {
         setOffers(res.data);
       })
@@ -77,7 +78,7 @@ const StudentView = ({
       .catch((err) => {
         console.error(err);
       });
-  }, [student, t, setCvs]);
+  }, [student, t, setCvs, currentSession]);
 
   const handleUploadSuccess = () => {
     getCvsByStudentId(student!.id!)
