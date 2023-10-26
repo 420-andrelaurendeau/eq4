@@ -3,9 +3,9 @@ import { initReactI18next } from 'react-i18next';
 
 export type Locale = "en" | "fr";
 export const ALL_LOCALES: Locale[] = ["en", "fr"];
-let lang = 'en';
+let lang = 'fr';
 if (typeof window !== 'undefined') {
-    lang = localStorage.getItem('lang') || 'en';
+    lang = localStorage.getItem('lang') || 'fr';
 }
 
 i18n.use(initReactI18next).init({
