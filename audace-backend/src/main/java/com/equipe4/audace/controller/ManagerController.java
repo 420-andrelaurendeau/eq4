@@ -28,16 +28,16 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/accept_offer/{offerId}/{sessionId}")
-    public ResponseEntity<HttpStatus> acceptOffer(@PathVariable Long offerId, @PathVariable Long sessionId) {
+    @PostMapping("/accept_offer/{offerId}")
+    public ResponseEntity<HttpStatus> acceptOffer(@PathVariable Long offerId) {
         logger.info("acceptOffer");
         return service.acceptOffer(offerId)
                 .map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
-    @PostMapping("/refuse_offer/{offerId}/{sessionId}")
-    public ResponseEntity<HttpStatus> refuseOffer(@PathVariable Long offerId, @PathVariable Long sessionId) {
+    @PostMapping("/refuse_offer/{offerId}")
+    public ResponseEntity<HttpStatus> refuseOffer(@PathVariable Long offerId) {
         logger.info("refuseOffer");
         return service.refuseOffer(offerId)
                 .map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))

@@ -64,7 +64,7 @@ public class ManagerServiceTest {
         );
         when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
         when(offerRepository.save(any())).thenReturn(offer1);
-        when(sessionManipulator.isOfferInChosenSession(offer1)).thenReturn(true);
+        when(sessionManipulator.isOfferInCurrentSession(offer1)).thenReturn(true);
 
         managerService.acceptOffer(1L);
 
@@ -94,7 +94,7 @@ public class ManagerServiceTest {
         );
         when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
         when(offerRepository.save(any())).thenReturn(offer1);
-        when(sessionManipulator.isOfferInChosenSession(offer1)).thenReturn(true);
+        when(sessionManipulator.isOfferInCurrentSession(offer1)).thenReturn(true);
 
         managerService.refuseOffer(1L);
 
@@ -122,9 +122,9 @@ public class ManagerServiceTest {
 
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
         when(offerRepository.findAllByDepartment(mockedDepartment)).thenReturn(offers);
-        when(sessionManipulator.removeOffersNotInCurrentSession(offers)).thenReturn(offers);
+        when(sessionManipulator.removeOffersNotInSession(offers, 1L)).thenReturn(offers);
 
-        List<OfferDTO> result = managerService.getOffersByDepartment(1L);
+        List<OfferDTO> result = managerService.getOffersByDepartment(1L, 1L);
 
         assertThat(result.size()).isEqualTo(offers.size());
         assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
@@ -134,7 +134,7 @@ public class ManagerServiceTest {
     void getOffersByDepartment_departmentNotFound() {
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> managerService.getOffersByDepartment(1L))
+        assertThatThrownBy(() -> managerService.getOffersByDepartment(1L, 1L))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Department not found");
     }
@@ -146,7 +146,7 @@ public class ManagerServiceTest {
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
         when(offerRepository.findAllByDepartment(mockedDepartment)).thenReturn(new ArrayList<>());
 
-        List<OfferDTO> result = managerService.getOffersByDepartment(1L);
+        List<OfferDTO> result = managerService.getOffersByDepartment(1L, 1L);
 
         assertThat(result.size()).isEqualTo(0);
     }

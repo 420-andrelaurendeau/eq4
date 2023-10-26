@@ -102,9 +102,9 @@ public class StudentControllerTest {
     @WithMockUser(username = "student", authorities = {"STUDENT"})
     public void getOffersByDepartment_happyPath() throws Exception {
         List<OfferDTO> offerDTOList = List.of(mock(OfferDTO.class));
-        when(studentService.getAcceptedOffersByDepartment(1L)).thenReturn(offerDTOList);
+        when(studentService.getAcceptedOffersByDepartment(1L, 1L)).thenReturn(offerDTOList);
 
-        mockMvc.perform(get("/students/offers/1"))
+        mockMvc.perform(get("/students/offers/1/1"))
                 .andExpect(status().isOk());
     }
 

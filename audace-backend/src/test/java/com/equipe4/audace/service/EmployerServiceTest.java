@@ -7,6 +7,7 @@ import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.session.OfferSession;
 import com.equipe4.audace.model.security.Salt;
+import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.session.OfferSessionRepository;
@@ -220,11 +221,13 @@ public class EmployerServiceTest {
         offers.add(offer1);
         offers.add(offer2);
 
+        Session session = new Session(1L, LocalDate.now(), LocalDate.now().plusMonths(6));
+
         when(employerRepository.findById(anyLong())).thenReturn(Optional.of(fakeEmployer));
         when(offerRepository.findAllByEmployer(any(Employer.class))).thenReturn(offers);
-        when(sessionManipulator.removeOffersNotInCurrentSession(offers)).thenReturn(offers);
+        when(sessionManipulator.removeOffersNotInSession(offers, session.getId())).thenReturn(offers);
 
-        List<OfferDTO> offerDTOList = employerService.findAllOffersByEmployerId(fakeEmployer.getId());
+        List<OfferDTO> offerDTOList = employerService.findAllOffersByEmployerId(fakeEmployer.getId(), session.getId());
 
         assertThat(offerDTOList.size()).isEqualTo(2);
         verify(offerRepository, times(1)).findAllByEmployer(fakeEmployer);
@@ -258,7 +261,7 @@ public class EmployerServiceTest {
                 fakeEmployer
         );
         when(offerRepository.findById(offer1.getId())).thenReturn(Optional.of(offer1));
-        when(sessionManipulator.isOfferInChosenSession(offer1)).thenReturn(true);
+        when(sessionManipulator.isOfferInCurrentSession(offer1)).thenReturn(true);
 
         employerService.deleteOffer(offer1.getId());
 
@@ -304,7 +307,7 @@ public class EmployerServiceTest {
 
         when(offerRepository.save(any(Offer.class))).thenReturn(offer);
         when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
-        when(sessionManipulator.isOfferInChosenSession(offer)).thenReturn(true);
+        when(sessionManipulator.isOfferInCurrentSession(offer)).thenReturn(true);
 
         OfferDTO originalOffer = employerService.createOffer(offer.toDTO()).get();
 

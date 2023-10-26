@@ -12,6 +12,7 @@ import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.security.Salt;
+import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
@@ -79,14 +80,16 @@ public class StudentServiceTest {
         Offer mockedOffer = mock(Offer.class);
         fakeEmployer.getOffers().add(mockedOffer);
 
+        Session session = new Session(1L, LocalDate.now(), LocalDate.now().plusMonths(6));
+
         for (int i = 0; i < 3; i++)
             offers.add(mockedOffer);
 
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
         when(offerRepository.findAllByDepartmentAndOfferStatus(mockedDepartment, Offer.OfferStatus.ACCEPTED)).thenReturn(offers);
-        when(sessionManipulator.removeOffersNotInCurrentSession(offers)).thenReturn(offers);
+        when(sessionManipulator.removeOffersNotInSession(offers, session.getId())).thenReturn(offers);
 
-        List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
+        List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L, session.getId());
 
         assertThat(result.size()).isEqualTo(offers.size());
         assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
@@ -96,7 +99,7 @@ public class StudentServiceTest {
     void getOffersByDepartmentAndStatus_departmentNotFound() {
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> studentService.getAcceptedOffersByDepartment(1L))
+        assertThatThrownBy(() -> studentService.getAcceptedOffersByDepartment(1L, 1L))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Department not found");
     }
@@ -108,7 +111,7 @@ public class StudentServiceTest {
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
         when(offerRepository.findAllByDepartmentAndOfferStatus(mockedDepartment, Offer.OfferStatus.ACCEPTED)).thenReturn(new ArrayList<>());
 
-        List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
+        List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L, 1L);
 
         assertThat(result.size()).isEqualTo(0);
     }

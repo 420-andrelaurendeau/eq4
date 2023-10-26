@@ -198,7 +198,7 @@ public class ManagerControllerTest {
         List<OfferDTO> offerDTOList = List.of(mock(OfferDTO.class));
         when(managerService.getOffersByDepartment(1L, 1L)).thenReturn(offerDTOList);
 
-        mockMvc.perform(get("/managers/offers/1/1"))
+        mockMvc.perform(get("/managers/offers/{departmendId}/{sessionId}", 1L, 1L))
                 .andExpect(status().isOk());
     }
     @Test
