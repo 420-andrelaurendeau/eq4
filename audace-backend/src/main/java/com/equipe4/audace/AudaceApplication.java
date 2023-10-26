@@ -57,10 +57,15 @@ public class AudaceApplication implements CommandLineRunner {
 
 		employerService.createOffer(new OfferDTO(null, "Stage en génie logiciel PROTOTYPE", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, Offer.OfferStatus.ACCEPTED, department.toDTO(), employerDTO));
 
-		Student student = new Student(2L, "Kylian", "Mbappe", "kylian@live.fr", "123123", "34 de Montpellier", "4387654545", "2080350", department);
+		Student student = new Student(null, "Kylian", "Mbappe", "kylian@live.fr", "123123", "34 de Montpellier", "4387654545", "2080350", department);
 		Optional<StudentDTO> optionalStudent = studentService.createStudent(student.toDTO(), department.getCode());
 		if (optionalStudent.isEmpty()) return;
 		student = optionalStudent.get().fromDTO();
+
+		Student student2 = new Student(null, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", department);
+		Optional<StudentDTO> optionalStudent2 = studentService.createStudent(student2.toDTO(), department.getCode());
+		if (optionalStudent2.isEmpty()) return;
+		student2 = optionalStudent2.get().fromDTO();
 
 		Offer offer1 = new Offer(null,"Stage en génie spaget car c'est bon du spaget pour le dîner miam", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
 		offer1.setOfferStatus(Offer.OfferStatus.ACCEPTED);
@@ -73,7 +78,7 @@ public class AudaceApplication implements CommandLineRunner {
 		Offer offer4 = new Offer(null,"Stage en génie logiciel chez Microsoft", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
 		offer4.setOfferStatus(Offer.OfferStatus.ACCEPTED);
 
-		employer.getOffers().add(offer1);
+		//employer.getOffers().add(offer1);
 		employer.getOffers().add(offer2);
 		employer.getOffers().add(offer3);
 		employer.getOffers().add(offer4);
@@ -82,19 +87,20 @@ public class AudaceApplication implements CommandLineRunner {
 		String cvContent = "cv content for fun";
 		byte[] content = cvContent.getBytes();
 
-		Cv cv = new Cv(1L, "cv.pdf", content, student);
-		cvRepository.save(cv);
+		Cv cv1 = new Cv(1L, "cv.pdf", content, student);
+		cv1.setCvStatus(Cv.CvStatus.ACCEPTED);
+		cvRepository.save(cv1);
+
+		Cv cv2 = new Cv(2L, "cv.pdf", content, student2);
+		cv2.setCvStatus(Cv.CvStatus.ACCEPTED);
+		cvRepository.save(cv2);
 
 		offerRepository.save(offer1);
+		Application application1 = new Application(1L, cv1, offer1);
+		Application application2 = new Application(2L, cv2, offer1);
 
-		Application application1 = new Application(1L, cv, offer1);
-		Application application2 = new Application(2L, cv, offer1);
-		Application application3 = new Application(3L, cv, offer1);
-
-		offer1.getApplications().add(application1);
-		offer1.getApplications().add(application2);
-		offer1.getApplications().add(application3);
-		offerRepository.save(offer1);
+		applicationRepository.save(application1);
+		applicationRepository.save(application2);
 
 
 		Manager manager = new Manager(null, "manager", "managerman", "manager@email.com", "password", "yeete", "1234567890", department);
