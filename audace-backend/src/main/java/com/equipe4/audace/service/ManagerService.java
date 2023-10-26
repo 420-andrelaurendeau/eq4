@@ -68,13 +68,13 @@ public class ManagerService extends GenericUserService<Manager> {
     }
 
     @Transactional
-    public List<OfferDTO> getOffersByDepartment(Long departmentId) {
+    public List<OfferDTO> getOffersByDepartment(Long departmentId, Long sessionId) {
         Department department = departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
         List<Offer> offers = offerRepository.findAllByDepartment(department);
 
         return sessionManipulator
-                .removeOffersNotInCurrentSession(offers)
+                .removeOffersNotInSession(offers, sessionId)
                 .stream()
                 .map(Offer::toDTO)
                 .toList();

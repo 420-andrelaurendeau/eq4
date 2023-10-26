@@ -1,9 +1,9 @@
 package com.equipe4.audace.utils;
 
 import com.equipe4.audace.model.offer.Offer;
-import com.equipe4.audace.model.offer.OfferSession;
+import com.equipe4.audace.model.session.OfferSession;
 import com.equipe4.audace.model.session.Session;
-import com.equipe4.audace.repository.offer.OfferSessionRepository;
+import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.session.SessionRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -132,7 +132,7 @@ public class SessionManipulatorTest {
         );
         when(offerSessionRepository.existsByOfferAndSession(offer, session)).thenReturn(true);
 
-        boolean result = sessionManipulator.isOfferInCurrentSession(offer);
+        boolean result = sessionManipulator.isOfferInChosenSession(offer);
         assertThat(result).isTrue();
     }
 
@@ -147,7 +147,7 @@ public class SessionManipulatorTest {
         );
         when(offerSessionRepository.existsByOfferAndSession(offer, session)).thenReturn(false);
 
-        boolean result = sessionManipulator.isOfferInCurrentSession(offer);
+        boolean result = sessionManipulator.isOfferInChosenSession(offer);
         assertThat(result).isFalse();
     }
 

@@ -78,13 +78,13 @@ public class StudentService extends GenericUserService<Student> {
     }
 
     @Transactional
-    public List<OfferDTO> getAcceptedOffersByDepartment(Long departmentId) {
+    public List<OfferDTO> getAcceptedOffersByDepartment(Long departmentId, Long sessionId) {
         Department department = departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
         List<Offer> offers = offerRepository.findAllByDepartmentAndOfferStatus(department, OfferStatus.ACCEPTED);
 
         return sessionManipulator
-                .removeOffersNotInCurrentSession(offers)
+                .removeOffersNotInSession(offers, sessionId)
                 .stream()
                 .map(Offer::toDTO)
                 .toList();

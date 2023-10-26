@@ -64,7 +64,7 @@ public class ManagerServiceTest {
         );
         when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
         when(offerRepository.save(any())).thenReturn(offer1);
-        when(sessionManipulator.isOfferInCurrentSession(offer1)).thenReturn(true);
+        when(sessionManipulator.isOfferInChosenSession(offer1)).thenReturn(true);
 
         managerService.acceptOffer(1L);
 
@@ -94,7 +94,7 @@ public class ManagerServiceTest {
         );
         when(offerRepository.findById(1L)).thenReturn(Optional.of(offer1));
         when(offerRepository.save(any())).thenReturn(offer1);
-        when(sessionManipulator.isOfferInCurrentSession(offer1)).thenReturn(true);
+        when(sessionManipulator.isOfferInChosenSession(offer1)).thenReturn(true);
 
         managerService.refuseOffer(1L);
 

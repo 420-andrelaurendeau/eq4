@@ -1,5 +1,6 @@
-package com.equipe4.audace.model.offer;
+package com.equipe4.audace.model.session;
 
+import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.session.Session;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

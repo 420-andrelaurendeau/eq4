@@ -5,11 +5,11 @@ import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
-import com.equipe4.audace.model.offer.OfferSession;
+import com.equipe4.audace.model.session.OfferSession;
 import com.equipe4.audace.model.security.Salt;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
-import com.equipe4.audace.repository.offer.OfferSessionRepository;
+import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.utils.SessionManipulator;
 import org.junit.jupiter.api.Test;
@@ -258,7 +258,7 @@ public class EmployerServiceTest {
                 fakeEmployer
         );
         when(offerRepository.findById(offer1.getId())).thenReturn(Optional.of(offer1));
-        when(sessionManipulator.isOfferInCurrentSession(offer1)).thenReturn(true);
+        when(sessionManipulator.isOfferInChosenSession(offer1)).thenReturn(true);
 
         employerService.deleteOffer(offer1.getId());
 
@@ -304,7 +304,7 @@ public class EmployerServiceTest {
 
         when(offerRepository.save(any(Offer.class))).thenReturn(offer);
         when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
-        when(sessionManipulator.isOfferInCurrentSession(offer)).thenReturn(true);
+        when(sessionManipulator.isOfferInChosenSession(offer)).thenReturn(true);
 
         OfferDTO originalOffer = employerService.createOffer(offer.toDTO()).get();
 
