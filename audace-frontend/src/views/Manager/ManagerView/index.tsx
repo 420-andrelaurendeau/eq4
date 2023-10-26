@@ -1,10 +1,16 @@
 import { Button, Container } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import {useEffect} from "react";
 
 const ManagerView = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+
+
+    useEffect(() => {
+
+    }, []);
 
   const seeOffers = () => {
     navigate(`/manager/offers`);
