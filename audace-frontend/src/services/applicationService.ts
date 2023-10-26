@@ -4,7 +4,7 @@ import Application from "../model/application";
 import {EMPLOYER_PREFIX, STUDENT_PREFIX} from "../constants/apiPrefixes";
 
 export const getAllApplicationsByEmployerId = async (employerId: number): Promise<AxiosResponse<Map<number, Application[]>>> => {
-    return http.get<Map<number, Application[]>>(`${EMPLOYER_PREFIX}/offers/applications/`, {
+    return http.get<Map<number, Application[]>>(`${EMPLOYER_PREFIX}/offers/applications`, {
         params: {
             employerId
         }
@@ -31,5 +31,9 @@ export const employerRefuseApplication = async (employerId: number, applicationI
 }
 
 export const getApplicationsByStudentId = async (studentId: number): Promise<AxiosResponse<Application[]>> => {
-    return http.get<Application[]>(`${STUDENT_PREFIX}/${studentId}/appliedOffers`);
+    return http.get<Application[]>(`${STUDENT_PREFIX}/appliedOffers`, {
+        params: {
+            studentId
+        }
+    });
 }

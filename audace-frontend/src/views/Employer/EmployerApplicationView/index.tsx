@@ -24,9 +24,9 @@ const EmployerApplicationView = () => {
             navigate("/pageNotFound");
             return;
         }
-        if (cvs.size !== 0) {
-            return;
-        }
+        if (cvs.size !== 0) return;
+        console.log("HERE ")
+
         getAllOffersByEmployerId(parseInt(id))
             .then((res) => {
                 let map : Map<Offer, Application[]> = new Map<Offer, Application[]>();
@@ -47,12 +47,10 @@ const EmployerApplicationView = () => {
             navigate("/pageNotFound");
             return;
         }
-        if (cvs.size === 0) {
-            return;
-        };
-        if (cvsApplicationsApplied) {
-            return;
-        }
+        if (cvs.size === 0) return;
+
+        if (cvsApplicationsApplied) return;
+
         getAllApplicationsByEmployerId(parseInt(id!))
             .then((res) => {
                 const dataMap = new Map(Object.entries(res.data));
