@@ -51,7 +51,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ManagerControllerTest {
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private StudentService studentService;
     @MockBean
