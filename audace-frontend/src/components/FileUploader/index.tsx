@@ -6,9 +6,10 @@ import { Student } from "../../model/user";
 
 interface Props {
   student: Student;
+  onUploadSuccess: () => void;
 }
 
-const FileUploader = ({ student }: Props) => {
+const FileUploader = ({ student, onUploadSuccess }: Props) => {
   const { t } = useTranslation();
   const [file, setFile] = useState<File>();
   const [successMessage, setSuccessMessage] = useState<string>("");
@@ -23,6 +24,7 @@ const FileUploader = ({ student }: Props) => {
     uploadFile(student.id!, file!)
       .then((_) => {
         setSuccessMessage("upload.success");
+        onUploadSuccess();
       })
       .catch((err) => {
         console.log(err);

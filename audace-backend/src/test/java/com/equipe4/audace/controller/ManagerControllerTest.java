@@ -97,10 +97,10 @@ public class ManagerControllerTest {
         );
         OfferDTO offerDTO1 = offer1.toDTO();
 
-        when(managerService.acceptOffer(1L)).thenReturn(Optional.of(offerDTO1));
+        when(managerService.acceptOffer(1L, 1L)).thenReturn(Optional.of(offerDTO1));
 
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/managers/accept_offer/1").with(csrf())
+                .post("/managers/1/accept_offer/1").with(csrf())
                 .accept(MediaType.APPLICATION_JSON)
                 .content(offer1.toString())
                 .contentType(MediaType.APPLICATION_JSON);
@@ -125,10 +125,10 @@ public class ManagerControllerTest {
                 employer
         );
         OfferDTO offerDTO1 = offer1.toDTO();
-        when(managerService.refuseOffer(1L)).thenReturn(Optional.of(offerDTO1));
+        when(managerService.refuseOffer(1L, 1L)).thenReturn(Optional.of(offerDTO1));
 
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/managers/refuse_offer/1").with(csrf())
+                .post("/managers/1/refuse_offer/1").with(csrf())
                 .accept(MediaType.APPLICATION_JSON)
                 .content(offer1.toString())
                 .contentType(MediaType.APPLICATION_JSON);
@@ -153,10 +153,10 @@ public class ManagerControllerTest {
                 employer
         );
 
-        when(managerService.acceptOffer(-25L)).thenReturn(Optional.empty());
+        when(managerService.acceptOffer(-25L, -25L)).thenReturn(Optional.empty());
 
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/managers/accept_offer/-25").with(csrf())
+                .post("/managers/-25/accept_offer/-25").with(csrf())
                 .accept(MediaType.APPLICATION_JSON)
                 .content(offer1.toDTO().toString())
                 .contentType(MediaType.APPLICATION_JSON);
@@ -181,10 +181,10 @@ public class ManagerControllerTest {
                 employer
         );
 
-        when(managerService.refuseOffer(-25L)).thenReturn(Optional.empty());
+        when(managerService.refuseOffer(-25L, -25L)).thenReturn(Optional.empty());
 
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/managers/refuse_offer/-25").with(csrf())
+                .post("/managers/-25/refuse_offer/-25").with(csrf())
                 .accept(MediaType.APPLICATION_JSON)
                 .content(offer1.toDTO().toString())
                 .contentType(MediaType.APPLICATION_JSON);
@@ -207,10 +207,10 @@ public class ManagerControllerTest {
         Student student = mock(Student.class);
         CvDTO cvDTO = mock(CvDTO.class);
         Cv cv = new Cv(null, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
-        when(managerService.acceptCv(1L)).thenReturn(Optional.of(cvDTO));
+        when(managerService.acceptCv(1L, 1L)).thenReturn(Optional.of(cvDTO));
 
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/managers/accept_cv/1").with(csrf())
+                .post("/managers/1/accept_cv/1").with(csrf())
                 .accept(MediaType.APPLICATION_JSON)
                 .content(cv.toString())
                 .contentType(MediaType.APPLICATION_JSON);
@@ -223,10 +223,10 @@ public class ManagerControllerTest {
         Student student = mock(Student.class);
         CvDTO cvDTO = mock(CvDTO.class);
         Cv cv = new Cv(null, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
-        when(managerService.refuseCv(1L)).thenReturn(Optional.of(cvDTO));
+        when(managerService.refuseCv(1L, 1L)).thenReturn(Optional.of(cvDTO));
 
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/managers/refuse_cv/1").with(csrf())
+                .post("/managers/1/refuse_cv/1").with(csrf())
                 .accept(MediaType.APPLICATION_JSON)
                 .content(cv.toString())
                 .contentType(MediaType.APPLICATION_JSON);
@@ -238,10 +238,10 @@ public class ManagerControllerTest {
     public void acceptCv_invalidId() throws Exception {
         Student student = new Student();
         Cv cv = new Cv(null, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
-        when(managerService.acceptCv(1L)).thenReturn(Optional.empty());
+        when(managerService.acceptCv(1L, 1L)).thenReturn(Optional.empty());
 
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/managers/accept_offer/1L").with(csrf())
+                .post("/managers/1/accept_offer/1L").with(csrf())
                 .accept(MediaType.APPLICATION_JSON)
                 .content(cv.toString())
                 .contentType(MediaType.APPLICATION_JSON);
@@ -254,10 +254,10 @@ public class ManagerControllerTest {
     public void refuseCv_invalidId() throws Exception {
         Student student = new Student();
         Cv cv = new Cv(null, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
-        when(managerService.acceptCv(1L)).thenReturn(Optional.empty());
+        when(managerService.refuseCv(1L, 1L)).thenReturn(Optional.empty());
 
         RequestBuilder request = MockMvcRequestBuilders
-                .post("/managers/refuse_offer/1L").with(csrf())
+                .post("/managers/1/refuse_offer/1L").with(csrf())
                 .accept(MediaType.APPLICATION_JSON)
                 .content(cv.toString())
                 .contentType(MediaType.APPLICATION_JSON);
