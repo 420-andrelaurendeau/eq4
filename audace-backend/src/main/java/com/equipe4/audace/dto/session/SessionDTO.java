@@ -1,28 +1,22 @@
-package com.equipe4.audace.model.session;
+package com.equipe4.audace.dto.session;
 
-import com.equipe4.audace.dto.session.SessionDTO;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.equipe4.audace.model.session.Session;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class Session {
-    @Id
-    @GeneratedValue
+public class SessionDTO {
     private Long id;
     private LocalDate startDate;
     private LocalDate endDate;
 
-    public SessionDTO toDTO() {
-        return new SessionDTO(
+    public Session fromDTO() {
+        return new Session(
                 id,
                 startDate,
                 endDate
