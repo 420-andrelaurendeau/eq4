@@ -9,9 +9,10 @@ import http from "../../../../../constants/http";
 interface Props {
     disabled?: boolean;
     offer?: Offer;  
+    hideRow?: () => void;
 }
 
-const EmployerButtons = ({ disabled, offer }: Props) => {
+const EmployerButtons = ({ disabled, offer, hideRow }: Props) => {
     const { t } = useTranslation();
     const [isDeleting, setIsDeleting] = useState(false);
 
@@ -42,6 +43,7 @@ const EmployerButtons = ({ disabled, offer }: Props) => {
             return;
         }
     
+        hideRow!();
         setIsDeleting(true);
     
         try {
@@ -54,6 +56,7 @@ const EmployerButtons = ({ disabled, offer }: Props) => {
            
     
             console.log("Offer deleted successfully");
+            
            // window.location.reload();
         } catch (error) {
             console.error("Failed to delete offer:", error);

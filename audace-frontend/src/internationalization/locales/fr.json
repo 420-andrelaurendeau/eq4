@@ -41,7 +41,7 @@
     },
     "name": "Titre du CV",
     "viewMore": "Voir le CV",
-    "noCvs": "Aucun CV disponible",	
+    "noCvs": "Aucun CV disponible",
     "studentName": "Nom de l'étudiant"
   },
   "offersList": {
@@ -53,8 +53,11 @@
     "internshipStartDate": "Date de début",
     "noOffers": "Aucun offre disponible",
     "viewTitle": "Offres disponibles",
-    "viewMore": "Afficher plus"
-
+    "viewMore": "Afficher plus",
+    "viewTitle": "Offres disponibles",
+    "applyButton": "Appliquer",
+    "applicationMessageSuccess": "Application soumise avec succès",
+    "applicationMessageFailure": "Erreur lors de la soumission de l'application"
   },
   "offer": {
     "modal": {

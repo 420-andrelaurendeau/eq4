@@ -3,10 +3,10 @@ import {Employer, UserType} from "../../../model/user";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { Offer } from "../../../model/offer";
-import OffersList from "../../../components/OffersList";
 import { useParams } from "react-router-dom";
 import {getEmployerById} from "../../../services/userService";
 import {getAllOffersByEmployerId} from "../../../services/offerService";
+import OffersList from "../../../components/OffersList";
 
 const EmployerOfferView = () => {
     const [employer, setEmployer] = useState<Employer>();

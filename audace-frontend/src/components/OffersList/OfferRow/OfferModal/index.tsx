@@ -1,16 +1,12 @@
-import { useEffect, useState } from "react";
+import {useEffect} from "react";
 import { Offer, OfferStatus } from "../../../../model/offer";
-import { Employer, Student, UserType } from "../../../../model/user";
-import { Button, Col, Modal, Row } from "react-bootstrap";
+import { Employer, UserType } from "../../../../model/user";
+import {Col, Modal, Row} from "react-bootstrap";
 import { getEmployerById } from "../../../../services/userService";
 import { useTranslation } from "react-i18next";
 import { formatDate } from "../../../../services/formatService";
-import { apply } from "../../../../services/studentApplicationService"
-import { useParams } from "react-router";
-import Application from "../../../../model/application";
-import { CV, CVStatus } from "../../../../model/cv";
-import { getUserId } from "../../../../services/authService";
 import OfferButtons from "../OfferButtons";
+import {CV} from "../../../../model/cv";
 
 interface Props {
     offer: Offer;
@@ -20,12 +16,11 @@ interface Props {
     employer?: Employer;
     setEmployer?: (employer: Employer) => void;
     updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
+    hideRow?: () => void;
 }
 
-const OfferModal = ({ offer, show, handleClose, userType, employer, setEmployer, updateOffersState }: Props) => {
+const  OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, updateOffersState, hideRow}: Props) => {
     const { t } = useTranslation();
-    const [applicationMessage, setApplicationMessage] = useState("");
-    const [applicationMessageColor, setApplicationMessageColor] = useState("");
 
     useEffect(() => {
         if (employer !== undefined) return;
@@ -41,45 +36,6 @@ const OfferModal = ({ offer, show, handleClose, userType, employer, setEmployer,
 
     const createBoldText = (text: string) => {
         return <b>{text}</b>;
-    };
-
-    const handleApply = () => {
-        const studentId = getUserId();
-
-        if (!studentId) return;
-
-        const tempStudent: Student = {
-            id: parseInt(studentId),
-            email: "",
-            password: "",
-            firstName: "",
-            lastName: "",
-            type: "student",
-            phone: "",
-            address: "",
-            studentNumber: "",
-        }
-        const tempCV: CV = {
-            id: 1,
-            student: tempStudent,
-            fileName: "CV",
-            content: "test",
-            cvStatus: CVStatus.PENDING,
-        }
-        const applicationData: Application = {
-            id: 1000,
-            student: tempStudent,
-            offer: offer,
-            cv: tempCV,
-        };
-
-        apply(applicationData).then((response) => {
-                setApplicationMessage("Application submitted successfully");
-                setApplicationMessageColor("green");
-        }).catch((error) => {
-                setApplicationMessage("Error submitting application: " + error.message);
-                setApplicationMessageColor("red");
-        });
     };
 
     return (
@@ -131,7 +87,7 @@ const OfferModal = ({ offer, show, handleClose, userType, employer, setEmployer,
                 </Modal.Body>
                 <Modal.Footer>
                     {employer === undefined && <div className="text-danger">{t("offer.modal.empNotFound")}</div>}
-                    <OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState}/>
+                    <OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState} hideRow={hideRow}/>
                 </Modal.Footer>
             </Modal>
         </>

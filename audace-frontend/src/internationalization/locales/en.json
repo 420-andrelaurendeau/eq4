@@ -17,7 +17,7 @@
     "password": "Choose a Password",
     "passwordConfirmation": "Confirm Your Password",
     "studentId": "Student number",
-    "signup": "Sign up",
+    "signup": "Sign Up",
     "errors": {
       "organisation": "Please enter a valid organisation name",
       "position": "Position cannot be empty",
@@ -52,6 +52,10 @@
     "internshipEndDate": "End Date",
     "internshipStartDate": "Start Date",
     "noOffers": "No offers available",
+    "viewTitle": "Available Offers",
+    "applyButton": "Apply",
+    "applicationMessageSuccess": "Application submitted successfully",
+    "applicationMessageFailure": "Error submitting application",
     "viewTitle": "Available Offers",
     "viewMore": "View More"
   },

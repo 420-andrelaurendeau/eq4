@@ -20,7 +20,6 @@ const PDFViewer = ({pdf} : Props) => {
   }
 
   const url = URL.createObjectURL(base64toBlob(pdf));
-  
 
   return (
     <div>

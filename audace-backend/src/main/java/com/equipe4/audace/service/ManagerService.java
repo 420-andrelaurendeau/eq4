@@ -43,17 +43,22 @@ public class ManagerService extends GenericUserService<Manager> {
     }
 
     @Transactional
-    public Optional<OfferDTO> acceptOffer(Long offerId) {
-        return setOfferStatus(offerId, OfferStatus.ACCEPTED);
+    public Optional<OfferDTO> acceptOffer(Long managerId, Long offerId) {
+        return setOfferStatus(managerId, offerId, OfferStatus.ACCEPTED);
     }
 
     @Transactional
-    public Optional<OfferDTO> refuseOffer(Long offerId) {
-        return setOfferStatus(offerId, OfferStatus.REFUSED);
+    public Optional<OfferDTO> refuseOffer(Long managerId, Long offerId) {
+        return setOfferStatus(managerId, offerId, OfferStatus.REFUSED);
     }
 
-    private Optional<OfferDTO> setOfferStatus(Long offerId, OfferStatus offerStatus) {
+    private Optional<OfferDTO> setOfferStatus(Long managerId, Long offerId, OfferStatus offerStatus) {
         Offer offer = offerRepository.findById(offerId).orElseThrow();
+        Department managerDepartment = managerRepository.findById(managerId).orElseThrow().getDepartment();
+        Department offerDepartment = offer.getDepartment();
+        if (!managerDepartment.equals(offerDepartment)) {
+            throw new IllegalArgumentException("The manager isn't in the right department");
+        }
         offer.setOfferStatus(offerStatus);
         return Optional.of(offerRepository.save(offer).toDTO());
     }
@@ -72,17 +77,22 @@ public class ManagerService extends GenericUserService<Manager> {
     }
 
     @Transactional
-    public Optional<CvDTO> acceptCv(Long cvId) {
-        return setCvStatus(cvId, Cv.CvStatus.ACCEPTED);
+    public Optional<CvDTO> acceptCv(Long managerId, Long cvId) {
+        return setCvStatus(managerId, cvId, Cv.CvStatus.ACCEPTED);
     }
 
     @Transactional
-    public Optional<CvDTO> refuseCv(Long cvId) {
-        return setCvStatus(cvId, CvStatus.REFUSED);
+    public Optional<CvDTO> refuseCv(Long managerId, Long cvId) {
+        return setCvStatus(managerId, cvId, CvStatus.REFUSED);
     }
 
-    private Optional<CvDTO> setCvStatus(Long cvId, CvStatus cvStatus) {
+    private Optional<CvDTO> setCvStatus(Long managerId, Long cvId, CvStatus cvStatus) {
         Cv cv = cvRepository.findById(cvId).orElseThrow();
+        Department studentDepartment = cv.getStudent().getDepartment();
+        Department managerDepartment = managerRepository.findById(managerId).orElseThrow().getDepartment();
+        if (!studentDepartment.equals(managerDepartment)) {
+            throw new IllegalArgumentException("The manager isn't in the right department");
+        }
         cv.setCvStatus(cvStatus);
         return Optional.of(cvRepository.save(cv).toDTO());
     }
