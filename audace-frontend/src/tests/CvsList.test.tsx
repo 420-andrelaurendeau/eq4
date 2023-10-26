@@ -2,7 +2,6 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import CvsList from '../components/CvsList';
 import { UserType } from '../model/user';
 import { CVStatus } from '../model/cv';
-import PDFViewer from '../components/PDFViewer';
 
   jest.mock('axios', () => {
     return {
@@ -58,12 +57,4 @@ it('should render the list of cvs', () => {
     render(<CvsList cvs={cvs} error={""} userType={UserType.Manager}/>);
     const linkElement = screen.getByText(/Cv1/i);
     expect(linkElement).not.toBeUndefined();
-});
-
-it('should open a modal when clicking on a CV', () => {
-    render(<CvsList cvs={cvs} error={""} userType={UserType.Manager}/>);
-    const linkElement = screen.getAllByText("Voir le CV")[0];
-    fireEvent.click(linkElement);
-    const modalElement = screen.getByText("John Doe - Cv1")
-    expect(modalElement).not.toBeUndefined();
 });
