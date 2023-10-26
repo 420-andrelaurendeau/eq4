@@ -448,5 +448,4 @@ public class ManagerServiceTest {
 
         assertThat(result.size()).isEqualTo(1);
     }
-
 }
