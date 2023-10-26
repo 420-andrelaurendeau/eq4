@@ -37,8 +37,6 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
   const [currentSession, setCurrentSession] = useState<Session>();
 
   useEffect(() => {
-    if (!isConnected()) return;
-
     getCurrentSession()
       .then((res) => {
         setCurrentSession(res.data);
@@ -49,8 +47,6 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
   }, []);
 
   useEffect(() => {
-    if (!isConnected()) return;
-
     getAllSessions()
       .then((res) => {
         setSessions(res.data);
