@@ -8,6 +8,8 @@ import { getManagerOffersByDepartment } from "../../../services/offerService";
 import { getManagerById } from "../../../services/userService";
 import { getUserId } from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
+import { useSessionContext } from "../../../contextsholders/providers/SessionContextHolder";
+import SessionSelector from "../../../components/SessionSelector";
 
 const ManagerOfferView = () => {
   const [manager, setManager] = useState<Manager>();
@@ -17,6 +19,7 @@ const ManagerOfferView = () => {
   const [error, setError] = useState<string>("");
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { currentSession } = useSessionContext();
 
   useEffect(() => {
     if (manager !== undefined) return;
@@ -40,8 +43,9 @@ const ManagerOfferView = () => {
 
   useEffect(() => {
     if (manager === undefined) return;
+    if (currentSession === undefined) return;
 
-    getManagerOffersByDepartment(manager.department!.id!)
+    getManagerOffersByDepartment(manager.department!.id!, currentSession.id)
       .then((res) => {
         let acceptedOffers = [];
         let refusedOffers = [];
@@ -64,7 +68,7 @@ const ManagerOfferView = () => {
         if (err.request && err.request.status === 404)
           setError(t("offersList.errors.departmentNotFound"));
       });
-  }, [manager, t]);
+  }, [manager, t, currentSession]);
 
   const updateOffersState = (offer: Offer, offerStatus: OfferStatus) => {
     let newOffers = offers.filter((o) => o.id !== offer.id);
@@ -79,6 +83,9 @@ const ManagerOfferView = () => {
   return (
     <Container>
       <h1>{t("managerOffersList.viewTitle")}</h1>
+
+      <SessionSelector />
+
       {offers.length > 0 ? (
         <OffersList
           offers={offers}

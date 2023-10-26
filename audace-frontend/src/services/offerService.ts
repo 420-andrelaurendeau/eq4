@@ -12,8 +12,8 @@ export const employerCreateOffer = async (offer: Offer): Promise<AxiosResponse> 
     return http.post(`/employers/${offer.employer.id}/offers`)
 }
 
-export const getManagerOffersByDepartment = async (departmentId: number): Promise<AxiosResponse<Offer[]>> => {
-    return http.get<Offer[]>(`/managers/offers/${departmentId}`);
+export const getManagerOffersByDepartment = async (departmentId: number, sessionId: number): Promise<AxiosResponse<Offer[]>> => {
+    return http.get<Offer[]>(`/managers/offers/${departmentId}/${sessionId}`);
 }
 
 //OfferButton

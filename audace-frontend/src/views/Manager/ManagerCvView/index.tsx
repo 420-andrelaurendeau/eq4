@@ -8,6 +8,8 @@ import { getUserId } from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
 import { CV, CVStatus } from "../../../model/cv";
 import CvsList from "../../../components/CvsList";
+import { useSessionContext } from "../../../contextsholders/providers/SessionContextHolder";
+import SessionSelector from "../../../components/SessionSelector";
 
 const ManagerCvView = () => {
   const [manager, setManager] = useState<Manager>();
@@ -17,11 +19,12 @@ const ManagerCvView = () => {
   const [error, setError] = useState<string>("");
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { currentSession } = useSessionContext();
 
   useEffect(() => {
     if (manager !== undefined) return;
-    
-    const id = getUserId();    
+
+    const id = getUserId();
 
     if (id == null) {
       navigate("/pageNotFound");
@@ -41,8 +44,9 @@ const ManagerCvView = () => {
 
   useEffect(() => {
     if (manager === undefined) return;
+    if (currentSession === undefined) return;
 
-    getManagerCvsByDepartment(manager.department!.id!)
+    getManagerCvsByDepartment(manager.department!.id!, currentSession.id)
       .then((res) => {
         let acceptedCvs = [];
         let refusedCvs = [];
@@ -65,7 +69,7 @@ const ManagerCvView = () => {
         if (err.request.status === 404)
           setError(t("cvsList.errors.departmentNotFound"));
       });
-  }, [manager, t]);
+  }, [manager, t, currentSession]);
 
   const updateCvsState = (cv: CV, cvStatus: CVStatus) => {
     let newCvs = cvs.filter((c) => c.id !== cv.id);
@@ -80,6 +84,9 @@ const ManagerCvView = () => {
   return (
     <Container>
       <h1>{t("managerCvsList.viewTitle")}</h1>
+
+      <SessionSelector />
+
       {cvs.length > 0 ? (
         <CvsList
           cvs={cvs}
@@ -88,21 +95,13 @@ const ManagerCvView = () => {
           updateCvsState={updateCvsState}
         />
       ) : (
-        <p>{t("managerCvsList.noMorePendingCvs")}</p>
+        <p className="text-center">{t("managerCvsList.noMorePendingCvs")}</p>
       )}
       {cvsAccepted.length > 0 ? (
-        <CvsList
-          cvs={cvsAccepted}
-          error={error}
-          userType={UserType.Manager}
-        />
+        <CvsList cvs={cvsAccepted} error={error} userType={UserType.Manager} />
       ) : null}
       {cvsRefused.length > 0 ? (
-        <CvsList
-          cvs={cvsRefused}
-          error={error}
-          userType={UserType.Manager}
-        />
+        <CvsList cvs={cvsRefused} error={error} userType={UserType.Manager} />
       ) : null}
     </Container>
   );
