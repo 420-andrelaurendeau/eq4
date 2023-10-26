@@ -9,6 +9,7 @@ import { getEmployerById } from "../../../services/userService";
 import { getAllOffersByEmployerId } from "../../../services/offerService";
 import OffersList from "../../../components/OffersList";
 import { useSessionContext } from "../../../contextsholders/providers/SessionContextHolder";
+import SessionSelector from "../../../components/SessionSelector";
 
 const EmployerView = () => {
   const [employer, setEmployer] = useState<Employer>();
@@ -52,6 +53,7 @@ const EmployerView = () => {
 
   return (
     <Container className="mt-3">
+      <SessionSelector />
       <OffersList offers={offers} error={error} userType={UserType.Employer} />
     </Container>
   );
