@@ -19,6 +19,7 @@ const SessionSelector = () => {
 
   const determineTitle = () => {
     if (currentSession === undefined) return "Select a session";
+
     return `Session ${formatDate(currentSession.startDate)} - ${formatDate(
       currentSession.endDate
     )}`;
@@ -26,7 +27,12 @@ const SessionSelector = () => {
 
   return (
     <>
-      <DropdownButton title={determineTitle()} onSelect={handleSelect}>
+      <DropdownButton
+        className="text-end mb-3"
+        title={determineTitle()}
+        onSelect={handleSelect}
+        variant="secondary"
+      >
         {sessions.map((session) => (
           <SelectorOption session={session} key={session.id} />
         ))}

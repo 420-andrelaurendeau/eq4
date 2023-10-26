@@ -8,7 +8,7 @@ interface Props {
 
 const SelectorOption = ({ session }: Props) => {
   return (
-    <Dropdown.Item as="button" eventKey={`${session.id}`}>
+    <Dropdown.Item eventKey={`${session.id}`}>
       Session {formatDate(session.startDate)} - {formatDate(session.endDate)}
     </Dropdown.Item>
   );
