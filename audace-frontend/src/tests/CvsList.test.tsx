@@ -58,3 +58,10 @@ it('should render the list of cvs', () => {
     const linkElement = screen.getByText(/Cv1/i);
     expect(linkElement).not.toBeUndefined();
 });
+it('should have the accept and refuse buttons as manager', () => {
+    render(<CvsList cvs={cvs} error={""} userType={UserType.Manager}/>);
+    const acceptButton = screen.getByText(/Accept/i);
+    const refuseButton = screen.getByText(/Refuse/i);
+    expect(acceptButton).not.toBeUndefined();
+    expect(refuseButton).not.toBeUndefined();
+});
