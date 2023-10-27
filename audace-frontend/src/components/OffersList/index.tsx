@@ -9,9 +9,10 @@ interface Props {
     error: string;
     userType: UserType;
     updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
+    seeApplications?: (offer: Offer) => void;
 }
 
-const OffersList = ({ offers, error, userType, updateOffersState}: Props) => {
+const OffersList = ({ offers, error, userType, updateOffersState, seeApplications}: Props) => {
     const { t } = useTranslation();
 
     return (
@@ -33,7 +34,7 @@ const OffersList = ({ offers, error, userType, updateOffersState}: Props) => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {offers.map((offer) => { return <OfferRow key={offer.id} offer={offer} userType={userType} updateOffersState={updateOffersState} /> })}
+                                {offers.map((offer) => { return <OfferRow key={offer.id} offer={offer} userType={userType} updateOffersState={updateOffersState} seeApplications={seeApplications}/> })}
                             </tbody>
                         </Table>
                         :

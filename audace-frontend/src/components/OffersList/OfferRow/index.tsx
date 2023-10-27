@@ -15,9 +15,10 @@ interface Props {
     offer: Offer;
     userType: UserType;
     updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
+    seeApplications?: (offer: Offer) => void;
 }
 
-const OfferRow = ({ offer, userType, updateOffersState}: Props) => {
+const OfferRow = ({ offer, userType, updateOffersState, seeApplications}: Props) => {
     const [show, setShow] = useState<boolean>(false);
     const handleClick = () => setShow(true);
     const handleClose = () => setShow(false);
@@ -49,7 +50,7 @@ const OfferRow = ({ offer, userType, updateOffersState}: Props) => {
                 </td>
                 <td>{formatDate(offer.internshipStartDate)}</td>
                 <td>{formatDate(offer.internshipEndDate)}</td>
-                <td className="text-center"><OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState}/></td>
+                <td className="text-center"><OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState} seeApplications={seeApplications}/></td>
             </tr>
             {show && <OfferModal offer={offer} show={show} handleClose={handleClose} userType={userType} employer={employer} setEmployer={setEmployer} updateOffersState={updateOffersState} />}
         </>

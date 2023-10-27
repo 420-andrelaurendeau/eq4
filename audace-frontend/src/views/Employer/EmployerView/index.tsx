@@ -8,12 +8,14 @@ import { getUserId } from "../../../services/authService";
 import { getEmployerById } from "../../../services/userService";
 import { getAllOffersByEmployerId } from "../../../services/offerService";
 import OffersList from "../../../components/OffersList";
+import Applications from "../../../components/Applications";
 
 
 const EmployerView = () => {
     const [employer, setEmployer] = useState<Employer>();
     const [offers, setOffers] = useState<Offer[]>([]);
     const [error, setError] = useState<string>("");
+    const [offerApplication, setOfferApplication] = useState<Offer>();
     const {t} = useTranslation();
     const navigate = useNavigate();
 
@@ -46,11 +48,14 @@ const EmployerView = () => {
                 console.log(err)
             })
     }, [employer]);
-
+    const seeApplications = (offer: Offer) => {
+        setOfferApplication(offer);
+    }
     return (
         <Container>
             <h1>{t("studentOffersList.viewTitle")}</h1>
-            <OffersList offers={offers} error={error} userType={UserType.Employer} />
+            <OffersList offers={offers} error={error} userType={UserType.Employer} seeApplications={seeApplications}/>
+            {offerApplication !== undefined && <Applications offer={offerApplication}/>}
         </Container>
     )
 }

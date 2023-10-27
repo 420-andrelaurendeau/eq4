@@ -2,6 +2,7 @@ package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
@@ -240,6 +241,27 @@ public class EmployerServiceTest {
         when(offerRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> employerService.updateOffer(offer.toDTO()))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Offer not found");
+    }
+    @Test
+    public void findAllApplicationsByEmployerIdAndOfferId() {
+        Application application = new Application(1L, mock(Cv.class), createOffer());
+        List<Application> applications = new ArrayList<>();
+        applications.add(application);
+
+        when(offerRepository.findByEmployerIdAndId(anyLong(), anyLong())).thenReturn(Optional.of(application.getOffer()));
+        when(applicationRepository.findAllByOffer(any(Offer.class))).thenReturn(applications);
+
+        List<ApplicationDTO> result = employerService.findAllApplicationsByEmployerIdAndOfferId(1L, 1L);
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result.get(0)).isEqualTo(application.toDTO());
+    }
+    @Test
+    public void findAllApplicationsByEmployerIdAndOfferId_invalidId() {
+        when(offerRepository.findByEmployerIdAndId(anyLong(), anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> employerService.findAllApplicationsByEmployerIdAndOfferId(1L, 1L))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Offer not found");
     }

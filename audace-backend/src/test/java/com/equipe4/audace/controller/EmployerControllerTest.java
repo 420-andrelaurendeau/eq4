@@ -246,41 +246,26 @@ public class EmployerControllerTest {
                 .andExpect(jsonPath("$.employer.id", is(offerDTOUpdated.getEmployer().getId().intValue())))
                 .andExpect(jsonPath("$.department.code", is(offerDTOUpdated.getDepartment().getCode())));
     }
-
     @Test
     @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
-    public void givenMapOfOffersAndApplications_whenGetAllApplicationsByEmployerId_thenReturnOffersAndApplicationsMap() throws Exception{
+    public void getAllApplicationsByEmployerIdandOfferId() throws Exception {
         // given - precondition or setup
-        Map<Long, List<ApplicationDTO>> map = new HashMap<>();
-        EmployerDTO employerDTO = createEmployerDTO();
+        Department department = new Department(1L, "GLO", "Génie logiciel");
+        Employer employer = createEmployerDTO().fromDTO();
+        Offer offer = createOffer(employer, department);
+        Application application = createApplication(offer);
+        List<ApplicationDTO> listOfApplications = new ArrayList<>();
+        listOfApplications.add(application.toDTO());
+        listOfApplications.add(application.toDTO());
+        given(employerService.findAllApplicationsByEmployerIdAndOfferId(employer.getId(), offer.getId())).willReturn(listOfApplications);
 
-        Offer offer = createOffer();
-        Offer offer2 = createOffer();
-        offer2.setId(2L);
+        ResultActions response = mockMvc.perform(get("/employers/{id}/offer/{offerId}/applications", 1L, 1L));
 
-        List<ApplicationDTO> applicationDTOList = new ArrayList<>();
-        applicationDTOList.add(createApplication(offer).toDTO());
-        applicationDTOList.add(createApplication(offer).toDTO());
-
-        List<ApplicationDTO> applicationDTOList2 = new ArrayList<>();
-        applicationDTOList2.add(createApplication(offer2).toDTO());
-        applicationDTOList2.add(createApplication(offer2).toDTO());
-
-        map.put(offer.getId(), applicationDTOList);
-        map.put(offer2.getId(), applicationDTOList2);
-
-        given(employerService.findAllApplicationsByEmployerId(employerDTO.getId())).willReturn(map);
-
-        // when -  action or the behaviour that we are going test
-        ResultActions response = mockMvc.perform(get("/employers/{employerId}/offers/applications", 1L));
-
-        // then - verify the output
         response.andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("$.size()",
-                        is(applicationDTOList.size())));
+                        is(listOfApplications.size())));
     }
-
 
     private Department createDepartment(){
         return new Department(1L, "GLO", "Génie logiciel");
@@ -303,8 +288,6 @@ public class EmployerControllerTest {
 
         return new Application(1L, cv, offer);
     }
-
-
     private Offer createOffer(Employer employer, Department department) {
         return new Offer(
                 1L,

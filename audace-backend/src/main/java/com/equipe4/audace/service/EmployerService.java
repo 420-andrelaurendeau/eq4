@@ -72,14 +72,9 @@ public class EmployerService extends GenericUserService<Employer> {
         Offer offer = offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
         offerRepository.delete(offer);
     }
-
-    public Map<Long, List<ApplicationDTO>> findAllApplicationsByEmployerId(Long employerId){
-        Map<Long, List<ApplicationDTO>> map = new HashMap<>();
-
-        for (OfferDTO offerDTO: findAllOffersByEmployerId(employerId)) {
-            map.put(offerDTO.getId(), applicationRepository.findAllByOffer(offerDTO.fromDTO()).stream().map(Application::toDTO).toList());
-        }
-
-        return map;
+    //TODO : TESTS
+    public List<ApplicationDTO> findAllApplicationsByEmployerIdAndOfferId(Long employerId, Long offerId) {
+        Offer offer = offerRepository.findByEmployerIdAndId(employerId, offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
+        return applicationRepository.findAllByOffer(offer).stream().map(Application::toDTO).toList();
     }
 }

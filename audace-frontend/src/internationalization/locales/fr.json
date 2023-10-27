@@ -114,7 +114,8 @@
     "ACCEPTED": "Accepté",
     "REFUSED": "Refusé",
     "editButton": "Modifier",
-    "deleteButton": "Supprimer"
+    "deleteButton": "Supprimer",
+    "applicationButton" : "Voir les applications"
   },
   "student": {
     "seeOffersButton": "Voir les offres"
