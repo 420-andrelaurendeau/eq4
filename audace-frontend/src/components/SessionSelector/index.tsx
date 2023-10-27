@@ -28,7 +28,7 @@ const SessionSelector = () => {
   return (
     <>
       <DropdownButton
-        className="text-end mb-3"
+        className="mb-3 text-end"
         title={determineTitle()}
         onSelect={handleSelect}
         variant="outline-dark"
