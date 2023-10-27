@@ -1,7 +1,7 @@
 import { Dropdown } from "react-bootstrap";
 import { useSessionContext } from "../../contextsholders/providers/SessionContextHolder";
 import SelectorOption from "./SelectorOption";
-import { formatDate } from "../../services/formatService";
+import { formatSessionDate } from "../../services/formatService";
 import CustomMenu from "./CustomMenu";
 import CustomToggle from "./CustomToggle";
 
@@ -22,9 +22,7 @@ const SessionSelector = () => {
   const determineTitle = () => {
     if (chosenSession === undefined) return "Select a session";
 
-    return `Session ${formatDate(chosenSession.startDate)} - ${formatDate(
-      chosenSession.endDate
-    )}`;
+    return formatSessionDate(chosenSession);
   };
 
   return (
