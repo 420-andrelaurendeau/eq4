@@ -249,7 +249,6 @@ public class EmployerControllerTest {
     @Test
     @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
     public void getAllApplicationsByEmployerIdandOfferId() throws Exception {
-        // given - precondition or setup
         Department department = new Department(1L, "GLO", "Génie logiciel");
         Employer employer = createEmployerDTO().fromDTO();
         Offer offer = createOffer(employer, department);
@@ -259,7 +258,7 @@ public class EmployerControllerTest {
         listOfApplications.add(application.toDTO());
         given(employerService.findAllApplicationsByEmployerIdAndOfferId(employer.getId(), offer.getId())).willReturn(listOfApplications);
 
-        ResultActions response = mockMvc.perform(get("/employers/{id}/offer/{offerId}/applications", 1L, 1L));
+        ResultActions response = mockMvc.perform(get("/employers/{id}/offers/{offerId}/applications", 1L, 1L));
 
         response.andExpect(status().isOk())
                 .andDo(print())
