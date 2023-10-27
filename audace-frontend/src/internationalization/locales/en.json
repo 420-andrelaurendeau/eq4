@@ -56,7 +56,6 @@
     "applyButton": "Apply",
     "applicationMessageSuccess": "Application submitted successfully",
     "applicationMessageFailure": "Error submitting application",
-    "viewTitle": "Available Offers",
     "viewMore": "View More"
   },
   "offer": {
@@ -122,36 +121,38 @@
     },
     "seeOffersButton": "See Offers"
   },
-  "addOffer":{
-    "pageTitle" : "Add Offer",
-    "description" : "Description",
-    "title" : "Title",
-    "departmentCode" : "Department Code",
-    "startDate" : "Start date",
-    "endDate" : "End date",
-    "offerEndDate" : "Offer end date",
-    "submit" : "Submit",
-    "availablePlaces" : "Available places",
+  "addOffer": {
+    "pageTitle": "Add Offer",
+    "description": "Description",
+    "title": "Title",
+    "departmentCode": "Department Code",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "offerEndDate": "Offer end date",
+    "submit": "Submit",
+    "availablePlaces": "Available places",
     "errors": {
       "titleRequired": "Title cannot be empty",
       "descriptionRequired": "Description cannot be empty",
       "departmentCodeRequired": "Department Code cannot be empty",
       "startDateRequired": "Start date cannot be empty",
       "endDateRequired": "End date cannot be empty",
-      "offerEndDateRequired": "Offer end date cannot be empty"
+      "offerEndDateRequired": "Offer end date cannot be empty",
+      "invalidStartDate": "Start date must be before end date",
+      "invalidEndDate": "End date must be after start date",
+      "invalidOfferEndDate": "Offer end date must be after start date"
     }
   },
-  "editOffer":{
-    "pageTitle" : "Edit Offer",
-    "description" : "Description",
-    "title" : "Title",
-    "department" : "Department",
-    "startDate" : "Start date",
-    "endDate" : "End date",
-    "offerEndDate" : "Offer end date",
-    "submit" : "Submit"
-  }
-,
+  "editOffer": {
+    "pageTitle": "Edit Offer",
+    "description": "Description",
+    "title": "Title",
+    "department": "Department",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "offerEndDate": "Offer end date",
+    "submit": "Submit"
+  },
   "upload": {
     "CvFormTitle": "Upload CV",
     "file": "Upload File",
@@ -172,4 +173,3 @@
   "logout": "Log out",
   "pageNotFound": "Error 404: Page Not Found"
 }
-
