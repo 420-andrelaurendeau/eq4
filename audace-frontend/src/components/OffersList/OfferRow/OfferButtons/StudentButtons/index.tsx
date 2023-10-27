@@ -33,7 +33,7 @@ const StudentButtons = ({ disabled, offer }: Props) => {
       .catch((err) => {
         console.log("getCvsByStudentId error", err);
       });
-  }, [studentId]);
+  }, [studentId, setCvs]);
 
   const handleApply = async (event: { stopPropagation: () => void }) => {
     event.stopPropagation();
