@@ -19,7 +19,7 @@ const ManagerOfferView = () => {
   const [error, setError] = useState<string>("");
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { currentSession } = useSessionContext();
+  const { chosenSession } = useSessionContext();
 
   useEffect(() => {
     if (manager !== undefined) return;
@@ -43,9 +43,9 @@ const ManagerOfferView = () => {
 
   useEffect(() => {
     if (manager === undefined) return;
-    if (currentSession === undefined) return;
+    if (chosenSession === undefined) return;
 
-    getManagerOffersByDepartment(manager.department!.id!, currentSession.id)
+    getManagerOffersByDepartment(manager.department!.id!, chosenSession.id)
       .then((res) => {
         let acceptedOffers = [];
         let refusedOffers = [];
@@ -68,7 +68,7 @@ const ManagerOfferView = () => {
         if (err.request && err.request.status === 404)
           setError(t("offersList.errors.departmentNotFound"));
       });
-  }, [manager, t, currentSession]);
+  }, [manager, t, chosenSession]);
 
   const updateOffersState = (offer: Offer, offerStatus: OfferStatus) => {
     let newOffers = offers.filter((o) => o.id !== offer.id);

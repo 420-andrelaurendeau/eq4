@@ -19,7 +19,7 @@ const ManagerCvView = () => {
   const [error, setError] = useState<string>("");
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { currentSession } = useSessionContext();
+  const { chosenSession } = useSessionContext();
 
   useEffect(() => {
     if (manager !== undefined) return;
@@ -44,9 +44,9 @@ const ManagerCvView = () => {
 
   useEffect(() => {
     if (manager === undefined) return;
-    if (currentSession === undefined) return;
+    if (chosenSession === undefined) return;
 
-    getManagerCvsByDepartment(manager.department!.id!, currentSession.id)
+    getManagerCvsByDepartment(manager.department!.id!, chosenSession.id)
       .then((res) => {
         let acceptedCvs = [];
         let refusedCvs = [];
@@ -69,7 +69,7 @@ const ManagerCvView = () => {
         if (err.request.status === 404)
           setError(t("cvsList.errors.departmentNotFound"));
       });
-  }, [manager, t, currentSession]);
+  }, [manager, t, chosenSession]);
 
   const updateCvsState = (cv: CV, cvStatus: CVStatus) => {
     let newCvs = cvs.filter((c) => c.id !== cv.id);

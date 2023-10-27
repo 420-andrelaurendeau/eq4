@@ -17,7 +17,7 @@ const EmployerView = () => {
   const [error, setError] = useState<string>("");
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { currentSession } = useSessionContext();
+  const { chosenSession } = useSessionContext();
 
   useEffect(() => {
     if (employer !== undefined) return;
@@ -40,16 +40,16 @@ const EmployerView = () => {
 
   useEffect(() => {
     if (employer === undefined) return;
-    if (currentSession === undefined) return;
+    if (chosenSession === undefined) return;
 
-    getAllOffersByEmployerId(employer.id!, currentSession.id)
+    getAllOffersByEmployerId(employer.id!, chosenSession.id)
       .then((res) => {
         setOffers(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, [employer, currentSession]);
+  }, [employer, chosenSession]);
 
   return (
     <Container className="mt-3">

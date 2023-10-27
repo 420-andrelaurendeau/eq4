@@ -12,7 +12,7 @@ import {
   getSessionById,
 } from "../../services/sessionService";
 
-const CURRENT_SESSION_PATH = "currentSession";
+const CHOSEN_SESSION_PATH = "chosenSession";
 
 interface SessionProviderProps {
   children: ReactNode;
@@ -20,15 +20,17 @@ interface SessionProviderProps {
 
 interface SessionContextType {
   sessions: Session[];
+  chosenSession?: Session;
   currentSession?: Session;
-  setCurrentSession: (session: Session) => void;
+  setChosenSession: (session: Session) => void;
   setSessions: (newSessions: Session[]) => void;
 }
 
 export const SessionContext = createContext<SessionContextType>({
   sessions: [],
+  chosenSession: undefined,
   currentSession: undefined,
-  setCurrentSession: () => {},
+  setChosenSession: () => {},
   setSessions: () => {},
 });
 
@@ -36,36 +38,42 @@ export const useSessionContext = () => useContext(SessionContext);
 
 export const SessionProvider = ({ children }: SessionProviderProps) => {
   const [sessions, setSessions] = useState<Session[]>([]);
+  const [chosenSession, setChosenSession] = useState<Session>();
   const [currentSession, setCurrentSession] = useState<Session>();
 
-  const changeCurrentSession = (session: Session) => {
-    setCurrentSession(session);
-    localStorage.setItem(CURRENT_SESSION_PATH, `${session.id}`);
+  const changeChosenSession = (session: Session) => {
+    setChosenSession(session);
+    localStorage.setItem(CHOSEN_SESSION_PATH, `${session.id}`);
   };
 
   useEffect(() => {
-    const currentSessionId = localStorage.getItem(CURRENT_SESSION_PATH);
+    if (chosenSession !== undefined) return;
+    if (currentSession !== undefined) return;
 
-    if (currentSessionId) {
-      getSessionById(parseInt(currentSessionId))
+    const chosenSessionId = localStorage.getItem(CHOSEN_SESSION_PATH);
+
+    if (chosenSessionId) {
+      getSessionById(parseInt(chosenSessionId))
         .then((res) => {
-          changeCurrentSession(res.data);
+          changeChosenSession(res.data);
         })
         .catch((err) => {
           console.error(err);
         });
-
-      return;
     }
 
     getCurrentSession()
       .then((res) => {
-        changeCurrentSession(res.data);
+        setCurrentSession(res.data);
+
+        if (chosenSessionId !== null) return;
+
+        changeChosenSession(res.data);
       })
       .catch((err) => {
         console.error(err);
       });
-  }, []);
+  }, [chosenSession, currentSession]);
 
   useEffect(() => {
     getAllSessions()
@@ -82,7 +90,8 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
       value={{
         sessions,
         setSessions,
-        setCurrentSession: changeCurrentSession,
+        setChosenSession: changeChosenSession,
+        chosenSession,
         currentSession,
       }}
     >

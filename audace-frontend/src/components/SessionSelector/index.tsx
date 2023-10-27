@@ -4,7 +4,7 @@ import SelectorOption from "./SelectorOption";
 import { formatDate } from "../../services/formatService";
 
 const SessionSelector = () => {
-  const { currentSession, setCurrentSession, sessions } = useSessionContext();
+  const { chosenSession, setChosenSession, sessions } = useSessionContext();
 
   const handleSelect = (e: string | null) => {
     if (e === null) return;
@@ -14,14 +14,14 @@ const SessionSelector = () => {
 
     if (session === undefined) return;
 
-    setCurrentSession(session);
+    setChosenSession(session);
   };
 
   const determineTitle = () => {
-    if (currentSession === undefined) return "Select a session";
+    if (chosenSession === undefined) return "Select a session";
 
-    return `Session ${formatDate(currentSession.startDate)} - ${formatDate(
-      currentSession.endDate
+    return `Session ${formatDate(chosenSession.startDate)} - ${formatDate(
+      chosenSession.endDate
     )}`;
   };
 
