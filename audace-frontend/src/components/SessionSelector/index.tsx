@@ -1,7 +1,8 @@
-import { DropdownButton } from "react-bootstrap";
+import { Dropdown, DropdownButton } from "react-bootstrap";
 import { useSessionContext } from "../../contextsholders/providers/SessionContextHolder";
 import SelectorOption from "./SelectorOption";
 import { formatDate } from "../../services/formatService";
+import CustomMenu from "./CustomMenu";
 
 const SessionSelector = () => {
   const { chosenSession, setChosenSession, sessions } = useSessionContext();
@@ -27,7 +28,16 @@ const SessionSelector = () => {
 
   return (
     <>
-      <DropdownButton
+      <Dropdown>
+        <Dropdown.Toggle></Dropdown.Toggle>
+        <Dropdown.Menu as={CustomMenu}>
+          {sessions.map((session, index) => (
+            <SelectorOption session={session} key={index} />
+          ))}
+        </Dropdown.Menu>
+      </Dropdown>
+
+      {/* <DropdownButton
         className="mb-3 text-end"
         title={determineTitle()}
         onSelect={handleSelect}
@@ -36,7 +46,7 @@ const SessionSelector = () => {
         {sessions.map((session) => (
           <SelectorOption session={session} key={session.id} />
         ))}
-      </DropdownButton>
+      </DropdownButton> */}
     </>
   );
 };
