@@ -33,11 +33,10 @@ const CustomMenu = forwardRef<HTMLDivElement, Props>(
         />
         {Children.toArray(children).filter((child) => {
           const newStartDate = new Date((child as any).props.session.startDate);
-          const newEndDate = new Date((child as any).props.session.endDate);
 
           return (
             !filterValue ||
-            (newStartDate <= filterValue && newEndDate >= filterValue)
+            (newStartDate <= filterValue)
           );
         })}
       </div>
