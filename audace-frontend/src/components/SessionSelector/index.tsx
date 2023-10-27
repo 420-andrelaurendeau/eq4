@@ -1,4 +1,4 @@
-import { Dropdown, DropdownButton } from "react-bootstrap";
+import { Dropdown } from "react-bootstrap";
 import { useSessionContext } from "../../contextsholders/providers/SessionContextHolder";
 import SelectorOption from "./SelectorOption";
 import { formatDate } from "../../services/formatService";
