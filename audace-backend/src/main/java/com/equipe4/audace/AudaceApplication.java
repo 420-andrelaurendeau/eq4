@@ -32,7 +32,6 @@ public class AudaceApplication implements CommandLineRunner {
 	private DepartmentRepository departmentRepository;
 	private EmployerRepository employerRepository;
 	private EmployerService employerService;
-	private CvRepository cvRepository;
 	private SaltRepository saltRepository;
 	private ManagerRepository managerRepository;
 	private StudentService studentService;
@@ -156,12 +155,6 @@ public class AudaceApplication implements CommandLineRunner {
 		employer.getOffers().add(offer3);
 		employer.getOffers().add(offer4);
 		employerRepository.save(employer);
-
-		String cvContent = "cv content for fun";
-		byte[] content = cvContent.getBytes();
-
-		Cv cv = new Cv(1L, student, content, "cv.pdf");
-		cvRepository.save(cv);
 
 		Manager manager = new Manager(null, "manager", "managerman", "manager@email.com", "password", "yeete", "1234567890", department);
 		managerRepository.save(manager);

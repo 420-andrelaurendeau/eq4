@@ -55,7 +55,7 @@ public class EmployerController extends GenericUserController<Employer, Employer
         service.deleteOffer(offerId);
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/{id}/offer/{offerId}/applications")
+    @GetMapping("/{id}/offers/{offerId}/applications")
     public ResponseEntity<List<ApplicationDTO>> getAllApplicationsByEmployerIdAndOfferId(@PathVariable Long id, @PathVariable Long offerId) {
         logger.info("getAllApplicationsByEmployerIdAndOfferId");
         return ResponseEntity.ok(service.findAllApplicationsByEmployerIdAndOfferId(id, offerId));

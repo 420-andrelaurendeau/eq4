@@ -27,15 +27,13 @@ const Applications = ({offer} : Props) => {
             navigate("/pageNotFound");
             return;
         }
-        if (applications.length === 0) {
-            return;
-        };
         getAllApplicationsByOfferId(offer.id!)
             .then((res) => {
                 setApplications(res.data);
+                setCvs([]);
                 res.data.forEach((application) => {
                     if (application.cv !== undefined) {
-                        setCvs([...cvs, application.cv]);
+                        setCvs((cvs) => [...cvs, application.cv!]);
                     }
                 })
             })
@@ -43,7 +41,7 @@ const Applications = ({offer} : Props) => {
                 setError(err.response.data);
                 console.log(err)
             })
-    }, [navigate, t, applications, offer.id, cvs]);
+    }, [navigate, t, offer.id]);
 
     return (
         <Container>
