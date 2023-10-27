@@ -31,7 +31,7 @@ const SessionSelector = () => {
         className="text-end mb-3"
         title={determineTitle()}
         onSelect={handleSelect}
-        variant="secondary"
+        variant="outline-dark"
       >
         {sessions.map((session) => (
           <SelectorOption session={session} key={session.id} />
