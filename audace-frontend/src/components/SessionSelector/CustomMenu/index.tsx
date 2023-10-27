@@ -8,6 +8,7 @@ import {
 import DatePicker from "react-datepicker";
 
 import "react-datepicker/dist/react-datepicker.css";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   children: ReactNode;
@@ -18,7 +19,8 @@ interface Props {
 
 const CustomMenu = forwardRef<HTMLDivElement, Props>(
   ({ children, style, className, "aria-labelledby": labelledby }, ref) => {
-    const [filterValue, setFilterValue] = useState<Date>(new Date());
+    const [filterValue, setFilterValue] = useState<Date>();
+    const { t } = useTranslation();
 
     return (
       <div
@@ -28,16 +30,17 @@ const CustomMenu = forwardRef<HTMLDivElement, Props>(
         aria-labelledby={labelledby}
       >
         <DatePicker
+          showIcon={true}
           selected={filterValue}
           onChange={(date: Date) => setFilterValue(date)}
+          dateFormat={"dd/MM/yyyy"}
+          isClearable
+          placeholderText={t("sessionSelector.filterPlaceholder")}
         />
         {Children.toArray(children).filter((child) => {
           const newStartDate = new Date((child as any).props.session.startDate);
 
-          return (
-            !filterValue ||
-            (newStartDate <= filterValue)
-          );
+          return !filterValue || newStartDate <= filterValue;
         })}
       </div>
     );

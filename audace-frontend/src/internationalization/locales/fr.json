@@ -139,5 +139,8 @@
     }
   },
   "logout": "Se déconnecter",
-  "pageNotFound": "Erreur 404: Page pas trouvée"
+  "pageNotFound": "Erreur 404: Page pas trouvée",
+  "sessionSelector": {
+    "filterPlaceholder": "Filtrer par la date"
+  }
 }

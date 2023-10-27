@@ -139,5 +139,8 @@
     }
   },
   "logout": "Log out",
-  "pageNotFound": "Error 404: Page Not Found"
+  "pageNotFound": "Error 404: Page Not Found",
+  "sessionSelector": {
+    "filterPlaceholder": "Filter by date"
+  }
 }
