@@ -3,6 +3,7 @@ import { useSessionContext } from "../../contextsholders/providers/SessionContex
 import SelectorOption from "./SelectorOption";
 import { formatDate } from "../../services/formatService";
 import CustomMenu from "./CustomMenu";
+import CustomToggle from "./CustomToggle";
 
 const SessionSelector = () => {
   const { chosenSession, setChosenSession, sessions } = useSessionContext();
@@ -28,25 +29,16 @@ const SessionSelector = () => {
 
   return (
     <>
-      <Dropdown>
-        <Dropdown.Toggle></Dropdown.Toggle>
+      <Dropdown className="text-end" onSelect={handleSelect}>
+        <Dropdown.Toggle as={CustomToggle} id="session-dropdown">
+          {determineTitle()}
+        </Dropdown.Toggle>
         <Dropdown.Menu as={CustomMenu}>
           {sessions.map((session, index) => (
             <SelectorOption session={session} key={index} />
           ))}
         </Dropdown.Menu>
       </Dropdown>
-
-      {/* <DropdownButton
-        className="mb-3 text-end"
-        title={determineTitle()}
-        onSelect={handleSelect}
-        variant="outline-dark"
-      >
-        {sessions.map((session) => (
-          <SelectorOption session={session} key={session.id} />
-        ))}
-      </DropdownButton> */}
     </>
   );
 };
