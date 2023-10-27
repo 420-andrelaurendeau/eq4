@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import OfferRow from "./OfferRow";
 import { UserType } from "../../model/user";
 import GenericTable from "../GenericTable";
+import { useSessionContext } from "../../contextsholders/providers/SessionContextHolder";
 
 interface Props {
   offers: Offer[];
@@ -13,6 +14,7 @@ interface Props {
 
 const OffersList = ({ offers, error, userType, updateOffersState }: Props) => {
   const { t } = useTranslation();
+  const { chosenSession, currentSession } = useSessionContext();
 
   return (
     <>
@@ -27,7 +29,7 @@ const OffersList = ({ offers, error, userType, updateOffersState }: Props) => {
             <th>{t("offersList.title")}</th>
             <th>{t("offersList.internshipStartDate")}</th>
             <th>{t("offersList.internshipEndDate")}</th>
-            <th></th>
+            {chosenSession?.id === currentSession?.id && <th></th>}
           </tr>
         </thead>
         <tbody>
