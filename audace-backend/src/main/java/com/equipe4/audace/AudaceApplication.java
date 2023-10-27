@@ -170,6 +170,22 @@ public class AudaceApplication implements CommandLineRunner {
 
 		offerSessionRepository.save(new OfferSession(null, offer4, session));
 
+		Offer offer5 = offerRepository.save(
+				new Offer(
+						null,
+					"Stage en génie logiciel chez Apple",
+					"Stage en génie logiciel",
+					LocalDate.now(),
+					LocalDate.now(),
+					LocalDate.now(),
+					3,
+					department,
+					employer
+				)
+		);
+
+		offerSessionRepository.save(new OfferSession(null, offer5, session2));
+
 		Manager manager = new Manager(null, "manager", "managerman", "manager@email.com", "password", "yeete", "1234567890", department);
 		manager = managerRepository.save(manager);
 
