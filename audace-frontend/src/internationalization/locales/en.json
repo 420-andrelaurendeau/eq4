@@ -153,6 +153,7 @@
     "organization": "Organization",
     "status": "Status",
     "cv": "CV",
+    "noApplications": "No applications submitted",
     "row": {
       "status": {
         "PENDING": "Pending",
