@@ -39,7 +39,14 @@
     "title": "Applications",
     "offerTitle": "Offer Title",
     "organization": "Organization",
-    "status": "Status"
+    "status": "Status",
+    "row": {
+      "status": {
+        "PENDING": "Pending",
+        "ACCEPTED": "Accepted",
+        "REFUSED": "Refused"
+      }
+    }
   },
   "cvsList": {
     "errors": {

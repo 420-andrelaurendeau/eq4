@@ -35,6 +35,19 @@
       "network": "Il y a eu une erreur de réseau inconnue"
     }
   },
+  "applicationsList": {
+    "title": "Applications",
+    "offerTitle": "Titre de l'offre",
+    "organization": "Organisation",
+    "status": "Status",
+    "row": {
+      "status": {
+        "PENDING": "En attente",
+        "ACCEPTED": "Accepté",
+        "REFUSED": "Refusé"
+      }
+    }
+  },
   "cvsList": {
     "errors": {
       "departmentNotFound": "Département pas trouvé"
