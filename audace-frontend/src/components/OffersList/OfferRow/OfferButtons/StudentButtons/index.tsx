@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import { getUserId } from "../../../../../services/authService";
 import { Offer } from "../../../../../model/offer";
 import { Student } from "../../../../../model/user";
-import Application, { ApplicationStatus } from "../../../../../model/application";
+import Application, {ApplicationStatus} from "../../../../../model/application";
 import { useCVContext } from "../../../../../contextsholders/providers/CVContextHolder";
 
 interface Props {

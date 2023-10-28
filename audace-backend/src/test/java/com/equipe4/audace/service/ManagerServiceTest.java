@@ -3,6 +3,7 @@ package com.equipe4.audace.service;
 import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
@@ -433,6 +434,18 @@ public class ManagerServiceTest {
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(new Manager(1L, "firstName", "lastName", "email", "password", "address", "phone", department)));
 
         List<ApplicationDTO> result = managerService.getAcceptedApplicationsByDepartment(1L, 1L);
+
+        assertThat(result.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void getDepartments_happyPath() {
+        List<Department> departments = new ArrayList<>();
+        departments.add(new Department(1L, "code", "name"));
+
+        when(departmentRepository.findAll()).thenReturn(departments);
+
+        List<DepartmentDTO> result = managerService.getDepartments();
 
         assertThat(result.size()).isEqualTo(1);
     }

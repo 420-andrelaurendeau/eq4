@@ -4,6 +4,7 @@ import com.equipe4.audace.controller.abstracts.GenericUserController;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.service.ManagerService;
@@ -76,6 +77,14 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
         logger.info("getAcceptedApplicationsByDepartment");
         return ResponseEntity.ok(
                 service.getAcceptedApplicationsByDepartment(managerId, departmentId)
+        );
+    }
+
+    @GetMapping("/departments")
+    public ResponseEntity<List<DepartmentDTO>> getDepartments() {
+        logger.info("getDepartments");
+        return ResponseEntity.ok(
+                service.getDepartments()
         );
     }
 }

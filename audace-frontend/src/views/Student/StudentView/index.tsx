@@ -12,10 +12,8 @@ import FileUploader from "../../../components/FileUploader";
 import { getCvsByStudentId } from "../../../services/studentApplicationService";
 import CvsList from "../../../components/CVsListStudent";
 import { useCVContext } from "../../../contextsholders/providers/CVContextHolder";
-import ApplicationsList from "../../../components/ApplicationsList";
 import Application from "../../../model/application";
 import { getApplicationsByStudentId } from "../../../services/studentApplicationService";
-import { error } from "console";
 
 interface StudentViewProps {
   viewOffers?: boolean;
@@ -108,7 +106,7 @@ const StudentView = ({
         if (err.request.status === 404)
           setApplicationsError(t("applicationsList.errors.studentNotFound"));
       });
-  });
+    }, [student, t]);
 
   return (
     <Container>
