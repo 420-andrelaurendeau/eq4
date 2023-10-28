@@ -46,7 +46,6 @@ public class AudaceApplication implements CommandLineRunner {
 	private OfferRepository offerRepository;
 	private OfferSessionRepository offerSessionRepository;
 	private ApplicationRepository applicationRepository;
-	private final OfferRepository offerRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AudaceApplication.class, args);
@@ -64,8 +63,6 @@ public class AudaceApplication implements CommandLineRunner {
 		EmployerDTO employerDTO = optionalEmployerDTO.get();
 		Employer employer = employerDTO.fromDTO();
 
-		employerService.createOffer(new OfferDTO(null, "Stage en génie logiciel PROTOTYPE", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, Offer.OfferStatus.ACCEPTED, department.toDTO(), employerDTO));
-
 		Student student = new Student(null, "Kylian", "Mbappe", "kylian@live.fr", "123123", "34 de Montpellier", "4387654545", "2080350", department);
 		Optional<StudentDTO> optionalStudent = studentService.createStudent(student.toDTO(), department.getCode());
 		if (optionalStudent.isEmpty()) return;
@@ -77,96 +74,33 @@ public class AudaceApplication implements CommandLineRunner {
 		student2 = optionalStudent2.get().fromDTO();
 
         Offer offer1 = offerRepository.save(
-                new Offer(
-                        null,
-                        "Stage en génie logiciel PROTOTYPE",
-                        "Stage en génie logiciel",
-                        LocalDate.now(),
-                        LocalDate.now(),
-                        LocalDate.now(),
-                        3,
-                        department,
-                        employer
-                ));
+				new Offer(null, "Stage en génie logiciel PROTOTYPE", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer)
+		);
+		offer1.setOfferStatus(Offer.OfferStatus.ACCEPTED);
         offerSessionRepository.save(new OfferSession(null, offer1, session));
-        Offer offer2 = offerRepository.save(
-                new Offer(
-                        null,
-                        "Stage en génie logiciel chez Roc-a-Fella Records",
-                        "Stage en génie logiciel",
-                        LocalDate.now(),
-                        LocalDate.now(),
-                        LocalDate.now(),
-                        3,
-                        department,
-                        employer
-                ));
+
+		Offer offer2 = offerRepository.save(
+                new Offer(null, "Stage en génie logiciel chez Roc-a-Fella Records", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer)
+		);
         offer2.setOfferStatus(Offer.OfferStatus.ACCEPTED);
         offer2 = offerRepository.save(offer2);
-
-        offerSessionRepository.save(new OfferSession(null, offer2, session));
+		offerSessionRepository.save(new OfferSession(null, offer2, session));
 
         Offer offer3 = offerRepository.save(
-                new Offer(
-                        null,
-                        "Stage en génie logiciel chez Google",
-                        "Stage en génie logiciel",
-                        LocalDate.now(),
-                        LocalDate.now(),
-                        LocalDate.now(),
-                        3,
-                        department,
-                        employer
-                ));
-
+                new Offer(null, "Stage en génie logiciel chez Google", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer)
+		);
         offerSessionRepository.save(new OfferSession(null, offer3, session));
 
         Offer offer4 = offerRepository.save(
-                new Offer(
-                        null,
-                        "Stage en génie logiciel chez Microsoft",
-                        "Stage en génie logiciel",
-                        LocalDate.now(),
-                        LocalDate.now(),
-                        LocalDate.now(),
-                        3,
-                        department,
-                        employer
-                ));
-
+                new Offer(null, "Stage en génie logiciel chez Microsoft", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer)
+		);
         offerSessionRepository.save(new OfferSession(null, offer4, session));
 
         Offer offer5 = offerRepository.save(
-                new Offer(
-                        null,
-                        "Stage en génie logiciel chez Apple",
-                        "Stage en génie logiciel",
-                        LocalDate.now(),
-                        LocalDate.now(),
-                        LocalDate.now(),
-                        3,
-                        department,
-                        employer
-                )
+                new Offer(null, "Stage en génie logiciel chez Apple", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer)
         );
-
         offerSessionRepository.save(new OfferSession(null, offer5, session2));
 
-
-        Offer offer1 = new Offer(null,"Stage en génie spaget car c'est bon du spaget pour le dîner miam", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
-		offer1.setOfferStatus(Offer.OfferStatus.ACCEPTED);
-
-		Offer offer2 = new Offer(null,"Stage en génie logiciel chez Roc-a-Fella Records", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
-		offer2.setOfferStatus(Offer.OfferStatus.ACCEPTED);
-
-		Offer offer3 = new Offer(null,"Stage en génie logiciel chez Google", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
-
-		Offer offer4 = new Offer(null,"Stage en génie logiciel chez Microsoft", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
-		offer4.setOfferStatus(Offer.OfferStatus.ACCEPTED);
-
-
-
-        offerSessionRepository.save(new OfferSession(null, offer4, session));
 		String cvContent = "cv content for fun";
 		byte[] content = cvContent.getBytes();
 
@@ -178,29 +112,9 @@ public class AudaceApplication implements CommandLineRunner {
 		cv2.setCvStatus(Cv.CvStatus.ACCEPTED);
 		cvRepository.save(cv2);
 
-		offerRepository.save(offer1);
-		Application application1 = new Application(1L, cv1, offer1);
-		Application application2 = new Application(2L, cv2, offer1);
+		applicationRepository.save(new Application(1L, cv1, offer1));
+		applicationRepository.save(new Application(2L, cv2, offer1));
 
-		applicationRepository.save(application1);
-		applicationRepository.save(application2);
-
-
-        Offer offer5 = offerRepository.save(
-                new Offer(
-                        null,
-                        "Stage en génie logiciel chez Apple",
-                        "Stage en génie logiciel",
-                        LocalDate.now(),
-                        LocalDate.now(),
-                        LocalDate.now(),
-                        3,
-                        department,
-                        employer
-                )
-        );
-
-        offerSessionRepository.save(new OfferSession(null, offer5, session2));
 
 		Manager manager = new Manager(null, "manager", "managerman", "manager@email.com", "password", "yeete", "1234567890", department);
 		manager = managerRepository.save(manager);

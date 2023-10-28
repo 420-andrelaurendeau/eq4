@@ -27,14 +27,8 @@ public class EmployerService extends GenericUserService<Employer> {
     private final OfferSessionRepository offerSessionRepository;
     private final SessionManipulator sessionManipulator;
 
-    public EmployerService(
-            SaltRepository saltRepository,
-            EmployerRepository employerRepository,
-            OfferRepository offerRepository,
-            OfferSessionRepository offerSessionRepository,
-            SessionManipulator sessionManipulator,
-            ApplicationRepository applicationRepository
-    ) {
+    public EmployerService(SaltRepository saltRepository, EmployerRepository employerRepository, OfferRepository offerRepository,
+                           OfferSessionRepository offerSessionRepository, SessionManipulator sessionManipulator, ApplicationRepository applicationRepository) {
         super(saltRepository);
         this.employerRepository = employerRepository;
         this.offerRepository = offerRepository;
@@ -48,7 +42,6 @@ public class EmployerService extends GenericUserService<Employer> {
         if (employerDTO == null) throw new IllegalArgumentException("Employer cannot be null");
 
         Optional<Employer> employerOptional = employerRepository.findByEmail(employerDTO.getEmail());
-
         if(employerOptional.isPresent()) throw new IllegalArgumentException("Email already in use");
 
         Employer newEmployer = employerDTO.fromDTO();
@@ -70,18 +63,18 @@ public class EmployerService extends GenericUserService<Employer> {
 
         Session session = sessionManipulator.getCurrentSession();
 
-        Offer offer = offerDTO.fromDTO();
-        offer.setOfferStatus(Offer.OfferStatus.PENDING);
-        offer = offerRepository.save(offerDTO.fromDTO());
+        offerDTO.setOfferStatus(Offer.OfferStatus.PENDING);
+
+        Offer offer = offerRepository.save(offerDTO.fromDTO());
 
         offerSessionRepository.save(new OfferSession(null, offer, session));
-        return Optional.of(offerRepository.save(offer).toDTO());
+
         return Optional.of(offer.toDTO());
     }
 
     @Transactional
-    public List<OfferDTO> findAllOffersByEmployerId(Long employerId, Long sessionId){
-        Employer employer = employerRepository.findById(employerId).orElseThrow();
+    public List<OfferDTO> findAllOffersByEmployerIdAndSessionId(Long employerId, Long sessionId){
+        Employer employer = employerRepository.findById(employerId).orElseThrow(() -> new NoSuchElementException("Employer not found"));
         List<Offer> offers = offerRepository.findAllByEmployer(employer);
 
         return sessionManipulator.removeOffersNotInSession(offers, sessionId).stream().map(Offer::toDTO).toList();
@@ -90,18 +83,14 @@ public class EmployerService extends GenericUserService<Employer> {
     @Transactional
     public Optional<OfferDTO> updateOffer(OfferDTO offerDTO){
         Offer offer = offerRepository.findById(offerDTO.getId()).orElseThrow(() -> new NoSuchElementException("Offer not found"));
-        if (!sessionManipulator.isOfferInCurrentSession(offer)) {
-            throw new IllegalStateException("Offer is not in current session");
-        }
+        if (!sessionManipulator.isOfferInCurrentSession(offer)) throw new IllegalStateException("Offer is not in current session");
         return Optional.of(offerRepository.save(offer).toDTO());
     }
 
     @Transactional
     public void deleteOffer(Long offerId){
         Offer offer = offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
-        if (!sessionManipulator.isOfferInCurrentSession(offer)) {
-            throw new IllegalStateException("Offer is not in current session");
-        }
+        if (!sessionManipulator.isOfferInCurrentSession(offer)) throw new IllegalStateException("Offer is not in current session");
         offerRepository.delete(offer);
     }
 
@@ -109,14 +98,6 @@ public class EmployerService extends GenericUserService<Employer> {
     public List<ApplicationDTO> findAllApplicationsByEmployerIdAndOfferId(Long employerId, Long offerId) {
         Offer offer = offerRepository.findByEmployerIdAndId(employerId, offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
         return applicationRepository.findAllByOffer(offer).stream().map(Application::toDTO).toList();
-    }
-
-    public Map<Long, List<ApplicationDTO>> findAllApplicationsByEmployerId(Long employerId){
-        Map<Long, List<ApplicationDTO>> map = new HashMap<>();
-        for (OfferDTO offerDTO: findAllOffersByEmployerId(employerId)) {
-            map.put(offerDTO.getId(), applicationRepository.findAllByOffer(offerDTO.fromDTO()).stream().map(Application::toDTO).toList());
-        }
-        return map;
     }
 
     @Transactional

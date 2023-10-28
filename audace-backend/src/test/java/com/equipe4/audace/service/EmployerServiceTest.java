@@ -1,9 +1,6 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.EmployerDTO;
-import com.equipe4.audace.dto.StudentDTO;
-import com.equipe4.audace.dto.application.ApplicationDTO;
-import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
@@ -154,7 +151,7 @@ public class EmployerServiceTest {
     }
 
     @Test
-    void getAllOffersByEmployerId_HappyPath() {
+    void getAllOffersByEmployerIdAndSessionId_HappyPath() {
         Employer employer = createEmployer();
         List<Offer> offers = new ArrayList<>();
         Offer offer1 = createOffer(1L, createEmployer());
@@ -169,28 +166,28 @@ public class EmployerServiceTest {
         when(offerRepository.findAllByEmployer(any(Employer.class))).thenReturn(offers);
         when(sessionManipulator.removeOffersNotInSession(offers, session.getId())).thenReturn(offers);
 
-        List<OfferDTO> offerDTOList = employerService.findAllOffersByEmployerId(employer.getId(), session.getId());
+        List<OfferDTO> offerDTOList = employerService.findAllOffersByEmployerIdAndSessionId(employer.getId(), session.getId());
 
         assertThat(offerDTOList.size()).isEqualTo(2);
         verify(offerRepository, times(1)).findAllByEmployer(employer);
     }
 
     @Test
-    void getAllOffersByEmployerId_NotFound() {
+    void getAllOffersByEmployerIdAndSessionId_NotFound() {
         when(employerRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> employerService.findAllOffersByEmployerId(1L, 1L))
+        assertThatThrownBy(() -> employerService.findAllOffersByEmployerIdAndSessionId(1L, 1L))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Employer not found");
     }
 
     @Test
-    void getAllOffersByEmployerId_noOffers() {
+    void getAllOffersByEmployerIdAndSessionId_noOffers() {
         Employer employer = createEmployer();
         when(employerRepository.findById(anyLong())).thenReturn(Optional.of(employer));
         when(offerRepository.findAllByEmployer(employer)).thenReturn(new ArrayList<>());
 
-        List<OfferDTO> result = employerService.findAllOffersByEmployerId(1L, 1L);
+        List<OfferDTO> result = employerService.findAllOffersByEmployerIdAndSessionId(1L, 1L);
 
         assertThat(result.size()).isEqualTo(0);
     }
@@ -200,7 +197,7 @@ public class EmployerServiceTest {
         Offer offer = createOffer(1L, createEmployer());
 
         when(offerRepository.findById(offer.getId())).thenReturn(Optional.of(offer));
-        when(sessionManipulator.isOfferInCurrentSession(offer1)).thenReturn(true);
+        when(sessionManipulator.isOfferInCurrentSession(offer)).thenReturn(true);
 
         employerService.deleteOffer(offer.getId());
 
@@ -222,6 +219,7 @@ public class EmployerServiceTest {
 
         when(offerRepository.save(any(Offer.class))).thenReturn(offer);
         when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
+        when(sessionManipulator.isOfferInCurrentSession(any(Offer.class))).thenReturn(true);
 
         OfferDTO originalOffer = employerService.createOffer(offer.toDTO()).get();
 
@@ -247,7 +245,7 @@ public class EmployerServiceTest {
     }
     @Test
     public void findAllApplicationsByEmployerIdAndOfferId() {
-        Application application = new Application(1L, mock(Cv.class), createOffer());
+        Application application = new Application(1L, createCv(), createOffer(1L, createEmployer()));
         List<Application> applications = new ArrayList<>();
         applications.add(application);
 

@@ -1,30 +1,24 @@
 package com.equipe4.audace.service;
 
-import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.StudentDTO;
-import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Student;
-import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
-import com.equipe4.audace.model.Student;
 import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.model.security.Salt;
 import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.StudentRepository;
-import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
-import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.repository.session.StudentSessionRepository;
 import com.equipe4.audace.utils.SessionManipulator;
 import org.junit.jupiter.api.Test;
@@ -46,7 +40,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
-import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class StudentServiceTest {
@@ -82,10 +75,8 @@ public class StudentServiceTest {
             offers.add(offer);
         }
 
-
-
-        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
-        when(offerRepository.findAllByDepartmentAndOfferStatus(mockedDepartment, Offer.OfferStatus.ACCEPTED)).thenReturn(offers);
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(department));
+        when(offerRepository.findAllByDepartmentAndOfferStatus(department, Offer.OfferStatus.ACCEPTED)).thenReturn(offers);
         when(sessionManipulator.removeOffersNotInSession(offers, session.getId())).thenReturn(offers);
 
         List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L, session.getId());
@@ -307,56 +298,39 @@ public class StudentServiceTest {
         assertThat(dto).isEqualTo(applicationDTO);
         verify(applicationRepository, times(1)).save(application);
     }
-
     @Test
     public void createApplication_NullApplication(){
         assertThatThrownBy(() -> studentService.createApplication(null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Application cannot be null");
     }
-    public void getOffersStudentApplied() {
+
+    @Test
+    public void getApplicationsByStudentIdAndSessionId_HappyPath() {
+        Employer employer = createEmployer();
+        Student student = createStudent();
+
         List<Application> applications = new ArrayList<>();
-        applications.add(new Application(1L, mock(Cv.class), mock(Offer.class)));
+        applications.add(new Application(1L, createCv(), createOffer(1L, employer)));
 
-        when(applicationRepository.findApplicationsByCvStudentId(anyLong())).thenReturn(applications);
 
-        List<ApplicationDTO> result = studentService.getOffersStudentApplied(1L, 1L);
+        when(studentRepository.findById(1L)).thenReturn(Optional.of(student));
+        when(applicationRepository.findApplicationsByCv_Student(any(Student.class))).thenReturn(applications);
+        when(sessionManipulator.removeApplicationsNotInSession(applications, 1L)).thenReturn(applications);
+
+        List<ApplicationDTO> result = studentService.getApplicationsByStudentIdAndSessionId(1L, 1L);
 
         assertThat(result.size()).isEqualTo(1);
         assertThat(result).containsExactlyInAnyOrderElementsOf(applications.stream().map(Application::toDTO).toList());
     }
     @Test
-    public void getOffersStudentApplied_isNull() {
-        assertThatThrownBy(() -> studentService.getOffersStudentApplied(null, 1L))
+    public void getApplicationsByStudentIdAndSessionId_isNull() {
+        assertThatThrownBy(() -> studentService.getApplicationsByStudentIdAndSessionId(null, 1L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Student ID cannot be null");
     }
 
-    @Test
-    public void getOffersStudentApplied_HappyPath() {
-        Employer employer = createEmployer();
-        Student student = createStudent();
 
-        List<Offer> offers = new ArrayList<>();
-        offers.add(createOffer(1L, employer));
-
-        List<Application> applications = new ArrayList<>();
-        applications.add(new Application(1L, createCv(), offers.get(0)));
-
-        when(studentRepository.findById(1L)).thenReturn(Optional.of(student));
-        when(applicationRepository.findApplicationsByCv_Student(any(Student.class))).thenReturn(applications);
-
-        List<OfferDTO> result = studentService.getOffersStudentApplied(1L);
-
-        assertThat(result.size()).isEqualTo(1);
-        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
-    }
-    @Test
-    public void getOffersStudentApplied_isNull() {
-        assertThatThrownBy(() -> studentService.getOffersStudentApplied(null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Student ID cannot be null");
-    }
 
 
     private Department createDepartment(){

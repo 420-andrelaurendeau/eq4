@@ -5,6 +5,7 @@ import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.UserRepository;
+import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
@@ -42,27 +43,30 @@ public class AuthControllerTest {
     @MockBean
     private CvRepository cvRepository;
     @MockBean
-    private EmployerService employerService;
+    private SaltRepository saltRepository;
     @MockBean
-    private DepartmentRepository departmentRepository;
+    private SessionRepository sessionRepository;
+    @MockBean
+    private UserRepository userRepository;
     @MockBean
     private ManagerRepository managerRepository;
     @MockBean
-    private JwtManipulator jwtManipulator;
-    @MockBean
-    private StudentService studentService;
-    @MockBean
-    private SaltRepository saltRepository;
-    @MockBean
-    private AuthService authService;
-    @MockBean
-    private SessionRepository sessionRepository;
+    private DepartmentRepository departmentRepository;
     @MockBean
     private OfferRepository offerRepository;
     @MockBean
     private OfferSessionRepository offerSessionRepository;
     @MockBean
-    private UserRepository userRepository;
+    private ApplicationRepository applicationRepository;
+    @MockBean
+    private AuthService authService;
+    @MockBean
+    private StudentService studentService;
+    @MockBean
+    private EmployerService employerService;
+
+    @MockBean
+    private JwtManipulator jwtManipulator;
 
     @Test
     @WithMockUser

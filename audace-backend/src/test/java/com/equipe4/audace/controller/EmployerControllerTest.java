@@ -11,10 +11,12 @@ import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
+import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.UserRepository;
+import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
@@ -22,11 +24,13 @@ import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.service.EmployerService;
+import com.equipe4.audace.utils.SessionManipulator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.equipe4.audace.service.StudentService;
 import com.equipe4.audace.utils.JwtManipulator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -34,9 +38,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -57,11 +59,18 @@ public class EmployerControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
-    private EmployerService employerService;
+    private JwtManipulator jwtManipulator;
+    @Mock
+    private SessionManipulator sessionManipulator;
+
     @MockBean
-    private DepartmentRepository departmentRepository;
+    private CvRepository cvRepository;
     @MockBean
-    private EmployerRepository employerRepository;
+    private SaltRepository saltRepository;
+    @MockBean
+    private SessionRepository sessionRepository;
+    @MockBean
+    private UserRepository userRepository;
     @MockBean
     private OfferRepository offerRepository;
     @MockBean
@@ -69,19 +78,17 @@ public class EmployerControllerTest {
     @MockBean
     private ManagerRepository managerRepository;
     @MockBean
-    private CvRepository cvRepository;
+    private EmployerRepository employerRepository;
     @MockBean
-    private UserRepository userRepository;
+    private DepartmentRepository departmentRepository;
     @MockBean
-    private JwtManipulator jwtManipulator;
+    private ApplicationRepository applicationRepository;
+    @MockBean
+    private OfferSessionRepository offerSessionRepository;
     @MockBean
     private StudentService studentService;
     @MockBean
-    private SaltRepository saltRepository;
-    @MockBean
-    private SessionRepository sessionRepository;
-    @MockBean
-    private OfferSessionRepository offerSessionRepository;
+    private EmployerService employerService;
 
     @Test
     @WithMockUser(username = "employer", authorities = {"EMPLOYER", "USER"})
@@ -102,20 +109,9 @@ public class EmployerControllerTest {
     }
 
     private void getEmployerById_happyPath_test() throws Exception {
-        Employer employer = new Employer(
-                1L,
-                "Employer1",
-                "Employer1",
-                "employer1@gmail.com",
-                "password",
-                "org",
-                "extension",
-                "blorg",
-                "norg",
-                "canorg"
-        );
+        EmployerDTO employerDTO = createEmployerDTO();
 
-        when(employerService.findEmployerById(1L)).thenReturn(Optional.of(employer.toDTO()));
+        when(employerService.findEmployerById(1L)).thenReturn(Optional.of(employerDTO));
 
         mockMvc.perform(get("/employers/{id}", 1L))
                 .andExpect(status().isOk())
@@ -161,7 +157,7 @@ public class EmployerControllerTest {
     @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
     public void givenOfferObject_whenCreateOffer_thenReturnSavedOffer() throws Exception{
         // given - precondition or setup
-        OfferDTO offerDTO = createOfferDTO();
+        OfferDTO offerDTO = createOfferDTO(1L);
 
         when(employerService.createOffer(any(OfferDTO.class))).thenReturn(Optional.of(offerDTO));
 
@@ -179,21 +175,21 @@ public class EmployerControllerTest {
     @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
     public void givenListOfOffers_whenGetOffersByEmployerId_thenReturnOffersList() throws Exception{
         // given - precondition or setup
+        Session session = createSession();
         EmployerDTO employerDTO = createEmployerDTO();
-        OfferDTO offerDTO1 = createOfferDTO();
-        OfferDTO offerDTO2 = createOfferDTO();
-        offerDTO2.setId(2L);
+        OfferDTO offerDTO1 = createOfferDTO(1L);
+        OfferDTO offerDTO2 = createOfferDTO(2L);
 
         List<OfferDTO> listOfOffers = new ArrayList<>();
         listOfOffers.add(offerDTO1);
         listOfOffers.add(offerDTO2);
-        given(employerService.findAllOffersByEmployerId(employerDTO.getId())).willReturn(listOfOffers);
+        given(employerService.findAllOffersByEmployerIdAndSessionId(employerDTO.getId(), session.getId())).willReturn(listOfOffers);
 
         // when -  action or the behaviour that we are going test
-        ResultActions response = mockMvc.perform(get("/employers/offers").param("employerId", "1"));
-
+        mockMvc.perform(get("/employers/offers/{sessionId}", 1L)
+                .param("employerId", "1"))
         // then - verify the output
-        response.andExpect(status().isOk())
+                .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("$.size()", is(listOfOffers.size())));
     }
@@ -202,9 +198,8 @@ public class EmployerControllerTest {
     @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
     public void givenUpdatedOffer_whenUpdateOffer_thenReturnUpdateOfferObject() throws Exception{
         // given - precondition or setup
-        OfferDTO offerSaved = createOfferDTO();
-        OfferDTO offerUpdated = createOfferDTO();
-        offerUpdated.setAvailablePlaces(1);
+        OfferDTO offerSaved = createOfferDTO(1L);
+        OfferDTO offerUpdated = createOfferDTO(2L);
 
         given(offerRepository.findById(offerSaved.getId())).willReturn(Optional.of(offerSaved.fromDTO()));
         given(employerService.updateOffer(any(OfferDTO.class))).willReturn(Optional.of(offerUpdated));
@@ -231,69 +226,40 @@ public class EmployerControllerTest {
 
     @Test
     @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
-    public void givenMapOfOffersAndApplications_whenGetAllApplicationsByEmployerId_thenReturnOffersAndApplicationsMap() throws Exception{
+    public void givenListOfApplications_whenGetAllApplicationsByEmployerIdAndOfferId_thenReturnApplicationsList() throws Exception{
         // given - precondition or setup
         EmployerDTO employerDTO = createEmployerDTO();
-        OfferDTO offerDTO1 = createOfferDTO();
-        OfferDTO offerDTO2 = createOfferDTO();
-        offerDTO2.setId(2L);
+        OfferDTO offerDTO = createOfferDTO(1L);
 
-        List<ApplicationDTO> applicationDTOList1 = new ArrayList<>();
-        applicationDTOList1.add(createApplicationDTO(offerDTO1));
-        applicationDTOList1.add(createApplicationDTO(offerDTO1));
+        List<ApplicationDTO> applicationDTOList = new ArrayList<>();
+        applicationDTOList.add(createApplicationDTO(offerDTO));
+        applicationDTOList.add(createApplicationDTO(offerDTO));
 
-        List<ApplicationDTO> applicationDTOList2 = new ArrayList<>();
-        applicationDTOList2.add(createApplicationDTO(offerDTO2));
-        applicationDTOList2.add(createApplicationDTO(offerDTO2));
 
-        Map<Long, List<ApplicationDTO>> map = new HashMap<>();
-        map.put(offerDTO1.getId(), applicationDTOList1);
-        map.put(offerDTO2.getId(), applicationDTOList2);
-
-        given(employerService.findAllApplicationsByEmployerId(employerDTO.getId())).willReturn(map);
+        given(employerService.findAllApplicationsByEmployerIdAndOfferId(employerDTO.getId(), offerDTO.getId())).willReturn(applicationDTOList);
 
         // when -  action or the behaviour that we are going test
-        ResultActions response = mockMvc.perform(get("/employers/offers/applications").param("employerId", "1"));
-
-        // then - verify the output
-        response.andExpect(status().isOk())
+        mockMvc.perform(get("/employers/applications/{offerId}", 1L)
+                .param("employerId", "1"))
+                // then - verify the output
+                .andExpect(status().isOk())
                 .andDo(print())
-                .andExpect(jsonPath("$.size()", is(map.size())));
+                .andExpect(jsonPath("$.size()", is(applicationDTOList.size())));
     }
 
-    @Test
-    @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
-    public void getAllApplicationsByEmployerIdandOfferId() throws Exception {
-        Department department = new Department(1L, "GLO", "Génie logiciel");
-        Employer employer = createEmployerDTO().fromDTO();
-        Offer offer = createOffer(employer, department);
-        Application application = createApplication(offer);
-        List<ApplicationDTO> listOfApplications = new ArrayList<>();
-        listOfApplications.add(application.toDTO());
-        listOfApplications.add(application.toDTO());
-        given(employerService.findAllApplicationsByEmployerIdAndOfferId(employer.getId(), offer.getId())).willReturn(listOfApplications);
-
-        ResultActions response = mockMvc.perform(get("/employers/{id}/offers/{offerId}/applications", 1L, 1L));
-
-        response.andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(jsonPath("$.size()",
-                        is(listOfApplications.size())));
-    }
 
     @Test
     @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
     public void acceptApplication_HappyPath() throws Exception {
-        ApplicationDTO applicationDTO = createApplicationDTO(createOfferDTO());
+        ApplicationDTO applicationDTO = createApplicationDTO(createOfferDTO(1L));
 
-        when(employerService.acceptApplication(anyLong(), anyLong())).thenReturn(Optional.of(applicationDTO));
+        when(employerService.acceptApplication(1L, 1L)).thenReturn(Optional.of(applicationDTO));
 
-        mockMvc.perform(post("/employers/accept_application/{applicationId}", 1L)
+        mockMvc.perform(put("/employers/accept_application/{applicationId}", 1L)
                 .param("employerId", "1")
                 .with(csrf())
                 .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(applicationDTO.toString())
+
         ).andExpect(status().isOk());
     }
 
@@ -302,7 +268,7 @@ public class EmployerControllerTest {
     public void acceptApplication_invalidId() throws Exception {
         when(employerService.acceptApplication(anyLong(), anyLong())).thenReturn(Optional.empty());
 
-        mockMvc.perform(post("/employers/accept_application/{applicationId}", 1L)
+        mockMvc.perform(put("/employers/accept_application/{applicationId}", 1L)
                         .param("employerId", "1")
                         .with(csrf()))
                 .andExpect(status().isBadRequest());
@@ -311,11 +277,11 @@ public class EmployerControllerTest {
     @Test
     @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
     public void refuseApplication_HappyPath() throws Exception {
-        ApplicationDTO applicationDTO = createApplicationDTO(createOfferDTO());
+        ApplicationDTO applicationDTO = createApplicationDTO(createOfferDTO(1L));
 
         when(employerService.refuseApplication(anyLong(), anyLong())).thenReturn(Optional.of(applicationDTO));
 
-        mockMvc.perform(post("/employers/refuse_application/{applicationId}", 1L)
+        mockMvc.perform(put("/employers/refuse_application/{applicationId}", 1L)
                 .param("employerId", "1")
                 .with(csrf())
                 .accept(MediaType.APPLICATION_JSON)
@@ -328,7 +294,7 @@ public class EmployerControllerTest {
     public void refuseApplication_invalidId() throws Exception {
         when(employerService.refuseApplication(anyLong(), anyLong())).thenReturn(Optional.empty());
 
-        mockMvc.perform(post("/employers/refuse_application/{applicationId}", 1L)
+        mockMvc.perform(put("/employers/refuse_application/{applicationId}", 1L)
                         .param("employerId", "1")
                         .with(csrf()))
                 .andExpect(status().isBadRequest());
@@ -350,10 +316,10 @@ public class EmployerControllerTest {
         return new CvDTO(1L,"fileName", "content".getBytes(), Cv.CvStatus.PENDING, createStudentDTO());
     }
 
-    private OfferDTO createOfferDTO() {
+    private OfferDTO createOfferDTO(Long id) {
         EmployerDTO employerDTO = createEmployerDTO();
         DepartmentDTO departmentDTO = createDepartmentDTO();
-        return new OfferDTO(1L,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, Offer.OfferStatus.PENDING, departmentDTO, employerDTO);
+        return new OfferDTO(id,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, Offer.OfferStatus.PENDING, departmentDTO, employerDTO);
     }
 
     private ApplicationDTO createApplicationDTO(OfferDTO offerDTO) {
@@ -361,5 +327,8 @@ public class EmployerControllerTest {
         CvDTO cvDTO = createCvDTO();
 
         return new ApplicationDTO(1L, cvDTO, offerDTO, Application.ApplicationStatus.PENDING);
+    }
+    private Session createSession(){
+        return new Session(1L, LocalDate.now(), LocalDate.now().plusMonths(6));
     }
 }
