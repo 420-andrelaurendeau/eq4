@@ -30,6 +30,7 @@ const OfferRow = ({
   const [disabled, setDisabled] = useState<boolean>(true);
 
   const handleClick = () => {
+    
     setShow(true);
     setDisabled(false);
   };
