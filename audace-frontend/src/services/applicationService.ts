@@ -3,16 +3,12 @@ import http from "../constants/http";
 import Application from "../model/application";
 import {EMPLOYER_PREFIX, STUDENT_PREFIX} from "../constants/apiPrefixes";
 
-export const getAllApplicationsByEmployerId = async (employerId: number): Promise<AxiosResponse<Map<number, Application[]>>> => {
-    return http.get<Map<number, Application[]>>(`${EMPLOYER_PREFIX}/offers/applications`, {
+export const getAllApplicationsByEmployerIdAndOfferId = async (employerId: number, offerId: number): Promise<AxiosResponse<Application[]>> => {
+    return http.get<Application[]>(`${EMPLOYER_PREFIX}/applications/${offerId}`, {
         params: {
             employerId
         }
     });
-}
-
-export const getAllApplicationsByOfferId = async (id: number): Promise<AxiosResponse<Application[]>> => {
-    return http.get<Application[]>(`/employers/${getUserId()}/offers/${id}/applications`);
 }
 
 export const studentApplyToOffer = async (application: Application): Promise<AxiosResponse> => {
@@ -34,8 +30,8 @@ export const employerRefuseApplication = async (employerId: number, applicationI
     });
 }
 
-export const getApplicationsByStudentId = async (studentId: number): Promise<AxiosResponse<Application[]>> => {
-    return http.get<Application[]>(`${STUDENT_PREFIX}/appliedOffers`, {
+export const getApplicationsByStudentId = async (studentId: number, sessionId: number): Promise<AxiosResponse<Application[]>> => {
+    return http.get<Application[]>(`${STUDENT_PREFIX}/appliedOffers/${sessionId}`, {
         params: {
             studentId
         }

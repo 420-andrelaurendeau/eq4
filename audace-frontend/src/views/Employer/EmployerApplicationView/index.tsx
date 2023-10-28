@@ -9,7 +9,7 @@ import { CV } from "../../../model/cv";
 import CvList from "../../../components/CVsList";
 import {Container} from "react-bootstrap";
 import { getAllApplicationsByEmployerId } from "../../../services/applicationService";
-import { getAllOffersByEmployerId } from "../../../services/offerService";
+import { getAllOffersByEmployerIdAndSessionId } from "../../../services/offerService";
 
 const EmployerApplicationView = () => {
     const [error, setError] = useState<string>("");
@@ -27,7 +27,7 @@ const EmployerApplicationView = () => {
         if (cvs.size !== 0) return;
         console.log("HERE ")
 
-        getAllOffersByEmployerId(parseInt(id))
+        getAllOffersByEmployerIdAndSessionId(parseInt(id))
             .then((res) => {
                 let map : Map<Offer, Application[]> = new Map<Offer, Application[]>();
                 res.data.forEach((offer) => {

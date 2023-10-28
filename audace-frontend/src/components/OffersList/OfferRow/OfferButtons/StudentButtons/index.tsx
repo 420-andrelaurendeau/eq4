@@ -1,12 +1,9 @@
 import {Button} from "react-bootstrap";
 import {useTranslation} from "react-i18next";
-import {studentApplyToOffer} from "../../../../../services/applicationService";
-import {getApplicationsByStudentId} from "../../../../../services/applicationService";
-import {getCvsByStudentId} from "../../../../../services/cvService";
 import React, {useEffect, useState} from "react";
 import {getUserId} from "../../../../../services/authService";
 import {Offer} from "../../../../../model/offer";
-import {Student} from "../../../../../model/user";
+
 import Application, {ApplicationStatus} from "../../../../../model/application";
 import {useCVContext} from "../../../../../contextsholders/providers/CVContextHolder";
 import { Button } from "react-bootstrap";

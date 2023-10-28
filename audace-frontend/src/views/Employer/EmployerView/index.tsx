@@ -6,7 +6,7 @@ import { Employer, UserType } from "../../../model/user";
 import { useNavigate } from "react-router";
 import { getUserId } from "../../../services/authService";
 import { getEmployerById } from "../../../services/userService";
-import { getAllOffersByEmployerId } from "../../../services/offerService";
+import { getAllOffersByEmployerIdAndSessionId } from "../../../services/offerService";
 import OffersList from "../../../components/OffersList";
 import { useSessionContext } from "../../../contextsholders/providers/SessionContextHolder";
 import SessionSelector from "../../../components/SessionSelector";
@@ -45,7 +45,7 @@ const EmployerView = () => {
     if (employer === undefined) return;
     if (chosenSession === undefined) return;
 
-    getAllOffersByEmployerId(employer.id!, chosenSession.id)
+    getAllOffersByEmployerIdAndSessionId(employer.id!, chosenSession.id)
       .then((res) => {
         setOffers(res.data);
       })

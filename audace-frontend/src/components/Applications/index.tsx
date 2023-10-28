@@ -5,7 +5,7 @@ import {getUserId} from "../../services/authService";
 import {useNavigate} from "react-router-dom";
 import Application from "../../model/application";
 import {Container} from "react-bootstrap";
-import { getAllApplicationsByOfferId } from "../../services/applicationService";
+import { getAllApplicationsByEmployerIdAndOfferId } from "../../services/applicationService";
 import ApplicationsList from "../ApplicationsList";
 
 interface Props {
@@ -24,7 +24,7 @@ const Applications = ({offer} : Props) => {
             navigate("/pageNotFound");
             return;
         }
-        getAllApplicationsByOfferId(offer.id!)
+        getAllApplicationsByEmployerIdAndOfferId(offer.id!)
             .then((res) => {
                 setApplications(res.data);
             })

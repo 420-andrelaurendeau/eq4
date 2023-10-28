@@ -6,16 +6,6 @@ import { EMPLOYER_PREFIX, MANAGER_PREFIX, STUDENT_PREFIX } from "../constants/ap
 export const getStudentOffersByDepartment = async (departmentId: number, sessionId: number): Promise<AxiosResponse<Offer[]>> => {
     return http.get<Offer[]>(`${STUDENT_PREFIX}/offers/${departmentId}/${sessionId}`);
 }
-export const getAllOffersByEmployerId = async (employerId: number, sessionId: number): Promise<AxiosResponse<Offer[]>> =>{
-    return http.get(`${EMPLOYER_PREFIX}/offers/${sessionId}`, {
-        params: {
-            employerId
-        }
-    });
-}
-export const getManagerOffersByDepartment = async (departmentId: number, sessionId: number): Promise<AxiosResponse<Offer[]>> => {
-    return http.get<Offer[]>(`${MANAGER_PREFIX}/offers/${departmentId}/${sessionId}`);
-}
 
 export const employerCreateOffer = async (offer: Offer): Promise<AxiosResponse> => {
     return http.post(`${EMPLOYER_PREFIX}/offers`, offer)
@@ -30,11 +20,17 @@ export const employerDeleteOffer = async (offerId: number): Promise<AxiosRespons
         }
     })
 }
-
-export const getManagerOffersByDepartment = async (departmentId: number): Promise<AxiosResponse<Offer[]>> => {
-    return http.get<Offer[]>(`${MANAGER_PREFIX}/offers/${departmentId}`);
+export const getAllOffersByEmployerIdAndSessionId = async (employerId: number, sessionId: number): Promise<AxiosResponse<Offer[]>> =>{
+    return http.get(`${EMPLOYER_PREFIX}/offers/${sessionId}`, {
+        params: {
+            employerId
+        }
+    });
 }
 
+export const getManagerOffersByDepartment = async (departmentId: number, sessionId: number): Promise<AxiosResponse<Offer[]>> => {
+    return http.get<Offer[]>(`${MANAGER_PREFIX}/offers/${departmentId}/${sessionId}`);
+}
 export const acceptOffer = async (managerId : number, offerId: number): Promise<AxiosResponse<Offer>> => {
     return http.post<Offer>(`${MANAGER_PREFIX}/${managerId}/accept_offer/${offerId}`);
 }

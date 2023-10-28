@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Offer } from "../../../model/offer";
 import OffersList from "../../../components/OffersList";
 import {getEmployerById,} from "../../../services/userService";
-import {getAllOffersByEmployerId} from "../../../services/offerService";
+import {getAllOffersByEmployerIdAndSessionId} from "../../../services/offerService";
 import {useNavigate} from "react-router-dom";
 import {getUserId} from "../../../services/authService";
 
@@ -37,7 +37,7 @@ const EmployerOfferView = () => {
     useEffect(() => {
         if (employer === undefined) return;
 
-        getAllOffersByEmployerId(employer.id!)
+        getAllOffersByEmployerIdAndSessionId(employer.id!)
             .then((res) => {
                 setOffers(res.data);
             })
