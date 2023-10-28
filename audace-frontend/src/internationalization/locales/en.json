@@ -160,6 +160,22 @@
       "sessionExpired": "Your session has expired, please log in again"
     }
   },
+  "applicationsList": {
+    "title": "Applications submitted",
+    "offerTitle": "Position title",
+    "organization": "Organization",
+    "status": "Status",
+    "row": {
+      "status": {
+        "PENDING": "Pending",
+        "ACCEPTED": "Accepted",
+        "REFUSED": "Refused"
+      }
+    },
+    "errors": {
+      "studentNotFound": "Student wasn't found"
+    }
+  },
   "logout": "Log out",
   "pageNotFound": "Error 404: Page Not Found",
   "sessionSelector": {

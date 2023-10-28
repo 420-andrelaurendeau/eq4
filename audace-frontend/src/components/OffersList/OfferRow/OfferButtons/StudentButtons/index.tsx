@@ -2,14 +2,15 @@ import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import {
   apply,
+  getApplicationsByStudentId,
   getCvsByStudentId,
 } from "../../../../../services/studentApplicationService";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getUserId } from "../../../../../services/authService";
 import { Offer } from "../../../../../model/offer";
-import { Student } from "../../../../../model/user";
 import Application from "../../../../../model/application";
 import { useCVContext } from "../../../../../contextsholders/providers/CVContextHolder";
+import { useApplicationContext } from "../../../../../contextsholders/providers/ApplicationsContextHolder";
 
 interface Props {
   disabled?: boolean;
@@ -22,6 +23,7 @@ const StudentButtons = ({ disabled, offer }: Props) => {
   const [applicationMessageColor, setApplicationMessageColor] = useState("");
   const studentId = getUserId();
   const { cvs, setCvs } = useCVContext();
+  const { setApplications } = useApplicationContext();
 
   useEffect(() => {
     if (studentId === undefined) return;
@@ -42,27 +44,15 @@ const StudentButtons = ({ disabled, offer }: Props) => {
     }
 
     try {
-      const tempStudent: Student = {
-        id: parseInt(studentId!),
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        address: "",
-        type: "student",
-        studentNumber: "",
-        password: "string",
-      };
-
       const applicationData: Application = {
         id: 1000,
         offer: offer,
         cv: cvs[0],
-        student: tempStudent,
       };
 
-      const response = await apply(applicationData);
-      console.log(response);
+      await apply(applicationData);
+
+      handleApplicationsUpdate();
 
       setApplicationMessage(t("offersList.applicationMessageSuccess"));
       setApplicationMessageColor("green");
@@ -70,6 +60,16 @@ const StudentButtons = ({ disabled, offer }: Props) => {
       setApplicationMessage(t("offersList.applicationMessageFailure") + error);
       setApplicationMessageColor("red");
     }
+  };
+
+  const handleApplicationsUpdate = () => {
+    getApplicationsByStudentId(parseInt(studentId!))
+      .then((res) => {
+        setApplications(res.data);
+      })
+      .catch((err) => {
+        console.log("getApplicationsByStudentId error", err);
+      });
   };
 
   return (

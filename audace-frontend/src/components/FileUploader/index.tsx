@@ -3,16 +3,18 @@ import { Alert, Button, Form, FormControl } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { uploadFile } from "../../services/fileService";
 import { Student } from "../../model/user";
+import { getCvsByStudentId } from "../../services/studentApplicationService";
+import { useCVContext } from "../../contextsholders/providers/CVContextHolder";
 
 interface Props {
   student: Student;
-  onUploadSuccess: () => void;
 }
 
-const FileUploader = ({ student, onUploadSuccess }: Props) => {
+const FileUploader = ({ student }: Props) => {
   const { t } = useTranslation();
   const [file, setFile] = useState<File>();
   const [successMessage, setSuccessMessage] = useState<string>("");
+  const { setCvs } = useCVContext();
 
   const validateForm = () => {
     return file !== undefined;
@@ -24,10 +26,20 @@ const FileUploader = ({ student, onUploadSuccess }: Props) => {
     uploadFile(student.id!, file!)
       .then((_) => {
         setSuccessMessage("upload.success");
-        onUploadSuccess();
+        handleUploadSuccess();
       })
       .catch((err) => {
         console.log(err);
+      });
+  };
+
+  const handleUploadSuccess = () => {
+    getCvsByStudentId(student!.id!)
+      .then((res) => {
+        setCvs(res.data);
+      })
+      .catch((err) => {
+        console.error(err);
       });
   };
 

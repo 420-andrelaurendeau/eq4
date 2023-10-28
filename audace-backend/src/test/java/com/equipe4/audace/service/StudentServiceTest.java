@@ -342,4 +342,23 @@ public class StudentServiceTest {
         Department department = createDepartment();
         return new Offer(1L,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
     }
+
+    @Test
+    public void getOffersStudentApplied() {
+        List<Application> applications = new ArrayList<>();
+        applications.add(new Application(1L, mock(Cv.class), mock(Offer.class)));
+
+        when(applicationRepository.findApplicationsByCvStudentId(anyLong())).thenReturn(applications);
+
+        List<ApplicationDTO> result = studentService.getOffersStudentApplied(1L);
+
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result).containsExactlyInAnyOrderElementsOf(applications.stream().map(Application::toDTO).toList());
+    }
+    @Test
+    public void getOffersStudentApplied_isNull() {
+        assertThatThrownBy(() -> studentService.getOffersStudentApplied(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Student ID cannot be null");
+    }
 }

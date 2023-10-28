@@ -9,11 +9,14 @@ import OffersList from "../../../components/OffersList";
 import { getUserId } from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
 import FileUploader from "../../../components/FileUploader";
+import ApplicationsList from "../../../components/ApplicationsList";
+import { getApplicationsByStudentId } from "../../../services/studentApplicationService";
 import { getCvsByStudentId } from "../../../services/studentApplicationService";
 import { useCVContext } from "../../../contextsholders/providers/CVContextHolder";
 import { useSessionContext } from "../../../contextsholders/providers/SessionContextHolder";
-import CvsList from "../../../components/CVsList";
 import SessionSelector from "../../../components/SessionSelector";
+import { useApplicationContext } from "../../../contextsholders/providers/ApplicationsContextHolder";
+import CVsList from "../../../components/CVsList";
 
 interface StudentViewProps {
   viewOffers?: boolean;
@@ -28,9 +31,11 @@ const StudentView = ({
   const [offers, setOffers] = useState<Offer[]>([]);
   const [offersError, setOffersError] = useState<string>("");
   const [cvsError, setCvsError] = useState<string>("");
+  const [applicationsError, setApplicationsError] = useState<string>("");
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { setCvs, cvs } = useCVContext();
+  const { cvs, setCvs } = useCVContext();
+  const { applications, setApplications } = useApplicationContext();
   const { chosenSession } = useSessionContext();
 
   useEffect(() => {
@@ -81,15 +86,19 @@ const StudentView = ({
       });
   }, [student, t, setCvs, chosenSession]);
 
-  const handleUploadSuccess = () => {
-    getCvsByStudentId(student!.id!)
+  useEffect(() => {
+    if (student === undefined) return;
+
+    getApplicationsByStudentId(student?.id!)
       .then((res) => {
-        setCvs(res.data);
+        setApplications(res.data);
       })
       .catch((err) => {
-        console.error(err);
+        console.log(err);
+        if (err.request.status === 404)
+          setApplicationsError(t("applicationsList.errors.studentNotFound"));
       });
-  };
+  }, [student, t, setApplications]);
 
   return (
     <Container>
@@ -108,13 +117,9 @@ const StudentView = ({
           />
         </>
       )}
-      <CvsList error={cvsError} cvs={cvs} userType={UserType.Student} />
-      {viewUpload && (
-        <FileUploader
-          student={student!}
-          onUploadSuccess={handleUploadSuccess}
-        />
-      )}
+      <CVsList cvs={cvs} error={cvsError} userType={UserType.Student} />
+      {viewUpload && <FileUploader student={student!} />}
+      <ApplicationsList applications={applications} error={applicationsError} />
     </Container>
   );
 };
