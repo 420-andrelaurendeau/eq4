@@ -134,6 +134,14 @@ public class StudentService extends GenericUserService<Student> {
 
         Long cvId = applicationDTO.getCv().getId();
         Long offerId = applicationDTO.getOffer().getId();
+        Long studentId = applicationDTO.getCv().getStudent().getId();
+
+        List<Application> alreadyApplied = applicationRepository
+                .findApplicationsByCvStudentIdAndOfferId(studentId, offerId);
+
+        if (!alreadyApplied.isEmpty()) {
+            throw new IllegalArgumentException("Student already applied to this offer");
+        }
 
         Cv cv = cvRepository.findById(cvId).orElseThrow(() -> new NoSuchElementException("Cv not found"));
         Offer offer = offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
