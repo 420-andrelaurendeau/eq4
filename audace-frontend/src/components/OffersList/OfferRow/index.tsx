@@ -1,43 +1,40 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Offer, OfferStatus } from "../../../model/offer";
 import OfferModal from "./OfferModal";
 import "./styles.css";
 import { formatDate } from "../../../services/formatService";
 import { Employer, UserType } from "../../../model/user";
 import OfferButtons from "./OfferButtons";
-import { getEmployerById } from "../../../services/userService";
-import { getUserId } from "../../../services/authService";
 
 import { Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useSessionContext } from "../../../contextsholders/providers/SessionContextHolder";
 
 interface Props {
-    offer: Offer;
-    userType: UserType;
-    updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
-    seeApplications?: (offer: Offer) => void;
+  offer: Offer;
+  userType: UserType;
+  updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
+  seeApplications?: (offer: Offer) => void;
 }
 
-const OfferRow = ({ offer, userType, updateOffersState, seeApplications }: Props) => {
+const OfferRow = ({
+  offer,
+  userType,
+  updateOffersState,
+  seeApplications,
+}: Props) => {
   const [show, setShow] = useState<boolean>(false);
-  const handleClick = () => setShow(true);
-  const handleClose = () => setShow(false);
-  const [employer, setEmployer] = useState<Employer | undefined>(undefined);
+  const [employer, setEmployer] = useState<Employer>(offer.employer);
   const { t } = useTranslation();
-  const studentId = getUserId();
   const { currentSession, chosenSession } = useSessionContext();
+  const [disabled, setDisabled] = useState<boolean>(true);
 
-  useEffect(() => {
-    if (employer !== undefined) return;
-    getEmployerById(offer.employer.id!)
-      .then((res) => {
-        setEmployer!(res.data);
-      })
-      .catch((err) => {
-        console.log("getEmployerById error", err);
-      });
-  }, [setEmployer, offer, employer, studentId]);
+  const handleClick = () => {
+    
+    setShow(true);
+    setDisabled(false);
+  };
+  const handleClose = () => setShow(false);
 
   return (
     <>
@@ -52,12 +49,10 @@ const OfferRow = ({ offer, userType, updateOffersState, seeApplications }: Props
         <td>{formatDate(offer.internshipEndDate)}</td>
         {chosenSession?.id === currentSession?.id && (
           <td>
-            <div
-              className="d-flex justify-content-center"
-            >
+            <div className="d-flex justify-content-center">
               <OfferButtons
                 userType={userType}
-                disabled={employer === undefined}
+                disabled={disabled}
                 offer={offer}
                 updateOffersState={updateOffersState}
                 seeApplications={seeApplications}
@@ -75,6 +70,7 @@ const OfferRow = ({ offer, userType, updateOffersState, seeApplications }: Props
           employer={employer}
           setEmployer={setEmployer}
           updateOffersState={updateOffersState}
+          disabled={disabled}
         />
       )}
     </>

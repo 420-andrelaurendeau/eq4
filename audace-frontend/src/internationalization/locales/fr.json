@@ -152,6 +152,8 @@
     "offerTitle": "Titre de la position",
     "organization": "Organisation",
     "status": "État",
+    "cv": "CV",
+    "noApplications": "Aucune application soumise",
     "row": {
       "status": {
         "PENDING": "En attente",

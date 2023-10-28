@@ -11,9 +11,10 @@ import { Offer } from "../../../../../model/offer";
 import Application from "../../../../../model/application";
 import { useCVContext } from "../../../../../contextsholders/providers/CVContextHolder";
 import { useApplicationContext } from "../../../../../contextsholders/providers/ApplicationsContextHolder";
+import { useSessionContext } from "../../../../../contextsholders/providers/SessionContextHolder";
 
 interface Props {
-  disabled?: boolean;
+  disabled: boolean;
   offer: Offer;
 }
 
@@ -23,7 +24,20 @@ const StudentButtons = ({ disabled, offer }: Props) => {
   const [applicationMessageColor, setApplicationMessageColor] = useState("");
   const studentId = getUserId();
   const { cvs, setCvs } = useCVContext();
-  const { setApplications } = useApplicationContext();
+  const { applications, setApplications } = useApplicationContext();
+  const { chosenSession } = useSessionContext();
+
+  const isButtonDisabled = (): boolean => {
+    if (disabled) return true;
+    if (applications === undefined || cvs === undefined || cvs.length === 0) return true;
+
+    return (
+      applications.filter(
+        (application) =>
+          application.offer?.id === offer.id
+      ).length > 0
+    );
+  }
 
   useEffect(() => {
     if (studentId === undefined) return;
@@ -63,7 +77,7 @@ const StudentButtons = ({ disabled, offer }: Props) => {
   };
 
   const handleApplicationsUpdate = () => {
-    getApplicationsByStudentId(parseInt(studentId!))
+    getApplicationsByStudentId(parseInt(studentId!), chosenSession?.id!)
       .then((res) => {
         setApplications(res.data);
       })
@@ -81,7 +95,7 @@ const StudentButtons = ({ disabled, offer }: Props) => {
         justifyContent: "center",
       }}
     >
-      <Button disabled={disabled} onClick={handleApply}>
+      <Button disabled={isButtonDisabled()} onClick={handleApply}>
         {t("offersList.applyButton")}
       </Button>
       <p style={{ color: applicationMessageColor }}>{applicationMessage}</p>

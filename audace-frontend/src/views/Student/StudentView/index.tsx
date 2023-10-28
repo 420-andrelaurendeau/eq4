@@ -89,7 +89,7 @@ const StudentView = ({
   useEffect(() => {
     if (student === undefined) return;
 
-    getApplicationsByStudentId(student?.id!)
+    getApplicationsByStudentId(student?.id!, chosenSession?.id!)
       .then((res) => {
         setApplications(res.data);
       })
@@ -98,7 +98,7 @@ const StudentView = ({
         if (err.request.status === 404)
           setApplicationsError(t("applicationsList.errors.studentNotFound"));
       });
-  }, [student, t, setApplications]);
+  }, [student, t, setApplications, chosenSession]);
 
   return (
     <Container>
