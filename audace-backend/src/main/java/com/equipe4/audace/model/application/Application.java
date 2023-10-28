@@ -29,12 +29,25 @@ public class Application {
     @JoinColumn(name = "offer_id")
     @ToString.Exclude
     private Offer offer;
+    private ApplicationStatus applicationStatus;
 
+    public enum ApplicationStatus {
+        PENDING,
+        ACCEPTED,
+        REFUSED
+    }
+    public Application(Long id, Cv cv, Offer offer) {
+        this.id = id;
+        this.cv = cv;
+        this.offer = offer;
+        this.applicationStatus = ApplicationStatus.PENDING;
+    }
     public ApplicationDTO toDTO(){
         return new ApplicationDTO(
                 id,
                 offer.toDTO(),
-                cv.toDTO()
+                cv.toDTO(),
+                applicationStatus
         );
     }
 }
