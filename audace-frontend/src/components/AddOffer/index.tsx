@@ -137,17 +137,15 @@ const AddOffer: React.FC = () => {
             value={title}
             onChange={(e: any) => setTitle(e.target.value)}
             errors={errors}
-            formError="addOffer.errors.titleRequired"
+            formError=""
             controlId="formOfferTitle"
           />
-
           <Col md="4">
             <Form.Group controlId="formOfferDepartment">
               <Form.Label>{t("addOffer.departmentCode")}</Form.Label>
               <Form.Control
                 as="select"
                 value={department.toString()}
-                isInvalid={errors.includes("addOffer.errors.departmentRequired")}
                 onChange={(e: any) => setDepartment(e.target.value)}
               >
                 <option value="" disabled>Select department...</option>
@@ -157,11 +155,6 @@ const AddOffer: React.FC = () => {
                   </option>
                 ))}
               </Form.Control>
-              {errors.includes("addOffer.errors.departmentRequired") && (
-                <Form.Control.Feedback type="invalid">
-                  {t("addOffer.errors.departmentRequired")}
-                </Form.Control.Feedback>
-              )}
             </Form.Group>
           </Col>
         </Row>
@@ -171,14 +164,9 @@ const AddOffer: React.FC = () => {
           <Form.Control
             as="textarea"
             value={description}
-            isInvalid={errors.includes("addOffer.errors.descriptionRequired")}
             onChange={(e) => setDescription(e.target.value)}
           />
-          {errors.includes("addOffer.errors.descriptionRequired") && (
-            <Form.Control.Feedback type="invalid">
-              {t("addOffer.errors.descriptionRequired")}
-            </Form.Control.Feedback>
-          )}
+          {errors.includes("addOffer.errors.descriptionRequired")}
         </Form.Group>
 
 
@@ -189,7 +177,6 @@ const AddOffer: React.FC = () => {
               <Form.Control
                 type="date"
                 value={formatDateForInput(internshipStartDate)}
-                isInvalid={errors.includes("addOffer.errors.startDateRequired")}
                 onChange={(e) => {
                   const newDate = new Date(e.target.value);
                   if (isValidDate(newDate)) {
@@ -210,7 +197,6 @@ const AddOffer: React.FC = () => {
               <Form.Control
                 type="date"
                 value={formatDateForInput(internshipEndDate)}
-                isInvalid={errors.includes("addOffer.errors.endDateRequired")}
                 onChange={(e) => {
                   const newDate = new Date(e.target.value);
                   if (isValidDate(newDate)) {
@@ -231,7 +217,6 @@ const AddOffer: React.FC = () => {
               <Form.Control
                 type="date"
                 value={formatDateForInput(offerEndDate)}
-                isInvalid={errors.includes("addOffer.errors.offerEndDateRequired")}
                 onChange={(e) => {
                   const newDate = new Date(e.target.value);
                   if (isValidDate(newDate)) {
@@ -259,11 +244,8 @@ const AddOffer: React.FC = () => {
                 isInvalid={errors.includes("addOffer.errors.availablePlacesRequired")}
                 onChange={(e) => setAvailablePlaces(Number(e.target.value))}
               />
-              {errors.includes("addOffer.errors.availablePlacesRequired") && (
-                <Form.Control.Feedback type="invalid">
-                  {t("addOffer.errors.availablePlacesRequired")}
-                </Form.Control.Feedback>
-              )}
+              {errors.includes("addOffer.errors.availablePlacesRequired")
+              }
             </Form.Group>
           </Col>
         </Row>
