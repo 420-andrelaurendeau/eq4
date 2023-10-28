@@ -24,8 +24,22 @@ const StudentButtons = ({ disabled, offer }: Props) => {
   const [applicationMessageColor, setApplicationMessageColor] = useState("");
   const studentId = getUserId();
   const { cvs, setCvs } = useCVContext();
-  const { setApplications } = useApplicationContext();
+  const { applications, setApplications } = useApplicationContext();
   const { chosenSession } = useSessionContext();
+  const [disabledButton, setdisabledButton] = useState<boolean>(
+    disabled !== undefined ? disabled : false
+  );
+
+  useEffect(() => {
+    if (disabledButton) return;
+    if (studentId === undefined) return;
+
+    applications.forEach((application) => {
+      if (application.offer?.id === offer.id) {
+        setdisabledButton(true);
+      }
+    });
+  }, [studentId, applications, offer, disabledButton]);
 
   useEffect(() => {
     if (studentId === undefined) return;
@@ -83,7 +97,7 @@ const StudentButtons = ({ disabled, offer }: Props) => {
         justifyContent: "center",
       }}
     >
-      <Button disabled={disabled} onClick={handleApply}>
+      <Button disabled={disabledButton} onClick={handleApply}>
         {t("offersList.applyButton")}
       </Button>
       <p style={{ color: applicationMessageColor }}>{applicationMessage}</p>

@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Offer, OfferStatus } from "../../../model/offer";
 import OfferModal from "./OfferModal";
 import "./styles.css";
 import { formatDate } from "../../../services/formatService";
 import { Employer, UserType } from "../../../model/user";
 import OfferButtons from "./OfferButtons";
-import { getEmployerById } from "../../../services/userService";
-import { getUserId } from "../../../services/authService";
 
 import { Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -23,21 +21,9 @@ const OfferRow = ({ offer, userType, updateOffersState, seeApplications }: Props
   const [show, setShow] = useState<boolean>(false);
   const handleClick = () => setShow(true);
   const handleClose = () => setShow(false);
-  const [employer, setEmployer] = useState<Employer | undefined>(undefined);
+  const [employer, setEmployer] = useState<Employer>(offer.employer);
   const { t } = useTranslation();
-  const studentId = getUserId();
   const { currentSession, chosenSession } = useSessionContext();
-
-  useEffect(() => {
-    if (employer !== undefined) return;
-    getEmployerById(offer.employer.id!)
-      .then((res) => {
-        setEmployer!(res.data);
-      })
-      .catch((err) => {
-        console.log("getEmployerById error", err);
-      });
-  }, [setEmployer, offer, employer, studentId]);
 
   return (
     <>
