@@ -81,14 +81,14 @@ public class StudentController extends GenericUserController<Student, StudentSer
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("{studentId}/appliedOffers")
-    public ResponseEntity<List<ApplicationDTO>> getOffersStudentApplied(@PathVariable Long studentId) {
+    @GetMapping("{studentId}/appliedOffers/{sessionId}")
+    public ResponseEntity<List<ApplicationDTO>> getOffersStudentApplied(@PathVariable Long studentId, @PathVariable Long sessionId) {
         logger.info("getOffersStudentApplied");
 
         List<ApplicationDTO> offersList;
 
         try {
-            offersList = service.getOffersStudentApplied(studentId);
+            offersList = service.getOffersStudentApplied(studentId, sessionId);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
