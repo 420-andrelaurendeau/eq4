@@ -12,4 +12,6 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
     List<Application> findApplicationsByCv_Student(Student student);
     Long countApplicationsByApplicationStatusAndAndOffer(Application.ApplicationStatus applicationStatus, Offer offer);
 
+    List<Application> findApplicationsByCvStudentId(Long studentId);
+    List<Application> findApplicationsByCvStudentIdAndOfferId(Long studentId, Long offerId);
 }

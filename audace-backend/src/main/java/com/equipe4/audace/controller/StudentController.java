@@ -31,9 +31,9 @@ public class StudentController extends GenericUserController<Student, StudentSer
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/offers/{departmentId}")
-    public ResponseEntity<List<OfferDTO>> getOffersByDepartment(@PathVariable Long departmentId) {
-        return ResponseEntity.ok(service.getAcceptedOffersByDepartment(departmentId));
+    @GetMapping("/offers/{departmentId}/{sessionId}")
+    public ResponseEntity<List<OfferDTO>> getOffersByDepartment(@PathVariable Long departmentId, @PathVariable Long sessionId) {
+        return ResponseEntity.ok(service.getAcceptedOffersByDepartment(departmentId, sessionId));
     }
 
     @PostMapping("/upload/{studentId}")
@@ -81,14 +81,14 @@ public class StudentController extends GenericUserController<Student, StudentSer
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/appliedOffers")
-    public ResponseEntity<List<OfferDTO>> getOffersStudentApplied(@RequestParam("studentId") Long studentId) {
+    @GetMapping("/appliedOffers/{sessionId}")
+    public ResponseEntity<List<ApplicationDTO>> getOffersStudentApplied(@PathVariable Long studentId, @PathVariable Long sessionId) {
         logger.info("getOffersStudentApplied");
 
-        List<OfferDTO> offersList;
+        List<ApplicationDTO> offersList;
 
         try {
-            offersList = service.getOffersStudentApplied(studentId);
+            offersList = service.getOffersStudentApplied(studentId, sessionId);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }

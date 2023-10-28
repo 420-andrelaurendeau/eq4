@@ -16,7 +16,9 @@ import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.StudentService;
 import com.equipe4.audace.utils.JwtManipulator;
@@ -70,6 +72,10 @@ public class StudentControllerTest {
     private SaltRepository saltRepository;
     @MockBean
     private CvRepository cvRepository;
+    @MockBean
+    private SessionRepository sessionRepository;
+    @MockBean
+    private OfferSessionRepository offerSessionRepository;
 
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT"})
@@ -96,9 +102,9 @@ public class StudentControllerTest {
     @WithMockUser(username = "student", authorities = {"STUDENT"})
     public void getOffersByDepartment_happyPath() throws Exception {
         List<OfferDTO> offerDTOList = List.of(mock(OfferDTO.class));
-        when(studentService.getAcceptedOffersByDepartment(1L)).thenReturn(offerDTOList);
+        when(studentService.getAcceptedOffersByDepartment(1L, 1L)).thenReturn(offerDTOList);
 
-        mockMvc.perform(get("/students/offers/1"))
+        mockMvc.perform(get("/students/offers/1/1"))
                 .andExpect(status().isOk());
     }
 
@@ -191,8 +197,8 @@ public class StudentControllerTest {
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT"})
     void getOffersAppliedByStudentId() throws Exception {
-        List<OfferDTO> offerDTOList = List.of(mock(OfferDTO.class));
-        when(studentService.getOffersStudentApplied(1L)).thenReturn(offerDTOList);
+        List<ApplicationDTO> applicationDTOS = List.of(mock(ApplicationDTO.class));
+        when(studentService.getOffersStudentApplied(1L, 1L)).thenReturn(applicationDTOS);
 
         mockMvc.perform(get("/students/appliedOffers").param("studentId", "1"))
                 .andExpect(status().isOk());

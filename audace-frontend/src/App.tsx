@@ -13,17 +13,14 @@ import StudentView from "./views/Student/StudentView";
 import ManagerView from "./views/Manager/ManagerView";
 import ManagerOfferView from "./views/Manager/ManagerOfferView";
 import EmployerView from "./views/Employer/EmployerView";
-import EmployerOfferView from "./views/Employer/EmployerOfferView";
-import EmployerApplicationView from "./views/Employer/EmployerApplicationView";
 import ManagerCvView from "./views/Manager/ManagerCvView";
 import { Authority } from "./model/auth";
 import { getAuthorities } from "./services/authService";
-import { CVProvider } from "./contextsholders/providers/CVContextHolder";
-
+import ProviderWrapper from "./contextsholders/providers/ProviderWrapper";
 
 function App() {
   return (
-    <CVProvider>
+    <ProviderWrapper>
       <Router>
         <AppHeader />
         <Routes>
@@ -68,8 +65,6 @@ function App() {
               <AuthorizedRoute requiredAuthority={Authority.EMPLOYER}>
                 <Routes>
                   <Route index element={<EmployerView />} />
-                  <Route path="offers" element={<EmployerOfferView />} />
-                  <Route path="applications" element={<EmployerApplicationView />} />
                   <Route path="*" element={<PageNotFoundView />} />
                 </Routes>
               </AuthorizedRoute>
@@ -78,7 +73,7 @@ function App() {
           <Route path="/" element={<Navigate to={getAuthorities()?.[0]?.toString().toLowerCase() || "/login"}/>}/>
         </Routes>
       </Router>
-    </CVProvider>
+    </ProviderWrapper>
   );
 }
 

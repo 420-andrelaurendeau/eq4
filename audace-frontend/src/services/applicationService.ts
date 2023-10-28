@@ -11,6 +11,10 @@ export const getAllApplicationsByEmployerId = async (employerId: number): Promis
     });
 }
 
+export const getAllApplicationsByOfferId = async (id: number): Promise<AxiosResponse<Application[]>> => {
+    return http.get<Application[]>(`/employers/${getUserId()}/offers/${id}/applications`);
+}
+
 export const studentApplyToOffer = async (application: Application): Promise<AxiosResponse> => {
     return http.post(`${STUDENT_PREFIX}/applications`, application);
 }

@@ -9,13 +9,14 @@ import OffersList from "../../../components/OffersList";
 import { getUserId } from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
 import FileUploader from "../../../components/FileUploader";
-import { getCvsByStudentId } from "../../../services/cvService";
-import CvsList from "../../../components/CVsListStudent";
-import { useCVContext } from "../../../contextsholders/providers/CVContextHolder";
 import ApplicationsList from "../../../components/ApplicationsList";
-import Application from "../../../model/application";
-import { getApplicationsByStudentId } from "../../../services/applicationService";
-
+import { getApplicationsByStudentId } from "../../../services/studentApplicationService";
+import { getCvsByStudentId } from "../../../services/studentApplicationService";
+import { useCVContext } from "../../../contextsholders/providers/CVContextHolder";
+import { useSessionContext } from "../../../contextsholders/providers/SessionContextHolder";
+import SessionSelector from "../../../components/SessionSelector";
+import { useApplicationContext } from "../../../contextsholders/providers/ApplicationsContextHolder";
+import CVsList from "../../../components/CVsList";
 
 interface StudentViewProps {
   viewOffers?: boolean;
@@ -27,11 +28,12 @@ const StudentView = ({ viewOffers = true, viewUpload = true }: StudentViewProps)
   const [offers, setOffers] = useState<Offer[]>([]);
   const [offersError, setOffersError] = useState<string>("");
   const [cvsError, setCvsError] = useState<string>("");
-  const [applications, setApplications] = useState<Application[]>([]);
   const [applicationsError, setApplicationsError] = useState<string>("");
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { setCvs } = useCVContext();
+  const {cvs, setCvs} = useCVContext();
+  const {applications, setApplications} = useApplicationContext();
+  const {chosenSession} = useSessionContext();
 
   useEffect(() => {
     if (student !== undefined) return;
@@ -58,15 +60,18 @@ const StudentView = ({ viewOffers = true, viewUpload = true }: StudentViewProps)
 
   useEffect(() => {
     if (student === undefined) return;
+    if (chosenSession === undefined) return;
 
-    getStudentOffersByDepartment(student.department!.id!)
+    getStudentOffersByDepartment(student.department!.id!, chosenSession.id)
       .then((res) => {
         setOffers(res.data);
       })
       .catch((err) => {
         console.error(err);
 
-        if (err.request && err.request.status === 404) setOffersError(t("offersList.errors.departmentNotFound"));
+        if (err.request && err.request.status === 404) {
+          setOffersError(t("offersList.errors.departmentNotFound"));
+        }
       });
 
     getCvsByStudentId(student.id!)
@@ -76,47 +81,43 @@ const StudentView = ({ viewOffers = true, viewUpload = true }: StudentViewProps)
       .catch((err) => {
         console.error(err);
       });
-  }, [student, t, setCvs]);
+  }, [student, t, setCvs, chosenSession]);
 
-    useEffect(() => {
-        if (student === undefined) return;
+  useEffect(() => {
+    if (student === undefined) return;
 
-        getApplicationsByStudentId(student?.id!)
-            .then((res) => {
-                setApplications(res.data);
-            })
-            .catch((err) => {
-                console.log(err);
-                if (err.request.status === 404)
-                    setApplicationsError(t("applicationsList.errors.studentNotFound"));
-            });
-    }, [student, t]);
-  const handleUploadSuccess = () => {
-    getCvsByStudentId(student!.id!)
+    getApplicationsByStudentId(student?.id!, chosenSession?.id!)
       .then((res) => {
-        setCvs(res.data);
+        setApplications(res.data);
       })
       .catch((err) => {
-        console.error(err);
+        console.log(err);
+        if (err.request.status === 404)
+          setApplicationsError(t("applicationsList.errors.studentNotFound"));
       });
-  };
+  }, [student, t, setApplications, chosenSession]);
 
   return (
     <Container>
-        <h1 className="my-3" style={{ textTransform: "capitalize" }}>
-            {student?.firstName} {student?.lastName}
-        </h1>
-        {viewOffers && (
-            <>
-                <h2>{t("studentOffersList.viewTitle")}</h2>
-                <OffersList offers={offers} error={offersError} userType={UserType.Student}/>
-            </>
-        )}
-        <CvsList error={cvsError} />
-        {viewUpload && (<FileUploader student={student!} onUploadSuccess={handleUploadSuccess}/>)}
-        <ApplicationsList applications={applications} error={applicationsError} />
+      <h1 className="my-3" style={{ textTransform: "capitalize" }}>
+        {student?.firstName} {student?.lastName}
+      </h1>
+
+      <SessionSelector />
+
+      {viewOffers && (
+        <>
+          <OffersList
+            offers={offers}
+            error={offersError}
+            userType={UserType.Student}
+          />
+        </>
+      )}
+      <CVsList cvs={cvs} error={cvsError} userType={UserType.Student} />
+      {viewUpload && <FileUploader student={student!} />}
+      <ApplicationsList applications={applications} error={applicationsError} />
     </Container>
   );
 };
-
 export default StudentView;

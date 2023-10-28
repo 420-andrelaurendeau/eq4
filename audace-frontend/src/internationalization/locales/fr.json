@@ -35,6 +35,19 @@
       "network": "Il y a eu une erreur de réseau inconnue"
     }
   },
+  "applicationsList": {
+    "title": "Applications",
+    "offerTitle": "Titre de l'offre",
+    "organization": "Organisation",
+    "status": "Status",
+    "row": {
+      "status": {
+        "PENDING": "En attente",
+        "ACCEPTED": "Accepté",
+        "REFUSED": "Refusé"
+      }
+    }
+  },
   "cvsList": {
     "errors": {
       "departmentNotFound": "Département pas trouvé"
@@ -54,7 +67,6 @@
     "noOffers": "Aucun offre disponible",
     "viewTitle": "Offres disponibles",
     "viewMore": "Afficher plus",
-    "viewTitle": "Offres disponibles",
     "applyButton": "Appliquer",
     "applicationMessageSuccess": "Application soumise avec succès",
     "applicationMessageFailure": "Erreur lors de la soumission de l'application"
@@ -114,7 +126,8 @@
     "ACCEPTED": "Accepté",
     "REFUSED": "Refusé",
     "editButton": "Modifier",
-    "deleteButton": "Supprimer"
+    "deleteButton": "Supprimer",
+    "applicationButton" : "Voir les applications"
   },
   "student": {
     "seeOffersButton": "Voir les offres"
@@ -152,6 +165,8 @@
     "offerTitle": "Titre de la position",
     "organization": "Organisation",
     "status": "État",
+    "cv": "CV",
+    "noApplications": "Aucune application soumise",
     "row": {
       "status": {
         "PENDING": "En attente",
@@ -164,5 +179,8 @@
     }
   },
   "logout": "Se déconnecter",
-  "pageNotFound": "Erreur 404: Page pas trouvée"
+  "pageNotFound": "Erreur 404: Page pas trouvée",
+  "sessionSelector": {
+    "filterPlaceholder": "Filtrer par la date"
+  }
 }

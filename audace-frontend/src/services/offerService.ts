@@ -3,17 +3,20 @@ import { Offer } from "../model/offer";
 import http from "../constants/http";
 import { EMPLOYER_PREFIX, MANAGER_PREFIX, STUDENT_PREFIX } from "../constants/apiPrefixes";
 
-
-export const getStudentOffersByDepartment = async (departmentId: number): Promise<AxiosResponse<Offer[]>> => {
-    return http.get<Offer[]>(`${STUDENT_PREFIX}/offers/${departmentId}`);
+export const getStudentOffersByDepartment = async (departmentId: number, sessionId: number): Promise<AxiosResponse<Offer[]>> => {
+    return http.get<Offer[]>(`${STUDENT_PREFIX}/offers/${departmentId}/${sessionId}`);
 }
-export const getAllOffersByEmployerId = async (employerId: number): Promise<AxiosResponse<Offer[]>> =>{
-    return http.get(`${EMPLOYER_PREFIX}/offers`, {
+export const getAllOffersByEmployerId = async (employerId: number, sessionId: number): Promise<AxiosResponse<Offer[]>> =>{
+    return http.get(`${EMPLOYER_PREFIX}/offers/${sessionId}`, {
         params: {
             employerId
         }
     });
 }
+export const getManagerOffersByDepartment = async (departmentId: number, sessionId: number): Promise<AxiosResponse<Offer[]>> => {
+    return http.get<Offer[]>(`${MANAGER_PREFIX}/offers/${departmentId}/${sessionId}`);
+}
+
 export const employerCreateOffer = async (offer: Offer): Promise<AxiosResponse> => {
     return http.post(`${EMPLOYER_PREFIX}/offers`, offer)
 }
@@ -32,10 +35,10 @@ export const getManagerOffersByDepartment = async (departmentId: number): Promis
     return http.get<Offer[]>(`${MANAGER_PREFIX}/offers/${departmentId}`);
 }
 
-export const acceptOffer = async (offerId: number): Promise<AxiosResponse<Offer>> => {
-    return http.post<Offer>(`${MANAGER_PREFIX}/accept_offer/${offerId}`);
+export const acceptOffer = async (managerId : number, offerId: number): Promise<AxiosResponse<Offer>> => {
+    return http.post<Offer>(`${MANAGER_PREFIX}/${managerId}/accept_offer/${offerId}`);
 }
 
-export const refuseOffer = async (offerId: number): Promise<AxiosResponse<Offer>> => {
-    return http.post<Offer>(`${MANAGER_PREFIX}/refuse_offer/${offerId}`);
+export const refuseOffer = async (managerId : number, offerId: number): Promise<AxiosResponse<Offer>> => {
+    return http.post<Offer>(`${MANAGER_PREFIX}/${managerId}/refuse_offer/${offerId}`);
 }
