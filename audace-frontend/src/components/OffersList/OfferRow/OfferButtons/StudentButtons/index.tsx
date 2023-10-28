@@ -14,7 +14,7 @@ import { useApplicationContext } from "../../../../../contextsholders/providers/
 import { useSessionContext } from "../../../../../contextsholders/providers/SessionContextHolder";
 
 interface Props {
-  disabled?: boolean;
+  disabled: boolean;
   offer: Offer;
 }
 
@@ -26,9 +26,7 @@ const StudentButtons = ({ disabled, offer }: Props) => {
   const { cvs, setCvs } = useCVContext();
   const { applications, setApplications } = useApplicationContext();
   const { chosenSession } = useSessionContext();
-  const [disabledButton, setDisabledButton] = useState<boolean>(
-    disabled !== undefined ? disabled : false
-  );
+  const [disabledButton, setDisabledButton] = useState<boolean>(disabled);
 
   useEffect(() => {
     if (disabledButton) return;

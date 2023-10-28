@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Offer } from "../../../../../model/offer";
 
 interface Props {
-  disabled?: boolean;
+  disabled: boolean;
   seeApplications?: (offer: Offer) => void;
   offer: Offer;
 }

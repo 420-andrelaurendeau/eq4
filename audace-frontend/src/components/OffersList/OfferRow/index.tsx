@@ -11,13 +11,18 @@ import { useTranslation } from "react-i18next";
 import { useSessionContext } from "../../../contextsholders/providers/SessionContextHolder";
 
 interface Props {
-    offer: Offer;
-    userType: UserType;
-    updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
-    seeApplications?: (offer: Offer) => void;
+  offer: Offer;
+  userType: UserType;
+  updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
+  seeApplications?: (offer: Offer) => void;
 }
 
-const OfferRow = ({ offer, userType, updateOffersState, seeApplications }: Props) => {
+const OfferRow = ({
+  offer,
+  userType,
+  updateOffersState,
+  seeApplications,
+}: Props) => {
   const [show, setShow] = useState<boolean>(false);
   const handleClick = () => setShow(true);
   const handleClose = () => setShow(false);
@@ -38,9 +43,7 @@ const OfferRow = ({ offer, userType, updateOffersState, seeApplications }: Props
         <td>{formatDate(offer.internshipEndDate)}</td>
         {chosenSession?.id === currentSession?.id && (
           <td>
-            <div
-              className="d-flex justify-content-center"
-            >
+            <div className="d-flex justify-content-center">
               <OfferButtons
                 userType={userType}
                 disabled={employer === undefined}
