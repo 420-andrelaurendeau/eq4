@@ -24,11 +24,16 @@ const OfferRow = ({
   seeApplications,
 }: Props) => {
   const [show, setShow] = useState<boolean>(false);
-  const handleClick = () => setShow(true);
-  const handleClose = () => setShow(false);
   const [employer, setEmployer] = useState<Employer>(offer.employer);
   const { t } = useTranslation();
   const { currentSession, chosenSession } = useSessionContext();
+  const [disabled, setDisabled] = useState<boolean>(true);
+
+  const handleClick = () => {
+    setShow(true);
+    setDisabled(false);
+  };
+  const handleClose = () => setShow(false);
 
   return (
     <>
@@ -46,7 +51,7 @@ const OfferRow = ({
             <div className="d-flex justify-content-center">
               <OfferButtons
                 userType={userType}
-                disabled={employer === undefined}
+                disabled={disabled}
                 offer={offer}
                 updateOffersState={updateOffersState}
                 seeApplications={seeApplications}
@@ -64,6 +69,7 @@ const OfferRow = ({
           employer={employer}
           setEmployer={setEmployer}
           updateOffersState={updateOffersState}
+          disabled={disabled}
         />
       )}
     </>
