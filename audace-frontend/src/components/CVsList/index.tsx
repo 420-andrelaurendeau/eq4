@@ -26,7 +26,7 @@ const CvsList = ({ cvs, error, userType, updateCvsState }: Props) => {
           <tr>
             <th>{t("cvsList.studentName")}</th>
             <th>{t("cvsList.name")}</th>
-            <th></th>
+            {userType !== UserType.Student && <th></th>}
           </tr>
         </thead>
         <tbody>
