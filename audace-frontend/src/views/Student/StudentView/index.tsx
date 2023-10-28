@@ -13,8 +13,10 @@ import ApplicationsList from "../../../components/ApplicationsList";
 import { getApplicationsByStudentId } from "../../../services/studentApplicationService";
 import { getCvsByStudentId } from "../../../services/studentApplicationService";
 import { useCVContext } from "../../../contextsholders/providers/CVContextHolder";
-import CvsList from "../../../components/CVsList";
+import { useSessionContext } from "../../../contextsholders/providers/SessionContextHolder";
+import SessionSelector from "../../../components/SessionSelector";
 import { useApplicationContext } from "../../../contextsholders/providers/ApplicationsContextHolder";
+import CVsList from "../../../components/CVsList";
 
 interface StudentViewProps {
   viewOffers?: boolean;
@@ -34,6 +36,7 @@ const StudentView = ({
   const navigate = useNavigate();
   const { cvs, setCvs } = useCVContext();
   const { applications, setApplications } = useApplicationContext();
+  const { chosenSession } = useSessionContext();
 
   useEffect(() => {
     if (student !== undefined) return;
@@ -60,8 +63,9 @@ const StudentView = ({
 
   useEffect(() => {
     if (student === undefined) return;
+    if (chosenSession === undefined) return;
 
-    getStudentOffersByDepartment(student.department!.id!)
+    getStudentOffersByDepartment(student.department!.id!, chosenSession.id)
       .then((res) => {
         setOffers(res.data);
       })
@@ -80,7 +84,7 @@ const StudentView = ({
       .catch((err) => {
         console.error(err);
       });
-  }, [student, t, setCvs]);
+  }, [student, t, setCvs, chosenSession]);
 
   useEffect(() => {
     if (student === undefined) return;
@@ -101,9 +105,11 @@ const StudentView = ({
       <h1 className="my-3" style={{ textTransform: "capitalize" }}>
         {student?.firstName} {student?.lastName}
       </h1>
+
+      <SessionSelector />
+
       {viewOffers && (
         <>
-          <h2>{t("studentOffersList.viewTitle")}</h2>
           <OffersList
             offers={offers}
             error={offersError}
@@ -111,7 +117,7 @@ const StudentView = ({
           />
         </>
       )}
-      <CvsList cvs={cvs} error={cvsError} userType={UserType.Student} />
+      <CVsList cvs={cvs} error={cvsError} userType={UserType.Student} />
       {viewUpload && <FileUploader student={student!} />}
       <ApplicationsList applications={applications} error={applicationsError} />
     </Container>

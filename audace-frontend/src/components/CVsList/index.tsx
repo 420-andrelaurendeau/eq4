@@ -1,8 +1,8 @@
-import { Alert, Table } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { UserType } from "../../model/user";
 import { CV, CVStatus } from "../../model/cv";
 import CvRow from "./CvRow";
+import GenericTable from "../GenericTable";
 
 interface Props {
   cvs: CV[];
@@ -16,33 +16,32 @@ const CvsList = ({ cvs, error, userType, updateCvsState }: Props) => {
 
   return (
     <>
-      {error !== "" ? (
-        <Alert variant="danger">{error}</Alert>
-      ) : cvs.length > 0 ? (
-        <Table striped bordered size="sm">
-          <thead>
-            <tr>
-              <th>{t("cvsList.studentName")}</th>
-              <th>{t("cvsList.name")}</th>
-              {userType !== UserType.Student && <th></th>}
-            </tr>
-          </thead>
-          <tbody>
-            {cvs.map((cv) => {
-              return (
-                <CvRow
-                  key={cv.id}
-                  cv={cv}
-                  userType={userType}
-                  updateCvsState={updateCvsState}
-                />
-              );
-            })}
-          </tbody>
-        </Table>
-      ) : (
-        <p>{t("cvsList.noCvs")}</p>
-      )}
+      <GenericTable
+        list={cvs}
+        error={error}
+        emptyListMessage="cvsList.noCvs"
+        title="cvsList.name"
+      >
+        <thead>
+          <tr>
+            <th>{t("cvsList.studentName")}</th>
+            <th>{t("cvsList.name")}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {cvs.map((cv) => {
+            return (
+              <CvRow
+                key={cv.id}
+                cv={cv}
+                userType={userType}
+                updateCvsState={updateCvsState}
+              />
+            );
+          })}
+        </tbody>
+      </GenericTable>
     </>
   );
 };

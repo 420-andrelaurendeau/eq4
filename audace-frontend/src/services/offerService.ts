@@ -3,20 +3,19 @@ import { Offer } from "../model/offer";
 import http from "../constants/http";
 import { EMPLOYER_PREFIX, MANAGER_PREFIX, STUDENT_PREFIX } from "../constants/apiPrefixes";
 
-export const getStudentOffersByDepartment = async (departmentId: number): Promise<AxiosResponse<Offer[]>> => {
-    return http.get<Offer[]>(`${STUDENT_PREFIX}/offers/${departmentId}`);
+export const getStudentOffersByDepartment = async (departmentId: number, sessionId: number): Promise<AxiosResponse<Offer[]>> => {
+    return http.get<Offer[]>(`${STUDENT_PREFIX}/offers/${departmentId}/${sessionId}`);
 }
-
-export const getAllOffersByEmployerId = async (employerId: number): Promise<AxiosResponse<Offer[]>> =>{
-    return http.get(`${EMPLOYER_PREFIX}/${employerId}/offers`);
+export const getAllOffersByEmployerId = async (employerId: number, sessionId: number): Promise<AxiosResponse<Offer[]>> =>{
+    return http.get(`${EMPLOYER_PREFIX}/${employerId}/offers/${sessionId}`);
 }
 
 export const employerCreateOffer = async (offer: Offer): Promise<AxiosResponse> => {
     return http.post(`${EMPLOYER_PREFIX}/${offer.employer.id}/offers`)
 }
 
-export const getManagerOffersByDepartment = async (departmentId: number): Promise<AxiosResponse<Offer[]>> => {
-    return http.get<Offer[]>(`${MANAGER_PREFIX}/offers/${departmentId}`);
+export const getManagerOffersByDepartment = async (departmentId: number, sessionId: number): Promise<AxiosResponse<Offer[]>> => {
+    return http.get<Offer[]>(`${MANAGER_PREFIX}/offers/${departmentId}/${sessionId}`);
 }
 
 export const acceptOffer = async (managerId : number, offerId: number): Promise<AxiosResponse<Offer>> => {

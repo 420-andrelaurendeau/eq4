@@ -7,11 +7,9 @@ export interface Application {
   cv?: CV;
   applicationStatus?: ApplicationStatus;
 }
-
 export enum ApplicationStatus {
-  ACCEPTED = "ACCEPTED",
   PENDING = "PENDING",
-  REFUSED = "REFUSED",
+  ACCEPTED = "ACCEPTED",
+  REFUSED = "REFUSED"
 }
-
 export default Application;

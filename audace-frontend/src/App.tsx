@@ -21,7 +21,6 @@ import EmployerView from "./views/Employer/EmployerView";
 import ManagerCvView from "./views/Manager/ManagerCvView";
 import { Authority } from "./model/auth";
 import { getAuthorities } from "./services/authService";
-import EmployerApplicationView from "./views/Employer/EmployerApplicationView";
 import ProviderWrapper from "./contextsholders/providers/ProviderWrapper";
 
 function App() {
@@ -96,7 +95,6 @@ function App() {
               <AuthorizedRoute requiredAuthority={Authority.EMPLOYER}>
                 <Routes>
                   <Route index element={<EmployerView />} />
-                  <Route path="applications" element={<EmployerApplicationView />} />
                   <Route path="*" element={<PageNotFoundView />} />
                 </Routes>
               </AuthorizedRoute>

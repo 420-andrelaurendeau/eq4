@@ -26,6 +26,7 @@ public class WebSecurityConfig {
         http
             .authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/users/sessions/**").permitAll()
                 .requestMatchers("/students/**").hasAnyAuthority(Authorities.ADMIN.name(), Authorities.STUDENT.name())
                 .requestMatchers("/employers/{id}").hasAnyAuthority(Authorities.ADMIN.name(), Authorities.EMPLOYER.name(), Authorities.MANAGER.name(), Authorities.STUDENT.name())
                 .requestMatchers("/employers/**").hasAnyAuthority(Authorities.ADMIN.name(), Authorities.EMPLOYER.name())

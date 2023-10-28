@@ -18,7 +18,9 @@ import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.StudentService;
 import com.equipe4.audace.utils.JwtManipulator;
@@ -74,6 +76,10 @@ public class EmployerControllerTest {
     private StudentService studentService;
     @MockBean
     private SaltRepository saltRepository;
+    @MockBean
+    private SessionRepository sessionRepository;
+    @MockBean
+    private OfferSessionRepository offerSessionRepository;
 
     @Test
     @WithMockUser(username = "employer", authorities = {"EMPLOYER", "USER"})
@@ -188,10 +194,10 @@ public class EmployerControllerTest {
         List<OfferDTO> listOfOffers = new ArrayList<>();
         listOfOffers.add(createOffer(employer, department).toDTO());
         listOfOffers.add(createOffer(employer, department).toDTO());
-        given(employerService.findAllOffersByEmployerId(employer.getId())).willReturn(listOfOffers);
+        given(employerService.findAllOffersByEmployerId(employer.getId(), 1L)).willReturn(listOfOffers);
 
         // when -  action or the behaviour that we are going test
-        ResultActions response = mockMvc.perform(get("/employers/{id}/offers", 1L));
+        ResultActions response = mockMvc.perform(get("/employers/{id}/offers/{sessionId}", 1L, 1L));
 
         // then - verify the output
         response.andExpect(status().isOk())
@@ -246,41 +252,25 @@ public class EmployerControllerTest {
                 .andExpect(jsonPath("$.employer.id", is(offerDTOUpdated.getEmployer().getId().intValue())))
                 .andExpect(jsonPath("$.department.code", is(offerDTOUpdated.getDepartment().getCode())));
     }
-
     @Test
     @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
-    public void givenMapOfOffersAndApplications_whenGetAllApplicationsByEmployerId_thenReturnOffersAndApplicationsMap() throws Exception{
-        // given - precondition or setup
-        Map<Long, List<ApplicationDTO>> map = new HashMap<>();
-        EmployerDTO employerDTO = createEmployerDTO();
+    public void getAllApplicationsByEmployerIdandOfferId() throws Exception {
+        Department department = new Department(1L, "GLO", "Génie logiciel");
+        Employer employer = createEmployerDTO().fromDTO();
+        Offer offer = createOffer(employer, department);
+        Application application = createApplication(offer);
+        List<ApplicationDTO> listOfApplications = new ArrayList<>();
+        listOfApplications.add(application.toDTO());
+        listOfApplications.add(application.toDTO());
+        given(employerService.findAllApplicationsByEmployerIdAndOfferId(employer.getId(), offer.getId())).willReturn(listOfApplications);
 
-        Offer offer = createOffer();
-        Offer offer2 = createOffer();
-        offer2.setId(2L);
+        ResultActions response = mockMvc.perform(get("/employers/{id}/offers/{offerId}/applications", 1L, 1L));
 
-        List<ApplicationDTO> applicationDTOList = new ArrayList<>();
-        applicationDTOList.add(createApplication(offer).toDTO());
-        applicationDTOList.add(createApplication(offer).toDTO());
-
-        List<ApplicationDTO> applicationDTOList2 = new ArrayList<>();
-        applicationDTOList2.add(createApplication(offer2).toDTO());
-        applicationDTOList2.add(createApplication(offer2).toDTO());
-
-        map.put(offer.getId(), applicationDTOList);
-        map.put(offer2.getId(), applicationDTOList2);
-
-        given(employerService.findAllApplicationsByEmployerId(employerDTO.getId())).willReturn(map);
-
-        // when -  action or the behaviour that we are going test
-        ResultActions response = mockMvc.perform(get("/employers/{employerId}/offers/applications", 1L));
-
-        // then - verify the output
         response.andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("$.size()",
-                        is(applicationDTOList.size())));
+                        is(listOfApplications.size())));
     }
-
 
     private Department createDepartment(){
         return new Department(1L, "GLO", "Génie logiciel");
@@ -303,8 +293,6 @@ public class EmployerControllerTest {
 
         return new Application(1L, cv, offer);
     }
-
-
     private Offer createOffer(Employer employer, Department department) {
         return new Offer(
                 1L,

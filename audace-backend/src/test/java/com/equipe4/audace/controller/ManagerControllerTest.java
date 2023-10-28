@@ -15,7 +15,9 @@ import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.ManagerService;
 import com.equipe4.audace.service.StudentService;
@@ -72,6 +74,10 @@ public class ManagerControllerTest {
     private JwtManipulator jwtManipulator;
     @MockBean
     private SaltRepository saltRepository;
+    @MockBean
+    private SessionRepository sessionRepository;
+    @MockBean
+    private OfferSessionRepository offerSessionRepository;
 
 
     @Test
@@ -191,9 +197,9 @@ public class ManagerControllerTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void getOffersByDepartment_happyPath() throws Exception {
         List<OfferDTO> offerDTOList = List.of(mock(OfferDTO.class));
-        when(managerService.getOffersByDepartment(1L)).thenReturn(offerDTOList);
+        when(managerService.getOffersByDepartment(1L, 1L)).thenReturn(offerDTOList);
 
-        mockMvc.perform(get("/managers/offers/1"))
+        mockMvc.perform(get("/managers/offers/{departmendId}/{sessionId}", 1L, 1L))
                 .andExpect(status().isOk());
     }
     @Test
@@ -302,9 +308,9 @@ public class ManagerControllerTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void getCvsByDepartment() throws Exception {
         List<CvDTO> cvDTOList = List.of(mock(CvDTO.class));
-        when(managerService.getCvsByDepartment(1L)).thenReturn(cvDTOList);
+        when(managerService.getCvsByDepartment(1L, 1L)).thenReturn(cvDTOList);
 
-        mockMvc.perform(get("/managers/cvs/1"))
+        mockMvc.perform(get("/managers/cvs/1/1"))
                 .andExpect(status().isOk());
     }
 }
