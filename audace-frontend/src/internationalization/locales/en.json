@@ -118,7 +118,18 @@
   "manager": {
     "seeOffersButton": "See Offers",
     "seeCvsButton": "See CVS",
-    "createContractButton": "Create Contract"
+    "createContractButton": "Create Contract",
+    "createContract": {
+      "title": "Create Contract",
+      "errors": {
+        "departmentNotFound": "Department not found",
+        "studentNotFound": "Student not found",
+        "offerNotFound": "Offer not found",
+        "contractAlreadyExists": "A contract already exists for this offer",
+        "contractCreationFailed": "Contract creation failed",
+        "contractCreated": "Contract created successfully"
+      }
+    }
   },
   "employer": {
     "errors": {

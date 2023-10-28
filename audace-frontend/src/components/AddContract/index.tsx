@@ -33,7 +33,14 @@ const AddContract = () => {
     <>
       <h1>Add Contract</h1>
       <Form className="my-3">
-        <FormInput label="Office Name" value={officeName} setValue={setOfficeName} />
+        <FormInput
+          label="contract.officeName"
+          value={officeName}
+          onChange={(e) => setOfficeName(e.target.value)}
+          controlId="formBasicOfficeName"
+          errors={errors}
+          formError={"contract.errors.emptyOfficeName"}
+        />
       </Form>
     </>
   );
