@@ -26,7 +26,7 @@ const StudentButtons = ({ disabled, offer }: Props) => {
   const { cvs, setCvs } = useCVContext();
   const { applications, setApplications } = useApplicationContext();
   const { chosenSession } = useSessionContext();
-  const [disabledButton, setdisabledButton] = useState<boolean>(
+  const [disabledButton, setDisabledButton] = useState<boolean>(
     disabled !== undefined ? disabled : false
   );
 
@@ -36,7 +36,7 @@ const StudentButtons = ({ disabled, offer }: Props) => {
 
     applications.forEach((application) => {
       if (application.offer?.id === offer.id) {
-        setdisabledButton(true);
+        setDisabledButton(true);
       }
     });
   }, [studentId, applications, offer, disabledButton]);
