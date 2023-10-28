@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { Table } from "react-bootstrap";
+import { Table, Alert } from "react-bootstrap";
 
 interface Props<T> {
   list: T[];
@@ -23,7 +23,7 @@ const GenericTable = <T,>({
     <>
       <h2 className="mb-3">{t(title)}</h2>
       {error !== "" ? (
-        <p className="text-center">{error}</p>
+        <Alert className="text-center">{error}</Alert>
       ) : list.length > 0 ? (
         <Table striped bordered hover size="sm">
           {children}
