@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import { getUserId } from "../../../../../services/authService";
 import { Offer } from "../../../../../model/offer";
 import { Student } from "../../../../../model/user";
-import Application from "../../../../../model/application";
+import Application, { ApplicationStatus } from "../../../../../model/application";
 import { useCVContext } from "../../../../../contextsholders/providers/CVContextHolder";
 
 interface Props {
@@ -59,6 +59,7 @@ const StudentButtons = ({ disabled, offer }: Props) => {
         offer: offer,
         cv: cvs[0],
         student: tempStudent,
+        applicationStatus: ApplicationStatus.PENDING,
       };
 
       const response = await apply(applicationData);

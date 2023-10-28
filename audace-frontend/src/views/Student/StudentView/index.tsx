@@ -108,7 +108,7 @@ const StudentView = ({
         if (err.request.status === 404)
           setApplicationsError(t("applicationsList.errors.studentNotFound"));
       });
-  };
+  });
 
   return (
     <Container>

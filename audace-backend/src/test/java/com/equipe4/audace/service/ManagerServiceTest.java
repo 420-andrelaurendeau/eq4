@@ -430,8 +430,9 @@ public class ManagerServiceTest {
         ));
 
         when(applicationRepository.findApplicationsByApplicationStatusAndCv_StudentDepartmentId(any(), anyLong())).thenReturn(applications);
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.of(new Manager(1L, "firstName", "lastName", "email", "password", "address", "phone", department)));
 
-        List<ApplicationDTO> result = managerService.getAcceptedApplicationsByDepartment(1L);
+        List<ApplicationDTO> result = managerService.getAcceptedApplicationsByDepartment(1L, 1L);
 
         assertThat(result.size()).isEqualTo(1);
     }

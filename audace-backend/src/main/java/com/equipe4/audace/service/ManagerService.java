@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -109,7 +110,10 @@ public class ManagerService extends GenericUserService<Manager> {
                 .stream().map(Cv::toDTO).toList();
     }
 
-    public List<ApplicationDTO> getAcceptedApplicationsByDepartment(Long departmentId) {
+    public List<ApplicationDTO> getAcceptedApplicationsByDepartment(Long managerId, Long departmentId) {
+        if (!managerRepository.findById(managerId).orElseThrow().getDepartment().getId().equals(departmentId)) {
+            throw new IllegalArgumentException("The manager isn't in the right department");
+        }
         return applicationRepository
                 .findApplicationsByApplicationStatusAndCv_StudentDepartmentId(
                         Application.ApplicationStatus.ACCEPTED, departmentId)

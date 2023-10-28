@@ -320,9 +320,9 @@ public class ManagerControllerTest {
         Offer offer = new Offer(1L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, department, mock(Employer.class));
         Application application = new Application(1L, cv, offer);
         applicationDTOList.add(application.toDTO());
-        when(managerService.getAcceptedApplicationsByDepartment(1L)).thenReturn(applicationDTOList);
+        when(managerService.getAcceptedApplicationsByDepartment(1L, 1L)).thenReturn(applicationDTOList);
 
-        mockMvc.perform(get("/managers/acceptedApplications/1"))
+        mockMvc.perform(get("/managers/1/acceptedApplications/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$[0].id").value(1L))

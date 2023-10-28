@@ -71,11 +71,11 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
                 .map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
-    @GetMapping("/acceptedApplications/{departmentId}")
-    public ResponseEntity<List<ApplicationDTO>> getAcceptedApplicationsByDepartment(@PathVariable Long departmentId) {
+    @GetMapping("/{managerId}/acceptedApplications/{departmentId}")
+    public ResponseEntity<List<ApplicationDTO>> getAcceptedApplicationsByDepartment(@PathVariable Long managerId, @PathVariable Long departmentId) {
         logger.info("getAcceptedApplicationsByDepartment");
         return ResponseEntity.ok(
-                service.getAcceptedApplicationsByDepartment(departmentId)
+                service.getAcceptedApplicationsByDepartment(managerId, departmentId)
         );
     }
 }
