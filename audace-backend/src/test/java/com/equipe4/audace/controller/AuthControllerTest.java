@@ -3,13 +3,13 @@ package com.equipe4.audace.controller;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.UserDTO;
-import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
-import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.UserRepository;
-import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
+import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.security.jwt.TimedJwt;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.StudentService;
@@ -44,13 +44,7 @@ public class AuthControllerTest {
     @MockBean
     private DepartmentRepository departmentRepository;
     @MockBean
-    private EmployerRepository employerRepository;
-    @MockBean
-    private StudentRepository studentRepository;
-    @MockBean
     private ManagerRepository managerRepository;
-    @MockBean
-    private UserRepository userRepository;
     @MockBean
     private JwtManipulator jwtManipulator;
     @MockBean
@@ -60,7 +54,13 @@ public class AuthControllerTest {
     @MockBean
     private AuthService authService;
     @MockBean
-    private CvRepository cvRepository;
+    private SessionRepository sessionRepository;
+    @MockBean
+    private OfferRepository offerRepository;
+    @MockBean
+    private OfferSessionRepository offerSessionRepository;
+    @MockBean
+    private UserRepository userRepository;
 
     @Test
     @WithMockUser

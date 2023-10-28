@@ -15,14 +15,14 @@ import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.UserRepository;
-import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.StudentService;
 import com.equipe4.audace.utils.JwtManipulator;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -74,6 +74,10 @@ public class EmployerControllerTest {
     private StudentService studentService;
     @MockBean
     private SaltRepository saltRepository;
+    @MockBean
+    private SessionRepository sessionRepository;
+    @MockBean
+    private OfferSessionRepository offerSessionRepository;
 
     @Test
     @WithMockUser(username = "employer", authorities = {"EMPLOYER", "USER"})
@@ -188,10 +192,10 @@ public class EmployerControllerTest {
         List<OfferDTO> listOfOffers = new ArrayList<>();
         listOfOffers.add(createOffer(employer, department).toDTO());
         listOfOffers.add(createOffer(employer, department).toDTO());
-        given(employerService.findAllOffersByEmployerId(employer.getId())).willReturn(listOfOffers);
+        given(employerService.findAllOffersByEmployerId(employer.getId(), 1L)).willReturn(listOfOffers);
 
         // when -  action or the behaviour that we are going test
-        ResultActions response = mockMvc.perform(get("/employers/{id}/offers", 1L));
+        ResultActions response = mockMvc.perform(get("/employers/{id}/offers/{sessionId}", 1L, 1L));
 
         // then - verify the output
         response.andExpect(status().isOk())

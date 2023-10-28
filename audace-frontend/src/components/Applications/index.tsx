@@ -1,14 +1,12 @@
-import { UserType } from "../../model/user";
 import { useTranslation } from "react-i18next";
-import { ReactElement, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Offer } from "../../model/offer";
 import {getUserId} from "../../services/authService";
 import {useNavigate} from "react-router-dom";
 import Application from "../../model/application";
-import { CV } from "../../model/cv";
-import CvsList from "../../components/CVsList";
 import {Container} from "react-bootstrap";
 import { getAllApplicationsByOfferId } from "../../services/applicationService";
+import ApplicationsList from "../ApplicationsList";
 
 interface Props {
     offer: Offer;
@@ -17,7 +15,6 @@ interface Props {
 const Applications = ({offer} : Props) => {
     const [error, setError] = useState<string>("");
     const [applications, setApplications] = useState<Application[]>([]);
-    const [cvs, setCvs] = useState<CV[]>([]);
     const {t} = useTranslation();
     const navigate = useNavigate();
 
@@ -30,12 +27,6 @@ const Applications = ({offer} : Props) => {
         getAllApplicationsByOfferId(offer.id!)
             .then((res) => {
                 setApplications(res.data);
-                setCvs([]);
-                res.data.forEach((application) => {
-                    if (application.cv !== undefined) {
-                        setCvs((cvs) => [...cvs, application.cv!]);
-                    }
-                })
             })
             .catch((err) => {
                 setError(err.response.data);
@@ -46,7 +37,7 @@ const Applications = ({offer} : Props) => {
     return (
         <Container>
             <h1 className="text-center my-3">{offer.title}</h1>
-            {<CvsList cvs={cvs} error={error} userType={UserType.Employer} />}
+            {<ApplicationsList applications={applications} error={error} />}
         </Container>
     );
 };

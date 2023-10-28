@@ -25,8 +25,6 @@ public class OfferDTO {
     private DepartmentDTO department;
     private EmployerDTO employer;
 
-
-
     public Offer fromDTO() {
         return new Offer(
                 id,

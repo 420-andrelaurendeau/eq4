@@ -1,8 +1,9 @@
 import { Offer, OfferStatus } from "../../model/offer";
-import { Table } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import OfferRow from "./OfferRow";
 import { UserType } from "../../model/user";
+import GenericTable from "../GenericTable";
+import { useSessionContext } from "../../contextsholders/providers/SessionContextHolder";
 
 interface Props {
     offers: Offer[];
@@ -12,36 +13,42 @@ interface Props {
     seeApplications?: (offer: Offer) => void;
 }
 
-const OffersList = ({ offers, error, userType, updateOffersState, seeApplications}: Props) => {
-    const { t } = useTranslation();
+const OffersList = ({ offers, error, userType, updateOffersState, seeApplications }: Props) => {
+  const { t } = useTranslation();
+  const { chosenSession, currentSession } = useSessionContext();
 
-    return (
-        <>
-            {
-                error !== ""
-                    ?
-                    <p>{error}</p>
-                    :
-                    offers.length > 0
-                        ?
-                        <Table striped bordered hover size="sm">
-                            <thead>
-                                <tr>
-                                    <th>{t("offersList.title")}</th>
-                                    <th>{t("offersList.internshipStartDate")}</th>
-                                    <th>{t("offersList.internshipEndDate")}</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {offers.map((offer) => { return <OfferRow key={offer.id} offer={offer} userType={userType} updateOffersState={updateOffersState} seeApplications={seeApplications}/> })}
-                            </tbody>
-                        </Table>
-                        :
-                        <p>{t("offersList.noOffers")}</p>
-            }
-        </>
-    )
-}
+  return (
+    <>
+      <GenericTable
+        list={offers}
+        error={error}
+        emptyListMessage="offersList.noOffers"
+        title="studentOffersList.viewTitle"
+      >
+        <thead>
+          <tr>
+            <th>{t("offersList.title")}</th>
+            <th>{t("offersList.internshipStartDate")}</th>
+            <th>{t("offersList.internshipEndDate")}</th>
+            {chosenSession?.id === currentSession?.id && <th></th>}
+          </tr>
+        </thead>
+        <tbody>
+          {offers.map((offer) => {
+            return (
+              <OfferRow
+                key={offer.id}
+                offer={offer}
+                userType={userType}
+                updateOffersState={updateOffersState}
+                seeApplications={seeApplications}
+              />
+            );
+          })}
+        </tbody>
+      </GenericTable>
+    </>
+  );
+};
 
 export default OffersList;

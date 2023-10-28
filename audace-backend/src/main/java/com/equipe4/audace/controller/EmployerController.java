@@ -22,21 +22,21 @@ public class EmployerController extends GenericUserController<Employer, Employer
     }
 
     @GetMapping("/{employerId}")
-    public ResponseEntity<EmployerDTO> getEmployerById(@PathVariable Long employerId){
+    public ResponseEntity<EmployerDTO> getEmployerById(@PathVariable Long employerId) {
         logger.info("getEmployerById");
         return service.findEmployerById(employerId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{id}/offers")
-    public ResponseEntity<List<OfferDTO>> getAllOffersByEmployerId(@PathVariable Long id) {
+    @GetMapping("/{id}/offers/{sessionId}")
+    public ResponseEntity<List<OfferDTO>> getAllOffersByEmployerId(@PathVariable Long id, @PathVariable Long sessionId) {
         logger.info("getAllOffersByEmployerId");
-        return ResponseEntity.ok(service.findAllOffersByEmployerId(id));
+        return ResponseEntity.ok(service.findAllOffersByEmployerId(id, sessionId));
     }
 
     @PostMapping("/{id}/offers")
-    public ResponseEntity<OfferDTO> createOffer(@RequestBody OfferDTO offerDTO){
+    public ResponseEntity<OfferDTO> createOffer(@RequestBody OfferDTO offerDTO) {
         logger.info("createOffer");
         return service.createOffer(offerDTO)
                 .map(offer -> ResponseEntity.status(HttpStatus.CREATED).body(offerDTO))
