@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, Row, Col } from "react-bootstrap";
+import { Alert, Button, Form, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import FormInput from "../Signup/FormInput";
 import { Offer, OfferStatus } from "../../model/offer";
@@ -141,6 +141,17 @@ const EditOffer: React.FC = () => {
   return (
     <>
       <h3 className="text-center">{t("editOffer.pageTitle")}</h3>
+      {
+      errors.length > 0 && (
+        <div className="mb-4">
+          <Alert variant="danger">
+            {errors.map((error, index) => (
+              <div key={index}>{t(error)}</div>
+            ))}
+          </Alert>
+        </div>
+      )
+    }
       <Form className="container mt-5">
         <Row>
           <FormInput
@@ -161,7 +172,7 @@ const EditOffer: React.FC = () => {
         <Row>
           <Col>
             <Form.Group controlId="formDepartment">
-              <Form.Label>{t("addOffer.department")}</Form.Label>
+              <Form.Label>{t("addOffer.departmentCode")}</Form.Label>
               <Form.Control as="select" value={department?.id || ""} onChange={(e: any) => setDepartment(departments.find(d => d.id === parseInt(e.target.value)) || {id: 1, name: "Genie Logiciel", code: "GLO"} as Department)}>
                 {departments.map((dept: Department) => (
                   <option key={dept.id} value={dept.id}>

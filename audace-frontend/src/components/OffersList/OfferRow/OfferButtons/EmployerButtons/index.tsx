@@ -5,7 +5,6 @@ import { Offer } from "../../../../../model/offer";
 import { useNavigate } from 'react-router-dom';
 import http from "../../../../../constants/http";
 
-
 interface Props {
     disabled?: boolean;
     offer?: Offer;  
@@ -15,7 +14,6 @@ interface Props {
 const EmployerButtons = ({ disabled, offer, hideRow }: Props) => {
     const { t } = useTranslation();
     const [isDeleting, setIsDeleting] = useState(false);
-
     const navigate = useNavigate();
 
     const editButtonClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -23,14 +21,11 @@ const EmployerButtons = ({ disabled, offer, hideRow }: Props) => {
         console.log("Edit button clicked");
         console.log("Offer:", offer);
 
-
         if (offer?.id) {
             navigate(`/employer/editoffer/${offer.id}`); 
         } else {
             console.error("No offerId provided");
         }
-
-
     };
 
     const deleteButtonClick = async (event: React.MouseEvent<HTMLElement>) => {
@@ -52,12 +47,7 @@ const EmployerButtons = ({ disabled, offer, hideRow }: Props) => {
             if (response.status !== 200) {
                 throw new Error(`Failed to delete offer. Status: ${response.status}`);
             }
-            
-           
-    
             console.log("Offer deleted successfully");
-            
-           // window.location.reload();
         } catch (error) {
             console.error("Failed to delete offer:", error);
         } finally {
@@ -65,7 +55,6 @@ const EmployerButtons = ({ disabled, offer, hideRow }: Props) => {
         }
     };
     
-
     return (
         <>
             <Button disabled={disabled} onClick={editButtonClick} className="btn-warning me-2">

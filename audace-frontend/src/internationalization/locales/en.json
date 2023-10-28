@@ -123,7 +123,7 @@
     "seeOffersButton": "See Offers"
   },
   "addOffer":{
-    "pageTitle" : "Add Offer",
+    "pageTitle" : "Create Offer",
     "description" : "Description",
     "title" : "Title",
     "departmentCode" : "Department Code",
@@ -136,9 +136,9 @@
       "titleRequired": "Title cannot be empty",
       "descriptionRequired": "Description cannot be empty",
       "departmentCodeRequired": "Department Code cannot be empty",
-      "startDateRequired": "Start date cannot be empty",
-      "endDateRequired": "End date cannot be empty",
-      "offerEndDateRequired": "Offer end date cannot be empty"
+      "invalidStartDate": "Start date is invalid",
+      "invalidEndDate": "End date is invalid",
+      "invalidOfferEndDate": "Offer end date is invalid"
     }
   },
   "editOffer":{

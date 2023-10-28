@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Row, Col } from "react-bootstrap";
+import { Alert, Button, Form, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import FormInput from "../Signup/FormInput";
 import { Offer } from "../../model/offer";
@@ -26,6 +26,12 @@ const AddOffer: React.FC = () => {
   const [employer, setEmployer] = useState<Employer>({} as Employer);
   const [errors, setErrors] = useState<string[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+
+  const resetAlert = () => {
+    setShowAlert(false);
+    setErrors([]);
+  };
 
   const navigate = useNavigate();
 
@@ -101,6 +107,8 @@ const renderDateInputError = (formError: string) => {
       };
       addOffer(formData);
       navigate(`/`);
+    } else {
+      setShowAlert(true);
     }
   };
 
@@ -118,15 +126,20 @@ const renderDateInputError = (formError: string) => {
     <>
     <h3 className="text-center">{t("addOffer.pageTitle")}</h3>
     <Form className="container mt-5">
+    {showAlert && (
+        <Alert variant="danger" onClose={resetAlert} dismissible>
+          {errors.map((error, index) => (
+            <p key={index}>{t(error)}</p>
+          ))}
+        </Alert>
+      )}
       <Row>
         <FormInput
-          label="addOffer.title"
-          value={title}
-          onChange={(e: any) => setTitle(e.target.value)}
-          errors={errors}
-          formError="addOffer.errors.titleRequired"
-          controlId="formOfferTitle"
-        />
+            label="addOffer.title"
+            value={title}
+            onChange={(e: any) => setTitle(e.target.value)}
+            errors={errors}
+            controlId="formOfferTitle" formError={""}        />
 
         <Col md="4">
           <Form.Group controlId="formOfferDepartment">
@@ -134,8 +147,6 @@ const renderDateInputError = (formError: string) => {
             <Form.Control
               as="select"
               value={department.toString()}
-              isInvalid={errors.includes("addOffer.errors.departmentRequired")}
-              onChange={(e: any) => setDepartment(e.target.value)}
             >
               <option value="" disabled>Select department...</option>
               {departments.map(dept => (
@@ -158,7 +169,6 @@ const renderDateInputError = (formError: string) => {
    <Form.Control
      as="textarea"
      value={description}
-     isInvalid={errors.includes("addOffer.errors.descriptionRequired")}
      onChange={(e) => setDescription(e.target.value)}
    />
    {errors.includes("addOffer.errors.descriptionRequired") && (
@@ -176,7 +186,6 @@ const renderDateInputError = (formError: string) => {
             <Form.Control
               type="date"
               value={formatDateForInput(internshipStartDate)}
-              isInvalid={errors.includes("addOffer.errors.startDateRequired")}
               onChange={(e) => {
                 const newDate = new Date(e.target.value);
                 if (isValidDate(newDate)) {
@@ -197,7 +206,6 @@ const renderDateInputError = (formError: string) => {
             <Form.Control
               type="date"
               value={formatDateForInput(internshipEndDate)}
-              isInvalid={errors.includes("addOffer.errors.endDateRequired")}
               onChange={(e) => {
                 const newDate = new Date(e.target.value);
                 if (isValidDate(newDate)) {
@@ -218,7 +226,6 @@ const renderDateInputError = (formError: string) => {
             <Form.Control
               type="date"
               value={formatDateForInput(offerEndDate)}
-              isInvalid={errors.includes("addOffer.errors.offerEndDateRequired")}
               onChange={(e) => {
                 const newDate = new Date(e.target.value);
                 if (isValidDate(newDate)) {
@@ -243,7 +250,6 @@ const renderDateInputError = (formError: string) => {
               size="sm"
               min="1"
               value={availablePlaces}
-              isInvalid={errors.includes("addOffer.errors.availablePlacesRequired")}
               onChange={(e) => setAvailablePlaces(Number(e.target.value))}
             />
             {errors.includes("addOffer.errors.availablePlacesRequired") && (
