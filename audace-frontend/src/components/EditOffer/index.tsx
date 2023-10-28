@@ -17,7 +17,7 @@ const EditOffer: React.FC = () => {
 
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [department, setDepartment] = useState<Department>({id:1, code:"GLO", name:"Genie"} as Department);
+  const [department, setDepartment] = useState<Department>({ id: 1, code: "GLO", name: "Genie" } as Department);
   const [internshipStartDate, setInternshipStartDate] = useState<Date>({} as Date);
   const [internshipEndDate, setInternshipEndDate] = useState<Date>({} as Date);
   const [offerEndDate, setOfferEndDate] = useState<Date>({} as Date);
@@ -31,42 +31,42 @@ const EditOffer: React.FC = () => {
 
   useEffect(() => {
     getAllDepartments()
-    .then((res) => {
+      .then((res) => {
         setDepartments(res.data);
         setDepartment(res.data[0]);
-    })
-    .catch((error) => {
+      })
+      .catch((error) => {
         console.error("There was an error fetching the departments:", error);
-    });
-    
+      });
+
     const paths = window.location.pathname.split("/");
     const offerId = paths[paths.length - 1];
 
     getEmployersOfferById(parseInt(offerId))
-    .then((res) => {
+      .then((res) => {
         const offerData: Offer = res.data;
 
         setTitle(offerData.title);
         setDescription(offerData.description);
-        setDepartment(offerData.department || {id:1, code:"GLO", name:"Genie"} as Department);
+        setDepartment(offerData.department || { id: 1, code: "GLO", name: "Genie" } as Department);
         setInternshipStartDate(new Date(offerData.internshipStartDate));
         setInternshipEndDate(new Date(offerData.internshipEndDate));
         setOfferEndDate(new Date(offerData.offerEndDate));
         setEmployer(offerData.employer);
-    })
-    .catch((error) => {
+      })
+      .catch((error) => {
         console.error("There was an error fetching the offer:", error);
-    });
-}, []);
+      });
+  }, []);
 
 
 
   const formatDateForInput = (date: Date | null): string => {
     if (date instanceof Date) {
-        return date.toISOString().substring(0, 10);
+      return date.toISOString().substring(0, 10);
     }
     return "";
-};
+  };
 
   function isValidDate(d: any) {
     return d instanceof Date && !isNaN(d.getTime());
@@ -83,14 +83,13 @@ const EditOffer: React.FC = () => {
     if (!isValidDate(internshipStartDate)) errorsToDisplay.push("addOffer.errors.invalidStartDate");
     if (!isValidDate(internshipEndDate)) errorsToDisplay.push("addOffer.errors.invalidEndDate");
     if (!isValidDate(offerEndDate)) errorsToDisplay.push("addOffer.errors.invalidOfferEndDate");
-  
+
 
     setErrors(errorsToDisplay);
     return errorsToDisplay.length === 0;
   };
 
   const handleSubmit = () => {
-    console.log("Submit button clicked");
     if (validateForm()) {
       const paths = window.location.pathname.split("/");
       const offerId = paths[paths.length - 1];
@@ -115,18 +114,15 @@ const EditOffer: React.FC = () => {
 
   const editOffer = async (updatedOffer: Offer, id: number) => {
     try {
-        console.log("Offer to update:", updatedOffer);
-        
-        const response = await http.put(`/employers/offers`, updatedOffer);
+      const response = await http.put(`/employers/offers`, updatedOffer);
 
-        if (response.status !== 200) {
-            throw new Error(`Backend returned code ${response.status}, body: ${response.statusText}`);
-        }
+      if (response.status !== 200) {
+        throw new Error(`Backend returned code ${response.status}, body: ${response.statusText}`);
+      }
 
-        const responseData = response.data;
-        console.log(responseData);
+      const responseData = response.data;
     } catch (error) {
-        console.error("There was an error sending the data:", error);
+      console.error("There was an error sending the data:", error);
     }
   };
 
@@ -159,7 +155,7 @@ const EditOffer: React.FC = () => {
             value={title}
             onChange={(e: any) => setTitle(e.target.value)}
             errors={errors}
-            formError="error.title.required" controlId={""}          />
+            formError="error.title.required" controlId={""} />
         </Row>
         <Row>
           <FormInput
@@ -167,7 +163,7 @@ const EditOffer: React.FC = () => {
             value={description}
             onChange={(e: any) => setDescription(e.target.value)}
             errors={errors}
-            formError="error.description.required" controlId={""}          />
+            formError="error.description.required" controlId={""} />
         </Row>
         <Row>
           <Col>
@@ -184,74 +180,74 @@ const EditOffer: React.FC = () => {
           </Col>
         </Row>
         <Row>
-        <Col md="4">
-          <Form.Group controlId="formOfferStartDate">
-            <Form.Label>{t("addOffer.startDate")}</Form.Label>
-            <Form.Control
-              type="date"
-              value={formatDateForInput(internshipStartDate)}
-              isInvalid={errors.includes("addOffer.errors.startDateRequired")}
-              onChange={(e) => {
-                const newDate = new Date(e.target.value);
-                if (isValidDate(newDate)) {
-                  setInternshipStartDate(newDate);
-                } else {
-                  setErrors((prevErrors) => [...prevErrors, "addOffer.errors.invalidDate"]);
-                }
-              }}
-              
-            />
-            {renderDateInputError("addOffer.errors.startDateRequired")}
-          </Form.Group>
-        </Col>
+          <Col md="4">
+            <Form.Group controlId="formOfferStartDate">
+              <Form.Label>{t("addOffer.startDate")}</Form.Label>
+              <Form.Control
+                type="date"
+                value={formatDateForInput(internshipStartDate)}
+                isInvalid={errors.includes("addOffer.errors.startDateRequired")}
+                onChange={(e) => {
+                  const newDate = new Date(e.target.value);
+                  if (isValidDate(newDate)) {
+                    setInternshipStartDate(newDate);
+                  } else {
+                    setErrors((prevErrors) => [...prevErrors, "addOffer.errors.invalidDate"]);
+                  }
+                }}
 
-        <Col md="4">
-          <Form.Group controlId="formOfferEndDate">
-            <Form.Label>{t("addOffer.endDate")}</Form.Label>
-            <Form.Control
-              type="date"
-              value={formatDateForInput(internshipEndDate)}
-              isInvalid={errors.includes("addOffer.errors.endDateRequired")}
-              onChange={(e) => {
-                const newDate = new Date(e.target.value);
-                if (isValidDate(newDate)) {
-                  setInternshipEndDate(newDate);
-                } else {
-                  setErrors((prevErrors) => [...prevErrors, "addOffer.errors.invalidDate"]);
-                }
-              }}
-              
-            />
-            {renderDateInputError("addOffer.errors.endDateRequired")}
-          </Form.Group>
-        </Col>
+              />
+              {renderDateInputError("addOffer.errors.startDateRequired")}
+            </Form.Group>
+          </Col>
 
-        <Col md="4">
-          <Form.Group controlId="formOfferOfferEndDate">
-            <Form.Label>{t("addOffer.offerEndDate")}</Form.Label>
-            <Form.Control
-              type="date"
-              value={formatDateForInput(offerEndDate)}
-              isInvalid={errors.includes("addOffer.errors.offerEndDateRequired")}
-              onChange={(e) => {
-                const newDate = new Date(e.target.value);
-                if (isValidDate(newDate)) {
-                  setOfferEndDate(newDate);
-                } else {
-                  setErrors((prevErrors) => [...prevErrors, "addOffer.errors.invalidDate"]);
-                }
-              }}
-              
-            />
-            {renderDateInputError("addOffer.errors.offerEndDateRequired")}
-          </Form.Group>
-        </Col>
-      </Row>
+          <Col md="4">
+            <Form.Group controlId="formOfferEndDate">
+              <Form.Label>{t("addOffer.endDate")}</Form.Label>
+              <Form.Control
+                type="date"
+                value={formatDateForInput(internshipEndDate)}
+                isInvalid={errors.includes("addOffer.errors.endDateRequired")}
+                onChange={(e) => {
+                  const newDate = new Date(e.target.value);
+                  if (isValidDate(newDate)) {
+                    setInternshipEndDate(newDate);
+                  } else {
+                    setErrors((prevErrors) => [...prevErrors, "addOffer.errors.invalidDate"]);
+                  }
+                }}
+
+              />
+              {renderDateInputError("addOffer.errors.endDateRequired")}
+            </Form.Group>
+          </Col>
+
+          <Col md="4">
+            <Form.Group controlId="formOfferOfferEndDate">
+              <Form.Label>{t("addOffer.offerEndDate")}</Form.Label>
+              <Form.Control
+                type="date"
+                value={formatDateForInput(offerEndDate)}
+                isInvalid={errors.includes("addOffer.errors.offerEndDateRequired")}
+                onChange={(e) => {
+                  const newDate = new Date(e.target.value);
+                  if (isValidDate(newDate)) {
+                    setOfferEndDate(newDate);
+                  } else {
+                    setErrors((prevErrors) => [...prevErrors, "addOffer.errors.invalidDate"]);
+                  }
+                }}
+
+              />
+              {renderDateInputError("addOffer.errors.offerEndDateRequired")}
+            </Form.Group>
+          </Col>
+        </Row>
         <Row>
           <Col>
             <Form.Group controlId="formAvailablePlaces">
               <Form.Label>{t("addOffer.availablePlaces")}</Form.Label>
-              <Form.Control type="number" value={availablePlaces} onChange={(e: any) => setAvailablePlaces(e.target.value)}/>
+              <Form.Control type="number" value={availablePlaces} onChange={(e: any) => setAvailablePlaces(e.target.value)} />
             </Form.Group>
           </Col>
         </Row>

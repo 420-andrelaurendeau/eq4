@@ -56,7 +56,6 @@
     "applyButton": "Apply",
     "applicationMessageSuccess": "Application submitted successfully",
     "applicationMessageFailure": "Error submitting application",
-    "viewTitle": "Available Offers",
     "viewMore": "View More"
   },
   "offer": {
@@ -141,17 +140,16 @@
       "invalidOfferEndDate": "Offer end date is invalid"
     }
   },
-  "editOffer":{
-    "pageTitle" : "Edit Offer",
-    "description" : "Description",
-    "title" : "Title",
-    "department" : "Department",
-    "startDate" : "Start date",
-    "endDate" : "End date",
-    "offerEndDate" : "Offer end date",
-    "submit" : "Submit"
-  }
-,
+  "editOffer": {
+    "pageTitle": "Edit Offer",
+    "description": "Description",
+    "title": "Title",
+    "department": "Department",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "offerEndDate": "Offer end date",
+    "submit": "Submit"
+  },
   "upload": {
     "CvFormTitle": "Upload CV",
     "file": "Upload File",
@@ -172,4 +170,3 @@
   "logout": "Log out",
   "pageNotFound": "Error 404: Page Not Found"
 }
-
