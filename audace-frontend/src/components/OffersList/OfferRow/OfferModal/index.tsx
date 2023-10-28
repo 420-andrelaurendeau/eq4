@@ -16,9 +16,10 @@ interface Props {
     employer?: Employer;
     setEmployer?: (employer: Employer) => void;
     updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
+    hideRow?: () => void;
 }
 
-const  OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, updateOffersState}: Props) => {
+const  OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, updateOffersState, hideRow}: Props) => {
     const { t } = useTranslation();
 
     useEffect(() => {
@@ -86,7 +87,7 @@ const  OfferModal = ({offer, show, handleClose, userType, employer, setEmployer,
                 </Modal.Body>
                 <Modal.Footer>
                     {employer === undefined && <div className="text-danger">{t("offer.modal.empNotFound")}</div>}
-                    <OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState}/>
+                    <OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState} hideRow={hideRow}/>
                 </Modal.Footer>
             </Modal>
         </>
