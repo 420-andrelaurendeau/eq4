@@ -35,12 +35,6 @@
       "network": "There was an unexpected networking error"
     }
   },
-  "applicationsList": {
-    "title": "Applications",
-    "offerTitle": "Offer Title",
-    "organization": "Organization",
-    "status": "Status"
-  },
   "cvsList": {
     "errors": {
       "departmentNotFound": "Department not found"
@@ -158,6 +152,7 @@
     "offerTitle": "Position title",
     "organization": "Organization",
     "status": "Status",
+    "cv": "CV",
     "row": {
       "status": {
         "PENDING": "Pending",

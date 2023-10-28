@@ -22,6 +22,7 @@ const ApplicationsList = ({ applications, error }: Props) => {
         <thead>
           <tr>
             <th>{t("applicationsList.offerTitle")}</th>
+            <th>{t("applicationsList.cv")}</th>
             <th>{t("applicationsList.organization")}</th>
             <th>{t("applicationsList.status")}</th>
           </tr>
