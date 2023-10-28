@@ -73,6 +73,13 @@ const AddOffer: React.FC = () => {
     return null;
   };
 
+  const handleDateChange = (setter: React.Dispatch<React.SetStateAction<Date>>, value: string) => {
+    const newDate = new Date(value);
+    if (isValidDate(newDate)) {
+      setter(newDate);
+    }
+  };
+
   const validateForm = (): boolean => {
     let isValid = true;
     const errorsToDisplay: string[] = [];
@@ -86,6 +93,8 @@ const AddOffer: React.FC = () => {
     if (!isValidDate(internshipStartDate)) errorsToDisplay.push("addOffer.errors.invalidStartDate");
     if (!isValidDate(internshipEndDate)) errorsToDisplay.push("addOffer.errors.invalidEndDate");
     if (!isValidDate(offerEndDate)) errorsToDisplay.push("addOffer.errors.invalidOfferEndDate");
+    if (internshipEndDate <= internshipStartDate) errorsToDisplay.push("addOffer.errors.endDateBeforeStartDate");
+    
 
     setErrors(errorsToDisplay);
     return errorsToDisplay.length === 0;
@@ -171,21 +180,13 @@ const AddOffer: React.FC = () => {
 
 
         <Row>
-          <Col md="4">
+        <Col md="4">
             <Form.Group controlId="formOfferStartDate">
               <Form.Label>{t("addOffer.startDate")}</Form.Label>
               <Form.Control
                 type="date"
                 value={formatDateForInput(internshipStartDate)}
-                onChange={(e) => {
-                  const newDate = new Date(e.target.value);
-                  if (isValidDate(newDate)) {
-                    setInternshipStartDate(newDate);
-                  } else {
-                    setErrors((prevErrors) => [...prevErrors, "addOffer.errors.invalidDate"]);
-                  }
-                }}
-
+                onChange={(e) => handleDateChange(setInternshipStartDate, e.target.value)}
               />
               {renderDateInputError("addOffer.errors.startDateRequired")}
             </Form.Group>
@@ -197,35 +198,20 @@ const AddOffer: React.FC = () => {
               <Form.Control
                 type="date"
                 value={formatDateForInput(internshipEndDate)}
-                onChange={(e) => {
-                  const newDate = new Date(e.target.value);
-                  if (isValidDate(newDate)) {
-                    setInternshipEndDate(newDate);
-                  } else {
-                    setErrors((prevErrors) => [...prevErrors, "addOffer.errors.invalidDate"]);
-                  }
-                }}
-
+                onChange={(e) => handleDateChange(setInternshipEndDate, e.target.value)}
               />
               {renderDateInputError("addOffer.errors.endDateRequired")}
+              {renderDateInputError("addOffer.errors.endDateBeforeStartDate")}
             </Form.Group>
           </Col>
 
           <Col md="4">
-            <Form.Group controlId="formOfferOfferEndDate">
+            <Form.Group controlId="formOfferOfferDate">
               <Form.Label>{t("addOffer.offerEndDate")}</Form.Label>
               <Form.Control
                 type="date"
                 value={formatDateForInput(offerEndDate)}
-                onChange={(e) => {
-                  const newDate = new Date(e.target.value);
-                  if (isValidDate(newDate)) {
-                    setOfferEndDate(newDate);
-                  } else {
-                    setErrors((prevErrors) => [...prevErrors, "addOffer.errors.invalidDate"]);
-                  }
-                }}
-
+                onChange={(e) => handleDateChange(setOfferEndDate, e.target.value)}
               />
               {renderDateInputError("addOffer.errors.offerEndDateRequired")}
             </Form.Group>

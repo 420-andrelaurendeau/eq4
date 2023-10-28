@@ -137,7 +137,8 @@
       "departmentCodeRequired": "Le code de département ne peut pas être vide",
       "invalidStartDate": "La date de début n'est pas valide",
       "invalidEndDate": "La date de fin n'est pas valide",
-      "invalidOfferEndDate": "La date de fin n'est pas valide"
+      "invalidOfferEndDate": "La date de fin n'est pas valide",
+      "endDateBeforeStartDate": "La date de fin doit être après la date de début"
     }
   },
   "editOffer": {
