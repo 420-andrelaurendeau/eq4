@@ -310,7 +310,7 @@ public class ManagerControllerTest {
         List<CvDTO> cvDTOList = List.of(mock(CvDTO.class));
         when(managerService.getCvsByDepartment(1L, 1L)).thenReturn(cvDTOList);
 
-        mockMvc.perform(get("/managers/cvs/1"))
+        mockMvc.perform(get("/managers/cvs/1/1"))
                 .andExpect(status().isOk());
     }
 }

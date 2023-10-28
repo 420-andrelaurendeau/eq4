@@ -61,7 +61,7 @@ const EmployerView = () => {
   return (
     <Container className="mt-3">
       <SessionSelector />
-      <OffersList offers={offers} error={error} userType={UserType.Employer} />
+      <OffersList offers={offers} error={error} userType={UserType.Employer} seeApplications={seeApplications}/>
       {offerApplication !== undefined && <Applications offer={offerApplication}/>}
     </Container>
   );

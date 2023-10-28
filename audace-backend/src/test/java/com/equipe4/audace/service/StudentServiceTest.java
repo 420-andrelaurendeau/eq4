@@ -15,7 +15,7 @@ import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.Student;
-import com.equipe4.audace.repository.ApplicationRepository;
+import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.model.security.Salt;
 import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.StudentRepository;
@@ -24,6 +24,8 @@ import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.SessionRepository;
+import com.equipe4.audace.repository.session.StudentSessionRepository;
 import com.equipe4.audace.utils.SessionManipulator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -62,6 +64,8 @@ public class StudentServiceTest {
     private ApplicationRepository applicationRepository;
     @Mock
     private SessionManipulator sessionManipulator;
+    @Mock
+    private StudentSessionRepository studentSessionRepository;
     @InjectMocks
     private StudentService studentService;
 
@@ -300,6 +304,7 @@ public class StudentServiceTest {
     @Test
     public void createApplication_HappyPath(){
         Student student = createStudentDTO().fromDTO();
+        Department department = createDepartment();
         Cv cv = new Cv(1L, student, new byte[0], "fileName");
         Offer offer = new Offer(1L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 0, department, mock(Employer.class));
         Application application = new Application(null, cv, offer);

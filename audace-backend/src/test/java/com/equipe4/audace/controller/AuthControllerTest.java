@@ -5,6 +5,7 @@ import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.UserRepository;
+import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.session.OfferSessionRepository;
@@ -38,7 +39,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AuthControllerTest {
     @Autowired
     private MockMvc mockMvc;
-
+    @MockBean
+    private CvRepository cvRepository;
     @MockBean
     private EmployerService employerService;
     @MockBean

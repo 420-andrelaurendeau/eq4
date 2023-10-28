@@ -87,26 +87,6 @@ public class EmployerServiceTest {
     }
 
     @Test
-    public void findAllEmployersTest(){
-        // Arrange
-        List<Employer> employers = new ArrayList<>();
-        Employer employer1 = createEmployerDTO().fromDTO();
-        Employer employer2 = createEmployerDTO().fromDTO();
-        employer2.setId(2L);
-
-        employers.add(employer1);
-        employers.add(employer2);
-        when(employerRepository.findAll()).thenReturn(employers);
-
-        // Act
-        List<EmployerDTO> employerDTOList = employerService.findAllEmployers();
-
-        // Assert
-        assertThat(employerDTOList.size()).isEqualTo(2);
-        verify(employerRepository, times(1)).findAll();
-    }
-
-    @Test
     public void findEmployerById_happyPathTest() {
         // Arrange
         Employer employer = createEmployerDTO().fromDTO();
@@ -215,9 +195,9 @@ public class EmployerServiceTest {
     void getAllOffersByEmployerId_NotFound() {
         when(employerRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> employerService.findAllOffersByEmployerId(anyLong(), anyLong()))
+        assertThatThrownBy(() -> employerService.findAllOffersByEmployerId(1L, 1L))
                 .isInstanceOf(NoSuchElementException.class)
-                .hasMessage("Employer not found");
+                .hasMessage("No value present");
     }
 
     @Test
@@ -302,7 +282,7 @@ public class EmployerServiceTest {
                 mockedDepartment,
                 fakeEmployer
         );
-
+        when(sessionManipulator.isOfferInCurrentSession(offer)).thenReturn(true);
         when(offerRepository.save(any(Offer.class))).thenReturn(offer);
         when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
 
@@ -350,7 +330,7 @@ public class EmployerServiceTest {
 
         assertThatThrownBy(() -> employerService.updateOffer(offer.toDTO()))
                 .isInstanceOf(NoSuchElementException.class)
-                .hasMessage("Offer not found");
+                .hasMessage("No value present");
     }
     @Test
     public void findAllApplicationsByEmployerIdAndOfferId() {

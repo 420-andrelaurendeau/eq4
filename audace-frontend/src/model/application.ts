@@ -7,6 +7,11 @@ export interface Application {
   student?: Student;
   offer?: Offer;
   cv?: CV;
+  applicationStatus?: ApplicationStatus;
 }
-
+export enum ApplicationStatus {
+  PENDING = "PENDING",
+  ACCEPTED = "ACCEPTED",
+  REFUSED = "REFUSED"
+}
 export default Application;

@@ -12,7 +12,7 @@ import FileUploader from "../../../components/FileUploader";
 import { getCvsByStudentId } from "../../../services/studentApplicationService";
 import { useCVContext } from "../../../contextsholders/providers/CVContextHolder";
 import { useSessionContext } from "../../../contextsholders/providers/SessionContextHolder";
-import CvsList from "../../../components/CvsList";
+import CvsList from "../../../components/CVsList";
 import SessionSelector from "../../../components/SessionSelector";
 
 interface StudentViewProps {

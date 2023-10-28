@@ -296,6 +296,7 @@ public class ManagerServiceTest {
         listCvs.add(new Cv(null, student, new byte[10], "cv"));
 
         when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(listCvs);
+        when(sessionManipulator.removeCvsBelongingToStudentNotInSession(any(), anyLong())).thenReturn(listCvs);
 
         List<CvDTO> result = managerService.getCvsByDepartment(1L, 1L);
 
