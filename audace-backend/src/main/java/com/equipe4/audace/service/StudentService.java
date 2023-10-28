@@ -152,11 +152,14 @@ public class StudentService extends GenericUserService<Student> {
         return cvs.stream().map(Cv::toDTO).toList();
     }
 
-    public List<ApplicationDTO> getOffersStudentApplied(Long studentId) {
+    public List<ApplicationDTO> getOffersStudentApplied(Long studentId, Long sessionId) {
         if (studentId == null) {
             throw new IllegalArgumentException("Student ID cannot be null");
         }
-        return applicationRepository.findApplicationsByCvStudentId(studentId)
+
+        List<Application> applications = applicationRepository.findApplicationsByCvStudentId(studentId);
+
+        return sessionManipulator.removeApplicationsNotInSession(applications, sessionId)
                 .stream()
                 .map(Application::toDTO)
                 .toList();

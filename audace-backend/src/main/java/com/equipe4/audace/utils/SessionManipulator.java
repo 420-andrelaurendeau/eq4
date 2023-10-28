@@ -1,6 +1,7 @@
 package com.equipe4.audace.utils;
 
 import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.session.OfferSession;
@@ -79,5 +80,33 @@ public class SessionManipulator {
         }
 
         return cleanedCvs;
+    }
+
+    public List<Application> removeApplicationsNotInSession(List<Application> applications, Long sessionId) {
+        List<Student> students = applications
+                .stream()
+                .map(Application::getCv)
+                .map(Cv::getStudent)
+                .toList();
+
+        List<StudentSession> studentSessions = studentSessionRepository
+                .findAllByStudentInAndSessionId(students, sessionId);
+
+        List<Application> cleanedApplications = new ArrayList<>();
+
+        for (Application application : applications) {
+            Student applicationStudent = application.getCv().getStudent();
+
+            if (studentSessions
+                    .stream()
+                    .anyMatch(studentSession -> studentSession
+                            .getStudent().getId().equals(applicationStudent.getId())
+                    )
+            ) {
+                cleanedApplications.add(application);
+            }
+        }
+
+        return cleanedApplications;
     }
 }

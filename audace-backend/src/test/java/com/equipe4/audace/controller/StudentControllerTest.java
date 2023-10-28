@@ -198,9 +198,9 @@ public class StudentControllerTest {
     @WithMockUser(username = "student", authorities = {"STUDENT"})
     void getOffersAppliedByStudentId() throws Exception {
         List<ApplicationDTO> applicationDTOS = List.of(mock(ApplicationDTO.class));
-        when(studentService.getOffersStudentApplied(1L)).thenReturn(applicationDTOS);
+        when(studentService.getOffersStudentApplied(1L, 1L)).thenReturn(applicationDTOS);
 
-        mockMvc.perform(get("/students/1/appliedOffers"))
+        mockMvc.perform(get("/students/1/appliedOffers/1"))
                 .andExpect(status().isOk());
     }
 }

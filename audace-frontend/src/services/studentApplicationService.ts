@@ -12,6 +12,6 @@ export const getCvsByStudentId = async (studentId: number): Promise<AxiosRespons
     return http.get<CV[]>(`${STUDENT_PREFIX}/cvs/${studentId}`);
 }
 
-export const getApplicationsByStudentId = async (studentId: number): Promise<AxiosResponse<Application[]>> => {
-    return http.get<Application[]>(`${STUDENT_PREFIX}/${studentId}/appliedOffers`);
+export const getApplicationsByStudentId = async (studentId: number, sessionId: number): Promise<AxiosResponse<Application[]>> => {
+    return http.get<Application[]>(`${STUDENT_PREFIX}/${studentId}/appliedOffers/${sessionId}`);
 }

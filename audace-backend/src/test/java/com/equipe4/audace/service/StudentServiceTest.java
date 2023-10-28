@@ -350,14 +350,14 @@ public class StudentServiceTest {
 
         when(applicationRepository.findApplicationsByCvStudentId(anyLong())).thenReturn(applications);
 
-        List<ApplicationDTO> result = studentService.getOffersStudentApplied(1L);
+        List<ApplicationDTO> result = studentService.getOffersStudentApplied(1L, 1L);
 
         assertThat(result.size()).isEqualTo(1);
         assertThat(result).containsExactlyInAnyOrderElementsOf(applications.stream().map(Application::toDTO).toList());
     }
     @Test
     public void getOffersStudentApplied_isNull() {
-        assertThatThrownBy(() -> studentService.getOffersStudentApplied(null))
+        assertThatThrownBy(() -> studentService.getOffersStudentApplied(null, 1L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Student ID cannot be null");
     }

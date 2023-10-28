@@ -11,6 +11,7 @@ import { Offer } from "../../../../../model/offer";
 import Application from "../../../../../model/application";
 import { useCVContext } from "../../../../../contextsholders/providers/CVContextHolder";
 import { useApplicationContext } from "../../../../../contextsholders/providers/ApplicationsContextHolder";
+import { useSessionContext } from "../../../../../contextsholders/providers/SessionContextHolder";
 
 interface Props {
   disabled?: boolean;
@@ -24,6 +25,7 @@ const StudentButtons = ({ disabled, offer }: Props) => {
   const studentId = getUserId();
   const { cvs, setCvs } = useCVContext();
   const { setApplications } = useApplicationContext();
+  const { chosenSession } = useSessionContext();
 
   useEffect(() => {
     if (studentId === undefined) return;
@@ -63,7 +65,7 @@ const StudentButtons = ({ disabled, offer }: Props) => {
   };
 
   const handleApplicationsUpdate = () => {
-    getApplicationsByStudentId(parseInt(studentId!))
+    getApplicationsByStudentId(parseInt(studentId!), chosenSession?.id!)
       .then((res) => {
         setApplications(res.data);
       })
