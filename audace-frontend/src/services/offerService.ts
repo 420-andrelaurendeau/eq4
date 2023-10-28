@@ -5,6 +5,7 @@ import { EMPLOYER_PREFIX, MANAGER_PREFIX, STUDENT_PREFIX } from "../constants/ap
 import Application from "../model/application";
 import {CV} from "../model/cv";
 import {Student} from "../model/user";
+import { getUserId } from "./authService";
 
 export const getStudentOffersByDepartment = async (departmentId: number): Promise<AxiosResponse<Offer[]>> => {
     return http.get<Offer[]>(`${STUDENT_PREFIX}/offers/${departmentId}`);
@@ -30,7 +31,7 @@ export const refuseOffer = async (managerId : number, offerId: number): Promise<
 }
 
 export const getAcceptedApplicationsByDepartment = async (departmentId: number): Promise<AxiosResponse<Application[]>> => {
-    return http.get<Application[]>(`${MANAGER_PREFIX}/acceptedApplications/${departmentId}`);
+    return http.get<Application[]>(`${MANAGER_PREFIX}/${getUserId()}/acceptedApplications/${departmentId}`);
 }
 
 export const getStudentByCv = async (cv: CV): Promise<AxiosResponse<Student>> => {
