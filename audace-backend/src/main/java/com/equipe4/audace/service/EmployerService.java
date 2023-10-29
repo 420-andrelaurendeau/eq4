@@ -2,22 +2,27 @@ package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.application.Application;
+import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.session.OfferSession;
 import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.application.ApplicationRepository;
+import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
-import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class EmployerService extends GenericUserService<Employer> {
@@ -26,6 +31,7 @@ public class EmployerService extends GenericUserService<Employer> {
     private final ApplicationRepository applicationRepository;
     private final OfferSessionRepository offerSessionRepository;
     private final SessionManipulator sessionManipulator;
+    private final DepartmentRepository departmentRepository;
 
     public EmployerService(
             SaltRepository saltRepository,
@@ -33,7 +39,8 @@ public class EmployerService extends GenericUserService<Employer> {
             OfferRepository offerRepository,
             OfferSessionRepository offerSessionRepository,
             SessionManipulator sessionManipulator,
-            ApplicationRepository applicationRepository
+            ApplicationRepository applicationRepository,
+            DepartmentRepository departmentRepository
     ) {
         super(saltRepository);
         this.employerRepository = employerRepository;
@@ -41,6 +48,7 @@ public class EmployerService extends GenericUserService<Employer> {
         this.offerSessionRepository = offerSessionRepository;
         this.sessionManipulator = sessionManipulator;
         this.applicationRepository = applicationRepository;
+        this.departmentRepository = departmentRepository;
     }
 
     @Transactional
@@ -84,6 +92,14 @@ public class EmployerService extends GenericUserService<Employer> {
                 .toList();
     }
 
+    public Optional<OfferDTO> findOfferById(Long offerId){
+        return offerRepository.findById(offerId).map(Offer::toDTO);
+    }
+
+    public List<DepartmentDTO> findAllDepartments(){
+        return departmentRepository.findAll().stream().map(Department::toDTO).toList();
+    }
+
     @Transactional
     public Optional<OfferDTO> updateOffer(OfferDTO offerDTO){
         Offer offer = offerRepository.findById(offerDTO.getId()).orElseThrow();
@@ -91,6 +107,14 @@ public class EmployerService extends GenericUserService<Employer> {
         if (!sessionManipulator.isOfferInCurrentSession(offer)) {
             throw new IllegalStateException("Offer is not in current session");
         }
+
+        offer.setTitle(offerDTO.getTitle());
+        offer.setDescription(offerDTO.getDescription());
+        offer.setInternshipStartDate(offerDTO.getInternshipStartDate());
+        offer.setInternshipEndDate(offerDTO.getInternshipEndDate());
+        offer.setOfferEndDate(offerDTO.getOfferEndDate());
+        offer.setAvailablePlaces(offerDTO.getAvailablePlaces());
+        offer.setDepartment(departmentRepository.findByCode(offerDTO.getDepartmentCode()).orElseThrow());
 
         return Optional.of(offerRepository.save(offer).toDTO());
     }
@@ -105,7 +129,7 @@ public class EmployerService extends GenericUserService<Employer> {
 
         offerRepository.delete(offer);
     }
-    //TODO : TESTS
+
     public List<ApplicationDTO> findAllApplicationsByEmployerIdAndOfferId(Long employerId, Long offerId) {
         Offer offer = offerRepository.findByEmployerIdAndId(employerId, offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
         return applicationRepository.findAllByOffer(offer).stream().map(Application::toDTO).toList();
