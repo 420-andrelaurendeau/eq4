@@ -16,7 +16,7 @@ public class ApplicationDTO {
     private CvDTO cv;
     private Application.ApplicationStatus applicationStatus;
 
-    public Application fromDTO(){
+    public Application fromDTO() {
         return new Application(
                 id,
                 cv.fromDTO(),
