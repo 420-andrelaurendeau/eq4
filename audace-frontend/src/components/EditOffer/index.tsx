@@ -11,7 +11,6 @@ import { getAllDepartments } from "../../services/departmentService";
 import { getEmployersOfferById } from "../../services/offerService";
 
 
-
 const EditOffer: React.FC = () => {
   const { t } = useTranslation();
 

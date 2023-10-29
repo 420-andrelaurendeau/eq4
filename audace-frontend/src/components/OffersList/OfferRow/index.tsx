@@ -23,12 +23,16 @@ const OfferRow = ({offer, userType, updateOffersState, seeApplications}: Props) 
   const { t } = useTranslation();
   const { currentSession, chosenSession } = useSessionContext();
   const [disabled, setDisabled] = useState<boolean>(true);
+  const [isVisible, setIsVisible] = useState(true);
 
   const handleClick = () => {
     setShow(true);
     setDisabled(false);
   };
   const handleClose = () => setShow(false);
+  const hideRow = () => setIsVisible(false);
+
+  if (!isVisible) return null;
 
   return (
     <>

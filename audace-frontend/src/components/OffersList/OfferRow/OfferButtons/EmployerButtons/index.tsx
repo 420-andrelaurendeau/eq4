@@ -2,6 +2,8 @@ import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Offer } from "../../../../../model/offer";
 import { useNavigate } from 'react-router-dom';
+import {useState} from "react";
+import {employerDeleteOffer} from "../../../../../services/offerService";
 interface Props {
   disabled: boolean;
   seeApplications?: (offer: Offer) => void;
@@ -40,7 +42,7 @@ const EmployerButtons = ({ disabled, seeApplications, offer, hideRow }: Props) =
         setIsDeleting(true);
 
         try {
-            const response = await http.delete(`/employers/offers/${offer.id}`);
+            const response = await employerDeleteOffer(offer.id);
 
             if (response.status !== 200) {
                 throw new Error(`Failed to delete offer. Status: ${response.status}`);
@@ -59,22 +61,11 @@ const EmployerButtons = ({ disabled, seeApplications, offer, hideRow }: Props) =
 
     return (
         <>
-            <Button disabled={disabled} onClick={editButtonClick} className="btn-warning me-2">
-                {t("employerOffersList.editButton")}
-            </Button>
-            <Button
-                disabled={disabled || isDeleting}
-                onClick={deleteButtonClick}
-                className="btn-danger"
-            >
-                {isDeleting ? t("employerOffersList.deletingButton") : t("employerOffersList.deleteButton")}
-            </Button>
-            //////
             <Button disabled={disabled} onClick={editButtonClick} className="btn-light btn-outline-warning text-dark">
                 {t("employerOffersList.editButton")}
             </Button>
-            <Button disabled={disabled} onClick={deleteButtonClick} className="btn-light btn-outline-danger text-dark ms-2">
-                {t("employerOffersList.deleteButton")}
+            <Button disabled={disabled || isDeleting} onClick={deleteButtonClick} className="btn-light btn-outline-danger text-dark ms-2">
+                {isDeleting ? t("employerOffersList.deletingButton") : t("employerOffersList.deleteButton")}
             </Button>
             {seeApplications !== undefined ? (
                 <Button disabled={disabled} onClick={seeApplicationsButtonClick} className="ms-2 btn-light btn-outline-success text-dark">

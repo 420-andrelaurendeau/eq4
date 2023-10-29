@@ -42,7 +42,7 @@ const Applications = ({offer, userType, updateAvailablePlaces} : Props) => {
         application.applicationStatus = applicationStatus
         newApplications.push(application);
         setApplications(newApplications);
-        if (applicationStatus == ApplicationStatus.ACCEPTED) updateAvailablePlaces!(offer);
+        if (applicationStatus === ApplicationStatus.ACCEPTED) updateAvailablePlaces!(offer);
     };
 
     return (
