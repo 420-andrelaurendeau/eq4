@@ -76,7 +76,7 @@
   },
   "studentOffersList": {
     "viewTitle": "Offres disponibles",
-    "applyButton":"Appliquer"
+    "applyButton": "Appliquer"
   },
   "managerOffersList": {
     "viewTitle": "Offres disponibles",
@@ -129,6 +129,36 @@
     },
     "seeOffersButton": "Voir les offres",
     "seeApplicationsButton": "Voir les applications"
+  },
+  "addOffer": {
+    "pageTitle": "Ajout de Stage",
+    "description": "Description",
+    "title": "Titre",
+    "departmentCode": "Code de Departement",
+    "startDate": "Date de début",
+    "endDate": "Date de fin",
+    "offerEndDate": "Date de fin de l'offre",
+    "submit": "Ajouter",
+    "availablePlaces": "Places disponible",
+    "errors": {
+      "titleRequired": "Le titre ne peut pas être vide",
+      "descriptionRequired": "La description ne peut pas être vide",
+      "departmentCodeRequired": "Le code de département ne peut pas être vide",
+      "invalidStartDate": "La date de début n'est pas valide",
+      "invalidEndDate": "La date de fin n'est pas valide",
+      "invalidOfferEndDate": "La date de fin n'est pas valide",
+      "endDateBeforeStartDate": "La date de fin doit être après la date de début"
+    }
+  },
+  "editOffer": {
+    "pageTitle": "Modifier l'offre",
+    "description": "Description",
+    "title": "Titre",
+    "department": "Departement",
+    "startDate": "Date de début",
+    "endDate": "Date de fin",
+    "offerEndDate": "Date de fin de l'offre",
+    "submit": "Modifier"
   },
   "upload": {
     "CvFormTitle": "Téléverser votre CV",

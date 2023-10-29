@@ -28,13 +28,22 @@ const OfferRow = ({
   const { t } = useTranslation();
   const { currentSession, chosenSession } = useSessionContext();
   const [disabled, setDisabled] = useState<boolean>(true);
+  const [isVisible, setIsVisible] = useState(true);
 
   const handleClick = () => {
-    
     setShow(true);
     setDisabled(false);
   };
+
   const handleClose = () => setShow(false);
+
+  const hideRow = () => {
+    setIsVisible(false);
+  };
+
+  if (!isVisible) {
+    return null;
+  }
 
   return (
     <>
@@ -48,16 +57,21 @@ const OfferRow = ({
         <td>{formatDate(offer.internshipStartDate)}</td>
         <td>{formatDate(offer.internshipEndDate)}</td>
         {chosenSession?.id === currentSession?.id && (
-          <td>
-            <div className="d-flex justify-content-center">
-              <OfferButtons
-                userType={userType}
-                disabled={disabled}
-                offer={offer}
-                updateOffersState={updateOffersState}
-                seeApplications={seeApplications}
-              />
-            </div>
+          <td
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <OfferButtons
+              userType={userType}
+              disabled={disabled}
+              offer={offer}
+              updateOffersState={updateOffersState}
+              seeApplications={seeApplications}
+              hideRow={hideRow}
+            />
           </td>
         )}
       </tr>
@@ -71,6 +85,7 @@ const OfferRow = ({
           setEmployer={setEmployer}
           updateOffersState={updateOffersState}
           disabled={disabled}
+          hideRow={hideRow}
         />
       )}
     </>

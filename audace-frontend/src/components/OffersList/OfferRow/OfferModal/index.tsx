@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { formatDate } from "../../../../services/formatService";
 
 import OfferButtons from "../OfferButtons";
+import { useSessionContext } from "../../../../contextsholders/providers/SessionContextHolder";
 
 interface Props {
   offer: Offer;
@@ -17,6 +18,7 @@ interface Props {
   setEmployer?: (employer: Employer) => void;
   updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
   disabled: boolean;
+  hideRow?: () => void;
 }
 
 const OfferModal = ({
@@ -28,8 +30,10 @@ const OfferModal = ({
   setEmployer,
   updateOffersState,
   disabled,
+  hideRow,
 }: Props) => {
   const { t } = useTranslation();
+  const { currentSession, chosenSession } = useSessionContext();
 
   useEffect(() => {
     if (employer !== undefined) return;
@@ -99,17 +103,17 @@ const OfferModal = ({
           <hr />
           <div style={{ textAlign: "justify" }}>{offer.description}</div>
         </Modal.Body>
-        <Modal.Footer>
-          {employer === undefined && (
-            <div className="text-danger">{t("offer.modal.empNotFound")}</div>
-          )}
-          <OfferButtons
-            userType={userType}
-            disabled={disabled}
-            offer={offer}
-            updateOffersState={updateOffersState}
-          />
-        </Modal.Footer>
+        {chosenSession?.id === currentSession?.id && (
+          <Modal.Footer>
+            <OfferButtons
+              userType={userType}
+              disabled={disabled}
+              offer={offer}
+              updateOffersState={updateOffersState}
+              hideRow={hideRow}
+            />
+          </Modal.Footer>
+        )}
       </Modal>
     </>
   );

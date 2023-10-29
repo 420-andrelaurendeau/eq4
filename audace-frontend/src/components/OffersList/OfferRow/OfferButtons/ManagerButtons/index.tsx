@@ -34,14 +34,16 @@ const ManagerButtons = ({ disabled, offer, updateOffersState }: Props) => {
           <Button
             disabled={disabled}
             onClick={acceptButtonClick}
-            className="btn-success me-2"
+            variant="outline-success"
+            className="me-2 text-dark"
           >
             {t("managerOffersList.acceptButton")}
           </Button>
           <Button
             disabled={disabled}
             onClick={refuseButtonClick}
-            className="btn-danger"
+            variant="outline-danger"
+            className="text-dark"
           >
             {t("managerOffersList.refuseButton")}
           </Button>

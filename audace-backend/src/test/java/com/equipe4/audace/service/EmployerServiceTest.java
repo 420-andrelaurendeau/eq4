@@ -15,6 +15,7 @@ import com.equipe4.audace.model.security.Salt;
 import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.application.ApplicationRepository;
+import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
@@ -49,6 +50,8 @@ public class EmployerServiceTest {
     private OfferSessionRepository offerSessionRepository;
     @Mock
     private ApplicationRepository applicationRepository;
+    @Mock
+    private DepartmentRepository departmentRepository;
     @InjectMocks
     private EmployerService employerService;
 
@@ -240,6 +243,7 @@ public class EmployerServiceTest {
         );
         when(offerRepository.findById(offer1.getId())).thenReturn(Optional.of(offer1));
         when(sessionManipulator.isOfferInCurrentSession(offer1)).thenReturn(true);
+        when(offerSessionRepository.findByOffer(any(Offer.class))).thenReturn(Optional.of(new OfferSession()));
 
         employerService.deleteOffer(offer1.getId());
 
@@ -285,6 +289,7 @@ public class EmployerServiceTest {
         when(sessionManipulator.isOfferInCurrentSession(offer)).thenReturn(true);
         when(offerRepository.save(any(Offer.class))).thenReturn(offer);
         when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
+        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(mockedDepartment));
 
         OfferDTO originalOffer = employerService.createOffer(offer.toDTO()).get();
 

@@ -29,15 +29,14 @@ const StudentButtons = ({ disabled, offer }: Props) => {
 
   const isButtonDisabled = (): boolean => {
     if (disabled) return true;
-    if (applications === undefined || cvs === undefined || cvs.length === 0) return true;
+    if (applications === undefined || cvs === undefined || cvs.length === 0)
+      return true;
 
     return (
-      applications.filter(
-        (application) =>
-          application.offer?.id === offer.id
-      ).length > 0
+      applications.filter((application) => application.offer?.id === offer.id)
+        .length > 0
     );
-  }
+  };
 
   useEffect(() => {
     if (studentId === undefined) return;
@@ -95,7 +94,12 @@ const StudentButtons = ({ disabled, offer }: Props) => {
         justifyContent: "center",
       }}
     >
-      <Button disabled={isButtonDisabled()} onClick={handleApply}>
+      <Button
+        disabled={isButtonDisabled()}
+        onClick={handleApply}
+        variant="outline-primary"
+        className="text-dark"
+      >
         {t("offersList.applyButton")}
       </Button>
       <p style={{ color: applicationMessageColor }}>{applicationMessage}</p>
