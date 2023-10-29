@@ -18,6 +18,7 @@ const OfferButtons = ({
   offer,
   updateOffersState,
   seeApplications,
+  hideRow,
 }: Props) => {
   const selectButtons = () => {
     switch (userType) {
