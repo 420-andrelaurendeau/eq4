@@ -1,20 +1,21 @@
-import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
+import {useTranslation} from "react-i18next";
+import {useEffect, useState} from "react";
 import {Offer} from "../../model/offer";
 import {getUserId} from "../../services/authService";
 import {useNavigate} from "react-router-dom";
 import Application, {ApplicationStatus} from "../../model/application";
 import {Container} from "react-bootstrap";
-import { getAllApplicationsByEmployerIdAndOfferId } from "../../services/applicationService";
+import {getAllApplicationsByEmployerIdAndOfferId} from "../../services/applicationService";
 import ApplicationsList from "../ApplicationsList";
 import {UserType} from "../../model/user";
 
 interface Props {
     offer: Offer;
     userType: UserType;
+    updateAvailablePlaces?: (offer: Offer) => void;
 }
 
-const Applications = ({offer, userType} : Props) => {
+const Applications = ({offer, userType, updateAvailablePlaces} : Props) => {
     const [error, setError] = useState<string>("");
     const [applications, setApplications] = useState<Application[]>([]);
     const {t} = useTranslation();
@@ -41,6 +42,7 @@ const Applications = ({offer, userType} : Props) => {
         application.applicationStatus = applicationStatus
         newApplications.push(application);
         setApplications(newApplications);
+        if (applicationStatus == ApplicationStatus.ACCEPTED) updateAvailablePlaces!(offer);
     };
 
     return (

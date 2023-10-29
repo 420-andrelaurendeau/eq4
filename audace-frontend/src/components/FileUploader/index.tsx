@@ -50,13 +50,11 @@ const FileUploader = ({ student }: Props) => {
         <Form.Group controlId="formBasicCvFile">
           <Form.Label>{t("upload.file")}</Form.Label>
           <FormControl
-            type="file"
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              if (e.target.files) {
-                setFile(e.target.files[0]);
-              }
-            }}
-          ></FormControl>
+              type="file"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                if (e.target.files) setFile(e.target.files[0]);
+              }}
+          />
         </Form.Group>
 
         <Button variant="primary" className="mt-3" onClick={submitForm}>

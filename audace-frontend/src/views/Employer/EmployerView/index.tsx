@@ -1,18 +1,16 @@
 import {useEffect, useState} from "react";
 import {Container} from "react-bootstrap";
 import {useTranslation} from "react-i18next";
-import {Offer, OfferStatus} from "../../../model/offer";
+import {Offer} from "../../../model/offer";
 import {Employer, UserType} from "../../../model/user";
 import {useNavigate} from "react-router";
 import {getUserId} from "../../../services/authService";
 import {getEmployerById} from "../../../services/userService";
-import {getAllOffersByEmployerIdAndSessionId, getManagerOffersByDepartment} from "../../../services/offerService";
+import {getAllOffersByEmployerIdAndSessionId} from "../../../services/offerService";
 import OffersList from "../../../components/OffersList";
 import {useSessionContext} from "../../../contextsholders/providers/SessionContextHolder";
 import SessionSelector from "../../../components/SessionSelector";
 import Applications from "../../../components/Applications";
-import Application, {ApplicationStatus} from "../../../model/application";
-import {getAllApplicationsByEmployerIdAndOfferId} from "../../../services/applicationService";
 
 const EmployerView = () => {
   const [employer, setEmployer] = useState<Employer>();
@@ -58,12 +56,20 @@ const EmployerView = () => {
   const seeApplications = (offer: Offer) => {
     setOfferApplication(offer);
   }
+  const updateAvailablePlaces = (offer: Offer) => {
+    let updatedOffers = offers.map(o => {
+      if(o.id == offer.id) return {...o, availablePlaces: --o.availablePlaces};
+      return o;
+    })
+    setOffers(updatedOffers);
+  }
+
 
   return (
       <Container className="mt-3">
         <SessionSelector />
         <OffersList offers={offers} error={error} userType={UserType.Employer} seeApplications={seeApplications}/>
-        {offerApplication !== undefined && <Applications offer={offerApplication } userType={UserType.Employer} /> }
+        {offerApplication !== undefined && <Applications offer={offerApplication } userType={UserType.Employer} updateAvailablePlaces={updateAvailablePlaces}/> }
       </Container>
   );
 };

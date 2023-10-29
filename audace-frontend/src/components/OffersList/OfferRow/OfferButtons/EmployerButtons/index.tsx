@@ -26,26 +26,14 @@ const EmployerButtons = ({ disabled, seeApplications, offer }: Props) => {
 
   return (
     <>
-      <Button
-        disabled={disabled}
-        onClick={editButtonClick}
-        className="btn-light btn-outline-warning text-dark"
-      >
+      <Button disabled={disabled} onClick={editButtonClick} className="btn-light btn-outline-warning text-dark">
         {t("employerOffersList.editButton")}
       </Button>
-      <Button
-        disabled={disabled}
-        onClick={deleteButtonClick}
-        className="btn-light btn-outline-danger text-dark ms-2"
-      >
+      <Button disabled={disabled} onClick={deleteButtonClick} className="btn-light btn-outline-danger text-dark ms-2">
         {t("employerOffersList.deleteButton")}
       </Button>
       {seeApplications !== undefined ? (
-        <Button
-          disabled={disabled}
-          onClick={seeApplicationsButtonClick}
-          className="ms-2 btn-light btn-outline-success text-dark"
-        >
+        <Button disabled={disabled} onClick={seeApplicationsButtonClick} className="ms-2 btn-light btn-outline-success text-dark">
           {t("employerOffersList.applicationButton")}
         </Button>
       ) : null}
