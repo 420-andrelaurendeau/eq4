@@ -115,6 +115,7 @@ public class EmployerService extends GenericUserService<Employer> {
         offer.setOfferEndDate(offerDTO.getOfferEndDate());
         offer.setAvailablePlaces(offerDTO.getAvailablePlaces());
         offer.setDepartment(departmentRepository.findByCode(offerDTO.getDepartment().getCode()).orElseThrow());
+        offer.setOfferStatus(Offer.OfferStatus.PENDING);
 
         return Optional.of(offerRepository.save(offer).toDTO());
     }
