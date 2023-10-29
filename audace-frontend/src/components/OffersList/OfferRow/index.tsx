@@ -51,21 +51,23 @@ const OfferRow = ({
         </td>
         <td>{formatDate(offer.internshipStartDate)}</td>
         <td>{formatDate(offer.internshipEndDate)}</td>
-        <td
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <OfferButtons
-            userType={userType}
-            disabled={employer === undefined}
-            offer={offer}
-            updateOffersState={updateOffersState}
-            seeApplications={seeApplications}
-          />
-        </td>
+        {chosenSession?.id === currentSession?.id && (
+          <td
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <OfferButtons
+              userType={userType}
+              disabled={employer === undefined}
+              offer={offer}
+              updateOffersState={updateOffersState}
+              seeApplications={seeApplications}
+            />
+          </td>
+        )}
       </tr>
       {show && (
         <OfferModal
