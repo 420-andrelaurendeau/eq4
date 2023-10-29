@@ -98,6 +98,7 @@ const StudentButtons = ({ disabled, offer }: Props) => {
         disabled={isButtonDisabled()}
         onClick={handleApply}
         variant="outline-primary"
+        className="text-dark"
       >
         {t("offersList.applyButton")}
       </Button>

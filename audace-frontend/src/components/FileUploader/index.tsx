@@ -59,7 +59,7 @@ const FileUploader = ({ student }: Props) => {
           ></FormControl>
         </Form.Group>
 
-        <Button variant="primary" className="mt-3" onClick={submitForm}>
+        <Button variant="outline-primary" className="mt-3 text-dark" onClick={submitForm}>
           {t("upload.submit")}
         </Button>
       </Form>
