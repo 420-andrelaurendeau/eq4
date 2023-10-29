@@ -2,11 +2,9 @@ package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.GenericUserController;
 import com.equipe4.audace.dto.EmployerDTO;
-import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
-import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.service.EmployerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,13 +34,7 @@ public class EmployerController extends GenericUserController<Employer, Employer
         logger.info("getAllOffersByEmployerId");
         return ResponseEntity.ok(service.findAllOffersByEmployerIdAndSessionId(employerId, sessionId));
     }
-    @GetMapping("/offers/{offerId}")
-    public ResponseEntity<OfferDTO> getOfferById(@PathVariable Long offerId) {
-        logger.info("getOfferById");
-        return service.findOfferById(offerId)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
+
     @PostMapping("/offers")
     public ResponseEntity<HttpStatus> createOffer(@RequestBody OfferDTO offerDTO){
         logger.info("createOffer");
@@ -53,9 +45,7 @@ public class EmployerController extends GenericUserController<Employer, Employer
     @PutMapping("/offers")
     public ResponseEntity<OfferDTO> updateOffer(@RequestBody OfferDTO offerDTO){
         logger.info("updateOffer");
-        logger.info("Received offer for update: " + offerDTO.toString());
         OfferDTO updatedOffer = service.updateOffer(offerDTO).orElseThrow();
-        logger.info("Updated offer: " + updatedOffer.toString());
         return ResponseEntity.ok(updatedOffer);
     }
     @DeleteMapping("/offers")
@@ -63,13 +53,6 @@ public class EmployerController extends GenericUserController<Employer, Employer
         logger.info("deleteOffer");
         service.deleteOffer(offerId);
         return ResponseEntity.ok().build();
-
-    }
-
-    @GetMapping("/departments")
-    public ResponseEntity<List<DepartmentDTO>> getAllDepartments(){
-        logger.info("getAllDepartments");
-        return ResponseEntity.ok(service.findAllDepartments());
     }
 
     @GetMapping("/applications/{offerId}")

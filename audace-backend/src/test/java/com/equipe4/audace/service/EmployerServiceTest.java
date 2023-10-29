@@ -227,7 +227,7 @@ public class EmployerServiceTest {
 
         OfferDTO updatedOffer = employerService.updateOffer(offer.toDTO()).get();
 
-        verify(offerRepository).save(offer);
+        verify(offerRepository, times(2)).save(any(Offer.class));
         verify(offerRepository).findById(offer.getId());
         assertThat(originalOffer.getAvailablePlaces()).isEqualTo(3);
         assertThat(updatedOffer.getAvailablePlaces()).isEqualTo(2);
