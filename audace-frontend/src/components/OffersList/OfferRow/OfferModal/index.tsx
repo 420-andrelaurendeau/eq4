@@ -1,11 +1,10 @@
-import { useEffect } from "react";
-import { Offer, OfferStatus } from "../../../../model/offer";
-import { Employer, UserType } from "../../../../model/user";
-import { Col, Modal, Row } from "react-bootstrap";
-import { getEmployerById } from "../../../../services/userService";
-import { useTranslation } from "react-i18next";
-import { formatDate } from "../../../../services/formatService";
-
+import {useEffect} from "react";
+import {Offer, OfferStatus} from "../../../../model/offer";
+import {Employer, UserType} from "../../../../model/user";
+import {Col, Modal, Row} from "react-bootstrap";
+import {getEmployerById} from "../../../../services/userService";
+import {useTranslation} from "react-i18next";
+import {formatDate} from "../../../../services/formatService";
 import OfferButtons from "../OfferButtons";
 
 interface Props {
@@ -17,10 +16,11 @@ interface Props {
   setEmployer?: (employer: Employer) => void;
   updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
   disabled: boolean;
+    hideRow?: () => void;
 }
 
-const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, updateOffersState, disabled}: Props) => {
-  const { t } = useTranslation();
+const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, updateOffersState, disabled, hideRow}: Props) => {
+  const {t} = useTranslation();
 
   useEffect(() => {
     if (employer !== undefined) return;
@@ -91,7 +91,7 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
           {employer === undefined && (
             <div className="text-danger">{t("offer.modal.empNotFound")}</div>
           )}
-          <OfferButtons userType={userType} disabled={disabled} offer={offer} updateOffersState={updateOffersState}/>
+          <OfferButtons userType={userType} disabled={disabled} offer={offer} updateOffersState={updateOffersState} hideRow={hideRow}/>
         </Modal.Footer>
       </Modal>
     </>

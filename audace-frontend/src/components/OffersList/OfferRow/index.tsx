@@ -43,13 +43,13 @@ const OfferRow = ({offer, userType, updateOffersState, seeApplications}: Props) 
         {chosenSession?.id === currentSession?.id && (
           <td>
             <div className="d-flex justify-content-center">
-              <OfferButtons userType={userType} disabled={disabled} offer={offer} updateOffersState={updateOffersState} seeApplications={seeApplications}/>
+              <OfferButtons userType={userType} disabled={disabled} offer={offer} updateOffersState={updateOffersState} seeApplications={seeApplications} hideRow={hideRow}/>
             </div>
           </td>
         )}
       </tr>
       {show && (
-        <OfferModal offer={offer} show={show} handleClose={handleClose} userType={userType} employer={employer} setEmployer={setEmployer} updateOffersState={updateOffersState} disabled={disabled}/>
+        <OfferModal offer={offer} show={show} handleClose={handleClose} userType={userType} employer={employer} setEmployer={setEmployer} updateOffersState={updateOffersState} disabled={disabled} hideRow={hideRow}/>
       )}
     </>
   );

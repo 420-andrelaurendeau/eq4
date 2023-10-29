@@ -17,6 +17,8 @@ import ManagerCvView from "./views/Manager/ManagerCvView";
 import { Authority } from "./model/auth";
 import { getAuthorities } from "./services/authService";
 import ProviderWrapper from "./contextsholders/providers/ProviderWrapper";
+import AddOffer from "./components/AddOffer";
+import EditOffer from "./components/EditOffer";
 
 function App() {
   return (
@@ -65,6 +67,8 @@ function App() {
               <AuthorizedRoute requiredAuthority={Authority.EMPLOYER}>
                 <Routes>
                   <Route index element={<EmployerView />} />
+                  <Route path="offers/new" element={<AddOffer/>} />
+                  <Route path="offers/:id" element={<EditOffer />} />
                   <Route path="*" element={<PageNotFoundView />} />
                 </Routes>
               </AuthorizedRoute>
@@ -76,5 +80,4 @@ function App() {
     </ProviderWrapper>
   );
 }
-
 export default App;
