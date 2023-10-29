@@ -6,8 +6,10 @@ import com.equipe4.audace.model.session.Session;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OfferSessionRepository extends JpaRepository<OfferSession, Long> {
     List<OfferSession> findAllByOfferInAndSessionId(List<Offer> offers, Long sessionId);
     boolean existsByOfferAndSession(Offer offer, Session session);
+    Optional<OfferSession> findByOffer(Offer offer);
 }
