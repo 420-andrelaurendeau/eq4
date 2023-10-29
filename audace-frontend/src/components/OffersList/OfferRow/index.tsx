@@ -17,12 +17,7 @@ interface Props {
   seeApplications?: (offer: Offer) => void;
 }
 
-const OfferRow = ({
-  offer,
-  userType,
-  updateOffersState,
-  seeApplications,
-}: Props) => {
+const OfferRow = ({offer, userType, updateOffersState, seeApplications}: Props) => {
   const [show, setShow] = useState<boolean>(false);
   const [employer, setEmployer] = useState<Employer>(offer.employer);
   const { t } = useTranslation();
@@ -30,7 +25,6 @@ const OfferRow = ({
   const [disabled, setDisabled] = useState<boolean>(true);
 
   const handleClick = () => {
-    
     setShow(true);
     setDisabled(false);
   };
@@ -41,37 +35,21 @@ const OfferRow = ({
       <tr className="hovered" onClick={handleClick}>
         <td>
           <Col className="h5">{offer.title}</Col>
-          <Col className="text-muted small mt-2">
-            <u>{t("offersList.viewMore")}</u>
-          </Col>
+          <Col className="text-muted small mt-2"><u>{t("offersList.viewMore")}</u></Col>
         </td>
         <td>{formatDate(offer.internshipStartDate)}</td>
         <td>{formatDate(offer.internshipEndDate)}</td>
+        <td>{offer.availablePlaces}</td>
         {chosenSession?.id === currentSession?.id && (
           <td>
             <div className="d-flex justify-content-center">
-              <OfferButtons
-                userType={userType}
-                disabled={disabled}
-                offer={offer}
-                updateOffersState={updateOffersState}
-                seeApplications={seeApplications}
-              />
+              <OfferButtons userType={userType} disabled={disabled} offer={offer} updateOffersState={updateOffersState} seeApplications={seeApplications}/>
             </div>
           </td>
         )}
       </tr>
       {show && (
-        <OfferModal
-          offer={offer}
-          show={show}
-          handleClose={handleClose}
-          userType={userType}
-          employer={employer}
-          setEmployer={setEmployer}
-          updateOffersState={updateOffersState}
-          disabled={disabled}
-        />
+        <OfferModal offer={offer} show={show} handleClose={handleClose} userType={userType} employer={employer} setEmployer={setEmployer} updateOffersState={updateOffersState} disabled={disabled}/>
       )}
     </>
   );

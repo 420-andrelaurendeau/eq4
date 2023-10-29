@@ -49,24 +49,21 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
             <Col>
               <div>
                 {t("offer.modal.org")}:{" "}
-                {createBoldText(
-                  employer !== undefined
+                {createBoldText(employer !== undefined
                     ? employer.organisation!
                     : t("offer.modal.orgNotFound")
                 )}
               </div>
               <div>
                 {t("offer.modal.address")}:&nbsp;
-                {createBoldText(
-                  employer !== undefined
+                {createBoldText(employer !== undefined
                     ? employer.address!
                     : t("offer.modal.orgNotFound")
                 )}
               </div>
               <div>
                 {t("offer.modal.phone")}:&nbsp;
-                {createBoldText(
-                  employer !== undefined
+                {createBoldText(employer !== undefined
                     ? employer.phone!
                     : t("offer.modal.orgNotFound")
                 )}
@@ -94,12 +91,7 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
           {employer === undefined && (
             <div className="text-danger">{t("offer.modal.empNotFound")}</div>
           )}
-          <OfferButtons
-            userType={userType}
-            disabled={disabled}
-            offer={offer}
-            updateOffersState={updateOffersState}
-          />
+          <OfferButtons userType={userType} disabled={disabled} offer={offer} updateOffersState={updateOffersState}/>
         </Modal.Footer>
       </Modal>
     </>

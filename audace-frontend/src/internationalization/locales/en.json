@@ -51,6 +51,7 @@
     "title": "Title",
     "internshipEndDate": "End Date",
     "internshipStartDate": "Start Date",
+    "availablePlaces": "Available Places",
     "noOffers": "No offers available",
     "viewTitle": "Available Offers",
     "applyButton": "Apply",
@@ -99,7 +100,7 @@
     "REFUSED": "Refused",
     "noMorePendingCvs": "There are no more pending CVs"
   },
-  "employerCvsList": {
+  "employerApplicationsList": {
     "title": "Applications",
     "acceptButton": "Accept",
     "refuseButton": "Refuse",

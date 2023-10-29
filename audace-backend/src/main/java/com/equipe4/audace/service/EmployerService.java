@@ -116,9 +116,12 @@ public class EmployerService extends GenericUserService<Employer> {
 
         if (applicationStatus == Application.ApplicationStatus.ACCEPTED) {
             Offer offer = application.getOffer();
-            Long placesUsed = applicationRepository.countApplicationsByApplicationStatusAndAndOffer(Application.ApplicationStatus.ACCEPTED, offer);
+            int availablePlaces = offer.getAvailablePlaces();
+            if (availablePlaces <= 0) throw new IllegalArgumentException("No more places available");
 
-            if (placesUsed >= offer.getAvailablePlaces()) throw new IllegalArgumentException("No more places available");
+            offer.setAvailablePlaces(availablePlaces - 1);
+            offerRepository.save(offer);
+
         }
         application.setApplicationStatus(applicationStatus);
         applicationRepository.save(application);

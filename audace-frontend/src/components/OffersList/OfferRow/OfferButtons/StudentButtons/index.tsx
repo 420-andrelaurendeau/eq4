@@ -1,11 +1,3 @@
-import {Button} from "react-bootstrap";
-import {useTranslation} from "react-i18next";
-import React, {useEffect, useState} from "react";
-import {getUserId} from "../../../../../services/authService";
-import {Offer} from "../../../../../model/offer";
-
-import Application, {ApplicationStatus} from "../../../../../model/application";
-import {useCVContext} from "../../../../../contextsholders/providers/CVContextHolder";
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import {
@@ -40,10 +32,10 @@ const StudentButtons = ({ disabled, offer }: Props) => {
     if (applications === undefined || cvs === undefined || cvs.length === 0) return true;
 
     return (
-      applications.filter(
-        (application) =>
-          application.offer?.id === offer.id
-      ).length > 0
+        applications.filter(
+            (application) =>
+                application.offer?.id === offer.id
+        ).length > 0
     );
   }
 
@@ -51,12 +43,12 @@ const StudentButtons = ({ disabled, offer }: Props) => {
     if (studentId === undefined) return;
 
     getCvsByStudentId(parseInt(studentId!))
-      .then((res) => {
-        setCvs(res.data);
-      })
-      .catch((err) => {
-        console.log("getCvsByStudentId error", err);
-      });
+        .then((res) => {
+          setCvs(res.data);
+        })
+        .catch((err) => {
+          console.log("getCvsByStudentId error", err);
+        });
   }, [studentId, setCvs]);
 
   const handleApply = async (event: { stopPropagation: () => void }) => {
@@ -86,28 +78,20 @@ const StudentButtons = ({ disabled, offer }: Props) => {
 
   const handleApplicationsUpdate = () => {
     getApplicationsByStudentId(parseInt(studentId!), chosenSession?.id!)
-      .then((res) => {
-        setApplications(res.data);
-      })
-      .catch((err) => {
-        console.log("getApplicationsByStudentId error", err);
-      });
+        .then((res) => {
+          setApplications(res.data);
+        })
+        .catch((err) => {
+          console.log("getApplicationsByStudentId error", err);
+        });
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Button disabled={isButtonDisabled()} onClick={handleApply}>
-        {t("offersList.applyButton")}
-      </Button>
-      <p style={{ color: applicationMessageColor }}>{applicationMessage}</p>
-    </div>
+      <div style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",}}>
+        <Button disabled={isButtonDisabled()} onClick={handleApply}>{t("offersList.applyButton")}</Button>
+        <p style={{ color: applicationMessageColor }}>{applicationMessage}</p>
+      </div>
   );
 };
+
 export default StudentButtons;

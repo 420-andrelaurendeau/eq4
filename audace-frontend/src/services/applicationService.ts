@@ -16,14 +16,14 @@ export const studentApplyToOffer = async (application: Application): Promise<Axi
 }
 
 export const employerAcceptApplication = async (employerId: number, applicationId: number): Promise<AxiosResponse<Application>> => {
-    return http.put(`${EMPLOYER_PREFIX}/accept_application/${applicationId}`, {
+    return http.put(`${EMPLOYER_PREFIX}/accept_application/${applicationId}`, null,{
         params: {
             employerId
         }
     });
 }
 export const employerRefuseApplication = async (employerId: number, applicationId: number): Promise<AxiosResponse<Application>> => {
-    return http.put(`${EMPLOYER_PREFIX}/refuse_application/${applicationId}`, {
+    return http.put(`${EMPLOYER_PREFIX}/refuse_application/${applicationId}`, null,{
         params: {
             employerId
         }

@@ -19,30 +19,20 @@ const OffersList = ({ offers, error, userType, updateOffersState, seeApplication
 
   return (
     <>
-      <GenericTable
-        list={offers}
-        error={error}
-        emptyListMessage="offersList.noOffers"
-        title="studentOffersList.viewTitle"
-      >
+      <GenericTable list={offers} error={error} emptyListMessage="offersList.noOffers" title="studentOffersList.viewTitle">
         <thead>
           <tr>
-            <th>{t("offersList.title")}</th>
-            <th>{t("offersList.internshipStartDate")}</th>
-            <th>{t("offersList.internshipEndDate")}</th>
-            {chosenSession?.id === currentSession?.id && <th></th>}
+              <th>{t("offersList.title")}</th>
+              <th>{t("offersList.internshipStartDate")}</th>
+              <th>{t("offersList.internshipEndDate")}</th>
+              <th>{t("offersList.availablePlaces")}</th>
+              {chosenSession?.id === currentSession?.id && <th></th>}
           </tr>
         </thead>
         <tbody>
           {offers.map((offer) => {
             return (
-              <OfferRow
-                key={offer.id}
-                offer={offer}
-                userType={userType}
-                updateOffersState={updateOffersState}
-                seeApplications={seeApplications}
-              />
+              <OfferRow key={offer.id} offer={offer} userType={userType} updateOffersState={updateOffersState} seeApplications={seeApplications}/>
             );
           })}
         </tbody>

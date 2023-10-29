@@ -1,18 +1,20 @@
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
-import { Offer } from "../../model/offer";
+import {Offer} from "../../model/offer";
 import {getUserId} from "../../services/authService";
 import {useNavigate} from "react-router-dom";
-import Application from "../../model/application";
+import Application, {ApplicationStatus} from "../../model/application";
 import {Container} from "react-bootstrap";
 import { getAllApplicationsByEmployerIdAndOfferId } from "../../services/applicationService";
 import ApplicationsList from "../ApplicationsList";
+import {UserType} from "../../model/user";
 
 interface Props {
     offer: Offer;
+    userType: UserType;
 }
 
-const Applications = ({offer} : Props) => {
+const Applications = ({offer, userType} : Props) => {
     const [error, setError] = useState<string>("");
     const [applications, setApplications] = useState<Application[]>([]);
     const {t} = useTranslation();
@@ -24,7 +26,7 @@ const Applications = ({offer} : Props) => {
             navigate("/pageNotFound");
             return;
         }
-        getAllApplicationsByEmployerIdAndOfferId(offer.id!)
+        getAllApplicationsByEmployerIdAndOfferId(parseInt(id), offer.id!)
             .then((res) => {
                 setApplications(res.data);
             })
@@ -34,10 +36,17 @@ const Applications = ({offer} : Props) => {
             })
     }, [navigate, t, offer.id]);
 
+    const updateApplicationsState = (application: Application, applicationStatus: ApplicationStatus) => {
+        let newApplications = applications.filter((a) => a.id !== application.id);
+        application.applicationStatus = applicationStatus
+        newApplications.push(application);
+        setApplications(newApplications);
+    };
+
     return (
         <Container>
             <h1 className="text-center my-3">{offer.title}</h1>
-            {<ApplicationsList applications={applications} error={error} />}
+            {<ApplicationsList applications={applications} error={error} userType={userType} updateApplicationsState={updateApplicationsState} />}
         </Container>
     );
 };
