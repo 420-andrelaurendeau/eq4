@@ -233,7 +233,7 @@ public class EmployerControllerTest {
         given(employerService.updateOffer(any(OfferDTO.class))).willReturn(Optional.of(offerDTOUpdated));
 
         // when -  action or the behaviour that we are going test
-        ResultActions response = mockMvc.perform(put("/employers/{id}/offers", 1L)
+        ResultActions response = mockMvc.perform(put("/employers/offers")
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(offerDTOUpdated)));

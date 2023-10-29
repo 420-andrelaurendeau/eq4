@@ -12,6 +12,7 @@ import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.security.Salt;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.EmployerRepository;
+import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import org.junit.jupiter.api.Test;
@@ -40,6 +41,8 @@ public class EmployerServiceTest {
     private SaltRepository saltRepository;
     @Mock
     private ApplicationRepository applicationRepository;
+    @Mock
+    private DepartmentRepository departmentRepository;
     @InjectMocks
     private EmployerService employerService;
 
@@ -168,12 +171,14 @@ public class EmployerServiceTest {
         );
         OfferDTO offerDTO = offer.toDTO();
 
-        when(offerRepository.save(offerDTO.fromDTO())).thenReturn(offer);
+        when(employerRepository.findById(anyLong())).thenReturn(Optional.of(fakeEmployer));
+        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(mockedDepartment));
+        when(offerRepository.save(any())).thenReturn(offer);
 
-        OfferDTO dto = employerService.createOffer(offerDTO).get();
+        OfferDTO dto = employerService.createOffer(offerDTO).orElseThrow();
 
         assertThat(dto.equals(offerDTO));
-        verify(offerRepository, times(1)).save(offerDTO.fromDTO());
+        verify(offerRepository, times(1)).save(any());
     }
 
     @Test
@@ -301,6 +306,8 @@ public class EmployerServiceTest {
 
         when(offerRepository.save(any(Offer.class))).thenReturn(offer);
         when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
+        when(employerRepository.findById(anyLong())).thenReturn(Optional.of(fakeEmployer));
+        when(departmentRepository.findByCode(anyString())).thenReturn(Optional.of(mockedDepartment));
 
         OfferDTO originalOffer = employerService.createOffer(offer.toDTO()).get();
 
@@ -346,7 +353,7 @@ public class EmployerServiceTest {
 
         assertThatThrownBy(() -> employerService.updateOffer(offer.toDTO()))
                 .isInstanceOf(NoSuchElementException.class)
-                .hasMessage("No value present");
+                .hasMessage("Offer with ID 1 not found.");
     }
     @Test
     public void acceptApplication_HappyPath() {

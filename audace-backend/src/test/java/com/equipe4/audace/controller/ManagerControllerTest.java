@@ -314,10 +314,11 @@ public class ManagerControllerTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void getAcceptedApplicationsByDepartment() throws Exception {
         List<ApplicationDTO> applicationDTOList = new ArrayList<>();
+        Employer employer = new Employer(1L, "firstName", "lastName", "email", "password", "address", "phone", "companyName", "companyAddress", "companyPhone");
         Department department = new Department(1L, "yeete", "yaint");
         Student student = new Student(1L, "firstName", "lastName", "email", "password", "address", "phone", "studentNumber", department);
         Cv cv = new Cv(1L, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
-        Offer offer = new Offer(1L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, department, mock(Employer.class));
+        Offer offer = new Offer(1L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, department, employer);
         Application application = new Application(1L, cv, offer);
         applicationDTOList.add(application.toDTO());
         when(managerService.getAcceptedApplicationsByDepartment(1L, 1L)).thenReturn(applicationDTOList);
