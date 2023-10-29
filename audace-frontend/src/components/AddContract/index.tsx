@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import http from "../../constants/http";
-import { Form, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import FormInput from '../FormInput';
-import { Button } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import { managerCreateContract } from '../../services/contractService';
 import { Contract } from '../../model/contract';
 import { Employer } from '../../model/user';
@@ -29,7 +29,6 @@ const AddContract = () => {
     // setIsLoading(true);
     try {
 
-
     } catch (error) {
       console.error(error);
       // setIsLoading(false);
@@ -46,19 +45,17 @@ const AddContract = () => {
   };
 
   return (
-    <>
+    <Form className='form m-5' onSubmit={handleSubmit}>
       <h1>Add Contract</h1>
-      <Form className="my-3">
-        <FormInput
-          label="contract.officeName"
-          value={officeName}
-          onChange={(e) => setOfficeName(e.target.value)}
-          controlId="formBasicOfficeName"
-          errors={errors}
-          formError={"contract.errors.emptyOfficeName"}
-        />
-      </Form>
-    </>
+      <FormInput
+        label="contract.officeName"
+        value={officeName}
+        onChange={(e) => setOfficeName(e.target.value)}
+        controlId="formBasicOfficeName"
+        errors={errors}
+        formError={"contract.errors.emptyOfficeName"}
+      />
+    </Form>
   );
 };
 
