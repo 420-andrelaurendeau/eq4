@@ -66,7 +66,7 @@ const OfferRow = ({
           >
             <OfferButtons
               userType={userType}
-              disabled={employer === undefined}
+              disabled={disabled}
               offer={offer}
               updateOffersState={updateOffersState}
               seeApplications={seeApplications}

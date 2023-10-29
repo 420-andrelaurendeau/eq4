@@ -66,14 +66,15 @@ const EmployerButtons = ({
       <Button
         disabled={disabled}
         onClick={editButtonClick}
-        className="btn-warning me-2"
+        variant="outline-warning"
+        className="me-2 text-dark"
       >
         {t("employerOffersList.editButton")}
       </Button>
       <Button
         disabled={disabled || isDeleting}
         onClick={deleteButtonClick}
-        className="btn-danger"
+        variant="outline-danger text-dark"
       >
         {isDeleting
           ? t("employerOffersList.deletingButton")
@@ -83,7 +84,8 @@ const EmployerButtons = ({
         <Button
           disabled={disabled}
           onClick={seeApplicationsButtonClick}
-          className="ms-2 btn-light btn-outline-success text-dark"
+          variant="outline-success"
+          className="ms-2 text-dark"
         >
           {t("employerOffersList.applicationButton")}
         </Button>
