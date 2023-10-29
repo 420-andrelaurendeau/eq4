@@ -424,20 +424,35 @@ public class ManagerServiceTest {
         Cv cv = new Cv(1L, student, "Monkey Enthusiast has OK sleep now".getBytes(), "cv");
         Employer employer = new Employer(1L, "Employer1", "Employer1", "email", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
         Offer offer = new Offer(1L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, department, employer);
-        applications.add(new Application(
-                1L,
-                cv,
-                offer
-        ));
+        applications.add(new Application(1L, cv, offer));
 
-        when(applicationRepository.findApplicationsByApplicationStatusAndCv_StudentDepartmentId(any(), anyLong())).thenReturn(applications);
+        when(applicationRepository.findApplicationsByApplicationStatusAndOfferDepartmentId(any(), anyLong())).thenReturn(applications);
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(new Manager(1L, "firstName", "lastName", "email", "password", "address", "phone", department)));
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(department));
 
         List<ApplicationDTO> result = managerService.getAcceptedApplicationsByDepartment(1L, 1L);
 
         assertThat(result.size()).isEqualTo(1);
     }
+    @Test
+    public void getAcceptedApplicationsByDepartment_invalidManager() {
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.empty());
 
+        assertThatThrownBy(() -> managerService.getAcceptedApplicationsByDepartment(1L, 1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Manager is not found");
+    }
+    @Test
+    public void getAcceptedApplicationsByDepartment_invalidDepartment() {
+        Manager mockedManager = mock(Manager.class);
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.of(mockedManager));
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
+        when(mockedManager.getDepartment()).thenReturn(new Department(1L, "code", "name"));
+
+        assertThatThrownBy(() -> managerService.getAcceptedApplicationsByDepartment(1L, 1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Department not found");
+    }
     @Test
     public void getDepartments_happyPath() {
         List<Department> departments = new ArrayList<>();

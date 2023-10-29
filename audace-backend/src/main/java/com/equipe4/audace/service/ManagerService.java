@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -112,11 +111,18 @@ public class ManagerService extends GenericUserService<Manager> {
     }
 
     public List<ApplicationDTO> getAcceptedApplicationsByDepartment(Long managerId, Long departmentId) {
-        if (!managerRepository.findById(managerId).orElseThrow().getDepartment().getId().equals(departmentId)) {
+        Department managerDepartment = managerRepository.findById(managerId)
+                .orElseThrow(() -> new NoSuchElementException("Manager is not found"))
+                .getDepartment();
+        if (!managerDepartment.getId().equals(departmentId)) {
             throw new IllegalArgumentException("The manager isn't in the right department");
         }
+        Optional<Department> department = departmentRepository.findById(departmentId);
+        if (department.isEmpty()) {
+            throw new NoSuchElementException("Department not found");
+        }
         return applicationRepository
-                .findApplicationsByApplicationStatusAndCv_StudentDepartmentId(
+                .findApplicationsByApplicationStatusAndOfferDepartmentId(
                         Application.ApplicationStatus.ACCEPTED, departmentId)
                 .stream().map(Application::toDTO).toList();
     }
