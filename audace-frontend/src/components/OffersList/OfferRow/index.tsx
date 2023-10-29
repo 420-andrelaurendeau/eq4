@@ -34,11 +34,16 @@ const OfferRow = ({
     setShow(true);
     setDisabled(false);
   };
+
   const handleClose = () => setShow(false);
 
   const hideRow = () => {
     setIsVisible(false);
   };
+
+  if (!isVisible) {
+    return null;
+  }
 
   return (
     <>
@@ -65,6 +70,7 @@ const OfferRow = ({
               offer={offer}
               updateOffersState={updateOffersState}
               seeApplications={seeApplications}
+              hideRow={hideRow}
             />
           </td>
         )}

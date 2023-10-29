@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { Offer } from "../../../../../model/offer";
 import { useNavigate } from "react-router-dom";
-import http from "../../../../../constants/http";
+import { deleteOffer } from "../../../../../services/offerService";
 
 interface Props {
   disabled: boolean;
@@ -34,11 +34,8 @@ const EmployerButtons = ({
 
   const deleteButtonClick = async (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
-    console.log("Delete button clicked");
-    console.log("Offer:", offer);
 
     if (offer === undefined || offer.id === undefined) {
-      console.error("No offerId provided");
       return;
     }
 
@@ -46,7 +43,7 @@ const EmployerButtons = ({
     setIsDeleting(true);
 
     try {
-      const response = await http.delete(`/employers/offers/${offer.id}`);
+      const response = await deleteOffer(offer.id);
 
       if (response.status !== 200) {
         throw new Error(`Failed to delete offer. Status: ${response.status}`);

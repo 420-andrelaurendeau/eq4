@@ -22,10 +22,13 @@ export const acceptOffer = async (managerId : number, offerId: number): Promise<
     return http.post<Offer>(`${MANAGER_PREFIX}/${managerId}/accept_offer/${offerId}`);
 }
 
-
 export const getEmployersOfferById = async (offerId: number): Promise<AxiosResponse<Offer>> => {
-    return http.get<Offer>(`/employers/offers/${offerId}`);
+    return http.get<Offer>(`${EMPLOYER_PREFIX}/offers/${offerId}`);
 }
 export const refuseOffer = async (managerId : number, offerId: number): Promise<AxiosResponse<Offer>> => {
     return http.post<Offer>(`${MANAGER_PREFIX}/${managerId}/refuse_offer/${offerId}`);
+}
+
+export const deleteOffer = async (offerId: number): Promise<AxiosResponse<Offer>> => {
+    return http.delete(`${EMPLOYER_PREFIX}/${offerId}/offers`);
 }
