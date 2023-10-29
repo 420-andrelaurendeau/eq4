@@ -114,7 +114,7 @@ public class EmployerService extends GenericUserService<Employer> {
         offer.setInternshipEndDate(offerDTO.getInternshipEndDate());
         offer.setOfferEndDate(offerDTO.getOfferEndDate());
         offer.setAvailablePlaces(offerDTO.getAvailablePlaces());
-        offer.setDepartment(departmentRepository.findByCode(offerDTO.getDepartmentCode()).orElseThrow());
+        offer.setDepartment(departmentRepository.findByCode(offerDTO.getDepartment().getCode()).orElseThrow());
 
         return Optional.of(offerRepository.save(offer).toDTO());
     }
