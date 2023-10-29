@@ -12,7 +12,6 @@ import { useSessionContext } from "../../../contextsholders/providers/SessionCon
 import SessionSelector from "../../../components/SessionSelector";
 import Applications from "../../../components/Applications";
 
-
 const EmployerView = () => {
   const [employer, setEmployer] = useState<Employer>();
   const [offers, setOffers] = useState<Offer[]>([]);
@@ -55,14 +54,21 @@ const EmployerView = () => {
   }, [employer, chosenSession]);
 
   const seeApplications = (offer: Offer) => {
-      setOfferApplication(offer);
-  }
+    setOfferApplication(offer);
+  };
 
   return (
     <Container className="mt-3">
       <SessionSelector />
-      <OffersList offers={offers} error={error} userType={UserType.Employer} seeApplications={seeApplications}/>
-      {offerApplication !== undefined && <Applications offer={offerApplication}/>}
+      <OffersList
+        offers={offers}
+        error={error}
+        userType={UserType.Employer}
+        seeApplications={seeApplications}
+      />
+      {offerApplication !== undefined && (
+        <Applications offer={offerApplication} />
+      )}
     </Container>
   );
 };
