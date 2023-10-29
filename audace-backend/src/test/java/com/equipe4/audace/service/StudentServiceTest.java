@@ -349,6 +349,7 @@ public class StudentServiceTest {
         applications.add(new Application(1L, mock(Cv.class), mock(Offer.class)));
 
         when(applicationRepository.findApplicationsByCvStudentId(anyLong())).thenReturn(applications);
+        when(sessionManipulator.removeApplicationsNotInSession(applications, 1L)).thenReturn(applications.stream().toList());
 
         List<ApplicationDTO> result = studentService.getOffersStudentApplied(1L, 1L);
 

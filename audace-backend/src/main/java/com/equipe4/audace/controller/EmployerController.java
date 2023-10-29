@@ -1,8 +1,9 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.GenericUserController;
-import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.service.EmployerService;
@@ -11,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -21,10 +21,10 @@ public class EmployerController extends GenericUserController<Employer, Employer
         super(employerService);
     }
 
-    @GetMapping("/{employerId}")
-    public ResponseEntity<EmployerDTO> getEmployerById(@PathVariable Long employerId) {
+    @GetMapping("/{id}")
+    public ResponseEntity<EmployerDTO> getEmployerById(@PathVariable Long id){
         logger.info("getEmployerById");
-        return service.findEmployerById(employerId)
+        return service.findEmployerById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -33,6 +33,14 @@ public class EmployerController extends GenericUserController<Employer, Employer
     public ResponseEntity<List<OfferDTO>> getAllOffersByEmployerId(@PathVariable Long id, @PathVariable Long sessionId) {
         logger.info("getAllOffersByEmployerId");
         return ResponseEntity.ok(service.findAllOffersByEmployerId(id, sessionId));
+    }
+
+    @GetMapping("/offers/{offerId}")
+    public ResponseEntity<OfferDTO> getOfferById(@PathVariable Long offerId) {
+        logger.info("getOfferById");
+        return service.findOfferById(offerId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/{id}/offers")
@@ -50,11 +58,20 @@ public class EmployerController extends GenericUserController<Employer, Employer
         return ResponseEntity.ok(updatedOffer);
     }
 
-    @DeleteMapping("/{id}/offers")
-    public ResponseEntity<HttpStatus> deleteOffer(@RequestParam("offerId") Long offerId){
+    @DeleteMapping("/{offerId}/offers")
+    public ResponseEntity<HttpStatus> deleteOffer(@PathVariable("offerId") Long offerId){
+        logger.info("deleteOffer");
         service.deleteOffer(offerId);
         return ResponseEntity.ok().build();
+
     }
+
+    @GetMapping("/departments")
+    public ResponseEntity<List<DepartmentDTO>> getAllDepartments(){
+        logger.info("getAllDepartments");
+        return ResponseEntity.ok(service.findAllDepartments());
+    }
+
     @GetMapping("/{id}/offers/{offerId}/applications")
     public ResponseEntity<List<ApplicationDTO>> getAllApplicationsByEmployerIdAndOfferId(@PathVariable Long id, @PathVariable Long offerId) {
         logger.info("getAllApplicationsByEmployerIdAndOfferId");

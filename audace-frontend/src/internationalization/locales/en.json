@@ -130,6 +130,36 @@
     "seeOffersButton": "See Offers",
     "seeApplicationsButton": "See Applications"
   },
+  "addOffer":{
+    "pageTitle" : "Create Offer",
+    "description" : "Description",
+    "title" : "Title",
+    "departmentCode" : "Department Code",
+    "startDate" : "Start date",
+    "endDate" : "End date",
+    "offerEndDate" : "Offer end date",
+    "submit" : "Submit",
+    "availablePlaces" : "Available places",
+    "errors": {
+      "titleRequired": "Title cannot be empty",
+      "descriptionRequired": "Description cannot be empty",
+      "departmentCodeRequired": "Department Code cannot be empty",
+      "invalidStartDate": "Start date is invalid",
+      "invalidEndDate": "End date is invalid",
+      "invalidOfferEndDate": "Offer end date is invalid",
+      "endDateBeforeStartDate": "End date cannot be before start date"
+    }
+  },
+  "editOffer": {
+    "pageTitle": "Edit Offer",
+    "description": "Description",
+    "title": "Title",
+    "department": "Department",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "offerEndDate": "Offer end date",
+    "submit": "Submit"
+  },
   "upload": {
     "CvFormTitle": "Upload CV",
     "file": "Upload File",
