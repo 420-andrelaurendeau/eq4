@@ -42,7 +42,6 @@ const EmployerButtons = ({ disabled, seeApplications, offer }: Props) => {
       </Button>
       {seeApplications !== undefined ? (
         <Button
-          disabled={disabled}
           onClick={seeApplicationsButtonClick}
           className="ms-2 btn-light btn-outline-success text-dark"
         >
