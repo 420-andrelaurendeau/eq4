@@ -1,10 +1,6 @@
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import {
-  apply,
-  getApplicationsByStudentId,
-  getCvsByStudentId,
-} from "../../../../../services/studentApplicationService";
+import {studentApplyToOffer, getApplicationsByStudentId} from "../../../../../services/applicationService";
 import { useEffect, useState } from "react";
 import { getUserId } from "../../../../../services/authService";
 import { Offer } from "../../../../../model/offer";
@@ -12,6 +8,7 @@ import Application from "../../../../../model/application";
 import { useCVContext } from "../../../../../contextsholders/providers/CVContextHolder";
 import { useApplicationContext } from "../../../../../contextsholders/providers/ApplicationsContextHolder";
 import { useSessionContext } from "../../../../../contextsholders/providers/SessionContextHolder";
+import {getCvsByStudentId} from "../../../../../services/cvService";
 
 interface Props {
   disabled: boolean;
@@ -64,7 +61,7 @@ const StudentButtons = ({ disabled, offer }: Props) => {
         cv: cvs[0],
       };
 
-      await apply(applicationData);
+      await studentApplyToOffer(applicationData);
 
       handleApplicationsUpdate();
 

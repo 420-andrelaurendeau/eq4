@@ -10,12 +10,13 @@ import {getUserId} from "../../../services/authService";
 import {useNavigate} from "react-router-dom";
 import FileUploader from "../../../components/FileUploader";
 import ApplicationsList from "../../../components/ApplicationsList";
-import {getApplicationsByStudentId, getCvsByStudentId} from "../../../services/studentApplicationService";
+import {getApplicationsByStudentId} from "../../../services/applicationService";
 import {useCVContext} from "../../../contextsholders/providers/CVContextHolder";
 import {useSessionContext} from "../../../contextsholders/providers/SessionContextHolder";
 import SessionSelector from "../../../components/SessionSelector";
 import {useApplicationContext} from "../../../contextsholders/providers/ApplicationsContextHolder";
 import CVsList from "../../../components/CVsList";
+import {getCvsByStudentId} from "../../../services/cvService";
 
 interface StudentViewProps {
   viewOffers?: boolean;

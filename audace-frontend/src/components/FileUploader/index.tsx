@@ -3,7 +3,7 @@ import { Alert, Button, Form, FormControl } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { uploadFile } from "../../services/fileService";
 import { Student } from "../../model/user";
-import { getCvsByStudentId } from "../../services/studentApplicationService";
+import { getCvsByStudentId } from "../../services/cvService";
 import { useCVContext } from "../../contextsholders/providers/CVContextHolder";
 
 interface Props {
