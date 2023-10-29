@@ -243,6 +243,7 @@ public class EmployerServiceTest {
         );
         when(offerRepository.findById(offer1.getId())).thenReturn(Optional.of(offer1));
         when(sessionManipulator.isOfferInCurrentSession(offer1)).thenReturn(true);
+        when(offerSessionRepository.findByOffer(any(Offer.class))).thenReturn(Optional.of(new OfferSession()));
 
         employerService.deleteOffer(offer1.getId());
 
