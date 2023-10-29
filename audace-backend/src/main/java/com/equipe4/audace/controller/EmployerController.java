@@ -63,7 +63,6 @@ public class EmployerController extends GenericUserController<Employer, Employer
         logger.info("deleteOffer");
         service.deleteOffer(offerId);
         return ResponseEntity.ok().build();
-
     }
 
     @GetMapping("/departments")

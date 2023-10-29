@@ -127,6 +127,8 @@ public class EmployerService extends GenericUserService<Employer> {
             throw new IllegalStateException("Offer is not in current session");
         }
 
+        OfferSession offerSession = offerSessionRepository.findByOffer(offer).orElseThrow();
+        offerSessionRepository.delete(offerSession);
         offerRepository.delete(offer);
     }
 

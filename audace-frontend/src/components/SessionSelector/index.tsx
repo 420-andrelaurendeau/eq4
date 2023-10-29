@@ -4,8 +4,13 @@ import SelectorOption from "./SelectorOption";
 import { formatSessionDate } from "../../services/formatService";
 import CustomMenu from "./CustomMenu";
 import CustomToggle from "./CustomToggle";
+import { Offer } from "../../model/offer";
 
-const SessionSelector = () => {
+interface Props {
+  seeApplications?: (offer: Offer) => void;
+}
+
+const SessionSelector = ({ seeApplications }: Props) => {
   const { chosenSession, setChosenSession, sessions } = useSessionContext();
 
   const handleSelect = (e: string | null) => {
@@ -17,6 +22,7 @@ const SessionSelector = () => {
     if (session === undefined) return;
 
     setChosenSession(session);
+    if (seeApplications !== undefined) seeApplications(undefined!);
   };
 
   const determineTitle = () => {
