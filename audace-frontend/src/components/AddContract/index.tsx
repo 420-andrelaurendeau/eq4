@@ -4,28 +4,44 @@ import { Form, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import FormInput from '../FormInput';
 import { Button } from 'react-bootstrap';
+import { managerCreateContract } from '../../services/contractService';
+import { Contract } from '../../model/contract';
+import { Employer } from '../../model/user';
+import Application from '../../model/application';
 
 const AddContract = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [errors, setErrors] = useState<string[]>([]);
+  // const [isLoading, setIsLoading] = useState(false);
+
   const [officeName, setOfficeName] = useState('');
   const [startHour, setStartHour] = useState('');
   const [endHour, setEndHour] = useState('');
   const [totalHoursPerWeek, setTotalHoursPerWeek] = useState('');
   const [salary, setSalary] = useState('');
   const [internTasksAndResponsibilities, setInternTasksAndResponsibilities] = useState('');
-  const [errors, setErrors] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [employer, setEmployer] = useState<Employer>();
+  const [application, setApplication] = useState<Application>();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setIsLoading(true);
+    // setIsLoading(true);
     try {
-      await addContract({ name, description });
+
 
     } catch (error) {
       console.error(error);
-      setIsLoading(false);
+      // setIsLoading(false);
+    }
+  };
+
+  const addContract = async (contractData: Contract) => {
+    try {
+      managerCreateContract(contractData);
+
+    } catch (error) {
+      console.error("There was an error sending the data:", error);
     }
   };
 

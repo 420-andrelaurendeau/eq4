@@ -18,6 +18,7 @@ import EmployerOfferView from "./views/Employer/EmployerOfferView";
 import ManagerCvView from "./views/Manager/ManagerCvView";
 import { Authority } from "./model/auth";
 import { getAuthorities } from "./services/authService";
+import AddContract from "./components/AddContract";
 
 function App() {
   return (
@@ -56,7 +57,7 @@ function App() {
               <Route index element={<ManagerView />} />
               <Route path="offers" element={<ManagerOfferView />} />
               <Route path="cvs" element={<ManagerCvView />} />
-              <Route path="contracts/new" element={<ManagerView />} />
+              <Route path="contracts/new" element={<AddContract />} />
               <Route path="*" element={<PageNotFoundView />} />
             </Routes>
           </AuthorizedRoute>
