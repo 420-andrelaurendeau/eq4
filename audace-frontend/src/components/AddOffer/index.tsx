@@ -114,7 +114,7 @@ const AddOffer: React.FC = () => {
         employer
       };
       addOffer(formData);
-      navigate(`/`);
+      navigate(`/employer`);
     } else {
       setShowAlert(true);
     }
