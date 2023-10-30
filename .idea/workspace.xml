@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/service/ManagerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/service/ManagerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/services/departmentService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/services/departmentService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/services/offerService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/services/offerService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-frontend/src/views/Manager/ManagerView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/views/Manager/ManagerView/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -221,7 +217,7 @@
       <workItem from="1698333330390" duration="160000" />
       <workItem from="1698333584907" duration="1872000" />
       <workItem from="1698335490905" duration="7730000" />
-      <workItem from="1698616881406" duration="8156000" />
+      <workItem from="1698616881406" duration="12816000" />
     </task>
     <servers />
   </component>
