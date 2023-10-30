@@ -3,6 +3,7 @@ package com.equipe4.audace.dto.cv;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.model.cv.Cv;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

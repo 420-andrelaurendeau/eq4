@@ -1,14 +1,11 @@
 package com.equipe4.audace.service;
 
-import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
-import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
@@ -55,6 +52,7 @@ public class EmployerService extends GenericUserService<Employer> {
     public Optional<EmployerDTO> findEmployerById(Long employerId){
         return employerRepository.findById(employerId).map(Employer::toDTO);
     }
+
     public List<EmployerDTO> findAllEmployers(){
         return employerRepository.findAll().stream().map(Employer::toDTO).toList();
     }
@@ -81,7 +79,7 @@ public class EmployerService extends GenericUserService<Employer> {
     }
 
     public List<OfferDTO> findAllOffersByEmployerId(Long employerId){
-        Employer employer = employerRepository.findById(employerId).orElseThrow(() -> new NoSuchElementException("Employer not found"));
+        Employer employer = employerRepository.findById(employerId).orElseThrow();
         return offerRepository.findAllByEmployer(employer).stream().map(Offer::toDTO).toList();
     }
     public Optional<OfferDTO> updateOffer(OfferDTO offerDTO) {
@@ -101,17 +99,7 @@ public class EmployerService extends GenericUserService<Employer> {
 
 
     public void deleteOffer(Long offerId){
-        Offer offer = offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
+        Offer offer = offerRepository.findById(offerId).orElseThrow();
         offerRepository.delete(offer);
-    }
-
-    public Map<Long, List<ApplicationDTO>> findAllApplicationsByEmployerId(Long employerId){
-        Map<Long, List<ApplicationDTO>> map = new HashMap<>();
-
-        for (OfferDTO offerDTO: findAllOffersByEmployerId(employerId)) {
-            map.put(offerDTO.getId(), applicationRepository.findAllByOffer(offerDTO.fromDTO()).stream().map(Application::toDTO).toList());
-        }
-
-        return map;
     }
 }

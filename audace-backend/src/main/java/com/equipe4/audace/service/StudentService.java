@@ -10,7 +10,7 @@ import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.offer.Offer.OfferStatus;
-import com.equipe4.audace.repository.application.ApplicationRepository;
+import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
@@ -18,10 +18,13 @@ import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import lombok.AllArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class StudentService extends GenericUserService<Student> {
@@ -29,17 +32,22 @@ public class StudentService extends GenericUserService<Student> {
     private final OfferRepository offerRepository;
     private final StudentRepository studentRepository;
     private final CvRepository cvRepository;
-
+    private final ApplicationRepository applicationRepository;
 
     public StudentService(
-            SaltRepository saltRepository, DepartmentRepository departmentRepository, OfferRepository offerRepository,
-            StudentRepository studentRepository, CvRepository cvRepository, ApplicationRepository applicationRepository
+            SaltRepository saltRepository,
+            DepartmentRepository departmentRepository,
+            OfferRepository offerRepository,
+            StudentRepository studentRepository,
+            CvRepository cvRepository,
+            ApplicationRepository applicationRepository
     ) {
-        super(saltRepository, applicationRepository);
+        super(saltRepository);
         this.departmentRepository = departmentRepository;
         this.offerRepository = offerRepository;
         this.studentRepository = studentRepository;
         this.cvRepository = cvRepository;
+        this.applicationRepository = applicationRepository;
     }
 
     @Transactional
@@ -68,7 +76,8 @@ public class StudentService extends GenericUserService<Student> {
 
     @Transactional
     public List<OfferDTO> getAcceptedOffersByDepartment(Long departmentId) {
-        Department department = departmentRepository.findById(departmentId).orElseThrow(() -> new NoSuchElementException("Department not found"));
+        Department department = departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new NoSuchElementException("Department not found"));
         List<Offer> offers = offerRepository.findAllByDepartmentAndOfferStatus(department, OfferStatus.ACCEPTED);
 
         return offers.stream().map(Offer::toDTO).toList();
@@ -80,7 +89,9 @@ public class StudentService extends GenericUserService<Student> {
 
     @Transactional
     public Optional<CvDTO> saveCv(MultipartFile file, Long studentId) {
-        if (file == null) throw new IllegalArgumentException("File cannot be null");
+        if (file == null) {
+            throw new IllegalArgumentException("File cannot be null");
+        }
 
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new NoSuchElementException("Student not found"));
         byte[] bytes;

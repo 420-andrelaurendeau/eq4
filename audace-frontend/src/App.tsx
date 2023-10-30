@@ -27,6 +27,9 @@ import AddContract from "./components/AddContract";
 import { CVProvider } from "./contextsholders/providers/CVContextHolder";
 import AddOffer from "./components/AddOffer";
 import EditOffer from "./components/EditOffer";
+import { CVProvider } from "./contextsholders/providers/CVContextHolder";
+import AddOffer from "./components/AddOffer";
+import EditOffer from "./components/EditOffer";
 
 function App() {
   return (

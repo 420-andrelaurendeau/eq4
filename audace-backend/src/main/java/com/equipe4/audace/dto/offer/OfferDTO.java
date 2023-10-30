@@ -4,7 +4,9 @@ import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.offer.Offer.OfferStatus;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 

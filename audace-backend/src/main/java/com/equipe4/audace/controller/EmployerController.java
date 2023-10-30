@@ -1,7 +1,6 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.GenericUserController;
-import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -23,18 +21,24 @@ public class EmployerController extends GenericUserController<Employer, Employer
         super(employerService);
     }
 
+    @GetMapping
+    public ResponseEntity<List<EmployerDTO>> getAllEmployers(){
+        logger.info("getAllEmployers");
+        return ResponseEntity.ok(service.findAllEmployers());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<EmployerDTO> getEmployerById(@PathVariable Long id){
         logger.info("getEmployerById");
-        return service.findEmployerById(employerId)
+        return service.findEmployerById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("offers/{employerId}")
-    public ResponseEntity<List<OfferDTO>> getAllOffersByEmployerId(@PathVariable Long employerId) {
+    @GetMapping("/{id}/offers")
+    public ResponseEntity<List<OfferDTO>> getAllOffersByEmployerId(@PathVariable Long id) {
         logger.info("getAllOffersByEmployerId");
-        return ResponseEntity.ok(service.findAllOffersByEmployerId(employerId));
+        return ResponseEntity.ok(service.findAllOffersByEmployerId(id));
     }
 
     @GetMapping("/offers/{offerId}")
@@ -67,5 +71,12 @@ public class EmployerController extends GenericUserController<Employer, Employer
         logger.info("deleteOffer");
         service.deleteOffer(offerId);
         return ResponseEntity.ok().build();
+
+    }
+
+    @GetMapping("/departments")
+    public ResponseEntity<List<DepartmentDTO>> getAllDepartments(){
+        logger.info("getAllDepartments");
+        return ResponseEntity.ok(service.findAllDepartments());
     }
 }

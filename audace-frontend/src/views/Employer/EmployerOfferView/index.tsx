@@ -10,19 +10,12 @@ import OffersList from "../../../components/OffersList";
 
 const EmployerOfferView = () => {
     const [employer, setEmployer] = useState<Employer>();
+    const { id } = useParams();
     const [offers, setOffers] = useState<Offer[]>([]);
     const [error, setError] = useState<string>("");
     const { t } = useTranslation();
-    const navigate = useNavigate();
 
     useEffect(() => {
-        if (employer !== undefined) return;
-        const id = getUserId();
-        if (id == null) {
-            navigate("/pageNotFound");
-            return;
-        }
-
         getEmployerById(parseInt(id!))
             .then((res) => {
                 setEmployer(res.data);
@@ -31,7 +24,7 @@ const EmployerOfferView = () => {
                 console.log(err)
                 if (err.request.status === 404) setError(t("employer.errors.employerNotFound"));
             })
-    }, [employer, navigate, t]);
+    }, [employer, id, t]);
 
     useEffect(() => {
         if (employer === undefined) return;
@@ -43,7 +36,7 @@ const EmployerOfferView = () => {
             .catch((err) => {
                 console.log(err)
             })
-    }, [employer]);
+    }, [employer, t]);
 
     return (
         <Container>

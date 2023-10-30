@@ -20,8 +20,8 @@ const ManagerCvView = () => {
 
   useEffect(() => {
     if (manager !== undefined) return;
-    
-    const id = getUserId();    
+
+    const id = getUserId();
 
     if (id == null) {
       navigate("/pageNotFound");
