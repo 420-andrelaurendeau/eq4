@@ -10,17 +10,6 @@ interface Props {
 
 const ApplicationRow = ({ application }: Props) => {
   const { t } = useTranslation();
-  const [student, setStudent] = useState<Student>();
-
-    useEffect(() => {
-        // getStudentByApplication(application)
-        //     .then((res) => {
-        //         application.student = res.data;
-        //     })
-        //     .catch((err) => {
-        //         console.error("Student error: " + err);
-        //     });
-    }, []);
 
   return (
     <tr>

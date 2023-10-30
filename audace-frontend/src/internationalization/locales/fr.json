@@ -171,7 +171,9 @@
   "applicationsList": {
     "title": "Les applications soumises",
     "offerTitle": "Titre de la position",
-    "acceptedListTitle": "Les applications acceptées",
+    "acceptedListTitle": "Applications acceptées",
+    "SearchPlaceholder" : "Recherchez par Titre d'Offre, Organisation ou Étudiant...",
+    "noAcceptedApplications": "Aucune application acceptée...",
     "organization": "Organisation",
     "status": "État",
     "row": {

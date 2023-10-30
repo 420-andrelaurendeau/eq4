@@ -5,10 +5,10 @@ import {useEffect, useState} from "react";
 import {
     getAcceptedApplicationsByDepartment,
     getDepartments,
-    getStudentByAcceptedApplicationsByDepartment, getStudentByApplication
+    getStudentByApplication
 } from "../../../services/offerService";
 import {Department} from "../../../model/department";
-import {Employer, Student} from "../../../model/user";
+import {Employer} from "../../../model/user";
 import {CVStatus} from "../../../model/cv";
 import ManagerApplicationsList from "../../../components/ManagerApplicationsList";
 import Application, {ApplicationStatus} from "../../../model/application";
@@ -17,12 +17,11 @@ import {Offer, OfferStatus} from "../../../model/offer";
 const ManagerView = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [students, setStudents] = useState<Student[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
   const [applications, setApplications] = useState<Application[]>([]);
   const [error, setError] = useState<string>("");
   const currentDepartmentId = 1;
-  const [tempApplications, setTempApplications] = useState<Application[]>([]);
+  const [tempApplications] = useState<Application[]>([]);
 
   const tempTest = () => {
       if (applications.length == 3) {

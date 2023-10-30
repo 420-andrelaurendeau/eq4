@@ -172,6 +172,8 @@
     "title": "Applications submitted",
     "offerTitle": "Position title",
     "acceptedListTitle": "Accepted applications",
+    "SearchPlaceholder" : "Search by Offer Title, Organisation or Student...",
+    "noAcceptedApplications": "No results found...",
     "organization": "Organization",
     "status": "Status",
     "row": {
