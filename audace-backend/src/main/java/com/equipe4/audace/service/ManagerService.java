@@ -131,4 +131,10 @@ public class ManagerService extends GenericUserService<Manager> {
     public List<DepartmentDTO> getDepartments() {
         return departmentRepository.findAll().stream().map(Department::toDTO).toList();
     }
+    public DepartmentDTO getDepartmentByManager(Long managerId) {
+        Manager manager = managerRepository.findById(managerId)
+                .orElseThrow(() -> new NoSuchElementException("Manager not found with ID: " + managerId));
+
+        return manager.getDepartment().toDTO();
+    }
 }

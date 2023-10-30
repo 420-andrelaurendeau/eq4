@@ -27,7 +27,6 @@ export const acceptOffer = async (managerId : number, offerId: number): Promise<
     return http.post<Offer>(`${MANAGER_PREFIX}/${managerId}/accept_offer/${offerId}`);
 }
 
-
 export const getEmployersOfferById = async (offerId: number): Promise<AxiosResponse<Offer>> => {
     return http.get<Offer>(`/employers/offers/${offerId}`);
 }
@@ -54,3 +53,7 @@ export const getStudentByApplication = async (application: Application): Promise
 export const getDepartments = async (): Promise<AxiosResponse<Department[]>> => {
     return http.get<Department[]>(`${MANAGER_PREFIX}/departments`);
 }
+
+
+
+

@@ -6,12 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/ManagerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/ManagerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/service/ManagerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/service/ManagerService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/controller/ManagerControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/controller/ManagerControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/ApplicationsList/ApplicationRow/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/ApplicationsList/ApplicationRow/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/ManagerServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/ManagerServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/ManagerApplicationsList/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/ManagerApplicationsList/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/model/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/model/auth.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-frontend/src/services/offerService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/services/offerService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/views/Manager/ManagerView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/views/Manager/ManagerView/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,8 +103,8 @@
       <recent name="com.equipe4.audace.controller" />
     </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.AudaceApplication">
-    <configuration name="ManagerControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.ManagerControllerTest.getDepartmentByManager">
+    <configuration name="ManagerControllerTest.getDepartmentByManager" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="audace" />
       <extension name="coverage">
         <pattern>
@@ -113,28 +114,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.equipe4.audace.controller" />
       <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.controller.ManagerControllerTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ManagerControllerTest.getDepartments" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="audace" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.equipe4.audace.controller.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.equipe4.audace.controller" />
-      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.controller.ManagerControllerTest" />
-      <option name="METHOD_NAME" value="getDepartments" />
+      <option name="METHOD_NAME" value="getDepartmentByManager" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ManagerServiceTest.getDepartments_happyPath" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ManagerServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="audace" />
       <extension name="coverage">
         <pattern>
@@ -144,13 +130,12 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.equipe4.audace.service" />
       <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.service.ManagerServiceTest" />
-      <option name="METHOD_NAME" value="getDepartments_happyPath" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="StudentServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ManagerServiceTest.getAcceptedApplicationsByDepartment_invalidManager" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="audace" />
       <extension name="coverage">
         <pattern>
@@ -159,32 +144,52 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.equipe4.audace.service" />
-      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.service.StudentServiceTest" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.service.ManagerServiceTest" />
+      <option name="METHOD_NAME" value="getAcceptedApplicationsByDepartment_invalidManager" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AudaceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+    <configuration name="ManagerServiceTest.getDepartmentByManager_happyPath" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="audace" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.equipe4.audace.AudaceApplication" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.equipe4.audace.*" />
+          <option name="PATTERN" value="com.equipe4.audace.service.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="com.equipe4.audace.service" />
+      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.service.ManagerServiceTest" />
+      <option name="METHOD_NAME" value="getDepartmentByManager_happyPath" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ManagerServiceTest.getDepartmentByManager_invalidManager" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="audace" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.equipe4.audace.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.equipe4.audace.service" />
+      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.service.ManagerServiceTest" />
+      <option name="METHOD_NAME" value="getDepartmentByManager_invalidManager" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.AudaceApplication" />
-        <item itemvalue="JUnit.ManagerControllerTest.getDepartments" />
-        <item itemvalue="JUnit.ManagerControllerTest" />
-        <item itemvalue="JUnit.ManagerServiceTest.getDepartments_happyPath" />
-        <item itemvalue="JUnit.StudentServiceTest" />
+        <item itemvalue="JUnit.ManagerControllerTest.getDepartmentByManager" />
+        <item itemvalue="JUnit.ManagerServiceTest" />
+        <item itemvalue="JUnit.ManagerServiceTest.getDepartmentByManager_invalidManager" />
+        <item itemvalue="JUnit.ManagerServiceTest.getDepartmentByManager_happyPath" />
+        <item itemvalue="JUnit.ManagerServiceTest.getAcceptedApplicationsByDepartment_invalidManager" />
       </list>
     </recent_temporary>
   </component>
@@ -226,7 +231,7 @@
       <workItem from="1698333584907" duration="1872000" />
       <workItem from="1698335490905" duration="7730000" />
       <workItem from="1698616881406" duration="12816000" />
-      <workItem from="1698673121466" duration="18974000" />
+      <workItem from="1698673121466" duration="23031000" />
     </task>
     <servers />
   </component>

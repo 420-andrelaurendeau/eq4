@@ -357,4 +357,19 @@ public class ManagerControllerTest {
                 .andExpect(jsonPath("$[1].id").value(2L))
                 .andExpect(jsonPath("$[1].name").value("Department 2"));
     }
+    @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
+    public void getDepartmentByManager() throws Exception {
+        DepartmentDTO departmentDTO = new DepartmentDTO(1L, "Department 1", "Department 1");
+
+        when(managerService.getDepartmentByManager(1L)).thenReturn(departmentDTO);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/managers/1/department")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.name").value("Department 1"));
+    }
 }

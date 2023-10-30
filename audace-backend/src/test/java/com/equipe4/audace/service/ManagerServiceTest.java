@@ -463,4 +463,23 @@ public class ManagerServiceTest {
 
         assertThat(result.size()).isEqualTo(1);
     }
+    @Test
+    public void getDepartmentByManager_happyPath() {
+        Department department = new Department(1L, "code", "name");
+        Manager manager = new Manager(1L, "firstName", "lastName", "email", "password", "address", "phone", department);
+
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
+
+        DepartmentDTO result = managerService.getDepartmentByManager(1L);
+
+        assertThat(result.getId()).isEqualTo(1L);
+        assertThat(result.getCode()).isEqualTo("code");
+        assertThat(result.getName()).isEqualTo("name");
+    }
+    @Test
+    public void getDepartmentByManager_invalidManager() {
+        assertThatThrownBy(() -> managerService.getDepartmentByManager(1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Manager not found with ID: " + 1L);
+    }
 }

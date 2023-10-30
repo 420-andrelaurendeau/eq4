@@ -16,7 +16,6 @@ const ManagerApplicationsList = ({ applications, error }: Props) => {
     const [searchText, setSearchText] = useState("");
     const [filteredApplications, setFilteredApplications] = useState(applications.slice(0, 10)); // Limit to the first 10 rows
 
-    // Filter applications based on search input
     useEffect(() => {
         if (searchText) {
             const searchRegex = new RegExp(searchText, "i");
