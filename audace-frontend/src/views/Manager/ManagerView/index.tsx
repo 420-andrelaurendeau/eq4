@@ -42,7 +42,7 @@ const ManagerView = () => {
       }
       const tempStudent = {
           id: 1,
-          firstName: "Chad",
+          firstName: "Timur",
           lastName: "Is Rad",
           email: "ChadIsRad@myspace.com",
           phone: "123456789",

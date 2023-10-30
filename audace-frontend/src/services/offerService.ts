@@ -51,22 +51,6 @@ export const getStudentByApplication = async (application: Application): Promise
     return http.get<Student>(`${STUDENT_PREFIX}/${applicationStudent.data.id}`);
 }
 
-export const getStudentByAcceptedApplicationsByDepartment = async (departmentId: number): Promise<Student[]> => {
-    const acceptedApplicationsResponse = await getAcceptedApplicationsByDepartment(departmentId);
-
-    const acceptedApplications = acceptedApplicationsResponse.data.filter(
-        (application) => application.applicationStatus === ApplicationStatus.ACCEPTED
-    );
-
-    const studentPromises = acceptedApplications.map((application) =>
-        getStudentByApplication(application)
-    );
-
-    const studentResponses = await Promise.all(studentPromises);
-
-    return studentResponses.map((response) => response.data);
-}
-
 export const getDepartments = async (): Promise<AxiosResponse<Department[]>> => {
     return http.get<Department[]>(`${MANAGER_PREFIX}/departments`);
 }

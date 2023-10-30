@@ -4,8 +4,7 @@ import ApplicationRow from "../ApplicationsList/ApplicationRow";
 import Application from "../../model/application";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
-import { Student } from "../../model/user";
-import applicationsList from "../ApplicationsList";
+import './index.css';
 
 interface Props {
     applications: Application[];
@@ -49,6 +48,7 @@ const ManagerApplicationsList = ({ applications, error }: Props) => {
                                     placeholder={t("applicationsList.SearchPlaceholder")}
                                     value={searchText}
                                     onChange={(e) => setSearchText(e.target.value)}
+                                    className="custom-search-input"
                                 />
                             </Form.Group>
                         </Form>
@@ -56,15 +56,15 @@ const ManagerApplicationsList = ({ applications, error }: Props) => {
 
                     {filteredApplications.length > 0 ? (
                         <div style={{ overflow: "auto", maxHeight: "18.5rem" }}>
-                            <Table striped bordered hover size="sm">
-                                <thead style={{ position: "sticky", top: 0, backgroundColor: "white" }}>
+                            <Table className="table-custom" striped bordered hover size="sm">
+                                <thead className="table-custom">
                                 <tr>
                                     <th>{t("applicationsList.offerTitle")}</th>
                                     <th>{t("applicationsList.organization")}</th>
                                     <th>{t("cvsList.studentName")}</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody className="table-custom">
                                 {filteredApplications.map((application) => (
                                     <ApplicationRow key={application.id} application={application} />
                                 ))}
