@@ -5,13 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/ManagerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/ManagerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/service/ManagerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/service/ManagerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/controller/ManagerControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/controller/ManagerControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/ManagerServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/ManagerServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/ManagerApplicationsList/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/ManagerApplicationsList/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/model/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/model/auth.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-frontend/src/services/offerService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/services/offerService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -231,7 +224,7 @@
       <workItem from="1698333584907" duration="1872000" />
       <workItem from="1698335490905" duration="7730000" />
       <workItem from="1698616881406" duration="12816000" />
-      <workItem from="1698673121466" duration="23031000" />
+      <workItem from="1698673121466" duration="23271000" />
     </task>
     <servers />
   </component>

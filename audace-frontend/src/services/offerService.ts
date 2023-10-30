@@ -54,6 +54,8 @@ export const getDepartments = async (): Promise<AxiosResponse<Department[]>> => 
     return http.get<Department[]>(`${MANAGER_PREFIX}/departments`);
 }
 
-
+export const getDepartmentByManager = async (managerId: number): Promise<AxiosResponse<Department>> => {
+    return http.get<Department>(`${MANAGER_PREFIX}/${managerId}/department`);
+}
 
 
