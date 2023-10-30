@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import http from "../../constants/http";
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import FormInput from '../FormInput';
@@ -9,7 +8,12 @@ import { Contract } from '../../model/contract';
 import { Employer } from '../../model/user';
 import Application from '../../model/application';
 
-const AddContract = () => {
+interface Props {
+  employer: Employer;
+  application: Application;
+}
+
+const AddContract = ({ employer, application }: Props) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [errors, setErrors] = useState<string[]>([]);
@@ -21,42 +25,44 @@ const AddContract = () => {
   const [totalHoursPerWeek, setTotalHoursPerWeek] = useState(40);
   const [salary, setSalary] = useState(15.25);
   const [internTasksAndResponsibilities, setInternTasksAndResponsibilities] = useState('');
-  const [employer, setEmployer] = useState<Employer>();
-  const [application, setApplication] = useState<Application>();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!validateForm()) return;
     setIsLoading(true);
+
+    const formData: Contract = {
+      officeName: officeName,
+      startHour: startHour,
+      endHour: endHour,
+      totalHoursPerWeek: totalHoursPerWeek,
+      salary: salary,
+      internTasksAndResponsibilities: internTasksAndResponsibilities,
+      employer: employer,
+      application: application
+    };
+
     try {
-      if (!validateForm()) {
-        console.log("Form is not valid");
-        setIsLoading(false);
-        return;
-      }
+      await managerCreateContract(formData);
+      navigate('/');
     } catch (error) {
       console.error(error);
       setIsLoading(false);
     }
   };
 
-  const addContract = async (contractData: Contract) => {
-    try {
-      managerCreateContract(contractData);
-
-    } catch (error) {
-      console.error("There was an error sending the data:", error);
-    }
-  };
-
   const validateForm = (): boolean => {
-    if (officeName === '') errors.push("manager.createContract.errors.emptyOfficeName");
+    const errorsToDisplay: string[] = [];
+
+    if (officeName === '') errorsToDisplay.push("manager.createContract.errors.emptyOfficeName");
     if (startHour <= 0 || startHour >= 24) errors.push("manager.createContract.errors.invalidStartHour");
-    if (endHour <= 0 || endHour >= 24) errors.push("manager.createContract.errors.invalidEndHour");
-    if (totalHoursPerWeek <= 0 || totalHoursPerWeek > 168) errors.push("manager.createContract.errors.invalidTotalHoursPerWeek");
-    if (salary <= 0) errors.push("manager.createContract.errors.invalidSalary");
-    if (internTasksAndResponsibilities === '') errors.push("manager.createContract.errors.emptyInternTasksAndResponsibilities");
-    setErrors(errors);
-    return errors.length === 0;
+    if (endHour <= 0 || endHour >= 24) errorsToDisplay.push("manager.createContract.errors.invalidEndHour");
+    if (totalHoursPerWeek <= 0 || totalHoursPerWeek > 168) errorsToDisplay.push("manager.createContract.errors.invalidTotalHoursPerWeek");
+    if (salary <= 0) errorsToDisplay.push("manager.createContract.errors.invalidSalary");
+    if (internTasksAndResponsibilities === '') errorsToDisplay.push("manager.createContract.errors.emptyInternTasksAndResponsibilities");
+
+    setErrors(errorsToDisplay);
+    return errorsToDisplay.length === 0;
   }
 
   return (
