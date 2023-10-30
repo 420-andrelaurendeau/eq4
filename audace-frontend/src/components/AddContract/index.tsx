@@ -3,7 +3,7 @@ import http from "../../constants/http";
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import FormInput from '../FormInput';
-import { Form, Button, Container } from 'react-bootstrap';
+import { Form, Button, Container, Row } from 'react-bootstrap';
 import { managerCreateContract } from '../../services/contractService';
 import { Contract } from '../../model/contract';
 import { Employer } from '../../model/user';
@@ -56,22 +56,24 @@ const AddContract = () => {
           errors={errors}
           formError={"contract.errors.emptyOfficeName"}
         />
-        <FormInput
-          label="manager.createContract.startHour"
-          value={startHour}
-          onChange={(e) => setStartHour(e.target.value)}
-          controlId="formBasicStartHour"
-          errors={errors}
-          formError={"contract.errors.emptyStartHour"}
-        />
-        <FormInput
-          label="manager.createContract.endHour"
-          value={endHour}
-          onChange={(e) => setEndHour(e.target.value)}
-          controlId="formBasicEndHour"
-          errors={errors}
-          formError={"contract.errors.emptyEndHour"}
-        />
+        <Row>
+          <FormInput
+            label="manager.createContract.startHour"
+            value={startHour}
+            onChange={(e) => setStartHour(e.target.value)}
+            controlId="formBasicStartHour"
+            errors={errors}
+            formError={"contract.errors.emptyStartHour"}
+          />
+          <FormInput
+            label="manager.createContract.endHour"
+            value={endHour}
+            onChange={(e) => setEndHour(e.target.value)}
+            controlId="formBasicEndHour"
+            errors={errors}
+            formError={"contract.errors.emptyEndHour"}
+          />
+        </Row>
         <FormInput
           label="manager.createContract.totalHoursPerWeek"
           value={totalHoursPerWeek}

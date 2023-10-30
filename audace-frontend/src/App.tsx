@@ -27,9 +27,6 @@ import AddContract from "./components/AddContract";
 import { CVProvider } from "./contextsholders/providers/CVContextHolder";
 import AddOffer from "./components/AddOffer";
 import EditOffer from "./components/EditOffer";
-import { CVProvider } from "./contextsholders/providers/CVContextHolder";
-import AddOffer from "./components/AddOffer";
-import EditOffer from "./components/EditOffer";
 
 function App() {
   return (
@@ -92,6 +89,7 @@ function App() {
                   <Route index element={<ManagerView />} />
                   <Route path="offers" element={<ManagerOfferView />} />
                   <Route path="cvs" element={<ManagerCvView />} />
+                  <Route path="contracts/new" element={<AddContract />} />
                   <Route path="*" element={<PageNotFoundView />} />
                 </Routes>
               </AuthorizedRoute>
@@ -103,6 +101,7 @@ function App() {
               <AuthorizedRoute requiredAuthority={Authority.EMPLOYER}>
                 <Routes>
                   <Route index element={<EmployerView />} />
+                  <Route path="offers" element={<EmployerOfferView />} />
                   <Route path="offers/new" element={<AddOffer />} />
                   <Route path="offers/:id" element={<EditOffer />} />
                   <Route path="*" element={<PageNotFoundView />} />

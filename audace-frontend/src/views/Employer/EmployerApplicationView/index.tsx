@@ -1,20 +1,20 @@
-import {UserType} from "../../../model/user";
+import { UserType } from "../../../model/user";
 import { useTranslation } from "react-i18next";
 import { ReactElement, useEffect, useState } from "react";
 import { Offer } from "../../../model/offer";
-import {getUserId} from "../../../services/authService";
-import {useNavigate} from "react-router-dom";
+import { getUserId } from "../../../services/authService";
+import { useNavigate } from "react-router-dom";
 import Application from "../../../model/application";
 import { CV } from "../../../model/cv";
-import CvList from "../../../components/CVsList";
-import {Container} from "react-bootstrap";
+import CvList from "../../../components/CvsList";
+import { Container } from "react-bootstrap";
 import { getAllApplicationsByEmployerId } from "../../../services/applicationService";
 import { getAllOffersByEmployerId } from "../../../services/offerService";
 
 const EmployerApplicationView = () => {
     const [error, setError] = useState<string>("");
     const [cvs, setCvs] = useState<Map<Offer, Application[]>>(new Map<Offer, Application[]>());
-    const {t} = useTranslation();
+    const { t } = useTranslation();
     const [cvsApplicationsApplied, setCvsApplicationsApplied] = useState<boolean>(false);
     const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ const EmployerApplicationView = () => {
         }
         getAllOffersByEmployerId(parseInt(id))
             .then((res) => {
-                let map : Map<Offer, Application[]> = new Map<Offer, Application[]>();
+                let map: Map<Offer, Application[]> = new Map<Offer, Application[]>();
                 res.data.forEach((offer) => {
                     map.set(offer, []);
                 })
@@ -72,14 +72,14 @@ const EmployerApplicationView = () => {
     }, [navigate, t, cvs, cvsApplicationsApplied]);
 
     const getReactElements = () => {
-        let elements : ReactElement<any, any>[] = []
-        cvs.forEach((value, key) => {elements.push(makeOfferList(value, key))});
+        let elements: ReactElement<any, any>[] = []
+        cvs.forEach((value, key) => { elements.push(makeOfferList(value, key)) });
         return elements
     }
 
-    const makeOfferList = (value : Application[], key : Offer) => {
-        let cv : CV[] = [];
-        value.forEach((application) => {cv.push(application.cv!)});
+    const makeOfferList = (value: Application[], key: Offer) => {
+        let cv: CV[] = [];
+        value.forEach((application) => { cv.push(application.cv!) });
         return (
             <div key={key.id}>
                 <h2>{key.title}</h2>
