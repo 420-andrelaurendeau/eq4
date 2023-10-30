@@ -5,6 +5,7 @@ import { Employer, UserType } from "../../../model/user";
 import { useNavigate } from "react-router";
 import { getUserId } from "../../../services/authService";
 import { getEmployerById } from "../../../services/userService";
+import EmployerApplicationView from "../EmployerApplicationView";
 
 const EmployerView = () => {
     const [employer, setEmployer] = useState<Employer>();
@@ -44,6 +45,7 @@ const EmployerView = () => {
             <h1 className="my-3">{employer?.firstName} {employer?.lastName}</h1>
             <Button onClick={seeOffers}>{t("employer.seeOffersButton")}</Button>
             <Button className="mx-2" onClick={seeApplications}>{t("employer.seeApplicationsButton")}</Button>
+            <EmployerApplicationView />
         </Container>
     )
 }

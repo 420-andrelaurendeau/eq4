@@ -3,7 +3,7 @@ import http from "../../constants/http";
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import FormInput from '../FormInput';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
 import { managerCreateContract } from '../../services/contractService';
 import { Contract } from '../../model/contract';
 import { Employer } from '../../model/user';
@@ -16,10 +16,10 @@ const AddContract = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [officeName, setOfficeName] = useState('');
-  const [startHour, setStartHour] = useState(0);
-  const [endHour, setEndHour] = useState(0);
-  const [totalHoursPerWeek, setTotalHoursPerWeek] = useState(0);
-  const [salary, setSalary] = useState(0);
+  const [startHour, setStartHour] = useState(9);
+  const [endHour, setEndHour] = useState(5);
+  const [totalHoursPerWeek, setTotalHoursPerWeek] = useState(40);
+  const [salary, setSalary] = useState(15.25);
   const [internTasksAndResponsibilities, setInternTasksAndResponsibilities] = useState('');
   const [employer, setEmployer] = useState<Employer>();
   const [application, setApplication] = useState<Application>();
@@ -28,7 +28,11 @@ const AddContract = () => {
     event.preventDefault();
     setIsLoading(true);
     try {
-
+      if (!validateForm()) {
+        console.log("Form is not valid");
+        setIsLoading(false);
+        return;
+      }
     } catch (error) {
       console.error(error);
       setIsLoading(false);
@@ -44,9 +48,27 @@ const AddContract = () => {
     }
   };
 
+  const validateForm = (): boolean => {
+    if (officeName === '') errors.push("manager.createContract.errors.emptyOfficeName");
+    if (startHour <= 0 || startHour >= 24) errors.push("manager.createContract.errors.invalidStartHour");
+    if (endHour <= 0 || endHour >= 24) errors.push("manager.createContract.errors.invalidEndHour");
+    if (totalHoursPerWeek <= 0 || totalHoursPerWeek > 168) errors.push("manager.createContract.errors.invalidTotalHoursPerWeek");
+    if (salary <= 0) errors.push("manager.createContract.errors.invalidSalary");
+    if (internTasksAndResponsibilities === '') errors.push("manager.createContract.errors.emptyInternTasksAndResponsibilities");
+    setErrors(errors);
+    return errors.length === 0;
+  }
+
   return (
     <Container>
       <h1>{t('manager.createContract.title')}</h1>
+      {errors.length > 0 && (
+        <Alert variant="danger" onClose={() => setErrors([])} dismissible>
+          {errors.map((error, index) => (
+            <p key={index}>{t(error)}</p>
+          ))}
+        </Alert>
+      )}
       <Form onSubmit={handleSubmit}>
         <FormInput
           label="manager.createContract.officeName"
@@ -65,10 +87,10 @@ const AddContract = () => {
                 size="sm"
                 min="1"
                 value={startHour}
-                isInvalid={errors.includes("contract.errors.emptyStartHour")}
+                isInvalid={errors.includes("contract.errors.invalidStartHour")}
                 onChange={(e) => setStartHour(Number(e.target.value))}
               />
-              {errors.includes("contract.errors.emptyStartHour")
+              {errors.includes("contract.errors.invalidStartHour")
               }
             </Form.Group>
           </Col>
@@ -80,10 +102,10 @@ const AddContract = () => {
                 size="sm"
                 min="1"
                 value={endHour}
-                isInvalid={errors.includes("contract.errors.emptyEndHour")}
+                isInvalid={errors.includes("contract.errors.invalidEndHour")}
                 onChange={(e) => setEndHour(Number(e.target.value))}
               />
-              {errors.includes("contract.errors.emptyEndHour")
+              {errors.includes("contract.errors.invalidEndHour")
               }
             </Form.Group>
           </Col>
@@ -97,10 +119,10 @@ const AddContract = () => {
                 size="sm"
                 min="1"
                 value={totalHoursPerWeek}
-                isInvalid={errors.includes("contract.errors.emptyTotalHoursPerWeek")}
+                isInvalid={errors.includes("contract.errors.invalidTotalHoursPerWeek")}
                 onChange={(e) => setTotalHoursPerWeek(Number(e.target.value))}
               />
-              {errors.includes("contract.errors.emptyTotalHoursPerWeek")
+              {errors.includes("contract.errors.invalidTotalHoursPerWeek")
               }
             </Form.Group>
           </Col>
@@ -108,14 +130,15 @@ const AddContract = () => {
             <Form.Group controlId="formBasicSalary">
               <Form.Label>{t("manager.createContract.salary")}</Form.Label>
               <Form.Control
-                type="number"
+                type="text"
                 size="sm"
                 min="1"
                 value={salary}
-                isInvalid={errors.includes("contract.errors.emptySalary")}
+                isInvalid={errors.includes("contract.errors.invalidSalary")}
                 onChange={(e) => setSalary(Number(e.target.value))}
+                pattern="[0-9]+([,.][0-9]+)?"
               />
-              {errors.includes("contract.errors.emptySalary")
+              {errors.includes("contract.errors.invalidSalary")
               }
             </Form.Group>
           </Col>

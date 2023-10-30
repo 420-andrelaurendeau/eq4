@@ -135,12 +135,15 @@
       "salary": "Salary",
       "internTasksAndResponsibilities": "Intern Tasks And Responsibilities",
       "errors": {
-        "departmentNotFound": "Department not found",
-        "studentNotFound": "Student not found",
-        "offerNotFound": "Offer not found",
+        "applicationNotFound": "Application not found",
+        "employerNotFound": "Employer not found",
         "contractAlreadyExists": "A contract already exists for this offer",
-        "contractCreationFailed": "Contract creation failed",
-        "contractCreated": "Contract created successfully"
+        "emptyOfficeName": "Office name cannot be empty",
+        "invalidStartHour": "Start hour is invalid",
+        "invalidEndHour": "End hour is invalid",
+        "invalidTotalHoursPerWeek": "Total hours per week is invalid",
+        "invalidSalary": "Salary is invalid",
+        "emptyInternTasksAndResponsibilities": "Intern tasks and responsibilities cannot be empty"
       }
     }
   },
@@ -151,46 +154,16 @@
     "seeOffersButton": "See Offers",
     "seeApplicationsButton": "See Applications"
   },
-  "addOffer":{
-    "pageTitle" : "Create Offer",
-    "description" : "Description",
-    "title" : "Title",
-    "departmentCode" : "Department Code",
-    "startDate" : "Start date",
-    "endDate" : "End date",
-    "offerEndDate" : "Offer end date",
-    "submit" : "Submit",
-    "availablePlaces" : "Available places",
-    "errors": {
-      "titleRequired": "Title cannot be empty",
-      "descriptionRequired": "Description cannot be empty",
-      "departmentCodeRequired": "Department Code cannot be empty",
-      "invalidStartDate": "Start date is invalid",
-      "invalidEndDate": "End date is invalid",
-      "invalidOfferEndDate": "Offer end date is invalid",
-      "endDateBeforeStartDate": "End date cannot be before start date"
-    }
-  },
-  "editOffer": {
-    "pageTitle": "Edit Offer",
+  "addOffer": {
+    "pageTitle": "Create Offer",
     "description": "Description",
     "title": "Title",
-    "department": "Department",
+    "departmentCode": "Department Code",
     "startDate": "Start date",
     "endDate": "End date",
     "offerEndDate": "Offer end date",
-    "submit": "Submit"
-  },
-  "addOffer":{
-    "pageTitle" : "Create Offer",
-    "description" : "Description",
-    "title" : "Title",
-    "departmentCode" : "Department Code",
-    "startDate" : "Start date",
-    "endDate" : "End date",
-    "offerEndDate" : "Offer end date",
-    "submit" : "Submit",
-    "availablePlaces" : "Available places",
+    "submit": "Submit",
+    "availablePlaces": "Available places",
     "errors": {
       "titleRequired": "Title cannot be empty",
       "descriptionRequired": "Description cannot be empty",
