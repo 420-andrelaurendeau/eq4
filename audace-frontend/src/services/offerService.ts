@@ -2,7 +2,7 @@ import {AxiosResponse} from "axios";
 import {Offer} from "../model/offer";
 import http from "../constants/http";
 import {EMPLOYER_PREFIX, MANAGER_PREFIX, STUDENT_PREFIX} from "../constants/apiPrefixes";
-import Application, {ApplicationStatus} from "../model/application";
+import Application from "../model/application";
 import {CV} from "../model/cv";
 import {Student} from "../model/user";
 import {getUserId} from "./authService";

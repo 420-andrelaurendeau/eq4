@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Alert, Table, Form } from "react-bootstrap";
+import { Table, Form } from "react-bootstrap";
 import ApplicationRow from "../ApplicationsList/ApplicationRow";
 import Application from "../../model/application";
 import { useTranslation } from "react-i18next";
@@ -8,13 +8,12 @@ import './index.css';
 
 interface Props {
     applications: Application[];
-    error: string;
 }
 
-const ManagerApplicationsList = ({ applications, error }: Props) => {
+const ManagerApplicationsList = ({ applications }: Props) => {
     const { t } = useTranslation();
     const [searchText, setSearchText] = useState("");
-    const [filteredApplications, setFilteredApplications] = useState(applications.slice(0, 10)); // Limit to the first 10 rows
+    const [filteredApplications, setFilteredApplications] = useState(applications); // Limit to the first 10 rows
 
     useEffect(() => {
         if (searchText) {
@@ -33,10 +32,6 @@ const ManagerApplicationsList = ({ applications, error }: Props) => {
     }, [searchText, applications]);
 
     return (
-        <>
-            {error !== "" ? (
-                <Alert variant="danger">{error}</Alert>
-            ) : (
                 <>
                     <div className={"row"} style={{ padding: "16px 0", display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
                         <h3 className={"col"}>{t("applicationsList.acceptedListTitle")}</h3>
@@ -73,8 +68,6 @@ const ManagerApplicationsList = ({ applications, error }: Props) => {
                     ) : (
                         <p>{t("applicationsList.noAcceptedApplications")}</p>
                     )}
-                </>
-            )}
         </>
     );
 };
