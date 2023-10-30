@@ -171,6 +171,7 @@
   "applicationsList": {
     "title": "Applications submitted",
     "offerTitle": "Position title",
+    "acceptedListTitle": "Accepted applications",
     "organization": "Organization",
     "status": "Status",
     "row": {

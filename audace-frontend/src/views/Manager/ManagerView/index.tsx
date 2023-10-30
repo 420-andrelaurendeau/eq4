@@ -5,13 +5,14 @@ import {useEffect, useState} from "react";
 import {
     getAcceptedApplicationsByDepartment,
     getDepartments,
-    getStudentByAcceptedApplicationsByDepartment
+    getStudentByAcceptedApplicationsByDepartment, getStudentByApplication
 } from "../../../services/offerService";
 import {Department} from "../../../model/department";
-import {Student} from "../../../model/user";
+import {Employer, Student} from "../../../model/user";
 import {CVStatus} from "../../../model/cv";
 import ManagerApplicationsList from "../../../components/ManagerApplicationsList";
-import Application from "../../../model/application";
+import Application, {ApplicationStatus} from "../../../model/application";
+import {Offer, OfferStatus} from "../../../model/offer";
 
 const ManagerView = () => {
   const navigate = useNavigate();
@@ -21,29 +22,68 @@ const ManagerView = () => {
   const [applications, setApplications] = useState<Application[]>([]);
   const [error, setError] = useState<string>("");
   const currentDepartmentId = 1;
+  const [tempApplications, setTempApplications] = useState<Application[]>([]);
 
-  const tempStudent = {
-      id: 1,
-      firstName: "Chad",
-      lastName: "Israd",
-      email: "ChadIsRad@myspace.com",
-      phone: "123456789",
-      address: "1234 Street",
-      password: "password",
-      type: "student",
-      studentNumber: "123456788",
-      department: departments[0]
+  const tempTest = () => {
+      if (applications.length == 3) {
+          return;
+      }
+      const tempEmployer: Employer = {
+          id: 2,
+          firstName: "Chad",
+          lastName: "Israd",
+          email: "ChadIsRad@myspace.com",
+          phone: "123456789",
+          address: "1234 Street",
+          password: "password",
+          type: "employer",
+          organisation: "Chad's Smoke Store",
+          position: "Chad",
+          extension: "1234"
+      }
+      const tempStudent = {
+          id: 1,
+          firstName: "Chad",
+          lastName: "Is Rad",
+          email: "ChadIsRad@myspace.com",
+          phone: "123456789",
+          address: "1234 Street",
+          password: "password",
+          type: "student",
+          studentNumber: "123456788",
+          department: departments[0]
+      }
+
+      const tempCV = {
+          id: 1,
+          fileName: "ChadIsRadCV",
+          content: "I am Chad and I am rad",
+          student: tempStudent,
+          cvStatus: CVStatus.ACCEPTED
+      }
+
+      const tempOffer: Offer = {
+          id: 1,
+          title: "Vape tester at the raddest vape shop in m-town",
+          description: "required to vape and be rad",
+          internshipStartDate: new Date(),
+          internshipEndDate: new Date(),
+          offerEndDate: new Date(),
+          availablePlaces: 1,
+          employer: tempEmployer,
+          department: departments[0],
+          offerStatus: OfferStatus.ACCEPTED
+      }
+
+      const tempApplication: Application = {
+          id: 1,
+          student: tempStudent,
+          offer: tempOffer,
+          cv: tempCV,
+          applicationStatus: ApplicationStatus.ACCEPTED
+      }
+      tempApplications.push(tempApplication);
   }
-
-  const tempCV = {
-      id: 1,
-      fileName: "ChadIsRadCV",
-      content: "I am Chad and I am rad",
-      student: tempStudent,
-      cvStatus: CVStatus.ACCEPTED
-  }
-
-  students.push(tempStudent);
 
     useEffect(() => {
       getDepartments()
@@ -64,17 +104,24 @@ const ManagerView = () => {
             setError(err.response.data);
             console.error("Applications error: " + err);
         });
-      getStudentByAcceptedApplicationsByDepartment(currentDepartmentId)
-          .then((res) => {
-            setStudents(res);
-            setError("");
-          })
-          .catch((err) => {
-              setError(err.response.data);
-              console.error("Students error: " + err);
-          });
-      console.log(students);
+        retrieveApplicationStudents();
+      tempTest();
+      console.log("applications:" + tempApplications);
     }, []);
+
+  const retrieveApplicationStudents = () => {
+        applications.forEach((application) => {
+            getStudentByApplication(application)
+                .then((res) => {
+                    application.student = res.data;
+                    setError("");
+                })
+                .catch((err) => {
+                    setError(err.response.data);
+                    console.error("Students error: " + err);
+                });
+        })
+  }
 
   const seeOffers = () => {
     navigate(`/manager/offers`);
@@ -88,7 +135,7 @@ const ManagerView = () => {
       <h1>Manager view</h1>
       <Button onClick={seeOffers}>{t("manager.seeOffersButton")}</Button>
       <Button onClick={seeCvs}>{t("manager.seeCvsButton")}</Button>
-      <ManagerApplicationsList applications={applications} error={error} />
+      <ManagerApplicationsList applications={tempApplications} error={error} />
     </Container>
   );
 };

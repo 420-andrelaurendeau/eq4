@@ -6,6 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/ApplicationsList/ApplicationRow/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/ApplicationsList/ApplicationRow/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/ManagerApplicationsList/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/ManagerApplicationsList/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/internationalization/locales/en.json" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/internationalization/locales/en.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/internationalization/locales/fr.json" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/internationalization/locales/fr.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-frontend/src/views/Manager/ManagerView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/views/Manager/ManagerView/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -72,7 +76,7 @@
     "project.structure.side.proportion": "0.0",
     "settings.editor.selected.configurable": "preferences.pluginManager",
     "spring.configuration.checksum": "81b0bfba543f51b2eb085412d50e4b6b",
-    "ts.external.directory.path": "C:\\Users\\le sun\\Desktop\\school\\projet\\EQ4-172\\eq4\\audace-frontend\\node_modules\\typescript\\lib",
+    "ts.external.directory.path": "C:\\Users\\psara\\OneDrive\\Bureau\\school\\session7\\projet\\EQ4-172\\eq4\\audace-frontend\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -218,6 +222,7 @@
       <workItem from="1698333584907" duration="1872000" />
       <workItem from="1698335490905" duration="7730000" />
       <workItem from="1698616881406" duration="12816000" />
+      <workItem from="1698673121466" duration="7296000" />
     </task>
     <servers />
   </component>
