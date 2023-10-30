@@ -1,5 +1,9 @@
 {
   "langCode": "FR",
+  "common": {
+    "loading": "Chargement...",
+    "submit": "Soumettre"
+  },
   "signin": "Se connecter",
   "signup": {
     "employerFormTitle": "Inscription Employeur",

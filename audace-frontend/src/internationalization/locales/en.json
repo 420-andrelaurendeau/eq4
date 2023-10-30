@@ -1,5 +1,9 @@
 {
   "langCode": "EN",
+  "common": {
+    "loading": "Loading...",
+    "submit": "Submit"
+  },
   "signin": "Log in",
   "signup": {
     "employerFormTitle": "Employer Registration",
@@ -121,6 +125,12 @@
     "createContractButton": "Create Contract",
     "createContract": {
       "title": "Create Contract",
+      "officeName": "Office Name",
+      "startHour": "Start Hour",
+      "endHour": "End Hour",
+      "totalHoursPerWeek": "Total Hours Per Week",
+      "salary": "Salary",
+      "internTasksAndResponsibilities": "Intern Tasks And Responsibilities",
       "errors": {
         "departmentNotFound": "Department not found",
         "studentNotFound": "Student not found",
