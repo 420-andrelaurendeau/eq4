@@ -3,7 +3,7 @@ import http from "../../constants/http";
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import FormInput from '../FormInput';
-import { Form, Button, Container, Row } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { managerCreateContract } from '../../services/contractService';
 import { Contract } from '../../model/contract';
 import { Employer } from '../../model/user';
@@ -16,10 +16,10 @@ const AddContract = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [officeName, setOfficeName] = useState('');
-  const [startHour, setStartHour] = useState('');
-  const [endHour, setEndHour] = useState('');
-  const [totalHoursPerWeek, setTotalHoursPerWeek] = useState('');
-  const [salary, setSalary] = useState('');
+  const [startHour, setStartHour] = useState(0);
+  const [endHour, setEndHour] = useState(0);
+  const [totalHoursPerWeek, setTotalHoursPerWeek] = useState(0);
+  const [salary, setSalary] = useState(0);
   const [internTasksAndResponsibilities, setInternTasksAndResponsibilities] = useState('');
   const [employer, setEmployer] = useState<Employer>();
   const [application, setApplication] = useState<Application>();
@@ -56,49 +56,80 @@ const AddContract = () => {
           errors={errors}
           formError={"contract.errors.emptyOfficeName"}
         />
-        <Row>
-          <FormInput
-            label="manager.createContract.startHour"
-            value={startHour}
-            onChange={(e) => setStartHour(e.target.value)}
-            controlId="formBasicStartHour"
-            errors={errors}
-            formError={"contract.errors.emptyStartHour"}
-          />
-          <FormInput
-            label="manager.createContract.endHour"
-            value={endHour}
-            onChange={(e) => setEndHour(e.target.value)}
-            controlId="formBasicEndHour"
-            errors={errors}
-            formError={"contract.errors.emptyEndHour"}
-          />
+        <Row className="mb-3">
+          <Col>
+            <Form.Group controlId="formBasicStartHour">
+              <Form.Label>{t("manager.createContract.startHour")}</Form.Label>
+              <Form.Control
+                type="number"
+                size="sm"
+                min="1"
+                value={startHour}
+                isInvalid={errors.includes("contract.errors.emptyStartHour")}
+                onChange={(e) => setStartHour(Number(e.target.value))}
+              />
+              {errors.includes("contract.errors.emptyStartHour")
+              }
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group controlId="formBasicEndHour">
+              <Form.Label>{t("manager.createContract.endHour")}</Form.Label>
+              <Form.Control
+                type="number"
+                size="sm"
+                min="1"
+                value={endHour}
+                isInvalid={errors.includes("contract.errors.emptyEndHour")}
+                onChange={(e) => setEndHour(Number(e.target.value))}
+              />
+              {errors.includes("contract.errors.emptyEndHour")
+              }
+            </Form.Group>
+          </Col>
         </Row>
-        <FormInput
-          label="manager.createContract.totalHoursPerWeek"
-          value={totalHoursPerWeek}
-          onChange={(e) => setTotalHoursPerWeek(e.target.value)}
-          controlId="formBasicTotalHoursPerWeek"
-          errors={errors}
-          formError={"contract.errors.emptyTotalHoursPerWeek"}
-        />
-        <FormInput
-          label="manager.createContract.salary"
-          value={salary}
-          onChange={(e) => setSalary(e.target.value)}
-          controlId="formBasicSalary"
-          errors={errors}
-          formError={"contract.errors.emptySalary"}
-        />
-        <FormInput
-          label="manager.createContract.internTasksAndResponsibilities"
-          value={internTasksAndResponsibilities}
-          onChange={(e) => setInternTasksAndResponsibilities(e.target.value)}
-          controlId="formBasicInternTasksAndResponsibilities"
-          errors={errors}
-          formError={"contract.errors.emptyInternTasksAndResponsibilities"}
-        />
-        <Button variant="primary" type="submit" disabled={isLoading}>
+        <Row className="mb-3">
+          <Col>
+            <Form.Group controlId="formBasicTotalHoursPerWeek">
+              <Form.Label>{t("manager.createContract.totalHoursPerWeek")}</Form.Label>
+              <Form.Control
+                type="number"
+                size="sm"
+                min="1"
+                value={totalHoursPerWeek}
+                isInvalid={errors.includes("contract.errors.emptyTotalHoursPerWeek")}
+                onChange={(e) => setTotalHoursPerWeek(Number(e.target.value))}
+              />
+              {errors.includes("contract.errors.emptyTotalHoursPerWeek")
+              }
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group controlId="formBasicSalary">
+              <Form.Label>{t("manager.createContract.salary")}</Form.Label>
+              <Form.Control
+                type="number"
+                size="sm"
+                min="1"
+                value={salary}
+                isInvalid={errors.includes("contract.errors.emptySalary")}
+                onChange={(e) => setSalary(Number(e.target.value))}
+              />
+              {errors.includes("contract.errors.emptySalary")
+              }
+            </Form.Group>
+          </Col>
+        </Row>
+        <Form.Group controlId="formBasicInternTasksAndResponsibilities">
+          <Form.Label>{t("manager.createContract.internTasksAndResponsibilities")}</Form.Label>
+          <Form.Control
+            as="textarea"
+            value={internTasksAndResponsibilities}
+            onChange={(e) => setInternTasksAndResponsibilities(e.target.value)}
+          />
+          {errors.includes("contract.errors.emptyInternTasksAndResponsibilities")}
+        </Form.Group>
+        <Button variant="primary" type="submit" disabled={isLoading} className="mt-3">
           {isLoading ? t('common.loading') : t('common.submit')}
         </Button>
       </Form>
