@@ -61,16 +61,22 @@ public class StudentController extends GenericUserController<Student, StudentSer
             List<CvDTO> cvDTOs = service.getCvsByStudent(studentId);
             return ResponseEntity.ok(cvDTOs);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().build();
         }
     }
 
-    @PostMapping("/applications/{id}")
-    public ResponseEntity<ApplicationDTO> createApplication(@RequestBody ApplicationDTO applicationDTO){
-        logger.info("createApplication");
-        return service.createApplication(applicationDTO).map(application -> ResponseEntity.status(HttpStatus.CREATED).body(applicationDTO))
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    @PostMapping("/{id}/applications")
+    public ResponseEntity<HttpStatus> createApplication(@RequestBody ApplicationDTO applicationDTO){
+        logger.info("createOffer");
+        try {
+            service.createApplication(applicationDTO);
+        } catch (NoSuchElementException e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

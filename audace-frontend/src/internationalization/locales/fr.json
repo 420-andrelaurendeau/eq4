@@ -46,7 +46,7 @@
     "name": "CV",
     "viewMore": "Voir le CV",
     "noCvs": "Aucun CV disponible",
-    "studentName": "Étudiant"
+    "studentName": "Nom de l'étudiant"
   },
   "offersList": {
     "errors": {
@@ -57,7 +57,10 @@
     "internshipStartDate": "Date de début",
     "noOffers": "Aucun offre disponible",
     "viewTitle": "Offres disponibles",
-    "viewMore": "Afficher plus"
+    "viewMore": "Afficher plus",
+    "applyButton": "Appliquer",
+    "applicationMessageSuccess": "Application soumise avec succès",
+    "applicationMessageFailure": "Erreur lors de la soumission de l'application"
   },
   "offer": {
     "modal": {
@@ -128,8 +131,37 @@
     "errors": {
       "employerNotFound": "Aucun employeur trouvé"
     },
-    "seeOffersButton": "Voir les offres",
-    "seeApplicationsButton": "Voir les applications"
+    "seeOffersButton": "Voir les offres"
+  },
+  "addOffer": {
+    "pageTitle": "Ajout de Stage",
+    "description": "Description",
+    "title": "Titre",
+    "departmentCode": "Code de Departement",
+    "startDate": "Date de début",
+    "endDate": "Date de fin",
+    "offerEndDate": "Date de fin de l'offre",
+    "submit": "Ajouter",
+    "availablePlaces": "Places disponible",
+    "errors": {
+      "titleRequired": "Le titre ne peut pas être vide",
+      "descriptionRequired": "La description ne peut pas être vide",
+      "departmentCodeRequired": "Le code de département ne peut pas être vide",
+      "invalidStartDate": "La date de début n'est pas valide",
+      "invalidEndDate": "La date de fin n'est pas valide",
+      "invalidOfferEndDate": "La date de fin n'est pas valide",
+      "endDateBeforeStartDate": "La date de fin doit être après la date de début"
+    }
+  },
+  "editOffer": {
+    "pageTitle": "Modifier l'offre",
+    "description": "Description",
+    "title": "Titre",
+    "department": "Departement",
+    "startDate": "Date de début",
+    "endDate": "Date de fin",
+    "offerEndDate": "Date de fin de l'offre",
+    "submit": "Modifier"
   },
   "upload": {
     "CvFormTitle": "Téléverser votre CV",

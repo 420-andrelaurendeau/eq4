@@ -1,7 +1,6 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.application.ApplicationDTO;
-import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
@@ -13,7 +12,7 @@ import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.security.Salt;
-import com.equipe4.audace.repository.application.ApplicationRepository;
+import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
@@ -27,7 +26,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
@@ -35,6 +33,7 @@ import java.util.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class StudentServiceTest {
@@ -355,4 +354,42 @@ public class StudentServiceTest {
             throw new IOException();
         }
     }
+
+    @Test
+    public void createApplication_HappyPath(){
+        Department department = new Department(1L, "GEN", "Génie");
+        Student student = new Student(
+                1L,
+                "student",
+                "studentMan",
+                "email@email.com",
+                "password",
+                "123 Street Street",
+                "1234567890",
+                "123456789",
+                department
+        );
+        Cv cv = new Cv(1L, student, new byte[0], "fileName");
+        Offer offer = new Offer(1L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 0, department, mock(Employer.class));
+        Application application = new Application(null, cv, offer);
+
+        ApplicationDTO applicationDTO = application.toDTO();
+
+        when(applicationRepository.save(any(Application.class))).thenReturn(application);
+        when(cvRepository.findById(anyLong())).thenReturn(Optional.of(cv));
+        when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
+
+        ApplicationDTO dto = studentService.createApplication(applicationDTO).get();
+
+        assertThat(dto).isEqualTo(applicationDTO);
+        verify(applicationRepository, times(1)).save(application);
+    }
+
+    @Test
+    public void createApplication_NullApplication(){
+        assertThatThrownBy(() -> studentService.createApplication(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Application cannot be null");
+    }
+
 }

@@ -65,40 +65,145 @@ public class ManagerServiceTest {
     @Test
     public void acceptOffer() {
         Employer employer = mock(Employer.class);
-        Department department = mock(Department.class);
-        Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
-
-        when(offerRepository.findById(1L)).thenReturn(Optional.of(offer));
-        when(offerRepository.save(any())).thenReturn(offer);
+        Department department = new Department(1L, "code", "name");
+        Offer offer1 = new Offer(
+                1L,
+                "title",
+                "description",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                1,
+                department,
+                employer
+        );
+        Manager manager = new Manager(
+                1L,
+                "firstName",
+                "lastName",
+                "email",
+                "password",
+                "address",
+                "phone",
+                department
+        );
+        when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer1));
+        when(offerRepository.save(any())).thenReturn(offer1);
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
         managerService.acceptOffer(1L);
 
-
-        assert(offer.getOfferStatus() == Offer.OfferStatus.ACCEPTED);
+        assert(offer1.getOfferStatus() == Offer.OfferStatus.ACCEPTED);
     }
     @Test
     public void acceptOffer_InvalidId() {
         when(offerRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
-        assertThrows(EntityNotFoundException.class, () -> managerService.acceptOffer(1L));
+        assertThrows(EntityNotFoundException.class, () -> managerService.acceptOffer(1L, 1L));
+    }
+    @Test
+    public void acceptOffer_wrongDepartment() {
+        Employer employer = mock(Employer.class);
+        Department department = new Department(1L, "code", "name");
+        Department department2 = new Department(2L, "code2", "name2");
+        Offer offer1 = new Offer(
+                1L,
+                "title",
+                "description",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                1,
+                department,
+                employer
+        );
+        Manager manager = new Manager(
+                1L,
+                "firstName",
+                "lastName",
+                "email",
+                "password",
+                "address",
+                "phone",
+                department2
+        );
+        when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer1));
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
+
+        assertThatThrownBy(() -> managerService.acceptOffer(1L, 1L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("The manager isn't in the right department");
     }
 
     @Test
     public void refuseOffer() {
         Employer employer = mock(Employer.class);
-        Department department = mock(Department.class);
-        Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, department, employer);
+        Department department = new Department(1L, "code", "name");
+        Offer offer1 = new Offer(
+                1L,
+                "title",
+                "description",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                1,
+                department,
+                employer
+        );
+        Manager manager = new Manager(
+                1L,
+                "firstName",
+                "lastName",
+                "email",
+                "password",
+                "address",
+                "phone",
+                department
+        );
+        when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer1));
+        when(offerRepository.save(any())).thenReturn(offer1);
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
-        when(offerRepository.findById(1L)).thenReturn(Optional.of(offer));
-        when(offerRepository.save(any())).thenReturn(offer);
-
-        managerService.refuseOffer(1L);
+        managerService.refuseOffer(1L, 1L);
 
         assert(offer.getOfferStatus() == Offer.OfferStatus.REFUSED);
     }
     @Test
     public void refuseOffer_Invalid_Id() {
         when(offerRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
-        assertThrows(EntityNotFoundException.class, () -> managerService.refuseOffer(1L));
+        assertThrows(EntityNotFoundException.class, () -> managerService.refuseOffer(1L, 1L));
+    }
+    @Test
+    public void refuseOffer_wrongDepartment() {
+        Employer employer = mock(Employer.class);
+        Department department = new Department(1L, "code", "name");
+        Department department2 = new Department(2L, "code2", "name2");
+        Offer offer1 = new Offer(
+                1L,
+                "title",
+                "description",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                1,
+                department,
+                employer
+        );
+        Manager manager = new Manager(
+                1L,
+                "firstName",
+                "lastName",
+                "email",
+                "password",
+                "address",
+                "phone",
+                department2
+        );
+        when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer1));
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
+
+        assertThatThrownBy(() -> managerService.refuseOffer(1L, 1L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("The manager isn't in the right department");
     }
 
     @Test
@@ -206,10 +311,23 @@ public class ManagerServiceTest {
     public void acceptCv() {
         Student student = mock(Student.class);
         Cv cv = new Cv(null, student, "Monkey Enthusiast needs more sleep".getBytes(), "cv");
+        Department department = new Department(2L, "code", "name");
+        Manager manager = new Manager(
+                1L,
+                "firstName",
+                "lastName",
+                "email",
+                "password",
+                "address",
+                "phone",
+                department
+        );
         when(cvRepository.findById(1L)).thenReturn(Optional.of(cv));
         when(cvRepository.save(any())).thenReturn(cv);
+        when(cv.getStudent().getDepartment()).thenReturn(department);
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
-        Optional<CvDTO> cvDTO = managerService.acceptCv(1L);
+        Optional<CvDTO> cvDTO = managerService.acceptCv(1L, 1L);
         if (cvDTO.isPresent()) {
             assert(cvDTO.get().getCvStatus() == Cv.CvStatus.ACCEPTED);
         }
@@ -220,17 +338,53 @@ public class ManagerServiceTest {
     @Test
     public void acceptCv_InvalidId() {
         when(cvRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
-        assertThrows(EntityNotFoundException.class, () -> managerService.acceptCv(1L));
+        assertThrows(EntityNotFoundException.class, () -> managerService.acceptCv(1L, 1L));
     }
+    @Test
+    public void acceptCv_wrongDepartment() {
+        Student student = mock(Student.class);
+        Cv cv = new Cv(null, student, "Monkey Enthusiast needs more sleep".getBytes(), "cv");
+        Department department = new Department(2L, "code", "name");
+        Department department2 = new Department(3L, "code2", "name2");
+        Manager manager = new Manager(
+                1L,
+                "firstName",
+                "lastName",
+                "email",
+                "password",
+                "address",
+                "phone",
+                department2
+        );
+        when(cvRepository.findById(1L)).thenReturn(Optional.of(cv));
+        when(cv.getStudent().getDepartment()).thenReturn(department);
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
+        assertThatThrownBy(() -> managerService.acceptCv(1L, 1L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("The manager isn't in the right department");
+    }
     @Test
     public void refuseCv() {
         Student student = mock(Student.class);
         Cv cv = new Cv(null, student, "Monkey Enthusiast needs more sleep".getBytes(), "cv");
+        Department department = new Department(2L, "code", "name");
+        Manager manager = new Manager(
+                1L,
+                "firstName",
+                "lastName",
+                "email",
+                "password",
+                "address",
+                "phone",
+                department
+        );
         when(cvRepository.findById(1L)).thenReturn(Optional.of(cv));
         when(cvRepository.save(any())).thenReturn(cv);
+        when(cv.getStudent().getDepartment()).thenReturn(department);
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
-        Optional<CvDTO> cvDTO = managerService.refuseCv(1L);
+        Optional<CvDTO> cvDTO = managerService.refuseCv(1L, 1L);
         if (cvDTO.isPresent()) {
             assert(cvDTO.get().getCvStatus() == Cv.CvStatus.REFUSED);
         }
@@ -242,85 +396,5 @@ public class ManagerServiceTest {
     public void refuseCv_Invalid_Id() {
         when(cvRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
         assertThrows(EntityNotFoundException.class, () -> managerService.refuseCv(1L));
-    }
-
-    @Test
-    public void createContract_HappyPath(){
-        // Arrange
-        ContractDTO contractDTO = createContract().toDTO();
-
-        when(contractRepository.save(any(Contract.class))).thenReturn(contractDTO.fromDTO());
-
-        ContractDTO dto = managerService.createContract(contractDTO).get();
-
-        assertThat(dto.equals(contractDTO));
-        verify(contractRepository, times(1)).save(contractDTO.fromDTO());
-    }
-    @Test
-    public void createContract_NullContract(){
-        assertThatThrownBy(() -> managerService.createContract(null))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Contract cannot be null");
-    }
-
-    @Test
-    public void findContractById_happyPathTest() {
-        // Arrange
-        Contract contract = createContract();
-
-        when(contractRepository.findById(contract.getId())).thenReturn(Optional.of(contract));
-
-        // Act
-        ContractDTO contractDTO = managerService.findContractById(1L).orElseThrow();
-
-        // Assert
-        assertThat(contractDTO.equals(contract.toDTO()));
-    }
-    @Test
-    public void findContractById_notFoundTest() {
-        when(contractRepository.findById(anyLong())).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> managerService.findContractById(1L))
-                .isInstanceOf(NoSuchElementException.class)
-                .hasMessage("Contract not found");
-    }
-
-
-
-    private Department createDepartment(){
-        return new Department(1L, "GLO", "Génie logiciel");
-    }
-    private EmployerDTO createEmployerDTO() {
-        return new EmployerDTO(1L, "Employer1", "Employer1", "employer1@gmail.com", "123456eE", "Organisation1", "Position1", "Class Service, Javatown, Qc H8N1C1", "123-456-7890", "12345");
-    }
-    private StudentDTO createStudentDTO() {
-        DepartmentDTO departmentDTO = createDepartment().toDTO();
-        return new StudentDTO(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", departmentDTO);
-    }
-    private Offer createOffer() {
-        Employer employer = createEmployerDTO().fromDTO();
-        Department department = createDepartment();
-        return new Offer(1L,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
-    }
-    private ApplicationDTO createApplicationDTO(Offer offer) {
-        CvDTO cvDTO = createCv().toDTO();
-        return new ApplicationDTO(1L, offer.toDTO(), cvDTO);
-    }
-    private Cv createCv(){
-        MultipartFile file = new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "test data".getBytes());
-        byte[] bytes;
-        try {
-            bytes = file.getBytes();
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to read file");
-        }
-        Student student = createStudentDTO().fromDTO();
-        return new Cv(1L, student, bytes, "cv");
-    }
-    private Contract createContract(){
-        Employer employer = createEmployerDTO().fromDTO();
-        Offer offer = createOffer();
-        Application application = createApplicationDTO(offer).fromDTO();
-        return new Contract(1L, "Construction", LocalTime.parse("08:00"),LocalTime.parse("17:00"), 40, 18.35, "TODO", employer, application);
     }
 }
