@@ -436,6 +436,7 @@ public class ManagerServiceTest {
     }
     @Test
     public void getAcceptedApplicationsByDepartment_invalidManager() {
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(new Department(1L, "code", "name")));
         when(managerRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> managerService.getAcceptedApplicationsByDepartment(1L, 1L))
@@ -445,9 +446,7 @@ public class ManagerServiceTest {
     @Test
     public void getAcceptedApplicationsByDepartment_invalidDepartment() {
         Manager mockedManager = mock(Manager.class);
-        when(managerRepository.findById(anyLong())).thenReturn(Optional.of(mockedManager));
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
-        when(mockedManager.getDepartment()).thenReturn(new Department(1L, "code", "name"));
 
         assertThatThrownBy(() -> managerService.getAcceptedApplicationsByDepartment(1L, 1L))
                 .isInstanceOf(NoSuchElementException.class)

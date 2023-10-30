@@ -111,15 +111,15 @@ public class ManagerService extends GenericUserService<Manager> {
     }
 
     public List<ApplicationDTO> getAcceptedApplicationsByDepartment(Long managerId, Long departmentId) {
+        Optional<Department> department = departmentRepository.findById(departmentId);
+        if (department.isEmpty()) {
+            throw new NoSuchElementException("Department not found");
+        }
         Department managerDepartment = managerRepository.findById(managerId)
                 .orElseThrow(() -> new NoSuchElementException("Manager is not found"))
                 .getDepartment();
         if (!managerDepartment.getId().equals(departmentId)) {
             throw new IllegalArgumentException("The manager isn't in the right department");
-        }
-        Optional<Department> department = departmentRepository.findById(departmentId);
-        if (department.isEmpty()) {
-            throw new NoSuchElementException("Department not found");
         }
         return applicationRepository
                 .findApplicationsByApplicationStatusAndOfferDepartmentId(
