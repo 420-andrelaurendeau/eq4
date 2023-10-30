@@ -127,6 +127,7 @@ public class ManagerService extends GenericUserService<Manager> {
                 .stream().map(Application::toDTO).toList();
     }
 
+    @Transactional
     public List<DepartmentDTO> getDepartments() {
         return departmentRepository.findAll().stream().map(Department::toDTO).toList();
     }

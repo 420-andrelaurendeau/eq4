@@ -1,11 +1,12 @@
-import { AxiosResponse } from "axios";
-import { Offer } from "../model/offer";
+import {AxiosResponse} from "axios";
+import {Offer} from "../model/offer";
 import http from "../constants/http";
-import { EMPLOYER_PREFIX, MANAGER_PREFIX, STUDENT_PREFIX } from "../constants/apiPrefixes";
-import Application from "../model/application";
+import {EMPLOYER_PREFIX, MANAGER_PREFIX, STUDENT_PREFIX} from "../constants/apiPrefixes";
+import Application, {ApplicationStatus} from "../model/application";
 import {CV} from "../model/cv";
 import {Student} from "../model/user";
-import { getUserId } from "./authService";
+import {getUserId} from "./authService";
+import {Department} from "../model/department";
 
 export const getStudentOffersByDepartment = async (departmentId: number): Promise<AxiosResponse<Offer[]>> => {
     return http.get<Offer[]>(`${STUDENT_PREFIX}/offers/${departmentId}`);
@@ -44,6 +45,28 @@ export const getStudentByCv = async (cv: CV): Promise<AxiosResponse<Student>> =>
 
 export const getStudentByApplication = async (application: Application): Promise<AxiosResponse<Student>> => {
     const studentCv: CV = application.cv!;
+
     const applicationStudent = await getStudentByCv(studentCv);
+
     return http.get<Student>(`${STUDENT_PREFIX}/${applicationStudent.data.id}`);
+}
+
+export const getStudentByAcceptedApplicationsByDepartment = async (departmentId: number): Promise<Student[]> => {
+    const acceptedApplicationsResponse = await getAcceptedApplicationsByDepartment(departmentId);
+
+    const acceptedApplications = acceptedApplicationsResponse.data.filter(
+        (application) => application.applicationStatus === ApplicationStatus.ACCEPTED
+    );
+
+    const studentPromises = acceptedApplications.map((application) =>
+        getStudentByApplication(application)
+    );
+
+    const studentResponses = await Promise.all(studentPromises);
+
+    return studentResponses.map((response) => response.data);
+}
+
+export const getDepartments = async (): Promise<AxiosResponse<Department[]>> => {
+    return http.get<Department[]>(`${MANAGER_PREFIX}/departments`);
 }

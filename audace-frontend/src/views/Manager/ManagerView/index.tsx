@@ -1,15 +1,33 @@
 import { Button, Container } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import {getDepartments, getStudentByAcceptedApplicationsByDepartment} from "../../../services/offerService";
+import {Department} from "../../../model/department";
+import {Student} from "../../../model/user";
 
 const ManagerView = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-
+  const [students, setStudents] = useState<Student[]>([]);
+  const [departments, setDepartments] = useState<Department[]>([]);
+   const currentDepartmentId = 1;
 
     useEffect(() => {
-
+      getDepartments()
+          .then((res) => {
+            setDepartments(res.data);
+          }
+            ).catch((err) => {
+                console.error("Departments error: " + err);
+            });
+      getStudentByAcceptedApplicationsByDepartment(currentDepartmentId)
+          .then((res) => {
+            setStudents(res);
+          })
+          .catch((err) => {
+              console.error("Students error: " + err);
+          });
     }, []);
 
   const seeOffers = () => {

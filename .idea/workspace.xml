@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/AudaceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/AudaceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/controller/ManagerControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/controller/ManagerControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/service/ManagerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/service/ManagerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/services/departmentService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/services/departmentService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/services/offerService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/services/offerService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/views/Manager/ManagerView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/views/Manager/ManagerView/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,33 +53,33 @@
     <option name="showMembers" value="true" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary&quot;: &quot;JUnit5&quot;,
-    &quot;com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5&quot;: &quot;&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;EQ-4-172-Gestionnaire__vois__application__accepte&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/le sun/Desktop/school/projet/eq4/audace-frontend/src/components/CVsList&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;spring.configuration.checksum&quot;: &quot;81b0bfba543f51b2eb085412d50e4b6b&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\psara\\OneDrive\\Bureau\\school\\session7\\projet\\EQ4-172\\eq4\\audace-frontend\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "EQ-4-172-Gestionnaire__vois__application__accepte",
+    "last_opened_file_path": "C:/Users/le sun/Desktop/school/projet/eq4/audace-frontend/src/components/CVsList",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "spring.configuration.checksum": "81b0bfba543f51b2eb085412d50e4b6b",
+    "ts.external.directory.path": "C:\\Users\\le sun\\Desktop\\school\\projet\\EQ4-172\\eq4\\audace-frontend\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\le sun\Desktop\school\projet\eq4\audace-frontend\src\components\CVsList" />
@@ -95,7 +98,7 @@
       <recent name="com.equipe4.audace.controller" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.ManagerControllerTest.getDepartments">
+  <component name="RunManager" selected="Spring Boot.AudaceApplication">
     <configuration name="ManagerControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="audace" />
       <extension name="coverage">
@@ -173,10 +176,10 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Spring Boot.AudaceApplication" />
         <item itemvalue="JUnit.ManagerControllerTest.getDepartments" />
         <item itemvalue="JUnit.ManagerControllerTest" />
         <item itemvalue="JUnit.ManagerServiceTest.getDepartments_happyPath" />
-        <item itemvalue="Spring Boot.AudaceApplication" />
         <item itemvalue="JUnit.StudentServiceTest" />
       </list>
     </recent_temporary>
@@ -218,6 +221,7 @@
       <workItem from="1698333330390" duration="160000" />
       <workItem from="1698333584907" duration="1872000" />
       <workItem from="1698335490905" duration="7730000" />
+      <workItem from="1698616881406" duration="8156000" />
     </task>
     <servers />
   </component>
