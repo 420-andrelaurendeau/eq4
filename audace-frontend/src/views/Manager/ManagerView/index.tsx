@@ -22,7 +22,6 @@ const ManagerView = () => {
     const [, setError] = useState<string>("");
     const [department, setDepartment] = useState<Department | undefined>(undefined); // Initialize as undefined
     const managerId = parseInt(getUserId()!);
-    const currentDepartmentId = 1;
     const [tempApplications] = useState<Application[]>([]);
 
     const tempTest = () => {
@@ -91,7 +90,7 @@ const ManagerView = () => {
     useEffect(() => {
         getDepartmentByManager(managerId)
             .then((res) => {
-                setDepartment(res.data); // Set department here
+                setDepartment(res.data);
                 setError("");
 
                 getAcceptedApplicationsByDepartment(department!.id!)
@@ -110,7 +109,7 @@ const ManagerView = () => {
             });
         retrieveApplicationStudents();
         tempTest();
-        }, [managerId, currentDepartmentId]);
+        }, [managerId]);
 
     const retrieveApplicationStudents = () => {
         applications.forEach((application) => {
