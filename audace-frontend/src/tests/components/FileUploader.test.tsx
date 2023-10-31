@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import FileUploader from "../../components/FileUploader";
 import { Student } from "../../model/user";
 import userEvent from "@testing-library/user-event";
@@ -33,10 +33,48 @@ it("should submit a file", async () => {
   const blob = new Blob([str], { type: "application/json" });
   const file = new File([blob], "test.json", { type: "application/json" });
 
-  const input = screen.getByLabelText(/upload.file/i);
+  const input = screen.getByLabelText(/upload.file/i) as HTMLInputElement;
 
   userEvent.upload(input, file);
+  await waitFor(() => {
+    expect(input.files).toHaveLength(1);
+  });
+
   userEvent.click(screen.getByText(/upload.submit/i));
 
   await screen.findByText(/upload.success/i);
+});
+
+it("should not submit without a file", async () => {
+  render(<FileUploader student={student} />);
+
+  userEvent.click(screen.getByText(/upload.submit/i));
+
+  await screen.findByText(/upload.file.required/i);
+});
+
+it("should log an error in the console on submit failure", async () => {
+  const logSpy = jest.spyOn(console, "log");
+  jest
+    .spyOn(require("../../services/fileService"), "uploadFile")
+    .mockImplementation(() => Promise.reject());
+
+  render(<FileUploader student={student} />);
+
+  const str = JSON.stringify({ name: "test" });
+  const blob = new Blob([str], { type: "application/json" });
+  const file = new File([blob], "test.json", { type: "application/json" });
+
+  const input = screen.getByLabelText(/upload.file/i) as HTMLInputElement;
+
+  userEvent.upload(input, file);
+  await waitFor(() => {
+    expect(input.files).toHaveLength(1);
+  });
+
+  userEvent.click(screen.getByText(/upload.submit/i));
+
+  await screen.findByText(/upload.success/i);
+
+  expect(logSpy).toHaveBeenCalled();
 });
