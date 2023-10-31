@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import { UserType } from '../model/user';
-import { CVStatus } from '../model/cv';
-import CVsList from '../components/CVsList';
+import { UserType } from '../../model/user';
+import { CVStatus } from '../../model/cv';
+import CVsList from '../../components/CVsList';
 
   jest.mock('axios', () => {
     return {
@@ -21,7 +21,7 @@ import CVsList from '../components/CVsList';
     useNavigate: () => mockedUsedNavigate,
   }));
 
-  jest.mock('../components/PDFViewer', () => ({
+  jest.mock('../../components/PDFViewer', () => ({
     return: {
         create: jest.fn(() => ({
             get: jest.fn(),

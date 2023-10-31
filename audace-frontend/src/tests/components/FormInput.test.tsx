@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import FormInput from "../components/FormInput";
+import FormInput from "../../components/FormInput";
 
 jest.mock("axios", () => {
   return {

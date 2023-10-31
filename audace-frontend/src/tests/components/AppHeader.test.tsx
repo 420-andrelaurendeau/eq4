@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import AppHeader from '../components/AppHeader';
+import AppHeader from '../../components/AppHeader';
 
   jest.mock('axios', () => {
     return {
