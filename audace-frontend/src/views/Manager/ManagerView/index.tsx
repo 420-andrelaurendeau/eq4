@@ -6,7 +6,7 @@ import {
     getAcceptedApplicationsByDepartment,
     getDepartmentByManager,
     getStudentByApplication,
-} from "../../../services/offerService";
+} from "../../../services/managerService";
 import { Department } from "../../../model/department";
 import { Employer } from "../../../model/user";
 import { CVStatus } from "../../../model/cv";
@@ -44,7 +44,7 @@ const ManagerView = () => {
 
         const tempStudent = {
             id: 1,
-            firstName: "Timur",
+            firstName: "Chad",
             lastName: "Is Rad",
             email: "ChadIsRad@myspace.com",
             phone: "123456789",
