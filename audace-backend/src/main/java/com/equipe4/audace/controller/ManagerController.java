@@ -80,14 +80,6 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
         );
     }
 
-    @GetMapping("/departments")
-    public ResponseEntity<List<DepartmentDTO>> getDepartments() {
-        logger.info("getDepartments");
-        return ResponseEntity.ok(
-                service.getDepartments()
-        );
-    }
-
     @GetMapping("/{managerId}/department")
     public ResponseEntity<DepartmentDTO> getDepartmentByManager(@PathVariable Long managerId) {
         logger.info("getDepartment");

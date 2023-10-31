@@ -453,17 +453,6 @@ public class ManagerServiceTest {
                 .hasMessage("Department not found");
     }
     @Test
-    public void getDepartments_happyPath() {
-        List<Department> departments = new ArrayList<>();
-        departments.add(new Department(1L, "code", "name"));
-
-        when(departmentRepository.findAll()).thenReturn(departments);
-
-        List<DepartmentDTO> result = managerService.getDepartments();
-
-        assertThat(result.size()).isEqualTo(1);
-    }
-    @Test
     public void getDepartmentByManager_happyPath() {
         Department department = new Department(1L, "code", "name");
         Manager manager = new Manager(1L, "firstName", "lastName", "email", "password", "address", "phone", department);

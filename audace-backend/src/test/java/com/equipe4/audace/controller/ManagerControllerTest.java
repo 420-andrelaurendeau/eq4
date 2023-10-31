@@ -339,26 +339,6 @@ public class ManagerControllerTest {
     }
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
-    public void getDepartments() throws Exception {
-        List<DepartmentDTO> departmentDTOList = List.of(
-                new DepartmentDTO(1L, "Department 1", "Department 1"),
-                new DepartmentDTO(2L, "Department 2", "Department 2")
-        );
-
-        when(managerService.getDepartments()).thenReturn(departmentDTOList);
-
-        mockMvc.perform(MockMvcRequestBuilders
-                        .get("/managers/departments")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].id").value(1L))
-                .andExpect(jsonPath("$[0].name").value("Department 1"))
-                .andExpect(jsonPath("$[1].id").value(2L))
-                .andExpect(jsonPath("$[1].name").value("Department 2"));
-    }
-    @Test
-    @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void getDepartmentByManager() throws Exception {
         DepartmentDTO departmentDTO = new DepartmentDTO(1L, "Department 1", "Department 1");
 
