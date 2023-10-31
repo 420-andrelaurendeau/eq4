@@ -1,17 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import AppHeader from "../../components/AppHeader";
 
-jest.mock("axios", () => {
-  return {
-    create: jest.fn(() => ({
-      get: jest.fn(),
-      interceptors: {
-        request: { use: jest.fn(), eject: jest.fn() },
-        response: { use: jest.fn(), eject: jest.fn() },
-      },
-    })),
-  };
-});
 const mockedUsedNavigate = jest.fn();
 
 jest.mock("react-router-dom", () => ({
