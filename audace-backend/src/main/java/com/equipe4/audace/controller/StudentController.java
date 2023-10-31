@@ -1,8 +1,8 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.GenericUserController;
-import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Student;
@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -24,16 +23,16 @@ public class StudentController extends GenericUserController<Student, StudentSer
         super(studentService);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<StudentDTO> getStudentById(@PathVariable Long id) {
-        return service.getStudentById(id)
+    @GetMapping("/{studentId}")
+    public ResponseEntity<StudentDTO> getStudentById(@PathVariable Long studentId) {
+        return service.getStudentById(studentId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/offers/{departmentId}")
-    public ResponseEntity<List<OfferDTO>> getOffersByDepartment(@PathVariable Long departmentId) {
-        return ResponseEntity.ok(service.getAcceptedOffersByDepartment(departmentId));
+    @GetMapping("/offers/{departmentId}/{sessionId}")
+    public ResponseEntity<List<OfferDTO>> getOffersByDepartment(@PathVariable Long departmentId, @PathVariable Long sessionId) {
+        return ResponseEntity.ok(service.getAcceptedOffersByDepartment(departmentId, sessionId));
     }
 
     @PostMapping("/upload/{studentId}")
@@ -66,9 +65,9 @@ public class StudentController extends GenericUserController<Student, StudentSer
         }
     }
 
-    @PostMapping("/{id}/applications")
+    @PostMapping("/applications")
     public ResponseEntity<HttpStatus> createApplication(@RequestBody ApplicationDTO applicationDTO){
-        logger.info("createOffer");
+        logger.info("createApplication");
         try {
             service.createApplication(applicationDTO);
         } catch (NoSuchElementException e) {
@@ -81,14 +80,14 @@ public class StudentController extends GenericUserController<Student, StudentSer
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("{studentId}/appliedOffers")
-    public ResponseEntity<List<OfferDTO>> getOffersStudentApplied(@PathVariable Long studentId) {
-        logger.info("getOffersStudentApplied");
+    @GetMapping("/appliedOffers/{sessionId}")
+    public ResponseEntity<List<ApplicationDTO>> getApplicationsByStudentIdAndSessionId(@RequestParam Long studentId, @PathVariable Long sessionId) {
+        logger.info("getApplicationsByStudentIdAndSessionId");
 
-        List<OfferDTO> offersList;
+        List<ApplicationDTO> offersList;
 
         try {
-            offersList = service.getOffersStudentApplied(studentId);
+            offersList = service.getApplicationsByStudentIdAndSessionId(studentId, sessionId);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }

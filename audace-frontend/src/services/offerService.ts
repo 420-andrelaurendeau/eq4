@@ -3,18 +3,32 @@ import { Offer } from "../model/offer";
 import http from "../constants/http";
 import { EMPLOYER_PREFIX, MANAGER_PREFIX, STUDENT_PREFIX } from "../constants/apiPrefixes";
 
-export const getStudentOffersByDepartment = async (departmentId: number): Promise<AxiosResponse<Offer[]>> => {
-    return http.get<Offer[]>(`${STUDENT_PREFIX}/offers/${departmentId}`);
-}
-export const getAllOffersByEmployerId = async (employerId: number): Promise<AxiosResponse<Offer[]>> => {
-    return http.get(`${EMPLOYER_PREFIX}/${employerId}/offers`);
-}
-export const employerCreateOffer = async (offer: Offer): Promise<AxiosResponse> => {
-    return http.post(`${EMPLOYER_PREFIX}/${offer.employer.id}/offers`)
+export const getStudentOffersByDepartment = async (departmentId: number, sessionId: number): Promise<AxiosResponse<Offer[]>> => {
+    return http.get<Offer[]>(`${STUDENT_PREFIX}/offers/${departmentId}/${sessionId}`);
 }
 
-export const getManagerOffersByDepartment = async (departmentId: number): Promise<AxiosResponse<Offer[]>> => {
-    return http.get<Offer[]>(`/managers/offers/${departmentId}`);
+export const employerCreateOffer = async (offer: Offer): Promise<AxiosResponse> => {
+    return http.post(`${EMPLOYER_PREFIX}/offers`, offer)
+}
+
+export const employerUpdateOffer = async (offer: Offer): Promise<AxiosResponse> => {
+    return http.put(`${EMPLOYER_PREFIX}/offers`, offer)
+}
+
+export const employerDeleteOffer = async (offerId: number): Promise<AxiosResponse> => {
+    return http.delete(`${EMPLOYER_PREFIX}/offers`, {
+        params: {
+            offerId
+        }
+    })
+}
+
+export const getAllOffersByEmployerIdAndSessionId = async (employerId: number, sessionId: number): Promise<AxiosResponse<Offer[]>> =>{
+    return http.get(`${EMPLOYER_PREFIX}/offers/${sessionId}`, {
+        params: {
+            employerId
+        }
+    });
 }
 
 //OfferButton
@@ -22,11 +36,14 @@ export const acceptOffer = async (managerId: number, offerId: number): Promise<A
     return http.post<Offer>(`${MANAGER_PREFIX}/${managerId}/accept_offer/${offerId}`);
 }
 
-export const getEmployersOfferById = async (offerId: number): Promise<AxiosResponse<Offer>> => {
-    return http.get<Offer>(`/employers/offers/${offerId}`);
-}
 export const refuseOffer = async (managerId: number, offerId: number): Promise<AxiosResponse<Offer>> => {
     return http.post<Offer>(`${MANAGER_PREFIX}/${managerId}/refuse_offer/${offerId}`);
 }
 
+export const getManagerOffersByDepartment = async (departmentId: number, sessionId: number): Promise<AxiosResponse<Offer[]>> => {
+    return http.get<Offer[]>(`${MANAGER_PREFIX}/offers/${departmentId}/${sessionId}`);
+}
 
+export const getEmployersOfferById = async (offerId: number): Promise<AxiosResponse<Offer>> => {
+    return http.get<Offer>(`/employers/offers/${offerId}`);
+}

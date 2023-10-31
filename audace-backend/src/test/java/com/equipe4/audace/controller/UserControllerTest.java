@@ -6,9 +6,13 @@ import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.UserRepository;
+import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
+import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.StudentService;
 import com.equipe4.audace.service.UserService;
@@ -36,11 +40,8 @@ class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
-    private UserService userService;
-    @MockBean
-    private EmployerService employerService;
-    @MockBean
-    private StudentService studentService;
+    private JwtManipulator jwtManipulator;
+
     @MockBean
     private DepartmentRepository departmentRepository;
     @MockBean
@@ -53,10 +54,23 @@ class UserControllerTest {
     private CvRepository cvRepository;
     @MockBean
     private UserRepository userRepository;
-    @MockBean
-    private JwtManipulator jwtManipulator;
+
     @MockBean
     private SaltRepository saltRepository;
+    @MockBean
+    private SessionRepository sessionRepository;
+    @MockBean
+    private OfferSessionRepository offerSessionRepository;
+    @MockBean
+    private ApplicationRepository applicationRepository;
+    @MockBean
+    private OfferRepository offerRepository;
+    @MockBean
+    private UserService userService;
+    @MockBean
+    private EmployerService employerService;
+    @MockBean
+    private StudentService studentService;
 
     @Test
     @WithMockUser(username = "user")

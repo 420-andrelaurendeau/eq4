@@ -11,15 +11,16 @@ import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
-import com.equipe4.audace.model.Student;
-import com.equipe4.audace.repository.ApplicationRepository;
+import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.model.security.Salt;
-import com.equipe4.audace.repository.ApplicationRepository;
+import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.StudentSessionRepository;
+import com.equipe4.audace.utils.SessionManipulator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,6 +29,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -38,7 +40,6 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
-import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class StudentServiceTest {
@@ -54,37 +55,31 @@ public class StudentServiceTest {
     private SaltRepository saltRepository;
     @Mock
     private ApplicationRepository applicationRepository;
+    @Mock
+    private SessionManipulator sessionManipulator;
+    @Mock
+    private StudentSessionRepository studentSessionRepository;
     @InjectMocks
     private StudentService studentService;
 
     @Test
     void getOffersByDepartmentAndStatus_happyPath() {
-        Department mockedDepartment = mock(Department.class);
+        Department department = createDepartment();
+        Employer employer = createEmployer();
+
+        Session session = new Session(1L, LocalDate.now(), LocalDate.now().plusMonths(6));
         List<Offer> offers = new ArrayList<>();
+        for (int i = 0; i < 3; i++){
+            Offer offer = createOffer(Long.valueOf(i+1), createEmployer());
+            offer.setOfferStatus(Offer.OfferStatus.ACCEPTED);
+            offers.add(offer);
+        }
 
-        Employer fakeEmployer = new Employer(
-                null,
-                "employer",
-                "employerMan",
-                "employer@email.com",
-                "password",
-                "organisation",
-                "position",
-                "123 Street Street",
-                "1234567890",
-                "-123"
-        );
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(department));
+        when(offerRepository.findAllByDepartmentAndOfferStatus(department, Offer.OfferStatus.ACCEPTED)).thenReturn(offers);
+        when(sessionManipulator.removeOffersNotInSession(offers, session.getId())).thenReturn(offers);
 
-        Offer mockedOffer = mock(Offer.class);
-        fakeEmployer.getOffers().add(mockedOffer);
-
-        for (int i = 0; i < 3; i++)
-            offers.add(mockedOffer);
-
-        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
-        when(offerRepository.findAllByDepartmentAndOfferStatus(mockedDepartment, Offer.OfferStatus.ACCEPTED)).thenReturn(offers);
-
-        List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
+        List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L, session.getId());
 
         assertThat(result.size()).isEqualTo(offers.size());
         assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
@@ -94,7 +89,7 @@ public class StudentServiceTest {
     void getOffersByDepartmentAndStatus_departmentNotFound() {
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> studentService.getAcceptedOffersByDepartment(1L))
+        assertThatThrownBy(() -> studentService.getAcceptedOffersByDepartment(1L, 1L))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Department not found");
     }
@@ -106,13 +101,13 @@ public class StudentServiceTest {
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
         when(offerRepository.findAllByDepartmentAndOfferStatus(mockedDepartment, Offer.OfferStatus.ACCEPTED)).thenReturn(new ArrayList<>());
 
-        List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L);
+        List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L, 1L);
 
         assertThat(result.size()).isEqualTo(0);
     }
 
     @Test
-    void createStudent() {
+    void createStudent_HappyPath() {
         StudentDTO studentDTO = createStudentDTO();
 
         when(studentRepository.save(any())).thenReturn(studentDTO.fromDTO());
@@ -127,14 +122,14 @@ public class StudentServiceTest {
     }
 
     @Test
-    void createStudentNullStudent() {
+    void createStudent_NullStudent() {
         assertThatThrownBy(() -> studentService.createStudent(null, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Student cannot be null");
     }
 
     @Test
-    void createStudentAlreadyExists() {
+    void createStudent_AlreadyExists() {
         StudentDTO studentDTO = createStudentDTO();
 
         when(studentRepository.findStudentByStudentNumberOrEmail(anyString(), anyString())).thenReturn(Optional.of(studentDTO.fromDTO()));
@@ -145,7 +140,7 @@ public class StudentServiceTest {
     }
 
     @Test
-    void createStudentDepartmentInvalid() {
+    void createStudent_DepartmentInvalid() {
         StudentDTO studentDTO = createStudentDTO();
 
         when(departmentRepository.findByCode(anyString())).thenReturn(Optional.empty());
@@ -200,7 +195,7 @@ public class StudentServiceTest {
             throw new RuntimeException("Failed to read file");
         }
 
-        Cv cv = new Cv(null, studentDTO.fromDTO(), bytes, fileName);
+        Cv cv = new Cv(null, fileName, bytes, studentDTO.fromDTO());
         CvDTO expected = cv.toDTO();
 
         when(cvRepository.save(any())).thenReturn(cv);
@@ -288,20 +283,8 @@ public class StudentServiceTest {
 
     @Test
     public void createApplication_HappyPath(){
-        Department department = new Department(1L, "GEN", "Génie");
-        Student student = new Student(
-                1L,
-                "student",
-                "studentMan",
-                "email@email.com",
-                "password",
-                "123 Street Street",
-                "1234567890",
-                "123456789",
-                department
-        );
-        Cv cv = new Cv(1L, student, new byte[0], "fileName");
-        Offer offer = new Offer(1L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 0, department, mock(Employer.class));
+        Offer offer = createOffer(1L, createEmployer());
+        Cv cv = createCv();
         Application application = new Application(null, cv, offer);
 
         ApplicationDTO applicationDTO = application.toDTO();
@@ -315,7 +298,6 @@ public class StudentServiceTest {
         assertThat(dto).isEqualTo(applicationDTO);
         verify(applicationRepository, times(1)).save(application);
     }
-
     @Test
     public void createApplication_NullApplication(){
         assertThatThrownBy(() -> studentService.createApplication(null))
@@ -324,25 +306,48 @@ public class StudentServiceTest {
     }
 
     @Test
-    public void getOffersStudentApplied() {
-        Student student = mock(Student.class);
-        Offer offer = mock(Offer.class);
-        List<Offer> offers = new ArrayList<>();
-        offers.add(offer);
+    public void getApplicationsByStudentIdAndSessionId_HappyPath() {
+        Employer employer = createEmployer();
+        Student student = createStudent();
+
         List<Application> applications = new ArrayList<>();
-        applications.add(new Application(1L, mock(Cv.class), offer));
+        applications.add(new Application(1L, createCv(), createOffer(1L, employer)));
 
-        when(applicationRepository.findApplicationsByCv_StudentDepartmentId(anyLong())).thenReturn(applications);
 
-        List<OfferDTO> result = studentService.getOffersStudentApplied(1L);
+        when(studentRepository.findById(1L)).thenReturn(Optional.of(student));
+        when(applicationRepository.findApplicationsByCv_Student(any(Student.class))).thenReturn(applications);
+        when(sessionManipulator.removeApplicationsNotInSession(applications, 1L)).thenReturn(applications);
+
+        List<ApplicationDTO> result = studentService.getApplicationsByStudentIdAndSessionId(1L, 1L);
 
         assertThat(result.size()).isEqualTo(1);
-        assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
+        assertThat(result).containsExactlyInAnyOrderElementsOf(applications.stream().map(Application::toDTO).toList());
     }
     @Test
-    public void getOffersStudentApplied_isNull() {
-        assertThatThrownBy(() -> studentService.getOffersStudentApplied(null))
+    public void getApplicationsByStudentIdAndSessionId_isNull() {
+        assertThatThrownBy(() -> studentService.getApplicationsByStudentIdAndSessionId(null, 1L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Student ID cannot be null");
+    }
+
+    private Department createDepartment(){
+        return new Department(1L, "GLO", "Génie logiciel");
+    }
+
+    private Employer createEmployer() {
+        return new Employer(1L, "Employer1", "Employer1", "employer1@gmail.com", "123456eE", "Organisation1", "Position1", "Class Service, Javatown, Qc H8N1C1", "123-456-7890", "12345");
+    }
+    private Student createStudent() {
+        Department department = createDepartment();
+        return new Student(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", department);
+    }
+
+    private Cv createCv() {
+        return new Cv(1L,"fileName", "content".getBytes(),createStudent());
+    }
+
+    private Offer createOffer(Long id, Employer employer) {
+        Department department = createDepartment();
+        return new Offer(id,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
     }
 }

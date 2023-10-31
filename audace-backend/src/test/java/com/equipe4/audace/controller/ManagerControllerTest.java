@@ -15,10 +15,13 @@ import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.UserRepository;
+import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.ManagerService;
 import com.equipe4.audace.service.StudentService;
@@ -52,29 +55,38 @@ public class ManagerControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @MockBean
+    private JwtManipulator jwtManipulator;
+
+    @MockBean
+    private CvRepository cvRepository;
+    @MockBean
+    private SaltRepository saltRepository;
+    @MockBean
+    private UserRepository userRepository;
+    @MockBean
+    private ManagerRepository managerRepository;
+    @MockBean
+    private StudentRepository studentRepository;
+    @MockBean
+    private EmployerRepository employerRepository;
+    @MockBean
+    private SessionRepository sessionRepository;
+    @MockBean
+    private DepartmentRepository departmentRepository;
+    @MockBean
+    private OfferRepository offerRepository;
+    @MockBean
+    private ApplicationRepository applicationRepository;
+    @MockBean
+    private OfferSessionRepository offerSessionRepository;
+    @MockBean
     private StudentService studentService;
     @MockBean
     private EmployerService employerService;
     @MockBean
     private ManagerService managerService;
-    @MockBean
-    private ManagerRepository managerRepository;
-    @MockBean
-    private OfferRepository offerRepository;
-    @MockBean
-    private EmployerRepository employerRepository;
-    @MockBean
-    private DepartmentRepository departmentRepository;
-    @MockBean
-    private StudentRepository studentRepository;
-    @MockBean
-    private CvRepository cvRepository;
-    @MockBean
-    private UserRepository userRepository;
-    @MockBean
-    private JwtManipulator jwtManipulator;
-    @MockBean
-    private SaltRepository saltRepository;
+
+
 
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
@@ -193,9 +205,9 @@ public class ManagerControllerTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void getOffersByDepartment_happyPath() throws Exception {
         List<OfferDTO> offerDTOList = List.of(mock(OfferDTO.class));
-        when(managerService.getOffersByDepartment(1L)).thenReturn(offerDTOList);
+        when(managerService.getOffersByDepartment(1L, 1L)).thenReturn(offerDTOList);
 
-        mockMvc.perform(get("/managers/offers/1"))
+        mockMvc.perform(get("/managers/offers/{departmendId}/{sessionId}", 1L, 1L))
                 .andExpect(status().isOk());
     }
     @Test
@@ -203,7 +215,7 @@ public class ManagerControllerTest {
     public void acceptCv() throws Exception {
         Student student = mock(Student.class);
         CvDTO cvDTO = mock(CvDTO.class);
-        Cv cv = new Cv(null, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
+        Cv cv = new Cv(null, "One must imagine whoever puts the rock on top of the mountain happy", "cv".getBytes(), student);
         when(managerService.acceptCv(1L, 1L)).thenReturn(Optional.of(cvDTO));
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -219,7 +231,7 @@ public class ManagerControllerTest {
     public void refuseCv() throws Exception {
         Student student = mock(Student.class);
         CvDTO cvDTO = mock(CvDTO.class);
-        Cv cv = new Cv(null, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
+        Cv cv = new Cv(null, "One must imagine whoever puts the rock on top of the mountain happy", "cv".getBytes(), student);
         when(managerService.refuseCv(1L, 1L)).thenReturn(Optional.of(cvDTO));
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -234,7 +246,7 @@ public class ManagerControllerTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void acceptCv_invalidId() throws Exception {
         Student student = new Student();
-        Cv cv = new Cv(null, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
+        Cv cv = new Cv(null, "One must imagine whoever puts the rock on top of the mountain happy", "cv".getBytes(), student);
         when(managerService.acceptCv(1L, 1L)).thenReturn(Optional.empty());
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -250,7 +262,7 @@ public class ManagerControllerTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void refuseCv_invalidId() throws Exception {
         Student student = new Student();
-        Cv cv = new Cv(null, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
+        Cv cv = new Cv(null, "One must imagine whoever puts the rock on top of the mountain happy", "cv".getBytes(), student);
         when(managerService.refuseCv(1L, 1L)).thenReturn(Optional.empty());
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -304,9 +316,9 @@ public class ManagerControllerTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void getCvsByDepartment() throws Exception {
         List<CvDTO> cvDTOList = List.of(mock(CvDTO.class));
-        when(managerService.getCvsByDepartment(1L)).thenReturn(cvDTOList);
+        when(managerService.getCvsByDepartment(1L, 1L)).thenReturn(cvDTOList);
 
-        mockMvc.perform(get("/managers/cvs/1"))
+        mockMvc.perform(get("/managers/cvs/1/1"))
                 .andExpect(status().isOk());
     }
     @Test

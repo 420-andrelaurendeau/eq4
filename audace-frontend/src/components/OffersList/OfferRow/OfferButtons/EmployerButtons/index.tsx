@@ -1,18 +1,18 @@
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
 import { Offer } from "../../../../../model/offer";
 import { useNavigate } from 'react-router-dom';
-import http from "../../../../../constants/http";
-
+import {useState} from "react";
+import {employerDeleteOffer} from "../../../../../services/offerService";
 interface Props {
-    disabled?: boolean;
-    offer?: Offer;
-    hideRow?: () => void;
+  disabled: boolean;
+  seeApplications?: (offer: Offer) => void;
+  offer: Offer;
+  hideRow?: () => void;
 }
 
-const EmployerButtons = ({ disabled, offer, hideRow }: Props) => {
-    const { t } = useTranslation();
+const EmployerButtons = ({ disabled, seeApplications, offer, hideRow }: Props) => {
+  const {t} = useTranslation();
     const [isDeleting, setIsDeleting] = useState(false);
     const navigate = useNavigate();
 
@@ -42,7 +42,7 @@ const EmployerButtons = ({ disabled, offer, hideRow }: Props) => {
         setIsDeleting(true);
 
         try {
-            const response = await http.delete(`/employers/offers/${offer.id}`);
+            const response = await employerDeleteOffer(offer.id);
 
             if (response.status !== 200) {
                 throw new Error(`Failed to delete offer. Status: ${response.status}`);
@@ -54,19 +54,24 @@ const EmployerButtons = ({ disabled, offer, hideRow }: Props) => {
             setIsDeleting(false);
         }
     };
-    
+    const seeApplicationsButtonClick = (event: React.MouseEvent<HTMLElement>) => {
+        event.stopPropagation();
+        seeApplications!(offer);
+    };
+
     return (
         <>
-            <Button disabled={disabled} onClick={editButtonClick} className="btn-warning me-2">
+            <Button disabled={disabled} onClick={editButtonClick} className="btn-light btn-outline-warning text-dark">
                 {t("employerOffersList.editButton")}
             </Button>
-            <Button
-                disabled={disabled || isDeleting}
-                onClick={deleteButtonClick}
-                className="btn-danger"
-            >
+            <Button disabled={disabled || isDeleting} onClick={deleteButtonClick} className="btn-light btn-outline-danger text-dark ms-2">
                 {isDeleting ? t("employerOffersList.deletingButton") : t("employerOffersList.deleteButton")}
             </Button>
+            {seeApplications !== undefined ? (
+                <Button disabled={disabled} onClick={seeApplicationsButtonClick} className="ms-2 btn-light btn-outline-success text-dark">
+                    {t("employerOffersList.applicationButton")}
+                </Button>
+            ) : null}
         </>
     );
 };
