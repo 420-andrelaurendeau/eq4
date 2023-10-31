@@ -34,6 +34,10 @@ export const refuseOffer = async (managerId: number, offerId: number): Promise<A
     return http.post<Offer>(`${MANAGER_PREFIX}/${managerId}/refuse_offer/${offerId}`);
 }
 
+export const getAcceptedApplicationsByDepartment = async (departmentId: number): Promise<AxiosResponse<Application[]>> => {
+    return http.get<Application[]>(`${MANAGER_PREFIX}/${getUserId()}/acceptedApplications/${departmentId}`);
+}
+
 export const getStudentByCv = async (cv: CV): Promise<AxiosResponse<Student>> => {
     return http.get<Student>(`${STUDENT_PREFIX}/${cv.student.id}`);
 }
