@@ -32,11 +32,11 @@ function AppHeader() {
 
         {authority === "employer" && (
           <Nav>
-            <Button onClick={() => handleClick(authority + "/offer")} variant="light" className="me-2">
+            <Button onClick={() => handleClick(authority + "/offers/new")} variant="light" className="me-2">
               Create Offer
             </Button>
             <Button onClick={() => handleClick(authority + "/offers")} variant="light" className="me-2">
-              Modify Offers
+              View Offers
             </Button>
           </Nav>
         )}

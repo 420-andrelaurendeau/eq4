@@ -24,6 +24,8 @@ const OfferRow = ({ offer, userType, updateOffersState}: Props) => {
     const [employer, setEmployer] = useState<Employer | undefined>(undefined);
     const { t } = useTranslation();
     const studentId = getUserId();
+    const [isVisible, setIsVisible] = useState(true);
+
 
     useEffect(() => {
         if (employer !== undefined) return;
@@ -35,6 +37,14 @@ const OfferRow = ({ offer, userType, updateOffersState}: Props) => {
                 console.log("getEmployerById error", err);
             });
     }, [setEmployer, offer, employer, studentId]);
+
+    const hideRow = () => {
+        setIsVisible(false);
+    }
+
+    
+    if (!isVisible) return null;
+    
 
     return (
         <>
@@ -49,9 +59,9 @@ const OfferRow = ({ offer, userType, updateOffersState}: Props) => {
                 </td>
                 <td>{formatDate(offer.internshipStartDate)}</td>
                 <td>{formatDate(offer.internshipEndDate)}</td>
-                <td style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}}><OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState}/></td>
+                <td style={{ display: 'flex', alignItems: 'center', justifyContent: 'center'}}><OfferButtons userType={userType} disabled={employer === undefined} offer={offer} updateOffersState={updateOffersState} hideRow={hideRow}/></td>
             </tr>
-            {show && <OfferModal offer={offer} show={show} handleClose={handleClose} userType={userType} employer={employer} setEmployer={setEmployer} updateOffersState={updateOffersState} />}
+            {show && <OfferModal offer={offer} show={show} handleClose={handleClose} userType={userType} employer={employer} setEmployer={setEmployer} updateOffersState={updateOffersState} hideRow={hideRow} />}
         </>
     );
 };

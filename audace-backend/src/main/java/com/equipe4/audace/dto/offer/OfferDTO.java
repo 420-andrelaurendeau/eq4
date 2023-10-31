@@ -40,4 +40,12 @@ public class OfferDTO {
                 employer.fromDTO()
         );
     }
+
+    public Long getEmployerId() {
+        return employer.getId();
+    }
+
+    public String getDepartmentCode() {
+        return department.getCode();
+    }
 }
