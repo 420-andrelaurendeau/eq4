@@ -29,7 +29,13 @@ const config: Config = {
     '!**/coverage/**',
     '!**/jest.config.ts',
     '!**/webpack.config.ts',
-    '!**/src/model/**'
+    '!**/src/model/**',
+    '!**/src/__mocks__/**',
+    '!**/src/config/**',
+    '!**/src/constants/**',
+    '!**/src/internationalization/**',
+    '!**/src/services/**',
+    '!**/src/contextsholders/**',
   ],
 
   // The directory where Jest should output its coverage files
