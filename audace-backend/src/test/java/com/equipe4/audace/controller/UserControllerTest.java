@@ -126,7 +126,7 @@ class UserControllerTest {
     @WithMockUser(username = "user")
     void testGetSession() throws Exception {
         SessionDTO sessionDTO = mock(SessionDTO.class);
-        when(userService.getSession(1L)).thenReturn(Optional.of(sessionDTO));
+        when(userService.getSessionById(1L)).thenReturn(Optional.of(sessionDTO));
 
         mockMvc.perform(get("/users/sessions/{id}", 1L))
                 .andExpect(status().isOk());
@@ -135,7 +135,7 @@ class UserControllerTest {
     @Test
     @WithMockUser(username = "user")
     void testGetSessionNotFound() throws Exception {
-        when(userService.getSession(1L)).thenReturn(Optional.empty());
+        when(userService.getSessionById(1L)).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/users/sessions/{id}", 1L))
                 .andExpect(status().isNotFound());

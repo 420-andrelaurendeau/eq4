@@ -8,7 +8,6 @@ import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.utils.SessionManipulator;
-import io.micrometer.observation.ObservationFilter;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,7 +43,7 @@ public class UserService extends GenericUserService<User> {
         return Optional.of(sessionManipulator.getCurrentSession().toDTO());
     }
 
-    public Optional<SessionDTO> getSession(Long sessionId) {
+    public Optional<SessionDTO> getSessionById(Long sessionId) {
         return sessionRepository.findById(sessionId).map(Session::toDTO);
     }
 }
