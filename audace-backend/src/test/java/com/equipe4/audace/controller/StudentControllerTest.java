@@ -3,9 +3,9 @@ package com.equipe4.audace.controller;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
@@ -16,7 +16,9 @@ import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.StudentService;
 import com.equipe4.audace.utils.JwtManipulator;
@@ -70,6 +72,10 @@ public class StudentControllerTest {
     private SaltRepository saltRepository;
     @MockBean
     private CvRepository cvRepository;
+    @MockBean
+    private SessionRepository sessionRepository;
+    @MockBean
+    private OfferSessionRepository offerSessionRepository;
 
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT"})
@@ -96,9 +102,9 @@ public class StudentControllerTest {
     @WithMockUser(username = "student", authorities = {"STUDENT"})
     public void getOffersByDepartment_happyPath() throws Exception {
         List<OfferDTO> offerDTOList = List.of(mock(OfferDTO.class));
-        when(studentService.getAcceptedOffersByDepartment(1L)).thenReturn(offerDTOList);
+        when(studentService.getAcceptedOffersByDepartment(1L, 1L)).thenReturn(offerDTOList);
 
-        mockMvc.perform(get("/students/offers/1"))
+        mockMvc.perform(get("/students/offers/1/1"))
                 .andExpect(status().isOk());
     }
 
@@ -159,8 +165,6 @@ public class StudentControllerTest {
         Department department = new Department(1L, "GLO", "Génie logiciel");
         Employer employer = new Employer(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
 
-        Student student = new Student(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", department);
-
         Cv cv = mock(Cv.class);
 
         Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
@@ -187,6 +191,16 @@ public class StudentControllerTest {
         when(studentService.getCvsByStudent(1L)).thenReturn(cvDTOList);
 
         mockMvc.perform(get("/students/cvs/1"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
+    void getOffersAppliedByStudentId() throws Exception {
+        List<ApplicationDTO> applicationDTOS = List.of(mock(ApplicationDTO.class));
+        when(studentService.getOffersStudentApplied(1L, 1L)).thenReturn(applicationDTOS);
+
+        mockMvc.perform(get("/students/1/appliedOffers/1"))
                 .andExpect(status().isOk());
     }
 }

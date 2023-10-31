@@ -1,8 +1,8 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.GenericUserController;
-import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Student;
@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -30,9 +31,9 @@ public class StudentController extends GenericUserController<Student, StudentSer
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/offers/{departmentId}")
-    public ResponseEntity<List<OfferDTO>> getOffersByDepartment(@PathVariable Long departmentId) {
-        return ResponseEntity.ok(service.getAcceptedOffersByDepartment(departmentId));
+    @GetMapping("/offers/{departmentId}/{sessionId}")
+    public ResponseEntity<List<OfferDTO>> getOffersByDepartment(@PathVariable Long departmentId, @PathVariable Long sessionId) {
+        return ResponseEntity.ok(service.getAcceptedOffersByDepartment(departmentId, sessionId));
     }
 
     @PostMapping("/upload/{studentId}")
@@ -78,5 +79,20 @@ public class StudentController extends GenericUserController<Student, StudentSer
             return ResponseEntity.badRequest().build();
         }
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("{studentId}/appliedOffers/{sessionId}")
+    public ResponseEntity<List<ApplicationDTO>> getOffersStudentApplied(@PathVariable Long studentId, @PathVariable Long sessionId) {
+        logger.info("getOffersStudentApplied");
+
+        List<ApplicationDTO> offersList;
+
+        try {
+            offersList = service.getOffersStudentApplied(studentId, sessionId);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(offersList);
     }
 }

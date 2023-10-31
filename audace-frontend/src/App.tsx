@@ -21,13 +21,13 @@ import EmployerView from "./views/Employer/EmployerView";
 import ManagerCvView from "./views/Manager/ManagerCvView";
 import { Authority } from "./model/auth";
 import { getAuthorities } from "./services/authService";
-import { CVProvider } from "./contextsholders/providers/CVContextHolder";
+import ProviderWrapper from "./contextsholders/providers/ProviderWrapper";
 import AddOffer from "./components/AddOffer";
 import EditOffer from "./components/EditOffer";
 
 function App() {
   return (
-    <CVProvider>
+    <ProviderWrapper>
       <Router>
         <AppHeader />
         <Routes>
@@ -115,7 +115,8 @@ function App() {
           />
         </Routes>
       </Router>
-    </CVProvider>
+    </ProviderWrapper>
   );
 }
+
 export default App;

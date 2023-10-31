@@ -13,6 +13,7 @@ import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,6 +42,8 @@ public class ManagerServiceTest {
     private ManagerRepository managerRepository;
     @Mock
     private CvRepository cvRepository;
+    @Mock
+    private SessionManipulator sessionManipulator;
     @InjectMocks
     private ManagerService managerService;
 
@@ -71,6 +74,7 @@ public class ManagerServiceTest {
         );
         when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer1));
         when(offerRepository.save(any())).thenReturn(offer1);
+        when(sessionManipulator.isOfferInCurrentSession(offer1)).thenReturn(true);
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
         managerService.acceptOffer(1L, 1L);
@@ -83,6 +87,7 @@ public class ManagerServiceTest {
         when(offerRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
         assertThrows(EntityNotFoundException.class, () -> managerService.acceptOffer(1L, 1L));
     }
+
     @Test
     public void acceptOffer_wrongDepartment() {
         Employer employer = mock(Employer.class);
@@ -144,6 +149,7 @@ public class ManagerServiceTest {
         );
         when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer1));
         when(offerRepository.save(any())).thenReturn(offer1);
+        when(sessionManipulator.isOfferInCurrentSession(offer1)).thenReturn(true);
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
         managerService.refuseOffer(1L, 1L);
@@ -156,6 +162,7 @@ public class ManagerServiceTest {
         when(offerRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
         assertThrows(EntityNotFoundException.class, () -> managerService.refuseOffer(1L, 1L));
     }
+
     @Test
     public void refuseOffer_wrongDepartment() {
         Employer employer = mock(Employer.class);
@@ -195,18 +202,28 @@ public class ManagerServiceTest {
         Department mockedDepartment = mock(Department.class);
         List<Offer> offers = new ArrayList<>();
 
-        Employer fakeEmployer = new Employer(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
-        Offer fakeOffer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, mockedDepartment, fakeEmployer);
+        Employer fakeEmployer = mock(Employer.class);
 
-        fakeEmployer.getOffers().add(fakeOffer);
+        Offer fakeOffer = new Offer(
+                1L,
+                "title",
+                "description",
+                LocalDate.now(),
+                LocalDate.now(),
+                LocalDate.now(),
+                1,
+                mockedDepartment,
+                fakeEmployer
+        );
 
         for (int i = 0; i < 3; i++)
             offers.add(fakeOffer);
 
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
         when(offerRepository.findAllByDepartment(mockedDepartment)).thenReturn(offers);
+        when(sessionManipulator.removeOffersNotInSession(offers, 1L)).thenReturn(offers);
 
-        List<OfferDTO> result = managerService.getOffersByDepartment(1L);
+        List<OfferDTO> result = managerService.getOffersByDepartment(1L, 1L);
 
         assertThat(result.size()).isEqualTo(offers.size());
         assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
@@ -216,7 +233,7 @@ public class ManagerServiceTest {
     void getOffersByDepartment_departmentNotFound() {
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> managerService.getOffersByDepartment(1L))
+        assertThatThrownBy(() -> managerService.getOffersByDepartment(1L, 1L))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Department not found");
     }
@@ -228,7 +245,7 @@ public class ManagerServiceTest {
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
         when(offerRepository.findAllByDepartment(mockedDepartment)).thenReturn(new ArrayList<>());
 
-        List<OfferDTO> result = managerService.getOffersByDepartment(1L);
+        List<OfferDTO> result = managerService.getOffersByDepartment(1L, 1L);
 
         assertThat(result.size()).isEqualTo(0);
     }
@@ -237,7 +254,16 @@ public class ManagerServiceTest {
     public void findManagerById_happyPathTest() {
         // Arrange
         Department department = mock(Department.class);
-        Manager manager = new Manager(1L, "manager", "managerman", "manager@email.com", "password", "yeete", "1234567890", department);
+        Manager manager = new Manager(
+                1L,
+                "manager",
+                "managerman",
+                "manager@email.com",
+                "password",
+                "1234567890",
+                "123456789",
+                department
+        );
 
         when(managerRepository.findById(1L)).thenReturn(Optional.of(manager));
 
@@ -270,8 +296,9 @@ public class ManagerServiceTest {
         listCvs.add(new Cv(null, student, new byte[10], "cv"));
 
         when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(listCvs);
+        when(sessionManipulator.removeCvsBelongingToStudentNotInSession(any(), anyLong())).thenReturn(listCvs);
 
-        List<CvDTO> result = managerService.getCvsByDepartment(1L);
+        List<CvDTO> result = managerService.getCvsByDepartment(1L, 1L);
 
         assertThat(result.size()).isEqualTo(1);
     }
@@ -280,7 +307,7 @@ public class ManagerServiceTest {
     public void getCvsByDepartment_invalidDepartmentId() {
         when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(new ArrayList<>());
 
-        assertThat(managerService.getCvsByDepartment(1L).size()).isEqualTo(0);
+        assertThat(managerService.getCvsByDepartment(1L, 1L).size()).isEqualTo(0);
     }
 
     @Test
@@ -289,7 +316,7 @@ public class ManagerServiceTest {
 
         when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(listCvs);
 
-        List<CvDTO> result = managerService.getCvsByDepartment(1L);
+        List<CvDTO> result = managerService.getCvsByDepartment(1L, 1L);
 
         assertThat(result.size()).isEqualTo(0);
     }
@@ -328,6 +355,7 @@ public class ManagerServiceTest {
         when(cvRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
         assertThrows(EntityNotFoundException.class, () -> managerService.acceptCv(1L, 1L));
     }
+
     @Test
     public void acceptCv_wrongDepartment() {
         Student student = mock(Student.class);
@@ -352,6 +380,7 @@ public class ManagerServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("The manager isn't in the right department");
     }
+
     @Test
     public void refuseCv() {
         Student student = mock(Student.class);
@@ -386,6 +415,7 @@ public class ManagerServiceTest {
         when(cvRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
         assertThrows(EntityNotFoundException.class, () -> managerService.refuseCv(1L, 1L));
     }
+
     @Test
     public void refuseCv_wrongDepartment() {
         Student student = mock(Student.class);

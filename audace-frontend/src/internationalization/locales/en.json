@@ -39,10 +39,10 @@
     "errors": {
       "departmentNotFound": "Department not found"
     },
-    "name": "CV title",
+    "name": "CV",
     "viewMore": "View the CV",
     "noCvs": "No CVs available",
-    "studentName": "Student name"
+    "studentName": "Student"
   },
   "offersList": {
     "errors": {
@@ -99,6 +99,13 @@
     "REFUSED": "Refused",
     "noMorePendingCvs": "There are no more pending CVs"
   },
+  "employerCvsList": {
+    "title": "Applications",
+    "acceptButton": "Accept",
+    "refuseButton": "Refuse",
+    "ACCEPTED": "Accepted",
+    "REFUSED": "Refused"
+  },
   "employerOffersList": {
     "viewTitle": "Available Offers",
     "status": "Status",
@@ -106,7 +113,8 @@
     "ACCEPTED": "Accepted",
     "REFUSED": "Refused",
     "editButton": "Edit",
-    "deleteButton": "Delete"
+    "deleteButton": "Delete",
+    "applicationButton" : "See applications"
   },
   "student": {
     "seeOffersButton": "See Offers"
@@ -119,7 +127,8 @@
     "errors": {
       "employerNotFound": "Employer not found"
     },
-    "seeOffersButton": "See Offers"
+    "seeOffersButton": "See Offers",
+    "seeApplicationsButton": "See Applications"
   },
   "addOffer":{
     "pageTitle" : "Create Offer",
@@ -168,6 +177,27 @@
       "sessionExpired": "Your session has expired, please log in again"
     }
   },
+  "applicationsList": {
+    "title": "Applications submitted",
+    "offerTitle": "Position title",
+    "organization": "Organization",
+    "status": "Status",
+    "cv": "CV",
+    "noApplications": "No applications submitted",
+    "row": {
+      "status": {
+        "PENDING": "Pending",
+        "ACCEPTED": "Accepted",
+        "REFUSED": "Refused"
+      }
+    },
+    "errors": {
+      "studentNotFound": "Student wasn't found"
+    }
+  },
   "logout": "Log out",
-  "pageNotFound": "Error 404: Page Not Found"
+  "pageNotFound": "Error 404: Page Not Found",
+  "sessionSelector": {
+    "filterPlaceholder": "Filter by date"
+  }
 }

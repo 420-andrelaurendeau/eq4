@@ -19,7 +19,18 @@ public class Employer extends User {
     @OneToMany(mappedBy = "employer", cascade = CascadeType.ALL)
     private List<Offer> offers = new ArrayList<>();
 
-    public Employer(Long id, String firstName, String lastName, String email, String password, String address, String phone, String organisation, String position, String extension) {
+    public Employer(
+            Long id,
+            String firstName,
+            String lastName,
+            String email,
+            String password,
+            String organisation,
+            String position,
+            String address,
+            String phone,
+            String extension
+    ) {
         super(id, firstName, lastName, email, password, address, phone);
         this.organisation = organisation;
         this.position = position;

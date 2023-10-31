@@ -39,10 +39,10 @@
     "errors": {
       "departmentNotFound": "Département pas trouvé"
     },
-    "name": "Titre du CV",
+    "name": "CV",
     "viewMore": "Voir le CV",
-    "noCvs": "Aucun CV disponible",
-    "studentName": "Nom de l'étudiant"
+    "noCvs": "Aucun CV disponible",	
+    "studentName": "Étudiant"
   },
   "offersList": {
     "errors": {
@@ -99,6 +99,13 @@
     "REFUSED": "Refusé",
     "noMorePendingCvs": "Il n'y a plus de CV en attente"
   },
+  "employerCvsList": {
+    "title": "Applications",
+    "acceptButton": "Accepter",
+    "refuseButton": "Refuser",
+    "ACCEPTED": "Accepté",
+    "REFUSED": "Refusé"
+  },
   "employerOffersList": {
     "viewTitle": "Offres disponibles",
     "status": "État",
@@ -106,7 +113,8 @@
     "ACCEPTED": "Accepté",
     "REFUSED": "Refusé",
     "editButton": "Modifier",
-    "deleteButton": "Supprimer"
+    "deleteButton": "Supprimer",
+    "applicationButton" : "Voir les applications"
   },
   "student": {
     "seeOffersButton": "Voir les offres"
@@ -119,7 +127,8 @@
     "errors": {
       "employerNotFound": "Aucun employeur trouvé"
     },
-    "seeOffersButton": "Voir les offres"
+    "seeOffersButton": "Voir les offres",
+    "seeApplicationsButton": "Voir les applications"
   },
   "addOffer": {
     "pageTitle": "Ajout de Stage",
@@ -168,6 +177,27 @@
       "sessionExpired": "Votre session est expirée, veuillez vous reconnecter"
     }
   },
+  "applicationsList": {
+    "title": "Les applications soumises",
+    "offerTitle": "Titre de la position",
+    "organization": "Organisation",
+    "status": "État",
+    "cv": "CV",
+    "noApplications": "Aucune application soumise",
+    "row": {
+      "status": {
+        "PENDING": "En attente",
+        "ACCEPTED": "Accepté",
+        "REFUSED": "Refusé"
+      }
+    },
+    "errors": {
+      "studentNotFound": "L'étudiant n'a pas été trouvé"
+    }
+  },
   "logout": "Se déconnecter",
-  "pageNotFound": "Erreur 404: Page pas trouvée"
+  "pageNotFound": "Erreur 404: Page pas trouvée",
+  "sessionSelector": {
+    "filterPlaceholder": "Filtrer par la date"
+  }
 }

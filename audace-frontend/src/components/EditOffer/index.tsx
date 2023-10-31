@@ -85,8 +85,6 @@ const EditOffer: React.FC = () => {
     if (!isValidDate(offerEndDate)) errorsToDisplay.push("addOffer.errors.invalidOfferEndDate");
     if (internshipEndDate <= internshipStartDate) errorsToDisplay.push("addOffer.errors.endDateBeforeStartDate");
     
-    
-
     setErrors(errorsToDisplay);
     return errorsToDisplay.length === 0;
   };
@@ -117,13 +115,13 @@ const EditOffer: React.FC = () => {
         offerStatus: status as OfferStatus,
       };
       editOffer(updatedOffer, parseInt(offerId));
-      navigate(`/`);
+      navigate(`/employer`);
     }
   };
 
   const editOffer = async (updatedOffer: Offer, id: number) => {
     try {
-      const response = await http.put(`/employers/offers`, updatedOffer);
+      const response = await http.put(`/employers/${employer.id}/offers`, updatedOffer);
 
       if (response.status !== 200) {
         throw new Error(`Backend returned code ${response.status}, body: ${response.statusText}`);
