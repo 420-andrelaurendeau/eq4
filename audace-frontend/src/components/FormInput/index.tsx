@@ -20,7 +20,7 @@ const FormInput = ({label, value, onChange, errors, formError, controlId, type, 
         <>
             <Col sm={12} md={true}>
                 <Form.Group controlId={controlId}>
-                    <Form.Label>{t(label)}</Form.Label>
+                    <Form.Label htmlFor={controlId}>{t(label)}</Form.Label>
                     <Form.Control
                         type={type ? type : "text"}
                         value={value}

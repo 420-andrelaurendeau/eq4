@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import CvsList from '../components/CvsList';
 import { UserType } from '../model/user';
 import { CVStatus } from '../model/cv';
+import CVsList from '../components/CVsList';
 
   jest.mock('axios', () => {
     return {
@@ -54,12 +54,12 @@ const cvs = [
 ]
 
 it('should render the list of cvs', () => {
-    render(<CvsList cvs={cvs} error={""} userType={UserType.Manager}/>);
+    render(<CVsList cvs={cvs} error={""} userType={UserType.Manager}/>);
     const linkElement = screen.getByText(/Cv1/i);
     expect(linkElement).not.toBeUndefined();
 });
 it('should have the accept and refuse buttons as manager', () => {
-    render(<CvsList cvs={cvs} error={""} userType={UserType.Manager}/>);
+    render(<CVsList cvs={cvs} error={""} userType={UserType.Manager}/>);
     const acceptButton = screen.getByText(/Accept/i);
     const refuseButton = screen.getByText(/Refuse/i);
     expect(acceptButton).not.toBeUndefined();
