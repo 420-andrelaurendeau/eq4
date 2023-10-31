@@ -9,19 +9,19 @@ it("should say Audace in the header", () => {
 
 it("should have an I18N button", () => {
   render(<AppHeader />);
-  const linkElement = screen.getByText(/FR/i);
+  const linkElement = screen.getByText(/langcode/i);
   expect(linkElement).not.toBeUndefined();
 });
 
 it("should have a login button", () => {
   render(<AppHeader />);
-  const linkElement = screen.getByText(/Se connecter/i);
+  const linkElement = screen.getByText(/signin/i);
   expect(linkElement).not.toBeUndefined();
 });
 
 it("should have a signup button", () => {
   render(<AppHeader />);
-  const linkElement = screen.getByText(/S'inscrire/i);
+  const linkElement = screen.getByText(/signup.signup/i);
   expect(linkElement).not.toBeUndefined();
 });
 
@@ -35,10 +35,10 @@ it("Should display student buttons when student authority", () => {
     .mockImplementation(() => true);
 
   render(<AppHeader />);
-  const linkElement = screen.getByText(/Voir les offres/i);
+  const linkElement = screen.getByText(/student.seeOffersButton/i);
   expect(linkElement).not.toBeUndefined();
 
-  const linkElement2 = screen.getByText(/Téléverser votre CV/i);
+  const linkElement2 = screen.getByText(/upload.CvFormTitle/i);
   expect(linkElement2).not.toBeUndefined();
 });
 
@@ -52,10 +52,10 @@ it("should display employer buttons when employer authority", () => {
     .mockImplementation(() => true);
 
   render(<AppHeader />);
-  const linkElement = screen.getByText(/Créer une offre/i);
+  const linkElement = screen.getByText(/employer.addOfferButton/i);
   expect(linkElement).not.toBeUndefined();
 
-  const linkElement2 = screen.getByText(/Voir les offres/i);
+  const linkElement2 = screen.getByText(/employer.seeOffersButton/i);
   expect(linkElement2).not.toBeUndefined();
 });
 
@@ -69,7 +69,7 @@ it("should display manager buttons when manager authority", () => {
     .mockImplementation(() => true);
 
   render(<AppHeader />);
-  const linkElement = screen.getByText(/Voir les offres/i);
+  const linkElement = screen.getByText(/manager.seeOffersButton/i);
   expect(linkElement).not.toBeUndefined();
 });
 
@@ -79,6 +79,6 @@ it("should display proper buttons when connected", () => {
     .mockImplementation(() => true);
 
   render(<AppHeader />);
-  const linkElement = screen.getByText(/Se déconnecter/i);
+  const linkElement = screen.getByText(/logout/i);
   expect(linkElement).not.toBeUndefined();
 });

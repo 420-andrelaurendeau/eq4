@@ -15,5 +15,5 @@ it("should render normally", () => {
   };
   render(<FileUploader student={student} />);
 
-  screen.getByText(/Téléverser votre CV/i);
+  screen.getByText(/upload.submit/i);
 });

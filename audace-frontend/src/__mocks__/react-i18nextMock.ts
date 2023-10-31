@@ -7,6 +7,11 @@ reactI18nextMock.useTranslation = jest.fn(() => ({
   },
 }));
 
+reactI18nextMock.initReactI18next = {
+  type: "3rdParty",
+  init: () => {},
+};
+
 module.exports = reactI18nextMock;
 
 export {};
