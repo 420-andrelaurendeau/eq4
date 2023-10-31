@@ -2,13 +2,6 @@ import { render, screen } from "@testing-library/react";
 import FileUploader from "../../components/FileUploader";
 import { Student } from "../../model/user";
 
-const mockedUsedNavigate = jest.fn();
-
-jest.mock("react-router-dom", () => ({
-  ...(jest.requireActual("react-router-dom") as any),
-  useNavigate: () => mockedUsedNavigate,
-}));
-
 it("should render normally", () => {
   const student: Student = {
     studentNumber: "1234567890",

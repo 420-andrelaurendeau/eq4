@@ -3,13 +3,6 @@ import { UserType } from "../../model/user";
 import { CVStatus } from "../../model/cv";
 import CVsList from "../../components/CVsList";
 
-const mockedUsedNavigate = jest.fn();
-
-jest.mock("react-router-dom", () => ({
-  ...(jest.requireActual("react-router-dom") as any),
-  useNavigate: () => mockedUsedNavigate,
-}));
-
 jest.mock("../../components/PDFViewer", () => ({
   return: {
     create: jest.fn(() => ({

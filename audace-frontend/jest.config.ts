@@ -101,6 +101,7 @@ const config: Config = {
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': '<rootDir>/src/config/CssStub.ts',
     'axios': '<rootDir>/src/__mocks__/axiosMock.ts',
+    'react-router-dom': '<rootDir>/src/__mocks__/reactRouterDomMock.ts',
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader

@@ -1,13 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import GenericTable from "../../components/GenericTable";
 
-const mockedUsedNavigate = jest.fn();
-
-jest.mock("react-router-dom", () => ({
-  ...(jest.requireActual("react-router-dom") as any),
-  useNavigate: () => mockedUsedNavigate,
-}));
-
 it("should render the list of strings", () => {
   const stringList = ["test1", "test2", "test3"];
   const children = stringList.map((string) => <>{string}</>);
