@@ -51,7 +51,7 @@ it("should not submit without a file", async () => {
   userEvent.click(screen.getByText(/upload.submit/i));
 });
 
-it("should log an error in the console on submit failure", async () => {
+it("should pop an alert on submit failure", async () => {
   jest
     .spyOn(require("../../services/fileService"), "uploadFile")
     .mockImplementation(() => Promise.reject("error"));
