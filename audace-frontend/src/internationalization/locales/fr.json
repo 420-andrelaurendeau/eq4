@@ -128,7 +128,8 @@
       "employerNotFound": "Aucun employeur trouvé"
     },
     "seeOffersButton": "Voir les offres",
-    "seeApplicationsButton": "Voir les applications"
+    "seeApplicationsButton": "Voir les applications",
+    "addOfferButton": "Créer une offre"
   },
   "addOffer": {
     "pageTitle": "Ajout de Stage",

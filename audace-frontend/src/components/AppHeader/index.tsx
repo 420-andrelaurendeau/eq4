@@ -33,10 +33,10 @@ function AppHeader() {
         {authority === "employer" && (
           <Nav>
             <Button onClick={() => handleClick(authority + "/offers/new")} variant="light" className="me-2">
-              Create Offer
+              {t("employer.addOfferButton")}
             </Button>
             <Button onClick={() => handleClick(authority + "/offers")} variant="light" className="me-2">
-              View Offers
+              {t("employer.seeOffersButton")}
             </Button>
           </Nav>
         )}

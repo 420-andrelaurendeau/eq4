@@ -21,7 +21,7 @@ jest.mock("react-router-dom", () => ({
 
 it("should render the list of strings", () => {
   const stringList = ["test1", "test2", "test3"];
-  const children = stringList.map((string) => <p>{string}</p>);
+  const children = stringList.map((string) => <>{string}</>);
   render(
     <GenericTable
       list={stringList}
@@ -46,7 +46,7 @@ it("should render the list of strings", () => {
 
 it("should render an empty list message", () => {
   const stringList: string[] = [];
-  const children = stringList.map((string) => <p>{string}</p>);
+  const children = stringList.map((string) => <>{string}</>);
   render(
     <GenericTable
       list={stringList}
@@ -64,7 +64,7 @@ it("should render an empty list message", () => {
 
 it("should render an error message", () => {
   const stringList: string[] = [];
-  const children = stringList.map((string) => <p>{string}</p>);
+  const children = stringList.map((string) => <>{string}</>);
   render(
     <GenericTable
       list={stringList}

@@ -128,7 +128,8 @@
       "employerNotFound": "Employer not found"
     },
     "seeOffersButton": "See Offers",
-    "seeApplicationsButton": "See Applications"
+    "seeApplicationsButton": "See Applications",
+    "addOfferButton": "Create Offer"
   },
   "addOffer":{
     "pageTitle" : "Create Offer",
