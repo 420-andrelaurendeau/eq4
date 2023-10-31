@@ -15,7 +15,7 @@ import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.UserRepository;
-import com.equipe4.audace.repository.application.ApplicationRepository;
+import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
@@ -328,7 +328,7 @@ public class ManagerControllerTest {
         Employer employer = new Employer(1L, "firstName", "lastName", "email", "password", "address", "phone", "companyName", "companyAddress", "companyPhone");
         Department department = new Department(1L, "yeete", "yaint");
         Student student = new Student(1L, "firstName", "lastName", "email", "password", "address", "phone", "studentNumber", department);
-        Cv cv = new Cv(1L, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
+        Cv cv = new Cv(1L, "cv.pdf", "cv".getBytes(), student );
         Offer offer = new Offer(1L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, department, employer);
         Application application = new Application(1L, cv, offer);
         applicationDTOList.add(application.toDTO());

@@ -78,7 +78,6 @@ const ManagerView = () => {
 
         const tempApplication: Application = {
             id: 1,
-            student: tempStudent,
             offer: tempOffer,
             cv: tempCV,
             applicationStatus: ApplicationStatus.ACCEPTED
@@ -98,7 +97,6 @@ const ManagerView = () => {
                         setApplications(applicationsRes.data);
                         setError("");
                         retrieveApplicationStudents();
-                        tempTest();
                     })
                     .catch((err) => {
                         setError(err.response.data);
@@ -115,7 +113,7 @@ const ManagerView = () => {
         applications.forEach((application) => {
             getStudentByApplication(application)
                 .then((res) => {
-                    application.student = res.data;
+                    application.cv!.student = res.data;
                     setError("");
                 })
                 .catch((err) => {
@@ -136,7 +134,7 @@ const ManagerView = () => {
             <h1>Manager view</h1>
             <Button onClick={seeOffers}>{t("manager.seeOffersButton")}</Button>
             <Button onClick={seeCvs}>{t("manager.seeCvsButton")}</Button>
-            <ManagerApplicationsList applications={tempApplications} />
+            <ManagerApplicationsList applications={applications} />
         </Container>
     );
 };

@@ -2,7 +2,6 @@ package com.equipe4.audace;
 
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.StudentDTO;
-import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.Student;
@@ -15,8 +14,6 @@ import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.model.session.OfferSession;
 import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.ManagerRepository;
-import com.equipe4.audace.repository.application.ApplicationRepository;
-import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
@@ -30,9 +27,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -48,6 +43,7 @@ public class AudaceApplication implements CommandLineRunner {
 	private OfferRepository offerRepository;
 	private OfferSessionRepository offerSessionRepository;
 	private ApplicationRepository applicationRepository;
+	private CvRepository cvRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AudaceApplication.class, args);

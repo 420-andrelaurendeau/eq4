@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Table, Form } from "react-bootstrap";
-import ApplicationRow from "../ApplicationsList/ApplicationRow";
 import Application from "../../model/application";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import './index.css';
+import ManagerApplicationRow from "./ManagerApplicationRow";
 
 interface Props {
     applications: Application[];
@@ -21,9 +21,9 @@ const ManagerApplicationsList = ({ applications }: Props) => {
             const filtered = applications.filter((application) =>
                 searchRegex.test(application.offer!.title) ||
                 searchRegex.test(application.offer!.employer.organisation) ||
-                searchRegex.test(application.student!.studentNumber) ||
-                searchRegex.test(application.student!.firstName!) ||
-                searchRegex.test(application.student!.lastName!)
+                searchRegex.test(application.cv!.student!.studentNumber) ||
+                searchRegex.test(application.cv!.student!.firstName!) ||
+                searchRegex.test(application.cv!.student!.lastName!)
             );
             setFilteredApplications(filtered);
         } else {
@@ -60,7 +60,7 @@ const ManagerApplicationsList = ({ applications }: Props) => {
                                 </thead>
                                 <tbody className="table-custom">
                                 {filteredApplications.map((application) => (
-                                    <ApplicationRow key={application.id} application={application} />
+                                    <ManagerApplicationRow key={application.id} application={application}/>
                                 ))}
                                 </tbody>
                             </Table>

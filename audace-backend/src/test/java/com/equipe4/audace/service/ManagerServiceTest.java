@@ -415,7 +415,7 @@ public class ManagerServiceTest {
         List<Application> applications = new ArrayList<>();
         Department department = new Department(1L, "code", "name");
         Student student = new Student(1L, "firstName", "lastName", "email", "password", "address", "phone", "studentNumber", department);
-        Cv cv = new Cv(1L, student, "Monkey Enthusiast has OK sleep now".getBytes(), "cv");
+        Cv cv = new Cv(1L, "cv.pdf", "Monkey Enthusiast has OK sleep now".getBytes(), student);
         Employer employer = new Employer(1L, "Employer1", "Employer1", "email", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
         Offer offer = new Offer(1L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, department, employer);
         applications.add(new Application(1L, cv, offer));

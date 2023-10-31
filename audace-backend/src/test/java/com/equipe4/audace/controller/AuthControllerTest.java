@@ -5,7 +5,7 @@ import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.UserRepository;
-import com.equipe4.audace.repository.application.ApplicationRepository;
+import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
