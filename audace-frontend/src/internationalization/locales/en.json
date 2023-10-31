@@ -165,7 +165,8 @@
     "CvFormTitle": "Upload CV",
     "file": "Upload File",
     "submit": "Submit",
-    "success": "Your CV has been uploaded successfully"
+    "success": "Your CV has been uploaded successfully",
+    "error": "There was an error uploading your CV"
   },
   "login": {
     "identification": "Email or Student Number",

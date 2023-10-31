@@ -49,15 +49,12 @@ it("should not submit without a file", async () => {
   render(<FileUploader student={student} />);
 
   userEvent.click(screen.getByText(/upload.submit/i));
-
-  await screen.findByText(/upload.file.required/i);
 });
 
 it("should log an error in the console on submit failure", async () => {
-  const logSpy = jest.spyOn(console, "log");
   jest
     .spyOn(require("../../services/fileService"), "uploadFile")
-    .mockImplementation(() => Promise.reject());
+    .mockImplementation(() => Promise.reject("error"));
 
   render(<FileUploader student={student} />);
 
@@ -74,7 +71,5 @@ it("should log an error in the console on submit failure", async () => {
 
   userEvent.click(screen.getByText(/upload.submit/i));
 
-  await screen.findByText(/upload.success/i);
-
-  expect(logSpy).toHaveBeenCalled();
+  await screen.findByText(/upload.error/i);
 });

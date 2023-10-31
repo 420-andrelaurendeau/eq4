@@ -165,7 +165,8 @@
     "CvFormTitle": "Téléverser votre CV",
     "file": "Séléctionner un fichier",
     "submit": "Téléverser",
-    "success": "Votre CV a été téléversé avec succès"
+    "success": "Votre CV a été téléversé avec succès",
+    "error": "Il y a eu une erreur lors du téléversement de votre CV"
   },
   "login": {
     "identification": "Courriel ou matricule",
