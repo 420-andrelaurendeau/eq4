@@ -1,32 +1,29 @@
-import { useEffect, useState } from "react";
-import { Container } from "react-bootstrap";
-import { getStudentById } from "../../../services/userService";
-import { useTranslation } from "react-i18next";
-import { Student, UserType } from "../../../model/user";
-import { Offer } from "../../../model/offer";
-import { getStudentOffersByDepartment } from "../../../services/offerService";
+import {useEffect, useState} from "react";
+import {Container} from "react-bootstrap";
+import {getStudentById} from "../../../services/userService";
+import {useTranslation} from "react-i18next";
+import {Student, UserType} from "../../../model/user";
+import {Offer} from "../../../model/offer";
+import {getStudentOffersByDepartment} from "../../../services/offerService";
 import OffersList from "../../../components/OffersList";
-import { getUserId } from "../../../services/authService";
-import { useNavigate } from "react-router-dom";
+import {getUserId} from "../../../services/authService";
+import {useNavigate} from "react-router-dom";
 import FileUploader from "../../../components/FileUploader";
 import ApplicationsList from "../../../components/ApplicationsList";
-import { getApplicationsByStudentId } from "../../../services/studentApplicationService";
-import { getCvsByStudentId } from "../../../services/studentApplicationService";
-import { useCVContext } from "../../../contextsholders/providers/CVContextHolder";
-import { useSessionContext } from "../../../contextsholders/providers/SessionContextHolder";
+import {getApplicationsByStudentId} from "../../../services/applicationService";
+import {useCVContext} from "../../../contextsholders/providers/CVContextHolder";
+import {useSessionContext} from "../../../contextsholders/providers/SessionContextHolder";
 import SessionSelector from "../../../components/SessionSelector";
-import { useApplicationContext } from "../../../contextsholders/providers/ApplicationsContextHolder";
+import {useApplicationContext} from "../../../contextsholders/providers/ApplicationsContextHolder";
 import CVsList from "../../../components/CVsList";
+import {getCvsByStudentId} from "../../../services/cvService";
 
 interface StudentViewProps {
   viewOffers?: boolean;
   viewUpload?: boolean;
 }
 
-const StudentView = ({
-  viewOffers = true,
-  viewUpload = true,
-}: StudentViewProps) => {
+const StudentView = ({ viewOffers = true, viewUpload = true }: StudentViewProps) => {
   const [student, setStudent] = useState<Student>();
   const [offers, setOffers] = useState<Offer[]>([]);
   const [offersError, setOffersError] = useState<string>("");
@@ -34,9 +31,9 @@ const StudentView = ({
   const [applicationsError, setApplicationsError] = useState<string>("");
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { cvs, setCvs } = useCVContext();
-  const { applications, setApplications } = useApplicationContext();
-  const { chosenSession } = useSessionContext();
+  const {cvs, setCvs} = useCVContext();
+  const {applications, setApplications} = useApplicationContext();
+  const {chosenSession} = useSessionContext();
 
   useEffect(() => {
     if (student !== undefined) return;
@@ -119,9 +116,8 @@ const StudentView = ({
       )}
       <CVsList cvs={cvs} error={cvsError} userType={UserType.Student} />
       {viewUpload && <FileUploader student={student!} />}
-      <ApplicationsList applications={applications} error={applicationsError} />
+      <ApplicationsList applications={applications} error={applicationsError} userType={UserType.Student}/>
     </Container>
   );
 };
-
 export default StudentView;

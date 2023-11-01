@@ -6,7 +6,7 @@ import { Employer, UserType } from "../../../model/user";
 import { useNavigate } from "react-router";
 import { getUserId } from "../../../services/authService";
 import { getEmployerById } from "../../../services/userService";
-import { getAllOffersByEmployerId } from "../../../services/offerService";
+import { getAllOffersByEmployerIdAndSessionId } from "../../../services/offerService";
 import OffersList from "../../../components/OffersList";
 import { useSessionContext } from "../../../contextsholders/providers/SessionContextHolder";
 import SessionSelector from "../../../components/SessionSelector";
@@ -44,7 +44,7 @@ const EmployerView = () => {
     if (employer === undefined) return;
     if (chosenSession === undefined) return;
 
-    getAllOffersByEmployerId(employer.id!, chosenSession.id)
+    getAllOffersByEmployerIdAndSessionId(employer.id!, chosenSession.id)
       .then((res) => {
         setOffers(res.data);
       })
@@ -56,10 +56,18 @@ const EmployerView = () => {
   const seeApplications = (offer: Offer) => {
     setOfferApplication(offer);
   };
+  const updateAvailablePlaces = (offer: Offer) => {
+    let updatedOffers = offers.map((o) => {
+      if (o.id === offer.id)
+        return { ...o, availablePlaces: --o.availablePlaces };
+      return o;
+    });
+    setOffers(updatedOffers);
+  };
 
   return (
     <Container className="mt-3">
-      <SessionSelector seeApplications={seeApplications}/>
+      <SessionSelector />
       <OffersList
         offers={offers}
         error={error}
@@ -67,7 +75,11 @@ const EmployerView = () => {
         seeApplications={seeApplications}
       />
       {offerApplication !== undefined && (
-        <Applications offer={offerApplication} />
+        <Applications
+          offer={offerApplication}
+          userType={UserType.Employer}
+          updateAvailablePlaces={updateAvailablePlaces}
+        />
       )}
     </Container>
   );

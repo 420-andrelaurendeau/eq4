@@ -5,7 +5,6 @@ import { Col, Modal, Row } from "react-bootstrap";
 import { getEmployerById } from "../../../../services/userService";
 import { useTranslation } from "react-i18next";
 import { formatDate } from "../../../../services/formatService";
-
 import OfferButtons from "../OfferButtons";
 import { useSessionContext } from "../../../../contextsholders/providers/SessionContextHolder";
 

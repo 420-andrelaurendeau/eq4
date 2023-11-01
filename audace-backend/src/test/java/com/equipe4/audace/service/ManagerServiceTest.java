@@ -1,14 +1,18 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.ManagerDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
+import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
@@ -44,6 +48,8 @@ public class ManagerServiceTest {
     private CvRepository cvRepository;
     @Mock
     private SessionManipulator sessionManipulator;
+    @Mock
+    private ApplicationRepository applicationRepository;
     @InjectMocks
     private ManagerService managerService;
 
@@ -293,7 +299,7 @@ public class ManagerServiceTest {
         Department mockedDepartment = mock(Department.class);
         Student student = new Student(1L, "firstName", "lastName", "email", "password", "address", "phone", "studentNumber", mockedDepartment);
         List<Cv> listCvs = new ArrayList<>();
-        listCvs.add(new Cv(null, student, new byte[10], "cv"));
+        listCvs.add(new Cv(null, "cv", new byte[10], student));
 
         when(cvRepository.findAllByStudentDepartmentId(anyLong())).thenReturn(listCvs);
         when(sessionManipulator.removeCvsBelongingToStudentNotInSession(any(), anyLong())).thenReturn(listCvs);
@@ -323,22 +329,12 @@ public class ManagerServiceTest {
 
     @Test
     public void acceptCv() {
-        Student student = mock(Student.class);
-        Cv cv = new Cv(null, student, "Monkey Enthusiast needs more sleep".getBytes(), "cv");
-        Department department = new Department(2L, "code", "name");
-        Manager manager = new Manager(
-                1L,
-                "firstName",
-                "lastName",
-                "email",
-                "password",
-                "address",
-                "phone",
-                department
-        );
+        Cv cv = createCv();
+        Department department = createDepartment();
+        Manager manager = new Manager(1L, "firstName", "lastName", "email", "password", "address", "phone", department);
+
         when(cvRepository.findById(1L)).thenReturn(Optional.of(cv));
         when(cvRepository.save(any())).thenReturn(cv);
-        when(cv.getStudent().getDepartment()).thenReturn(department);
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
         Optional<CvDTO> cvDTO = managerService.acceptCv(1L, 1L);
@@ -358,22 +354,11 @@ public class ManagerServiceTest {
 
     @Test
     public void acceptCv_wrongDepartment() {
-        Student student = mock(Student.class);
-        Cv cv = new Cv(null, student, "Monkey Enthusiast needs more sleep".getBytes(), "cv");
-        Department department = new Department(2L, "code", "name");
+        Cv cv = createCv();
         Department department2 = new Department(3L, "code2", "name2");
-        Manager manager = new Manager(
-                1L,
-                "firstName",
-                "lastName",
-                "email",
-                "password",
-                "address",
-                "phone",
-                department2
-        );
+        Manager manager = new Manager(1L, "firstName", "lastName", "email", "password", "address", "phone", department2);
+
         when(cvRepository.findById(1L)).thenReturn(Optional.of(cv));
-        when(cv.getStudent().getDepartment()).thenReturn(department);
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
         assertThatThrownBy(() -> managerService.acceptCv(1L, 1L))
@@ -382,23 +367,13 @@ public class ManagerServiceTest {
     }
 
     @Test
-    public void refuseCv() {
-        Student student = mock(Student.class);
-        Cv cv = new Cv(null, student, "Monkey Enthusiast needs more sleep".getBytes(), "cv");
-        Department department = new Department(2L, "code", "name");
-        Manager manager = new Manager(
-                1L,
-                "firstName",
-                "lastName",
-                "email",
-                "password",
-                "address",
-                "phone",
-                department
-        );
+    public void refuseCv_HappyPath() {
+        Cv cv = createCv();
+        Department department = createDepartment();
+        Manager manager = new Manager(1L, "firstName", "lastName", "email", "password", "address", "phone", department);
+
         when(cvRepository.findById(1L)).thenReturn(Optional.of(cv));
         when(cvRepository.save(any())).thenReturn(cv);
-        when(cv.getStudent().getDepartment()).thenReturn(department);
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
         Optional<CvDTO> cvDTO = managerService.refuseCv(1L, 1L);
@@ -409,18 +384,14 @@ public class ManagerServiceTest {
             assert(false);
         }
     }
-
     @Test
     public void refuseCv_Invalid_Id() {
         when(cvRepository.findById(1L)).thenThrow(EntityNotFoundException.class);
         assertThrows(EntityNotFoundException.class, () -> managerService.refuseCv(1L, 1L));
     }
-
     @Test
     public void refuseCv_wrongDepartment() {
-        Student student = mock(Student.class);
-        Cv cv = new Cv(null, student, "Monkey Enthusiast needs more sleep".getBytes(), "cv");
-        Department department = new Department(2L, "code", "name");
+        Cv cv = createCv();
         Department department2 = new Department(3L, "code2", "name2");
         Manager manager = new Manager(
                 1L,
@@ -433,11 +404,86 @@ public class ManagerServiceTest {
                 department2
         );
         when(cvRepository.findById(1L)).thenReturn(Optional.of(cv));
-        when(cv.getStudent().getDepartment()).thenReturn(department);
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
         assertThatThrownBy(() -> managerService.refuseCv(1L, 1L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("The manager isn't in the right department");
+    }
+    @Test
+    public void getAcceptedApplicationsByDepartment_happyPath() {
+        List<Application> applications = new ArrayList<>();
+        Department department = new Department(1L, "code", "name");
+        Student student = new Student(1L, "firstName", "lastName", "email", "password", "address", "phone", "studentNumber", department);
+        Cv cv = new Cv(1L, "cv.pdf", "Monkey Enthusiast has OK sleep now".getBytes(), student);
+        Employer employer = new Employer(1L, "Employer1", "Employer1", "email", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
+        Offer offer = new Offer(1L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, department, employer);
+        applications.add(new Application(1L, cv, offer));
+
+        when(applicationRepository.findApplicationsByApplicationStatusAndOfferDepartmentId(any(), anyLong())).thenReturn(applications);
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.of(new Manager(1L, "firstName", "lastName", "email", "password", "address", "phone", department)));
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(department));
+
+        List<ApplicationDTO> result = managerService.getAcceptedApplicationsByDepartment(1L, 1L);
+
+        assertThat(result.size()).isEqualTo(1);
+    }
+    @Test
+    public void getAcceptedApplicationsByDepartment_invalidManager() {
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(new Department(1L, "code", "name")));
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> managerService.getAcceptedApplicationsByDepartment(1L, 1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Manager is not found");
+    }
+    @Test
+    public void getAcceptedApplicationsByDepartment_invalidDepartment() {
+        Manager mockedManager = mock(Manager.class);
+        when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> managerService.getAcceptedApplicationsByDepartment(1L, 1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Department not found");
+    }
+    @Test
+    public void getDepartmentByManager_happyPath() {
+        Department department = new Department(1L, "code", "name");
+        Manager manager = new Manager(1L, "firstName", "lastName", "email", "password", "address", "phone", department);
+
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
+
+        DepartmentDTO result = managerService.getDepartmentByManager(1L);
+
+        assertThat(result.getId()).isEqualTo(1L);
+        assertThat(result.getCode()).isEqualTo("code");
+        assertThat(result.getName()).isEqualTo("name");
+    }
+    @Test
+    public void getDepartmentByManager_invalidManager() {
+        assertThatThrownBy(() -> managerService.getDepartmentByManager(1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Manager not found with ID: " + 1L);
+    }
+
+    private Department createDepartment(){
+        return new Department(1L, "GLO", "Génie logiciel");
+    }
+
+    private Employer createEmployer() {
+        return new Employer(1L, "Employer1", "Employer1", "employer1@gmail.com", "123456eE", "Organisation1", "Position1", "Class Service, Javatown, Qc H8N1C1", "123-456-7890", "12345");
+    }
+    private Student createStudent() {
+        Department department = createDepartment();
+        return new Student(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", department);
+    }
+
+    private Cv createCv() {
+        return new Cv(1L,"fileName", "content".getBytes(),createStudent());
+    }
+
+    private Offer createOffer(Long id, Employer employer) {
+        Department department = createDepartment();
+        return new Offer(id,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
     }
 }

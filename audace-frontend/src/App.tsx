@@ -1,12 +1,7 @@
 import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
 import SignupView from "./views/Signup";
 import { UserType } from "./model/user";
 import AppHeader from "./components/AppHeader";
@@ -31,24 +26,14 @@ function App() {
       <Router>
         <AppHeader />
         <Routes>
-          <Route
-            path="/signup/*"
-            element={
+          <Route path="/signup/*" element={
               <Routes>
-                <Route
-                  path="employer"
-                  element={<SignupView userType={UserType.Employer} />}
-                />
-                <Route
-                  path="student/:depCode"
-                  element={<SignupView userType={UserType.Student} />}
-                />
+                <Route path="employer" element={<SignupView userType={UserType.Employer} />}/>
+                <Route path="student/:depCode" element={<SignupView userType={UserType.Student} />}/>
               </Routes>
             }
           />
-          <Route
-            path="/login/*"
-            element={
+          <Route path="/login/*" element={
               <ConnectedRoute isConnectedRoute={false}>
                 <Routes>
                   <Route index element={<LoginView />} />
@@ -57,30 +42,18 @@ function App() {
                   <Route path="*" element={<PageNotFoundView />} />
                 </Routes>
               </ConnectedRoute>
-            }
-          />
-          <Route
-            path="/student/*"
-            element={
+          }/>
+          <Route path="/student/*" element={
               <AuthorizedRoute requiredAuthority={Authority.STUDENT}>
                 <Routes>
                   <Route index element={<StudentView />} />
-                  <Route
-                    path="offers"
-                    element={<StudentView viewUpload={false} />}
-                  />
-                  <Route
-                    path="upload"
-                    element={<StudentView viewOffers={false} />}
-                  />
+                  <Route path="offers" element={<StudentView viewUpload={false} />}/>
+                  <Route path="upload" element={<StudentView viewOffers={false} />}/>
                   <Route path="*" element={<PageNotFoundView />} />
                 </Routes>
               </AuthorizedRoute>
-            }
-          />
-          <Route
-            path="/manager/*"
-            element={
+          }/>
+          <Route path="/manager/*" element={
               <AuthorizedRoute requiredAuthority={Authority.MANAGER}>
                 <Routes>
                   <Route index element={<ManagerView />} />
@@ -89,11 +62,8 @@ function App() {
                   <Route path="*" element={<PageNotFoundView />} />
                 </Routes>
               </AuthorizedRoute>
-            }
-          />
-          <Route
-            path="/employer/*"
-            element={
+          }/>
+          <Route path="/employer/*" element={
               <AuthorizedRoute requiredAuthority={Authority.EMPLOYER}>
                 <Routes>
                   <Route index element={<EmployerView />} />
@@ -102,21 +72,12 @@ function App() {
                   <Route path="*" element={<PageNotFoundView />} />
                 </Routes>
               </AuthorizedRoute>
-            }
-          />
+          }/>
           <Route path="*" element={<PageNotFoundView />} />
-          <Route
-            path="/"
-            element={
-              <Navigate
-                to={getAuthorities()?.[0]?.toString().toLowerCase() || "/login"}
-              />
-            }
-          />
+          <Route path="/" element={<Navigate to={getAuthorities()?.[0]?.toString().toLowerCase() || "/login"}/>}/>
         </Routes>
       </Router>
     </ProviderWrapper>
   );
 }
-
 export default App;

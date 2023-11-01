@@ -29,6 +29,7 @@ public class Offer {
     private LocalDate internshipStartDate;
     private LocalDate internshipEndDate;
     private LocalDate offerEndDate;
+    private OfferStatus offerStatus;
     private int availablePlaces;
 
     @ManyToOne
@@ -45,25 +46,15 @@ public class Offer {
     @OneToMany(mappedBy = "offer", cascade = CascadeType.ALL)
     private List<Application> applications = new ArrayList<>();
 
-    private OfferStatus offerStatus;
-
     public enum OfferStatus {
         PENDING,
         ACCEPTED,
         REFUSED
     }
 
-    public Offer(
-            Long id,
-            String title,
-            String description,
-            LocalDate internshipStartDate,
-            LocalDate internshipEndDate,
-            LocalDate offerEndDate,
-            int availablePlaces,
-            Department department,
-            Employer employer
-    ) {
+    public Offer(Long id, String title, String description, LocalDate internshipStartDate,
+                 LocalDate internshipEndDate, LocalDate offerEndDate, int availablePlaces,
+                 Department department, Employer employer) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -71,23 +62,12 @@ public class Offer {
         this.internshipEndDate = internshipEndDate;
         this.offerEndDate = offerEndDate;
         this.availablePlaces = availablePlaces;
+        this.offerStatus = OfferStatus.PENDING;
         this.department = department;
         this.employer = employer;
-        this.offerStatus = OfferStatus.PENDING;
     }
 
     public OfferDTO toDTO(){
-        return new OfferDTO(
-                id,
-                title,
-                description,
-                internshipStartDate,
-                internshipEndDate,
-                offerEndDate,
-                availablePlaces,
-                offerStatus,
-                department.toDTO(),
-                employer.toDTO()
-        );
+        return new OfferDTO(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, availablePlaces, offerStatus, department.toDTO(), employer.toDTO());
     }
 }
