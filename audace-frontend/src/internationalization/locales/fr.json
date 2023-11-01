@@ -41,7 +41,7 @@
     },
     "name": "CV",
     "viewMore": "Voir le CV",
-    "noCvs": "Aucun CV disponible",	
+    "noCvs": "Aucun CV disponible",
     "studentName": "Étudiant"
   },
   "offersList": {
@@ -51,6 +51,7 @@
     "title": "Titre",
     "internshipEndDate": "Date de fin",
     "internshipStartDate": "Date de début",
+    "availablePlaces": "Places Disponibles",
     "noOffers": "Aucun offre disponible",
     "viewTitle": "Offres disponibles",
     "viewMore": "Afficher plus",
@@ -99,7 +100,7 @@
     "REFUSED": "Refusé",
     "noMorePendingCvs": "Il n'y a plus de CV en attente"
   },
-  "employerCvsList": {
+  "employerApplicationsList": {
     "title": "Applications",
     "acceptButton": "Accepter",
     "refuseButton": "Refuser",
@@ -182,6 +183,9 @@
   "applicationsList": {
     "title": "Les applications soumises",
     "offerTitle": "Titre de la position",
+    "acceptedListTitle": "Applications acceptées",
+    "SearchPlaceholder" : "Recherchez par Titre d'Offre, Organisation ou Étudiant...",
+    "noAcceptedApplications": "Aucune application acceptée...",
     "organization": "Organisation",
     "status": "État",
     "cv": "CV",

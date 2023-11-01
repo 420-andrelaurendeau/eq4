@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { Offer } from "../../../../../model/offer";
 import { useNavigate } from "react-router-dom";
-import { deleteOffer } from "../../../../../services/offerService";
+import { employerDeleteOffer } from "../../../../../services/offerService";
 
 interface Props {
   disabled: boolean;
@@ -43,7 +43,7 @@ const EmployerButtons = ({
     setIsDeleting(true);
 
     try {
-      const response = await deleteOffer(offer.id);
+      const response = await employerDeleteOffer(offer.id);
 
       if (response.status !== 200) {
         throw new Error(`Failed to delete offer. Status: ${response.status}`);
@@ -82,7 +82,6 @@ const EmployerButtons = ({
       </Button>
       {seeApplications !== undefined ? (
         <Button
-          disabled={disabled}
           onClick={seeApplicationsButtonClick}
           variant="outline-success"
           className="ms-2 text-dark"

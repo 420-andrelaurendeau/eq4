@@ -4,21 +4,25 @@ import { useTranslation } from "react-i18next";
 import { Offer, OfferStatus } from "../../model/offer";
 import { Department } from "../../model/department";
 import { Employer } from "../../model/user";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import http from "../../constants/http";
 import { getAllDepartments } from "../../services/departmentService";
 import { getEmployersOfferById } from "../../services/offerService";
 import FormInput from "../FormInput";
-
-
 
 const EditOffer: React.FC = () => {
   const { t } = useTranslation();
 
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [department, setDepartment] = useState<Department>({ id: 1, code: "GLO", name: "Genie" } as Department);
-  const [internshipStartDate, setInternshipStartDate] = useState<Date>({} as Date);
+  const [department, setDepartment] = useState<Department>({
+    id: 1,
+    code: "GLO",
+    name: "Genie",
+  } as Department);
+  const [internshipStartDate, setInternshipStartDate] = useState<Date>(
+    {} as Date
+  );
   const [internshipEndDate, setInternshipEndDate] = useState<Date>({} as Date);
   const [offerEndDate, setOfferEndDate] = useState<Date>({} as Date);
   const [availablePlaces, setAvailablePlaces] = useState<number>(3);
@@ -48,7 +52,10 @@ const EditOffer: React.FC = () => {
 
         setTitle(offerData.title);
         setDescription(offerData.description);
-        setDepartment(offerData.department || { id: 1, code: "GLO", name: "Genie" } as Department);
+        setDepartment(
+          offerData.department ||
+            ({ id: 1, code: "GLO", name: "Genie" } as Department)
+        );
         setInternshipStartDate(new Date(offerData.internshipStartDate));
         setInternshipEndDate(new Date(offerData.internshipEndDate));
         setOfferEndDate(new Date(offerData.offerEndDate));
@@ -58,8 +65,6 @@ const EditOffer: React.FC = () => {
         console.error("There was an error fetching the offer:", error);
       });
   }, []);
-
-
 
   const formatDateForInput = (date: Date | null): string => {
     if (date instanceof Date) {
@@ -77,19 +82,28 @@ const EditOffer: React.FC = () => {
     const errorsToDisplay: string[] = [];
 
     if (!title) errorsToDisplay.push("addOffer.errors.titleRequired");
-    if (!description) errorsToDisplay.push("addOffer.errors.descriptionRequired");
-    if (!department) errorsToDisplay.push("addOffer.errors.departmentCodeRequired");
+    if (!description)
+      errorsToDisplay.push("addOffer.errors.descriptionRequired");
+    if (!department)
+      errorsToDisplay.push("addOffer.errors.departmentCodeRequired");
 
-    if (!isValidDate(internshipStartDate)) errorsToDisplay.push("addOffer.errors.invalidStartDate");
-    if (!isValidDate(internshipEndDate)) errorsToDisplay.push("addOffer.errors.invalidEndDate");
-    if (!isValidDate(offerEndDate)) errorsToDisplay.push("addOffer.errors.invalidOfferEndDate");
-    if (internshipEndDate <= internshipStartDate) errorsToDisplay.push("addOffer.errors.endDateBeforeStartDate");
-    
+    if (!isValidDate(internshipStartDate))
+      errorsToDisplay.push("addOffer.errors.invalidStartDate");
+    if (!isValidDate(internshipEndDate))
+      errorsToDisplay.push("addOffer.errors.invalidEndDate");
+    if (!isValidDate(offerEndDate))
+      errorsToDisplay.push("addOffer.errors.invalidOfferEndDate");
+    if (internshipEndDate <= internshipStartDate)
+      errorsToDisplay.push("addOffer.errors.endDateBeforeStartDate");
+
     setErrors(errorsToDisplay);
     return errorsToDisplay.length === 0;
   };
 
-  const handleDateChange = (setter: React.Dispatch<React.SetStateAction<Date>>, value: string) => {
+  const handleDateChange = (
+    setter: React.Dispatch<React.SetStateAction<Date>>,
+    value: string
+  ) => {
     const newDate = new Date(value);
     if (isValidDate(newDate)) {
       setter(newDate);
@@ -121,22 +135,28 @@ const EditOffer: React.FC = () => {
 
   const editOffer = async (updatedOffer: Offer, id: number) => {
     try {
-      const response = await http.put(`/employers/${employer.id}/offers`, updatedOffer);
+      const response = await http.put(
+        `/employers/offers`,
+        updatedOffer
+      );
 
       if (response.status !== 200) {
-        throw new Error(`Backend returned code ${response.status}, body: ${response.statusText}`);
+        throw new Error(
+          `Backend returned code ${response.status}, body: ${response.statusText}`
+        );
       }
-
-      const responseData = response.data;
     } catch (error) {
       console.error("There was an error sending the data:", error);
     }
   };
 
-
   const renderDateInputError = (formError: string) => {
     if (errors.includes(formError)) {
-      return <Form.Control.Feedback type="invalid">{t(formError)}</Form.Control.Feedback>;
+      return (
+        <Form.Control.Feedback type="invalid">
+          {t(formError)}
+        </Form.Control.Feedback>
+      );
     }
     return null;
   };
@@ -144,8 +164,7 @@ const EditOffer: React.FC = () => {
   return (
     <>
       <h3 className="text-center">{t("editOffer.pageTitle")}</h3>
-      {
-      errors.length > 0 && (
+      {errors.length > 0 && (
         <div className="mb-4">
           <Alert variant="danger">
             {errors.map((error, index) => (
@@ -153,8 +172,7 @@ const EditOffer: React.FC = () => {
             ))}
           </Alert>
         </div>
-      )
-    }
+      )}
       <Form className="container mt-5">
         <Row>
           <FormInput
@@ -162,7 +180,9 @@ const EditOffer: React.FC = () => {
             value={title}
             onChange={(e: any) => setTitle(e.target.value)}
             errors={errors}
-            formError="error.title.required" controlId={""} />
+            formError="error.title.required"
+            controlId={""}
+          />
         </Row>
         <Row>
           <FormInput
@@ -170,13 +190,30 @@ const EditOffer: React.FC = () => {
             value={description}
             onChange={(e: any) => setDescription(e.target.value)}
             errors={errors}
-            formError="error.description.required" controlId={""} />
+            formError="error.description.required"
+            controlId={""}
+          />
         </Row>
         <Row>
           <Col>
             <Form.Group controlId="formDepartment">
               <Form.Label>{t("addOffer.departmentCode")}</Form.Label>
-              <Form.Control as="select" value={department?.id || ""} onChange={(e: any) => setDepartment(departments.find(d => d.id === parseInt(e.target.value)) || {id: 1, name: "Genie Logiciel", code: "GLO"} as Department)}>
+              <Form.Control
+                as="select"
+                value={department?.id || ""}
+                onChange={(e: any) =>
+                  setDepartment(
+                    departments.find(
+                      (d) => d.id === parseInt(e.target.value)
+                    ) ||
+                      ({
+                        id: 1,
+                        name: "Genie Logiciel",
+                        code: "GLO",
+                      } as Department)
+                  )
+                }
+              >
                 {departments.map((dept: Department) => (
                   <option key={dept.id} value={dept.id}>
                     {dept.name}
@@ -193,7 +230,9 @@ const EditOffer: React.FC = () => {
               <Form.Control
                 type="date"
                 value={formatDateForInput(internshipStartDate)}
-                onChange={(e) => handleDateChange(setInternshipStartDate, e.target.value)}
+                onChange={(e) =>
+                  handleDateChange(setInternshipStartDate, e.target.value)
+                }
               />
               {renderDateInputError("addOffer.errors.startDateRequired")}
             </Form.Group>
@@ -205,7 +244,9 @@ const EditOffer: React.FC = () => {
               <Form.Control
                 type="date"
                 value={formatDateForInput(internshipEndDate)}
-                onChange={(e) => handleDateChange(setInternshipEndDate, e.target.value)}
+                onChange={(e) =>
+                  handleDateChange(setInternshipEndDate, e.target.value)
+                }
               />
               {renderDateInputError("addOffer.errors.endDateRequired")}
               {renderDateInputError("addOffer.errors.endDateBeforeStartDate")}
@@ -218,7 +259,9 @@ const EditOffer: React.FC = () => {
               <Form.Control
                 type="date"
                 value={formatDateForInput(offerEndDate)}
-                onChange={(e) => handleDateChange(setOfferEndDate, e.target.value)}
+                onChange={(e) =>
+                  handleDateChange(setOfferEndDate, e.target.value)
+                }
               />
               {renderDateInputError("addOffer.errors.offerEndDateRequired")}
             </Form.Group>
@@ -228,13 +271,19 @@ const EditOffer: React.FC = () => {
           <Col>
             <Form.Group controlId="formAvailablePlaces">
               <Form.Label>{t("addOffer.availablePlaces")}</Form.Label>
-              <Form.Control type="number" value={availablePlaces} onChange={(e: any) => setAvailablePlaces(e.target.value)} />
+              <Form.Control
+                type="number"
+                value={availablePlaces}
+                onChange={(e: any) => setAvailablePlaces(e.target.value)}
+              />
             </Form.Group>
           </Col>
         </Row>
         <Row>
           <Col className="mt-3">
-            <Button variant="primary" onClick={handleSubmit}>{t("editOffer.submit")}</Button>
+            <Button variant="primary" onClick={handleSubmit}>
+              {t("editOffer.submit")}
+            </Button>
           </Col>
         </Row>
       </Form>

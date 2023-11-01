@@ -36,42 +36,34 @@ const OfferRow = ({
   };
 
   const handleClose = () => setShow(false);
+  const hideRow = () => setIsVisible(false);
 
-  const hideRow = () => {
-    setIsVisible(false);
-  };
-
-  if (!isVisible) {
-    return null;
-  }
+  if (!isVisible) return null;
 
   return (
     <>
-      <tr className="hovered" onClick={handleClick}>
+      <tr>
         <td>
           <Col className="h5">{offer.title}</Col>
           <Col className="text-muted small mt-2">
-            <u>{t("offersList.viewMore")}</u>
+            <u className="hovered" onClick={handleClick}>{t("offersList.viewMore")}</u>
           </Col>
         </td>
         <td>{formatDate(offer.internshipStartDate)}</td>
         <td>{formatDate(offer.internshipEndDate)}</td>
+        <td>{offer.availablePlaces}</td>
         {chosenSession?.id === currentSession?.id && (
-          <td
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <OfferButtons
-              userType={userType}
-              disabled={disabled}
-              offer={offer}
-              updateOffersState={updateOffersState}
-              seeApplications={seeApplications}
-              hideRow={hideRow}
-            />
+          <td>
+            <div className="d-flex justify-content-center">
+              <OfferButtons
+                userType={userType}
+                disabled={disabled}
+                offer={offer}
+                updateOffersState={updateOffersState}
+                seeApplications={seeApplications}
+                hideRow={hideRow}
+              />
+            </div>
           </td>
         )}
       </tr>
