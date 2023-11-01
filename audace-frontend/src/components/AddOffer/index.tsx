@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Alert, Button, Form, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import FormInput from "../Signup/FormInput";
 import { Offer } from "../../model/offer";
 import { Department } from "../../model/department";
 import { OfferStatus } from "../../model/offer";
@@ -11,6 +10,7 @@ import { getUserId } from "../../services/authService";
 import { getEmployerById } from "../../services/userService";
 import { employerCreateOffer } from "../../services/offerService";
 import { getAllDepartments } from "../../services/departmentService";
+import FormInput from "../FormInput";
 
 const AddOffer: React.FC = () => {
   const { t } = useTranslation();

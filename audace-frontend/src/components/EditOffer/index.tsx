@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Alert, Button, Form, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import FormInput from "../Signup/FormInput";
 import { Offer, OfferStatus } from "../../model/offer";
 import { Department } from "../../model/department";
 import { Employer } from "../../model/user";
@@ -9,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import http from "../../constants/http";
 import { getAllDepartments } from "../../services/departmentService";
 import { getEmployersOfferById } from "../../services/offerService";
+import FormInput from "../FormInput";
 
 
 
