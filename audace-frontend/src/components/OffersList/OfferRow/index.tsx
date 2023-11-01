@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Offer, OfferStatus } from "../../../model/offer";
 import OfferModal from "./OfferModal";
 import "./styles.css";

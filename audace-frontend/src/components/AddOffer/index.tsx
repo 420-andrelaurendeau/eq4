@@ -21,7 +21,6 @@ const AddOffer: React.FC = () => {
   const [internshipEndDate, setInternshipEndDate] = useState<Date>({} as Date);
   const [offerEndDate, setOfferEndDate] = useState<Date>({} as Date);
   const [availablePlaces, setAvailablePlaces] = useState<number>(3);
-  const [status, setStatus] = useState<OfferStatus>(OfferStatus.PENDING);
   const [employer, setEmployer] = useState<Employer>({} as Employer);
   const [errors, setErrors] = useState<string[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);

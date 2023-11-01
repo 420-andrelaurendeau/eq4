@@ -29,7 +29,6 @@ const EditOffer: React.FC = () => {
   const [errors, setErrors] = useState<string[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
   const [employer, setEmployer] = useState<Employer>({} as Employer);
-  const [status, setStatus] = useState<OfferStatus>(OfferStatus.PENDING);
 
   const navigate = useNavigate();
 
@@ -78,7 +77,6 @@ const EditOffer: React.FC = () => {
   }
 
   const validateForm = (): boolean => {
-    let isValid = true;
     const errorsToDisplay: string[] = [];
 
     if (!title) errorsToDisplay.push("addOffer.errors.titleRequired");
@@ -114,7 +112,7 @@ const EditOffer: React.FC = () => {
     if (validateForm()) {
       const paths = window.location.pathname.split("/");
       const offerId = paths[paths.length - 1];
-      const employerId = paths[paths.length - 3];
+      // const employerId = paths[paths.length - 3];
 
       const updatedOffer: Offer = {
         id: parseInt(offerId),
@@ -126,7 +124,7 @@ const EditOffer: React.FC = () => {
         offerEndDate,
         availablePlaces,
         employer,
-        offerStatus: status as OfferStatus,
+        offerStatus: OfferStatus.PENDING,
       };
       editOffer(updatedOffer, parseInt(offerId));
       navigate(`/employer`);
