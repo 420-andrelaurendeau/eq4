@@ -56,39 +56,39 @@ const EmployerSignup = () => {
   };
 
   return (
-      <>
-        <h3>{t("signup.employerFormTitle")}</h3>
-        <Form>
-          <Row>
-            <FormInput
-                label="signup.companyNameEntry"
-                value={organisation}
-                onChange={(e) => setOrganisation(e.target.value)}
-                errors={errors}
-                formError="signup.errors.organisation"
-                controlId="formBasicCompanyName"
-            />
-
-            <FormInput
-                label="signup.positionEntry"
-                value={position}
-                onChange={(e) => setPosition(e.target.value)}
-                errors={errors}
-                formError="signup.errors.position"
-                controlId="formBasicPosition"
-            />
-          </Row>
-
-          <Signup
-              handleSubmit={handleSubmit}
-              extension={extension}
-              setExtension={setExtension}
-              validateExtraFormValues={validateForm}
-              errors={errors}
-              setErrors={setErrors}
+    <>
+      <h3>{t("signup.employerFormTitle")}</h3>
+      <Form>
+        <Row>
+          <FormInput
+            label="signup.companyNameEntry"
+            value={organisation}
+            onChange={(e) => setOrganisation(e.target.value)}
+            errors={errors}
+            formError="signup.errors.organisation"
+            controlId="formBasicCompanyName"
           />
-        </Form>
-      </>
+
+          <FormInput
+            label="signup.positionEntry"
+            value={position}
+            onChange={(e) => setPosition(e.target.value)}
+            errors={errors}
+            formError="signup.errors.position"
+            controlId="formBasicPosition"
+          />
+        </Row>
+
+        <Signup
+          handleSubmit={handleSubmit}
+          extension={extension}
+          setExtension={setExtension}
+          validateExtraFormValues={validateForm}
+          errors={errors}
+          setErrors={setErrors}
+        />
+      </Form>
+    </>
   );
 };
 

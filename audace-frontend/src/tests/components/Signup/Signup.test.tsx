@@ -46,7 +46,7 @@ it("should render default form values", () => {
   expect(phoneInput).not.toBeUndefined();
 });
 
-it("should display errors on faulty submit assuming submit already done", async () => {
+it("should display errors on faulty submit", async () => {
   const { rerender } = render(
     <Signup
       handleSubmit={(user: User) => new Promise((resolve) => {})}
