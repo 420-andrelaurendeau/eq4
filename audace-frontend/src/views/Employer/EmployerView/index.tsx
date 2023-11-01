@@ -56,6 +56,7 @@ const EmployerView = () => {
   const seeApplications = (offer: Offer) => {
     setOfferApplication(offer);
   };
+
   const updateAvailablePlaces = (offer: Offer) => {
     let updatedOffers = offers.map((o) => {
       if (o.id === offer.id)
@@ -67,7 +68,7 @@ const EmployerView = () => {
 
   return (
     <Container className="mt-3">
-      <SessionSelector />
+      <SessionSelector seeApplications={seeApplications}/>
       <OffersList
         offers={offers}
         error={error}
