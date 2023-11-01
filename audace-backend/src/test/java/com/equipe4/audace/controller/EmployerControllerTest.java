@@ -41,14 +41,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -190,8 +187,8 @@ public class EmployerControllerTest {
 
         // when -  action or the behaviour that we are going test
         mockMvc.perform(get("/employers/offers/{sessionId}", 1L)
-                .param("employerId", "1"))
-        // then - verify the output
+                        .param("employerId", "1"))
+                // then - verify the output
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("$.size()", is(listOfOffers.size())));
@@ -243,7 +240,7 @@ public class EmployerControllerTest {
 
         // when -  action or the behaviour that we are going test
         mockMvc.perform(get("/employers/applications/{offerId}", 1L)
-                .param("employerId", "1"))
+                        .param("employerId", "1"))
                 // then - verify the output
                 .andExpect(status().isOk())
                 .andDo(print())

@@ -218,7 +218,7 @@ public class EmployerServiceTest {
 
         assertThatThrownBy(() -> employerService.deleteOffer(1L))
                 .isInstanceOf(NoSuchElementException.class)
-                .hasMessage("No value present");
+                .hasMessage("Offer not found");
     }
 
     @Test

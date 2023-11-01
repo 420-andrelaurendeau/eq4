@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+
 @Service
 public class EmployerService extends GenericUserService<Employer> {
     private final EmployerRepository employerRepository;
@@ -98,16 +99,6 @@ public class EmployerService extends GenericUserService<Employer> {
                 .map(Offer::toDTO)
                 .toList();
     }
-    public Optional<OfferDTO> updateOffer(OfferDTO offerDTO) {
-        Offer offer = offerRepository.findById(offerDTO.getId()).orElseThrow(() -> new NoSuchElementException("Offer with ID " + offerDTO.getId() + " not found."));
-
-        offer.setTitle(offerDTO.getTitle());
-        offer.setDescription(offerDTO.getDescription());
-        offer.setInternshipStartDate(offerDTO.getInternshipStartDate());
-        offer.setInternshipEndDate(offerDTO.getInternshipEndDate());
-        offer.setOfferEndDate(offerDTO.getOfferEndDate());
-        offer.setAvailablePlaces(offerDTO.getAvailablePlaces());
-        offer.setDepartment(departmentRepository.findByCode(offerDTO.getDepartmentCode()).orElseThrow());
 
     public Optional<OfferDTO> findOfferById(Long offerId){
         return offerRepository.findById(offerId).map(Offer::toDTO);

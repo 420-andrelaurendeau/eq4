@@ -45,7 +45,7 @@ public class ManagerService extends GenericUserService<Manager> {
             OfferRepository offerRepository,
             DepartmentRepository departmentRepository,
             CvRepository cvRepository,
-            ContractRepository contractRepository
+            ContractRepository contractRepository,
             SessionManipulator sessionManipulator,
             ApplicationRepository applicationRepository
     ) {
