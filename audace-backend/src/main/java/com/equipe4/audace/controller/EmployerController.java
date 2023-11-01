@@ -3,6 +3,7 @@ package com.equipe4.audace.controller;
 import com.equipe4.audace.controller.abstracts.GenericUserController;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.service.EmployerService;
@@ -25,6 +26,14 @@ public class EmployerController extends GenericUserController<Employer, Employer
     public ResponseEntity<EmployerDTO> getEmployerById(@PathVariable Long employerId){
         logger.info("getEmployerById");
         return service.findEmployerById(employerId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/offers")
+    public ResponseEntity<OfferDTO> getOfferById(@RequestParam("offerId") Long offerId){
+        logger.info("getOfferById");
+        return service.getOfferById(offerId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -73,5 +82,11 @@ public class EmployerController extends GenericUserController<Employer, Employer
         return service.refuseApplication(employerId, applicationId)
                 .map(applicationDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    }
+
+    @GetMapping("/departments")
+    public ResponseEntity<List<DepartmentDTO>> getAllDepartments() {
+        logger.info("getAllDepartments");
+        return ResponseEntity.ok(service.getAllDepartments());
     }
 }

@@ -5,39 +5,52 @@ import { acceptCv, refuseCv } from "../../../../../services/cvService";
 import { getUserId } from "../../../../../services/authService";
 
 interface Props {
-    disabled? : boolean;
-    cv : CV;
-    updateCvsState?: (cv : CV, cvStatus : CVStatus) => void;
+  disabled?: boolean;
+  cv: CV;
+  updateCvsState?: (cv: CV, cvStatus: CVStatus) => void;
 }
 
-const ManagerButtons = ({disabled, cv, updateCvsState}: Props) => {
-    const {t} = useTranslation();
+const ManagerButtons = ({ disabled, cv, updateCvsState }: Props) => {
+  const { t } = useTranslation();
 
-    const acceptButtonClick = (event : React.MouseEvent<HTMLElement>) => {
-        event.stopPropagation();
-        acceptCv(cv.id!)
-            .then((_) => {
-                updateCvsState!(cv, CVStatus.ACCEPTED);
-            }
-        );
-    }
+  const acceptButtonClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    acceptCv(parseInt(getUserId()!), cv.id!).then((_) => {
+      updateCvsState!(cv, CVStatus.ACCEPTED);
+    });
+  };
 
-    const refuseButtonClick = (event : React.MouseEvent<HTMLElement>) => {
-        event.stopPropagation();
-        refuseCv(cv.id!)
-            .then((_) => {
-                updateCvsState!(cv, CVStatus.REFUSED);
-            }
-        );
-    }
+  const refuseButtonClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    refuseCv(parseInt(getUserId()!), cv.id!).then((_) => {
+      updateCvsState!(cv, CVStatus.REFUSED);
+    });
+  };
 
-    return (
+  return (
+    <>
+      {cv.cvStatus === CVStatus.PENDING ? (
         <>
-            {cv.cvStatus === CVStatus.PENDING ?
-            (<><Button disabled={disabled} onClick={acceptButtonClick} className="btn-success me-2">{t("managerCvsList.acceptButton")}</Button>
-            <Button disabled={disabled} onClick={refuseButtonClick} className="btn-danger">{t("managerCvsList.refuseButton")}</Button></>) : <p>{t("managerCvsList." + cv.cvStatus)}</p>}
+          <Button
+            disabled={disabled}
+            onClick={acceptButtonClick}
+            className="btn-success me-2"
+          >
+            {t("managerCvsList.acceptButton")}
+          </Button>
+          <Button
+            disabled={disabled}
+            onClick={refuseButtonClick}
+            className="btn-danger"
+          >
+            {t("managerCvsList.refuseButton")}
+          </Button>
         </>
-    );
+      ) : (
+        <p>{t("managerCvsList." + cv.cvStatus)}</p>
+      )}
+    </>
+  );
 };
 
 export default ManagerButtons;
