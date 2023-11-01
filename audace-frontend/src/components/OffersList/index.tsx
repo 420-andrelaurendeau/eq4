@@ -6,14 +6,20 @@ import GenericTable from "../GenericTable";
 import { useSessionContext } from "../../contextsholders/providers/SessionContextHolder";
 
 interface Props {
-    offers: Offer[];
-    error: string;
-    userType: UserType;
-    updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
-    seeApplications?: (offer: Offer) => void;
+  offers: Offer[];
+  error: string;
+  userType: UserType;
+  updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
+  seeApplications?: (offer: Offer) => void;
 }
 
-const OffersList = ({ offers, error, userType, updateOffersState, seeApplications }: Props) => {
+const OffersList = ({
+  offers,
+  error,
+  userType,
+  updateOffersState,
+  seeApplications,
+}: Props) => {
   const { t } = useTranslation();
   const { chosenSession, currentSession } = useSessionContext();
 
