@@ -1,18 +1,17 @@
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import {
-  apply,
-  getCvsByStudentId,
-} from "../../../../../services/studentApplicationService";
-import React, { useEffect, useState } from "react";
+import {studentApplyToOffer, getApplicationsByStudentId} from "../../../../../services/applicationService";
+import { useEffect, useState } from "react";
 import { getUserId } from "../../../../../services/authService";
 import { Offer } from "../../../../../model/offer";
-import { Student } from "../../../../../model/user";
 import Application from "../../../../../model/application";
 import { useCVContext } from "../../../../../contextsholders/providers/CVContextHolder";
+import { useApplicationContext } from "../../../../../contextsholders/providers/ApplicationsContextHolder";
+import { useSessionContext } from "../../../../../contextsholders/providers/SessionContextHolder";
+import {getCvsByStudentId} from "../../../../../services/cvService";
 
 interface Props {
-  disabled?: boolean;
+  disabled: boolean;
   offer: Offer;
 }
 
@@ -22,18 +21,33 @@ const StudentButtons = ({ disabled, offer }: Props) => {
   const [applicationMessageColor, setApplicationMessageColor] = useState("");
   const studentId = getUserId();
   const { cvs, setCvs } = useCVContext();
+  const { applications, setApplications } = useApplicationContext();
+  const { chosenSession } = useSessionContext();
+
+  const isButtonDisabled = (): boolean => {
+    if (disabled) return true;
+    if (applications === undefined || cvs === undefined || cvs.length === 0)
+      return true;
+
+    return (
+        applications.filter(
+            (application) =>
+                application.offer?.id === offer.id
+        ).length > 0
+    );
+  };
 
   useEffect(() => {
     if (studentId === undefined) return;
 
     getCvsByStudentId(parseInt(studentId!))
-      .then((res) => {
-        setCvs(res.data);
-      })
-      .catch((err) => {
-        console.log("getCvsByStudentId error", err);
-      });
-  }, [studentId]);
+        .then((res) => {
+          setCvs(res.data);
+        })
+        .catch((err) => {
+          console.log("getCvsByStudentId error", err);
+        });
+  }, [studentId, setCvs]);
 
   const handleApply = async (event: { stopPropagation: () => void }) => {
     event.stopPropagation();
@@ -42,27 +56,15 @@ const StudentButtons = ({ disabled, offer }: Props) => {
     }
 
     try {
-      const tempStudent: Student = {
-        id: parseInt(studentId!),
-        firstName: "",
-        lastName: "",
-        email: "",
-        phone: "",
-        address: "",
-        type: "student",
-        studentNumber: "",
-        password: "string",
-      };
-
       const applicationData: Application = {
         id: 1000,
         offer: offer,
         cv: cvs[0],
-        student: tempStudent,
       };
 
-      const response = await apply(applicationData);
-      console.log(response);
+      await studentApplyToOffer(applicationData);
+
+      handleApplicationsUpdate();
 
       setApplicationMessage(t("offersList.applicationMessageSuccess"));
       setApplicationMessageColor("green");
@@ -70,6 +72,16 @@ const StudentButtons = ({ disabled, offer }: Props) => {
       setApplicationMessage(t("offersList.applicationMessageFailure") + error);
       setApplicationMessageColor("red");
     }
+  };
+
+  const handleApplicationsUpdate = () => {
+    getApplicationsByStudentId(parseInt(studentId!), chosenSession?.id!)
+        .then((res) => {
+          setApplications(res.data);
+        })
+        .catch((err) => {
+          console.log("getApplicationsByStudentId error", err);
+        });
   };
 
   return (
@@ -81,7 +93,12 @@ const StudentButtons = ({ disabled, offer }: Props) => {
         justifyContent: "center",
       }}
     >
-      <Button disabled={disabled} onClick={handleApply}>
+      <Button
+        disabled={isButtonDisabled()}
+        onClick={handleApply}
+        variant="outline-primary"
+        className="text-dark"
+      >
         {t("offersList.applyButton")}
       </Button>
       <p style={{ color: applicationMessageColor }}>{applicationMessage}</p>

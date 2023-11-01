@@ -1,8 +1,10 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.GenericUserController;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.service.ManagerService;
@@ -44,15 +46,15 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
-    @GetMapping("/offers/{departmentId}")
-    public ResponseEntity<List<OfferDTO>> getOffersByDepartment(@PathVariable Long departmentId) {
-        return ResponseEntity.ok(service.getOffersByDepartment(departmentId));
+    @GetMapping("/offers/{departmentId}/{sessionId}")
+    public ResponseEntity<List<OfferDTO>> getOffersByDepartment(@PathVariable Long departmentId, @PathVariable Long sessionId) {
+        return ResponseEntity.ok(service.getOffersByDepartment(departmentId, sessionId));
     }
 
-    @GetMapping("/cvs/{departmentId}")
-    public ResponseEntity<List<CvDTO>> getCvsByDepartment(@PathVariable Long departmentId) {
+    @GetMapping("/cvs/{departmentId}/{sessionId}")
+    public ResponseEntity<List<CvDTO>> getCvsByDepartment(@PathVariable Long departmentId, @PathVariable Long sessionId) {
         logger.info("getCvsByDepartment");
-        return ResponseEntity.ok(service.getCvsByDepartment(departmentId));
+        return ResponseEntity.ok(service.getCvsByDepartment(departmentId, sessionId));
     }
 
     @PostMapping("/{managerId}/accept_cv/{cvId}")
@@ -69,5 +71,20 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
         return service.refuseCv(managerId, cvId)
                 .map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    }
+    @GetMapping("/{managerId}/acceptedApplications/{departmentId}")
+    public ResponseEntity<List<ApplicationDTO>> getAcceptedApplicationsByDepartment(@PathVariable Long managerId, @PathVariable Long departmentId) {
+        logger.info("getAcceptedApplicationsByDepartment");
+        return ResponseEntity.ok(
+                service.getAcceptedApplicationsByDepartment(managerId, departmentId)
+        );
+    }
+
+    @GetMapping("/{managerId}/department")
+    public ResponseEntity<DepartmentDTO> getDepartmentByManager(@PathVariable Long managerId) {
+        logger.info("getDepartment");
+        return ResponseEntity.ok(
+                service.getDepartmentByManager(managerId)
+        );
     }
 }

@@ -39,10 +39,10 @@
     "errors": {
       "departmentNotFound": "Département pas trouvé"
     },
-    "name": "Titre du CV",
+    "name": "CV",
     "viewMore": "Voir le CV",
     "noCvs": "Aucun CV disponible",
-    "studentName": "Nom de l'étudiant"
+    "studentName": "Étudiant"
   },
   "offersList": {
     "errors": {
@@ -51,6 +51,7 @@
     "title": "Titre",
     "internshipEndDate": "Date de fin",
     "internshipStartDate": "Date de début",
+    "availablePlaces": "Places Disponibles",
     "noOffers": "Aucun offre disponible",
     "viewTitle": "Offres disponibles",
     "viewMore": "Afficher plus",
@@ -99,6 +100,13 @@
     "REFUSED": "Refusé",
     "noMorePendingCvs": "Il n'y a plus de CV en attente"
   },
+  "employerApplicationsList": {
+    "title": "Applications",
+    "acceptButton": "Accepter",
+    "refuseButton": "Refuser",
+    "ACCEPTED": "Accepté",
+    "REFUSED": "Refusé"
+  },
   "employerOffersList": {
     "viewTitle": "Offres disponibles",
     "status": "État",
@@ -106,7 +114,8 @@
     "ACCEPTED": "Accepté",
     "REFUSED": "Refusé",
     "editButton": "Modifier",
-    "deleteButton": "Supprimer"
+    "deleteButton": "Supprimer",
+    "applicationButton" : "Voir les applications"
   },
   "student": {
     "seeOffersButton": "Voir les offres"
@@ -119,7 +128,8 @@
     "errors": {
       "employerNotFound": "Aucun employeur trouvé"
     },
-    "seeOffersButton": "Voir les offres"
+    "seeOffersButton": "Voir les offres",
+    "seeApplicationsButton": "Voir les applications"
   },
   "addOffer": {
     "pageTitle": "Ajout de Stage",
@@ -168,6 +178,30 @@
       "sessionExpired": "Votre session est expirée, veuillez vous reconnecter"
     }
   },
+  "applicationsList": {
+    "title": "Les applications soumises",
+    "offerTitle": "Titre de la position",
+    "acceptedListTitle": "Applications acceptées",
+    "SearchPlaceholder" : "Recherchez par Titre d'Offre, Organisation ou Étudiant...",
+    "noAcceptedApplications": "Aucune application acceptée...",
+    "organization": "Organisation",
+    "status": "État",
+    "cv": "CV",
+    "noApplications": "Aucune application soumise",
+    "row": {
+      "status": {
+        "PENDING": "En attente",
+        "ACCEPTED": "Accepté",
+        "REFUSED": "Refusé"
+      }
+    },
+    "errors": {
+      "studentNotFound": "L'étudiant n'a pas été trouvé"
+    }
+  },
   "logout": "Se déconnecter",
-  "pageNotFound": "Erreur 404: Page pas trouvée"
+  "pageNotFound": "Erreur 404: Page pas trouvée",
+  "sessionSelector": {
+    "filterPlaceholder": "Filtrer par la date"
+  }
 }

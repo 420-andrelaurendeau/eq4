@@ -1,16 +1,22 @@
 import { AxiosResponse } from "axios";
 import http from "../constants/http";
 import { Authority, DecodedJwt, LoginRequest, TimedJwt } from "../model/auth";
-import {JWT, JWT_EXPIRES_AT, SESSION_EXPIRED_AT, TIME_BEFORE_EXPIRE_ISNT_RECENT} from "../constants/jwtConsts";
+import {JWT, JWT_EXPIRES_AT, SESSION_EXPIRED_AT, TIME_BEFORE_EXPIRE_ISNT_RECENT,} from "../constants/jwtConsts";
 import jwtDecode from "jwt-decode";
+import { AUTH_PREFIX } from "../constants/apiPrefixes";
 
-export const login = async (loginRequest: LoginRequest): Promise<AxiosResponse<TimedJwt>> => {
-  return http.post("/auth/login", loginRequest);
+export const login = async (
+  loginRequest: LoginRequest
+): Promise<AxiosResponse<TimedJwt>> => {
+  return http.post(`${AUTH_PREFIX}/login`, loginRequest);
 };
 
 export const authenticate = (timedJwt: TimedJwt) => {
   localStorage.setItem(JWT, timedJwt.jwt);
-  localStorage.setItem(JWT_EXPIRES_AT, (Date.now() + timedJwt.expiration).toString());
+  localStorage.setItem(
+    JWT_EXPIRES_AT,
+    (Date.now() + timedJwt.expiration).toString()
+  );
 };
 
 export const isConnected = (): boolean => {
@@ -53,5 +59,8 @@ export const getUserId = (): string | null => {
 };
 
 export const hasSessionExpiredRecently = (): boolean => {
-  return (Date.now() - parseInt(localStorage.getItem(SESSION_EXPIRED_AT) || "0") < TIME_BEFORE_EXPIRE_ISNT_RECENT);
+  return (
+    Date.now() - parseInt(localStorage.getItem(SESSION_EXPIRED_AT) || "0") <
+    TIME_BEFORE_EXPIRE_ISNT_RECENT
+  );
 };

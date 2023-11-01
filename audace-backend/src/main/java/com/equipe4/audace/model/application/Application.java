@@ -11,8 +11,8 @@ import lombok.ToString;
 
 @Entity
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "application_gen")
@@ -29,12 +29,22 @@ public class Application {
     @JoinColumn(name = "offer_id")
     @ToString.Exclude
     private Offer offer;
+    private ApplicationStatus applicationStatus;
+
+    public Application(Long id, Cv cv, Offer offer) {
+        this.id = id;
+        this.cv = cv;
+        this.offer = offer;
+        this.applicationStatus = ApplicationStatus.PENDING;
+    }
+
+    public enum ApplicationStatus {
+        PENDING,
+        ACCEPTED,
+        REFUSED
+    }
 
     public ApplicationDTO toDTO(){
-        return new ApplicationDTO(
-                id,
-                offer.toDTO(),
-                cv.toDTO()
-        );
+        return new ApplicationDTO(id, cv.toDTO(), offer.toDTO(), applicationStatus);
     }
 }
