@@ -1,23 +1,44 @@
-import { Button, Container } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { Container } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import {
+  getAcceptedApplicationsByDepartment,
+  getDepartmentByManager,
+} from "../../../services/managerService";
+import ManagerApplicationsList from "../../../components/ManagerApplicationsList";
+import Application from "../../../model/application";
+import { getUserId } from "../../../services/authService";
 
 const ManagerView = () => {
-  const navigate = useNavigate();
-  const { t } = useTranslation();
+  const [applications, setApplications] = useState<Application[]>([]);
 
-  const seeOffers = () => {
-    navigate(`/manager/offers`);
-  };
-  const seeCvs = () => {
-    navigate(`/manager/cvs`);
-  };
+  useEffect(() => {
+    const managerId = getUserId();
+
+    if (!managerId) return;
+
+    const fetchData = async () => {
+      try {
+        const departmentRes = await getDepartmentByManager(parseInt(managerId));
+
+        const applicationsRes = await getAcceptedApplicationsByDepartment(
+          parseInt(managerId),
+          departmentRes.data.id!
+        );
+        setApplications(applicationsRes.data);
+      } catch (err: any) {
+        console.log(
+          "Accepted applications fetching error: " + err.response.data
+        );
+      }
+    };
+
+    fetchData().then(() => console.log("done"));
+  }, []);
 
   return (
     <Container>
       <h1>Manager view</h1>
-      <Button onClick={seeOffers}>{t("manager.seeOffersButton")}</Button>
-      <Button onClick={seeCvs}>{t("manager.seeCvsButton")}</Button>
+      <ManagerApplicationsList applications={applications} />
     </Container>
   );
 };

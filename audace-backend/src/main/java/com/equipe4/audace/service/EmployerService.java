@@ -10,8 +10,8 @@ import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.session.OfferSession;
 import com.equipe4.audace.model.session.Session;
+import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.EmployerRepository;
-import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
 
 @Service
 public class EmployerService extends GenericUserService<Employer> {
@@ -68,11 +69,18 @@ public class EmployerService extends GenericUserService<Employer> {
         return employerRepository.findById(employerId).map(Employer::toDTO);
     }
 
+    public List<EmployerDTO> findAllEmployers(){
+        return employerRepository.findAll().stream().map(Employer::toDTO).toList();
+    }
+
     @Transactional
     public Optional<OfferDTO> createOffer(OfferDTO offerDTO){
         if(offerDTO == null) throw new IllegalArgumentException("Offer cannot be null");
 
         Session session = sessionManipulator.getCurrentSession();
+
+        offerDTO.setOfferStatus(Offer.OfferStatus.PENDING);
+
         Offer offer = offerRepository.save(offerDTO.fromDTO());
 
         offerSessionRepository.save(new OfferSession(null, offer, session));
@@ -81,8 +89,8 @@ public class EmployerService extends GenericUserService<Employer> {
     }
 
     @Transactional
-    public List<OfferDTO> findAllOffersByEmployerId(Long employerId, Long sessionId){
-        Employer employer = employerRepository.findById(employerId).orElseThrow();
+    public List<OfferDTO> findAllOffersByEmployerIdAndSessionId(Long employerId, Long sessionId){
+        Employer employer = employerRepository.findById(employerId).orElseThrow(() -> new NoSuchElementException("Employer not found"));
         List<Offer> offers = offerRepository.findAllByEmployer(employer);
 
         return sessionManipulator
@@ -100,28 +108,19 @@ public class EmployerService extends GenericUserService<Employer> {
         return departmentRepository.findAll().stream().map(Department::toDTO).toList();
     }
 
+
     @Transactional
     public Optional<OfferDTO> updateOffer(OfferDTO offerDTO){
-        Offer offer = offerRepository.findById(offerDTO.getId()).orElseThrow();
-
-        if (!sessionManipulator.isOfferInCurrentSession(offer)) {
-            throw new IllegalStateException("Offer is not in current session");
-        }
-
-        offer.setTitle(offerDTO.getTitle());
-        offer.setDescription(offerDTO.getDescription());
-        offer.setInternshipStartDate(offerDTO.getInternshipStartDate());
-        offer.setInternshipEndDate(offerDTO.getInternshipEndDate());
-        offer.setOfferEndDate(offerDTO.getOfferEndDate());
-        offer.setAvailablePlaces(offerDTO.getAvailablePlaces());
-        offer.setDepartment(departmentRepository.findByCode(offerDTO.getDepartment().getCode()).orElseThrow());
-
+        Offer offer = offerRepository.findById(offerDTO.getId()).orElseThrow(() -> new NoSuchElementException("Offer not found"));
+        if (!sessionManipulator.isOfferInCurrentSession(offer)) throw new IllegalStateException("Offer is not in current session");
+        offer = offerDTO.fromDTO();
         return Optional.of(offerRepository.save(offer).toDTO());
     }
 
     @Transactional
     public void deleteOffer(Long offerId){
-        Offer offer = offerRepository.findById(offerId).orElseThrow();
+        Offer offer = offerRepository.findById(offerId).orElseThrow(
+                () -> new NoSuchElementException("Offer not found"));
 
         if (!sessionManipulator.isOfferInCurrentSession(offer)) {
             throw new IllegalStateException("Offer is not in current session");
@@ -135,5 +134,45 @@ public class EmployerService extends GenericUserService<Employer> {
     public List<ApplicationDTO> findAllApplicationsByEmployerIdAndOfferId(Long employerId, Long offerId) {
         Offer offer = offerRepository.findByEmployerIdAndId(employerId, offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
         return applicationRepository.findAllByOffer(offer).stream().map(Application::toDTO).toList();
+    }
+
+    public Optional<OfferDTO> getOfferById(Long offerId){
+        return offerRepository.findById(offerId).map(Offer::toDTO);
+    }
+
+    @Transactional
+    public Optional<ApplicationDTO> acceptApplication(Long employerId, Long applicationId) {
+        return setApplicationStatus(employerId, applicationId, Application.ApplicationStatus.ACCEPTED);
+    }
+    @Transactional
+    public Optional<ApplicationDTO> refuseApplication(Long employerId, Long applicationId) {
+        return setApplicationStatus(employerId, applicationId, Application.ApplicationStatus.REFUSED);
+    }
+
+    private Optional<ApplicationDTO> setApplicationStatus(Long employerId, Long applicationId, Application.ApplicationStatus applicationStatus) {
+        Application application = applicationRepository.findById(applicationId).orElseThrow(() -> new NoSuchElementException("Application not found"));
+
+        if (!application.getOffer().getEmployer().getId().equals(employerId)) throw new IllegalArgumentException("Employer does not own this application");
+
+        if (applicationStatus == Application.ApplicationStatus.ACCEPTED) {
+            Offer offer = application.getOffer();
+            int availablePlaces = offer.getAvailablePlaces();
+            if (availablePlaces <= 0) throw new IllegalArgumentException("No more places available");
+
+            offer.setAvailablePlaces(availablePlaces - 1);
+            offerRepository.save(offer);
+
+        }
+        application.setApplicationStatus(applicationStatus);
+        applicationRepository.save(application);
+        return Optional.of(application.toDTO());
+    }
+
+    public List<DepartmentDTO> getAllDepartments() {
+        return departmentRepository
+                .findAll()
+                .stream()
+                .map(Department::toDTO)
+                .toList();
     }
 }

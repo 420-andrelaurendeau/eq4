@@ -4,6 +4,7 @@ import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.offer.Offer;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -11,6 +12,7 @@ import lombok.ToString;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "application_gen")
@@ -29,11 +31,7 @@ public class Application {
     private Offer offer;
     private ApplicationStatus applicationStatus;
 
-    public Application(
-            Long id,
-            Cv cv,
-            Offer offer
-    ) {
+    public Application(Long id, Cv cv, Offer offer) {
         this.id = id;
         this.cv = cv;
         this.offer = offer;
@@ -47,11 +45,6 @@ public class Application {
     }
 
     public ApplicationDTO toDTO(){
-        return new ApplicationDTO(
-                id,
-                offer.toDTO(),
-                cv.toDTO(),
-                applicationStatus
-        );
+        return new ApplicationDTO(id, cv.toDTO(), offer.toDTO(), applicationStatus);
     }
 }

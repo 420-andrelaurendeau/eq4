@@ -13,6 +13,7 @@ import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.UserRepository;
+import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
@@ -51,31 +52,33 @@ public class StudentControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
-    private StudentService studentService;
+    private JwtManipulator jwtManipulator;
     @MockBean
-    private EmployerService employerService;
+    private CvRepository cvRepository;
+    @MockBean
+    private SaltRepository saltRepository;
+    @MockBean
+    private SessionRepository sessionRepository;
+    @MockBean
+    private UserRepository userRepository;
     @MockBean
     private StudentRepository studentRepository;
+    @MockBean
+    private ManagerRepository managerRepository;
+    @MockBean
+    private EmployerRepository employerRepository;
     @MockBean
     private OfferRepository offerRepository;
     @MockBean
     private DepartmentRepository departmentRepository;
     @MockBean
-    private EmployerRepository employerRepository;
-    @MockBean
-    private ManagerRepository managerRepository;
-    @MockBean
-    private UserRepository userRepository;
-    @MockBean
-    private JwtManipulator jwtManipulator;
-    @MockBean
-    private SaltRepository saltRepository;
-    @MockBean
-    private CvRepository cvRepository;
-    @MockBean
-    private SessionRepository sessionRepository;
+    private ApplicationRepository applicationRepository;
     @MockBean
     private OfferSessionRepository offerSessionRepository;
+    @MockBean
+    private StudentService studentService;
+    @MockBean
+    private EmployerService employerService;
 
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT"})
@@ -174,7 +177,7 @@ public class StudentControllerTest {
         when(studentService.createApplication(any(ApplicationDTO.class))).thenReturn(Optional.of(applicationDTO));
 
         // when - action or behaviour that we are going test
-        ResultActions response = mockMvc.perform(post("/students/{id}/applications", 1L)
+        ResultActions response = mockMvc.perform(post("/students/applications")
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(Optional.of(applicationDTO))));
@@ -196,11 +199,11 @@ public class StudentControllerTest {
 
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT"})
-    void getOffersAppliedByStudentId() throws Exception {
+    void getApplicationsByStudentIdAndSessionId() throws Exception {
         List<ApplicationDTO> applicationDTOS = List.of(mock(ApplicationDTO.class));
-        when(studentService.getOffersStudentApplied(1L, 1L)).thenReturn(applicationDTOS);
+        when(studentService.getApplicationsByStudentIdAndSessionId(1L, 1L)).thenReturn(applicationDTOS);
 
-        mockMvc.perform(get("/students/1/appliedOffers/1"))
+        mockMvc.perform(get("/students/appliedOffers/{sessionId}", 1L).param("studentId", "1"))
                 .andExpect(status().isOk());
     }
 }

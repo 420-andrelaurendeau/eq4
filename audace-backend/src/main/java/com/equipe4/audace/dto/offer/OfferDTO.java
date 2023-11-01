@@ -26,16 +26,6 @@ public class OfferDTO {
     private EmployerDTO employer;
 
     public Offer fromDTO() {
-        return new Offer(
-                id,
-                title,
-                description,
-                internshipStartDate,
-                internshipEndDate,
-                offerEndDate,
-                availablePlaces,
-                department.fromDTO(),
-                employer.fromDTO()
-        );
+        return new Offer(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, availablePlaces, department.fromDTO(), employer.fromDTO());
     }
 }

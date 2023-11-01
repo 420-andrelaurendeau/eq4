@@ -94,7 +94,7 @@ class UserServiceTest {
 
         when(sessionRepository.findById(any())).thenReturn(Optional.of(session));
 
-        Optional<SessionDTO> sessionDTO = userService.getSession(sessionId);
+        Optional<SessionDTO> sessionDTO = userService.getSessionById(sessionId);
 
         assertTrue(sessionDTO.isPresent());
         assertThat(sessionDTO.get()).isEqualTo(session.toDTO());
