@@ -136,7 +136,7 @@ const EditOffer: React.FC = () => {
   const editOffer = async (updatedOffer: Offer, id: number) => {
     try {
       const response = await http.put(
-        `/employers/${employer.id}/offers`,
+        `/employers/offers`,
         updatedOffer
       );
 
