@@ -7,12 +7,8 @@ import {
     getDepartmentByManager,
     getStudentByApplication,
 } from "../../../services/managerService";
-import { Department } from "../../../model/department";
-import { Employer } from "../../../model/user";
-import { CVStatus } from "../../../model/cv";
 import ManagerApplicationsList from "../../../components/ManagerApplicationsList";
-import Application, { ApplicationStatus } from "../../../model/application";
-import { Offer, OfferStatus } from "../../../model/offer";
+import Application from "../../../model/application";
 import { getUserId } from "../../../services/authService";
 
 const ManagerView = () => {
@@ -20,105 +16,37 @@ const ManagerView = () => {
     const { t } = useTranslation();
     const [applications, setApplications] = useState<Application[]>([]);
     const [, setError] = useState<string>("");
-    const [department, setDepartment] = useState<Department | undefined>(undefined); // Initialize as undefined
     const managerId = parseInt(getUserId()!);
-    const [tempApplications] = useState<Application[]>([]);
-
-    const tempTest = () => {
-        if (applications.length === 3) {
-            return;
-        }
-        const tempEmployer: Employer = {
-            id: 2,
-            firstName: "Chad",
-            lastName: "Israd",
-            email: "ChadIsRad@myspace.com",
-            phone: "123456789",
-            address: "1234 Street",
-            password: "password",
-            type: "employer",
-            organisation: "Chad's Smoke Store",
-            position: "Chad",
-            extension: "1234"
-        };
-
-        const tempStudent = {
-            id: 1,
-            firstName: "Chad",
-            lastName: "Is Rad",
-            email: "ChadIsRad@myspace.com",
-            phone: "123456789",
-            address: "1234 Street",
-            password: "password",
-            type: "student",
-            studentNumber: "123456788",
-            department: department!
-        };
-
-        const tempCV = {
-            id: 1,
-            fileName: "ChadIsRadCV",
-            content: "I am Chad and I am rad",
-            student: tempStudent,
-            cvStatus: CVStatus.ACCEPTED
-        };
-
-        const tempOffer: Offer = {
-            id: 1,
-            title: "Vape tester at the raddest vape shop in m-town",
-            description: "required to vape and be rad",
-            internshipStartDate: new Date(),
-            internshipEndDate: new Date(),
-            offerEndDate: new Date(),
-            availablePlaces: 1,
-            employer: tempEmployer,
-            department: department!,
-            offerStatus: OfferStatus.ACCEPTED
-        };
-
-        const tempApplication: Application = {
-            id: 1,
-            offer: tempOffer,
-            cv: tempCV,
-            applicationStatus: ApplicationStatus.ACCEPTED
-        };
-
-        tempApplications.push(tempApplication);
-    };
 
     useEffect(() => {
-        getDepartmentByManager(managerId)
-            .then((res) => {
-                setDepartment(res.data);
+        const fetchData = async () => {
+            try {
+                const departmentRes = await getDepartmentByManager(managerId);
                 setError("");
 
-                getAcceptedApplicationsByDepartment(department!.id!)
-                    .then((applicationsRes) => {
-                        setApplications(applicationsRes.data);
-                        setError("");
-                        retrieveApplicationStudents();
-                    })
-                    .catch((err) => {
-                        setError(err.response.data);
-                    });
-            })
-            .catch((err) => {
-                setError(err);
-            });
-        retrieveApplicationStudents();
-        tempTest();
-        }, [managerId]);
+                const applicationsRes = await getAcceptedApplicationsByDepartment(departmentRes.data.id!);
+                setApplications(applicationsRes.data);
+                setError("");
+
+                retrieveApplicationStudents();
+            } catch (err: any) {
+                setError(err.response.data);
+                console.log("Accepted applications fetching error: " + err.response.data);
+            }
+        };
+
+        fetchData().then(() => console.log("done"));
+    }, [managerId]);
 
     const retrieveApplicationStudents = () => {
-        applications.forEach((application) => {
-            getStudentByApplication(application)
-                .then((res) => {
-                    application.cv!.student = res.data;
-                    setError("");
-                })
-                .catch((err) => {
-                    setError(err.response.data);
-                });
+        applications.forEach(async (application) => {
+            try {
+                const res = await getStudentByApplication(application);
+                application.cv!.student = res.data;
+                setError("");
+            } catch (err: any) {
+                setError(err.response.data);
+            }
         });
     };
 
