@@ -1,10 +1,13 @@
 package com.equipe4.audace.controller;
 
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
@@ -12,10 +15,13 @@ import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.UserRepository;
+import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.ManagerService;
 import com.equipe4.audace.service.StudentService;
@@ -33,6 +39,7 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,31 +54,37 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ManagerControllerTest {
     @Autowired
     private MockMvc mockMvc;
+    @MockBean
+    private JwtManipulator jwtManipulator;
 
+    @MockBean
+    private CvRepository cvRepository;
+    @MockBean
+    private SaltRepository saltRepository;
+    @MockBean
+    private UserRepository userRepository;
+    @MockBean
+    private ManagerRepository managerRepository;
+    @MockBean
+    private StudentRepository studentRepository;
+    @MockBean
+    private EmployerRepository employerRepository;
+    @MockBean
+    private SessionRepository sessionRepository;
+    @MockBean
+    private DepartmentRepository departmentRepository;
+    @MockBean
+    private OfferRepository offerRepository;
+    @MockBean
+    private ApplicationRepository applicationRepository;
+    @MockBean
+    private OfferSessionRepository offerSessionRepository;
     @MockBean
     private StudentService studentService;
     @MockBean
     private EmployerService employerService;
     @MockBean
     private ManagerService managerService;
-    @MockBean
-    private ManagerRepository managerRepository;
-    @MockBean
-    private OfferRepository offerRepository;
-    @MockBean
-    private EmployerRepository employerRepository;
-    @MockBean
-    private DepartmentRepository departmentRepository;
-    @MockBean
-    private StudentRepository studentRepository;
-    @MockBean
-    private CvRepository cvRepository;
-    @MockBean
-    private UserRepository userRepository;
-    @MockBean
-    private JwtManipulator jwtManipulator;
-    @MockBean
-    private SaltRepository saltRepository;
 
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
@@ -190,9 +203,9 @@ public class ManagerControllerTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void getOffersByDepartment_happyPath() throws Exception {
         List<OfferDTO> offerDTOList = List.of(mock(OfferDTO.class));
-        when(managerService.getOffersByDepartment(1L)).thenReturn(offerDTOList);
+        when(managerService.getOffersByDepartment(1L, 1L)).thenReturn(offerDTOList);
 
-        mockMvc.perform(get("/managers/offers/1"))
+        mockMvc.perform(get("/managers/offers/{departmendId}/{sessionId}", 1L, 1L))
                 .andExpect(status().isOk());
     }
     @Test
@@ -200,7 +213,7 @@ public class ManagerControllerTest {
     public void acceptCv() throws Exception {
         Student student = mock(Student.class);
         CvDTO cvDTO = mock(CvDTO.class);
-        Cv cv = new Cv(null, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
+        Cv cv = new Cv(null, "One must imagine whoever puts the rock on top of the mountain happy", "cv".getBytes(), student);
         when(managerService.acceptCv(1L, 1L)).thenReturn(Optional.of(cvDTO));
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -216,7 +229,7 @@ public class ManagerControllerTest {
     public void refuseCv() throws Exception {
         Student student = mock(Student.class);
         CvDTO cvDTO = mock(CvDTO.class);
-        Cv cv = new Cv(null, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
+        Cv cv = new Cv(null, "One must imagine whoever puts the rock on top of the mountain happy", "cv".getBytes(), student);
         when(managerService.refuseCv(1L, 1L)).thenReturn(Optional.of(cvDTO));
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -231,7 +244,7 @@ public class ManagerControllerTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void acceptCv_invalidId() throws Exception {
         Student student = new Student();
-        Cv cv = new Cv(null, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
+        Cv cv = new Cv(null, "One must imagine whoever puts the rock on top of the mountain happy", "cv".getBytes(), student);
         when(managerService.acceptCv(1L, 1L)).thenReturn(Optional.empty());
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -247,7 +260,7 @@ public class ManagerControllerTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void refuseCv_invalidId() throws Exception {
         Student student = new Student();
-        Cv cv = new Cv(null, student, "cv".getBytes(), "One must imagine whoever puts the rock on top of the mountain happy");
+        Cv cv = new Cv(null, "One must imagine whoever puts the rock on top of the mountain happy", "cv".getBytes(), student);
         when(managerService.refuseCv(1L, 1L)).thenReturn(Optional.empty());
 
         RequestBuilder request = MockMvcRequestBuilders
@@ -301,9 +314,52 @@ public class ManagerControllerTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void getCvsByDepartment() throws Exception {
         List<CvDTO> cvDTOList = List.of(mock(CvDTO.class));
-        when(managerService.getCvsByDepartment(1L)).thenReturn(cvDTOList);
+        when(managerService.getCvsByDepartment(1L, 1L)).thenReturn(cvDTOList);
 
-        mockMvc.perform(get("/managers/cvs/1"))
+        mockMvc.perform(get("/managers/cvs/1/1"))
                 .andExpect(status().isOk());
+    }
+    @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
+    public void getAcceptedApplicationsByDepartment() throws Exception {
+        List<ApplicationDTO> applicationDTOList = new ArrayList<>();
+        Employer employer = new Employer(1L, "firstName", "lastName", "email", "password", "address", "phone", "companyName", "companyAddress", "companyPhone");
+        Department department = new Department(1L, "yeete", "yaint");
+        Student student = new Student(1L, "firstName", "lastName", "email", "password", "address", "phone", "studentNumber", department);
+        Cv cv = new Cv(1L, "cv.pdf", "cv".getBytes(), student );
+        Offer offer = new Offer(1L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, department, employer);
+        Application application = new Application(1L, cv, offer);
+        applicationDTOList.add(application.toDTO());
+        when(managerService.getAcceptedApplicationsByDepartment(1L, 1L)).thenReturn(applicationDTOList);
+
+        mockMvc.perform(get("/managers/1/acceptedApplications/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].id").value(1L))
+                .andExpect(jsonPath("$[0].offer.id").value(offer.getId()))
+                .andExpect(jsonPath("$[0].offer.title").value(offer.getTitle()))
+                .andExpect(jsonPath("$[0].offer.description").value(offer.getDescription()))
+                .andExpect(jsonPath("$[0].offer.internshipStartDate").value(offer.getInternshipStartDate().toString()))
+                .andExpect(jsonPath("$[0].offer.internshipEndDate").value(offer.getInternshipEndDate().toString()))
+                .andExpect(jsonPath("$[0].offer.offerEndDate").value(offer.getOfferEndDate().toString()))
+                .andExpect(jsonPath("$[0].offer.availablePlaces").value(offer.getAvailablePlaces()))
+                .andExpect(jsonPath("$[0].offer.department.id").value(offer.getDepartment().getId()))
+                .andExpect(jsonPath("$[0].offer.department.name").value(offer.getDepartment().getName()))
+                .andExpect(jsonPath("$[0].applicationStatus").value(application.getApplicationStatus().toString()));
+    }
+    @Test
+    @WithMockUser(username = "manager", authorities = {"MANAGER"})
+    public void getDepartmentByManager() throws Exception {
+        DepartmentDTO departmentDTO = new DepartmentDTO(1L, "Department 1", "Department 1");
+
+        when(managerService.getDepartmentByManager(1L)).thenReturn(departmentDTO);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/managers/1/department")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.name").value("Department 1"));
     }
 }

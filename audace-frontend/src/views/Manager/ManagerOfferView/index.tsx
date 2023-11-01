@@ -8,24 +8,27 @@ import { getManagerOffersByDepartment } from "../../../services/offerService";
 import { getManagerById } from "../../../services/userService";
 import { getUserId } from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
+import { useSessionContext } from "../../../contextsholders/providers/SessionContextHolder";
+import SessionSelector from "../../../components/SessionSelector";
 
 const ManagerOfferView = () => {
-    const [manager, setManager] = useState<Manager>();
-    const [offers, setOffers] = useState<Offer[]>([]);
-    const [offersAccepted, setOffersAccepted] = useState<Offer[]>([]);
-    const [offersRefused, setOffersRefused] = useState<Offer[]>([]);
-    const [error, setError] = useState<string>("");
-    const {t} = useTranslation();
-    const navigate = useNavigate();
+  const [manager, setManager] = useState<Manager>();
+  const [offers, setOffers] = useState<Offer[]>([]);
+  const [offersAccepted, setOffersAccepted] = useState<Offer[]>([]);
+  const [offersRefused, setOffersRefused] = useState<Offer[]>([]);
+  const [error, setError] = useState<string>("");
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { chosenSession } = useSessionContext();
 
   useEffect(() => {
     if (manager !== undefined) return;
     const id = getUserId();
 
-        if (id == null) {
-            navigate("/pageNotFound");
-            return;
-        }
+    if (id == null) {
+      navigate("/pageNotFound");
+      return;
+    }
 
     getManagerById(parseInt(id!))
       .then((res) => {
@@ -38,10 +41,11 @@ const ManagerOfferView = () => {
       });
   }, [manager, t, navigate]);
 
-    useEffect(() => {
-        if (manager === undefined) return;
+  useEffect(() => {
+    if (manager === undefined) return;
+    if (chosenSession === undefined) return;
 
-    getManagerOffersByDepartment(manager.department!.id!)
+    getManagerOffersByDepartment(manager.department!.id!, chosenSession.id)
       .then((res) => {
         let acceptedOffers = [];
         let refusedOffers = [];
@@ -64,7 +68,7 @@ const ManagerOfferView = () => {
         if (err.request && err.request.status === 404)
           setError(t("offersList.errors.departmentNotFound"));
       });
-  }, [manager, t]);
+  }, [manager, t, chosenSession]);
 
   const updateOffersState = (offer: Offer, offerStatus: OfferStatus) => {
     let newOffers = offers.filter((o) => o.id !== offer.id);
@@ -79,29 +83,19 @@ const ManagerOfferView = () => {
   return (
     <Container>
       <h1>{t("managerOffersList.viewTitle")}</h1>
+
+      <SessionSelector />
+
       {offers.length > 0 ? (
-        <OffersList
-          offers={offers}
-          error={error}
-          userType={UserType.Manager}
-          updateOffersState={updateOffersState}
-        />
+        <OffersList offers={offers} error={error} userType={UserType.Manager} updateOffersState={updateOffersState} />
       ) : (
         <p>{t("managerOffersList.noMorePendingOffers")}</p>
       )}
       {offersAccepted.length > 0 ? (
-        <OffersList
-          offers={offersAccepted}
-          error={error}
-          userType={UserType.Manager}
-        />
+        <OffersList offers={offersAccepted} error={error} userType={UserType.Manager} />
       ) : null}
       {offersRefused.length > 0 ? (
-        <OffersList
-          offers={offersRefused}
-          error={error}
-          userType={UserType.Manager}
-        />
+        <OffersList offers={offersRefused} error={error} userType={UserType.Manager} />
       ) : null}
     </Container>
   );

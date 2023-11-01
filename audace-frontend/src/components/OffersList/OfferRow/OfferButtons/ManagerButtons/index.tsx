@@ -5,39 +5,52 @@ import { Offer, OfferStatus } from "../../../../../model/offer";
 import { getUserId } from "../../../../../services/authService";
 
 interface Props {
-    disabled? : boolean;
-    offer : Offer;
-    updateOffersState?: (offer : Offer, offerStatus : OfferStatus) => void;
+  disabled: boolean;
+  offer: Offer;
+  updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
 }
 
-const ManagerButtons = ({disabled, offer, updateOffersState}: Props) => {
-    const {t} = useTranslation();
+const ManagerButtons = ({ disabled, offer, updateOffersState }: Props) => {
+  const { t } = useTranslation();
 
-    const acceptButtonClick = (event : React.MouseEvent<HTMLElement>) => {
-        event.stopPropagation();
-        acceptOffer(parseInt(getUserId()!), offer.id!)
-            .then((_) => {
-                updateOffersState!(offer, OfferStatus.ACCEPTED);
-            }
-            );
-    }
+  const acceptButtonClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    acceptOffer(parseInt(getUserId()!), offer.id!).then((_) => {
+      updateOffersState!(offer, OfferStatus.ACCEPTED);
+    });
+  };
 
-    const refuseButtonClick = (event : React.MouseEvent<HTMLElement>) => {
-        event.stopPropagation();
-        refuseOffer(parseInt(getUserId()!), offer.id!)
-            .then((_) => {
-                updateOffersState!(offer, OfferStatus.REFUSED);
-            }
-        )
-    }
+  const refuseButtonClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
+    refuseOffer(parseInt(getUserId()!), offer.id!).then((_) => {
+      updateOffersState!(offer, OfferStatus.REFUSED);
+    });
+  };
 
-    return (
+  return (
+    <>
+      {offer.offerStatus === "PENDING" ? (
         <>
-            {offer.offerStatus === "PENDING" ?
-            (<><Button disabled={disabled} onClick={acceptButtonClick} className="btn-success me-2">{t("managerOffersList.acceptButton")}</Button>
-            <Button disabled={disabled} onClick={refuseButtonClick} className="btn-danger">{t("managerOffersList.refuseButton")}</Button></>) : <p>{t("managerOffersList." + offer.offerStatus)}</p>}
-        </>
-    );
+          <Button
+            disabled={disabled}
+            onClick={acceptButtonClick}
+            variant="outline-success"
+            className="me-2 text-dark"
+          >
+            {t("managerOffersList.acceptButton")}
+          </Button>
+          <Button
+            disabled={disabled}
+            onClick={refuseButtonClick}
+            variant="outline-danger"
+            className="text-dark"
+          >
+            {t("managerOffersList.refuseButton")}
+          </Button>
+        </>) :
+        (<p>{t("managerOffersList." + offer.offerStatus)}</p>)
+      }
+    </>
+  );
 };
-
 export default ManagerButtons;

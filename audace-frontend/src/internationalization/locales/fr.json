@@ -1,205 +1,232 @@
 {
-    "langCode": "FR",
-    "common": {
-        "loading": "Chargement...",
-        "submit": "Soumettre"
+  "langCode": "FR",
+  "common": {
+    "loading": "Chargement...",
+    "submit": "Soumettre"
+  },
+  "signin": "Se connecter",
+  "signup": {
+    "employerFormTitle": "Inscription Employeur",
+    "studentFormTitle": "Inscription Étudiant",
+    "companyNameEntry": "Nom de l'entreprise",
+    "addressEntry": "Adresse",
+    "cityEntry": "Ville",
+    "postalCodeEntry": "Code postal",
+    "phoneEntry": "Téléphone",
+    "extensionEntry": "Extension",
+    "lastNameEntry": "Nom de famille",
+    "firstNameEntry": "Prénom",
+    "positionEntry": "Poste",
+    "emailEntry": "E-mail",
+    "password": "Choisissez un mot de passe",
+    "passwordConfirmation": "Confirmez votre mot de passe",
+    "studentId": "Numéro d'étudiant",
+    "signup": "S'inscrire",
+    "errors": {
+      "organisation": "Veuillez entrer un nom d'organisation valide",
+      "position": "Le poste ne peut pas être vide",
+      "firstName": "Le prénom ne peut pas être vide",
+      "lastName": "Le nom de famille ne peut pas être vide",
+      "address": "L'adresse ne peut pas être vide",
+      "city": "La ville ne peut pas être vide",
+      "postalCode": "Veuillez entrer un code postal valide",
+      "phone": "Veuillez entrer un numéro de téléphone valide",
+      "extension": "Veuillez entrer une extension valide",
+      "email": "Veuillez entrer une adresse e-mail valide",
+      "password": "Veuillez entrer un mot de passe valide",
+      "passwordConfirmation": "Les mots de passe ne correspondent pas",
+      "studentId": "Veuillez entrer un numéro d'étudiant valide",
+      "network": "Une erreur réseau inattendue s'est produite"
+    }
+  },
+  "cvsList": {
+    "errors": {
+      "departmentNotFound": "Département introuvable"
     },
-    "signin": "Se connecter",
-    "signup": {
-        "employerFormTitle": "Inscription Employeur",
-        "studentFormTitle": "Inscription Étudiant",
-        "companyNameEntry": "Nom de l'entreprise",
-        "addressEntry": "Adresse",
-        "cityEntry": "Ville",
-        "postalCodeEntry": "Code postal",
-        "phoneEntry": "Téléphone",
-        "extensionEntry": "Poste",
-        "lastNameEntry": "Nom de famille",
-        "firstNameEntry": "Prénom",
-        "positionEntry": "Fonction occupée",
-        "emailEntry": "Courriel",
-        "password": "Choisissez un mot de passe",
-        "passwordConfirmation": "Confirmez votre mot de passe",
-        "studentId": "Matricule",
-        "signup": "S'inscrire",
-        "errors": {
-            "organisation": "SVP entrez un nom d'organisation valide",
-            "position": "la fonction occupée ne peut pas être vide",
-            "firstName": "Le prénom ne peut pas être vide",
-            "lastName": "Le nom de famille ne peut pas être vide",
-            "address": "L'adresse ne peut pas être vide",
-            "city": "La ville ne peut pas être vide",
-            "postalCode": "SVP entrez un code postal valide",
-            "phone": "SVP entrez un numéro de téléphone valide",
-            "extension": "SVP entrez un numéro de poste valide",
-            "email": "SVP entrez un courriel valide",
-            "password": "SVP entrez un mot de passe valide",
-            "passwordConfirmation": "Les mots de passe ne correspondent pas",
-            "studentId": "SVP entrez une matricule valide",
-            "network": "Il y a eu une erreur de réseau inconnue"
-        }
+    "name": "CV",
+    "viewMore": "Voir le CV",
+    "noCvs": "Aucun CV disponible",
+    "studentName": "Étudiant"
+  },
+  "offersList": {
+    "errors": {
+      "departmentNotFound": "Département introuvable"
     },
-    "cvsList": {
-        "errors": {
-            "departmentNotFound": "Département pas trouvé"
-        },
-        "name": "CV",
-        "viewMore": "Voir le CV",
-        "noCvs": "Aucun CV disponible",
-        "studentName": "Nom de l'étudiant"
+    "title": "Titre",
+    "internshipEndDate": "Date de fin de stage",
+    "internshipStartDate": "Date de début de stage",
+    "availablePlaces": "Places disponibles",
+    "noOffers": "Aucune offre disponible",
+    "viewTitle": "Offres disponibles",
+    "applyButton": "Postuler",
+    "applicationMessageSuccess": "Candidature soumise avec succès",
+    "applicationMessageFailure": "Erreur lors de la soumission de la candidature",
+    "viewMore": "En savoir plus"
+  },
+  "offer": {
+    "modal": {
+      "org": "Organisation",
+      "address": "Adresse",
+      "phone": "Numéro de téléphone",
+      "orgNotFound": "Organisation non trouvée",
+      "offerEnd": "L'offre se termine le",
+      "offerDescription": "Description de l'offre",
+      "empNotFound": "Employeur non trouvé !",
+      "apply": "Postuler",
+      "internDate": {
+        "start": "De",
+        "end": "à"
+      }
+    }
+  },
+  "studentOffersList": {
+    "viewTitle": "Offres disponibles",
+    "applyButton": "Postuler"
+  },
+  "managerOffersList": {
+    "viewTitle": "Offres disponibles",
+    "acceptButton": "Accepter",
+    "refuseButton": "Refuser",
+    "ACCEPTED": "Accepté",
+    "REFUSED": "Refusé",
+    "noMorePendingOffers": "Il n'y a plus d'offres en attente"
+  },
+  "managerCvsList": {
+    "errors": {
+      "cvNotFound": "CV non trouvé",
+      "departmentNotFound": "Département introuvable",
+      "studentNotFound": "Étudiant non trouvé"
     },
-    "offersList": {
-        "errors": {
-            "departmentNotFound": "Aucun département trouvé"
-        },
-        "title": "Titre",
-        "internshipEndDate": "Date de fin",
-        "internshipStartDate": "Date de début",
-        "noOffers": "Aucun offre disponible",
-        "viewTitle": "Offres disponibles",
-        "viewMore": "Afficher plus",
-        "applyButton": "Appliquer",
-        "applicationMessageSuccess": "Application soumise avec succès",
-        "applicationMessageFailure": "Erreur lors de la soumission de l'application"
+    "viewTitle": "CV disponibles",
+    "acceptButton": "Accepter",
+    "refuseButton": "Refuser",
+    "ACCEPTED": "Accepté",
+    "REFUSED": "Refusé",
+    "noMorePendingCvs": "Il n'y a plus de CV en attente"
+  },
+  "employerApplicationsList": {
+    "title": "Candidatures",
+    "acceptButton": "Accepter",
+    "refuseButton": "Refuser",
+    "ACCEPTED": "Accepté",
+    "REFUSED": "Refusé"
+  },
+  "employerOffersList": {
+    "viewTitle": "Offres disponibles",
+    "status": "Statut",
+    "PENDING": "En attente",
+    "ACCEPTED": "Accepté",
+    "REFUSED": "Refusé",
+    "editButton": "Modifier",
+    "deleteButton": "Supprimer",
+    "applicationButton": "Voir les candidatures"
+  },
+  "student": {
+    "seeOffersButton": "Voir les offres"
+  },
+  "manager": {
+    "seeOffersButton": "Voir les offres",
+    "seeCvsButton": "Voir les CV",
+    "createContractButton": "Créer un contrat",
+    "createContract": {
+      "title": "Créer un contrat",
+      "officeName": "Nom du bureau",
+      "startHour": "Heure de début",
+      "endHour": "Heure de fin",
+      "totalHoursPerWeek": "Heures totales par semaine",
+      "salary": "Salaire",
+      "internTasksAndResponsibilities": "Tâches et responsabilités de stagiaire",
+      "errors": {
+        "applicationNotFound": "Candidature non trouvée",
+        "employerNotFound": "Employeur non trouvé",
+        "contractAlreadyExists": "Un contrat existe déjà pour cette offre",
+        "emptyOfficeName": "Le nom du bureau ne peut pas être vide",
+        "invalidStartHour": "L'heure de début est invalide",
+        "invalidEndHour": "L'heure de fin est invalide",
+        "invalidTotalHoursPerWeek": "Le nombre d'heures par semaine est invalide",
+        "invalidSalary": "Le salaire est invalide",
+        "emptyInternTasksAndResponsibilities": "Les tâches et responsabilités de stagiaire ne peuvent pas être vides"
+      }
+    }
+  },
+  "employer": {
+    "errors": {
+      "employerNotFound": "Employeur non trouvé"
     },
-    "offer": {
-        "modal": {
-            "org": "Organisation",
-            "address": "Adresse",
-            "phone": "Téléphone",
-            "orgNotFound": "L'organisation n'a pas été trouvée",
-            "offerEnd": "L'offre se termine le",
-            "offerDescription": "Description de l'offre",
-            "empNotFound": "L'employeur n'a pas été trouvé!",
-            "apply": "Postuler",
-            "internDate": {
-                "start": "De",
-                "end": "à"
-            }
-        }
-    },
-    "studentOffersList": {
-        "viewTitle": "Offres disponibles",
-        "applyButton": "Appliquer"
-    },
-    "managerOffersList": {
-        "viewTitle": "Offres disponibles",
-        "acceptButton": "Accepter",
-        "refuseButton": "Refuser",
-        "ACCEPTED": "Accepté",
-        "REFUSED": "Refusé",
-        "noMorePendingOffers": "Il n'y a plus d'offres en attente"
-    },
-    "managerCvsList": {
-        "errors": {
-            "cvNotFound": "CV non trouvé",
-            "departmentNotFound": "Département non trouvé",
-            "studentNotFound": "Étudiant non trouvé"
-        },
-        "viewTitle": "CVs disponibles",
-        "acceptButton": "Accepter",
-        "refuseButton": "Refuser",
-        "ACCEPTED": "Accepté",
-        "REFUSED": "Refusé",
-        "noMorePendingCvs": "Il n'y a plus de CV en attente"
-    },
-    "employerCvsList": {
-        "title": "Applications",
-        "acceptButton": "Accepter",
-        "refuseButton": "Refuser",
-        "ACCEPTED": "Accepté",
-        "REFUSED": "Refusé"
-    },
-    "employerOffersList": {
-        "viewTitle": "Offres disponibles",
-        "status": "État",
+    "seeOffersButton": "Voir les offres",
+    "seeApplicationsButton": "Voir les candidatures"
+  },
+  "addOffer": {
+    "pageTitle": "Créer une offre",
+    "description": "Description",
+    "title": "Titre",
+    "departmentCode": "Code du département",
+    "startDate": "Date de début",
+    "endDate": "Date de fin",
+    "offerEndDate": "Date de fin de l'offre",
+    "submit": "Soumettre",
+    "availablePlaces": "Places disponibles",
+    "errors": {
+      "titleRequired": "Le titre ne peut pas être vide",
+      "descriptionRequired": "La description ne peut pas être vide",
+      "departmentCodeRequired": "Le code du département ne peut pas être vide",
+      "invalidStartDate": "La date de début est invalide",
+      "invalidEndDate": "La date de fin est invalide",
+      "invalidOfferEndDate": "La date de fin de l'offre est invalide",
+      "endDateBeforeStartDate": "La date de fin ne peut pas être antérieure à la date de début"
+    }
+  },
+  "editOffer": {
+    "pageTitle": "Modifier l'offre",
+    "description": "Description",
+    "title": "Titre",
+    "department": "Département",
+    "startDate": "Date de début",
+    "endDate": "Date de fin",
+    "offerEndDate": "Date de fin de l'offre",
+    "submit": "Soumettre"
+  },
+  "upload": {
+    "CvFormTitle": "Télécharger un CV",
+    "file": "Télécharger un fichier",
+    "submit": "Soumettre",
+    "success": "Votre CV a été téléchargé avec succès"
+  },
+  "login": {
+    "identification": "E-mail ou numéro d'étudiant",
+    "password": "Mot de passe",
+    "userCreated": "Le compte a été créé avec succès",
+    "errors": {
+      "emptyIdentification": "Veuillez entrer votre e-mail ou numéro d'étudiant",
+      "emptyPassword": "Veuillez entrer votre mot de passe",
+      "invalidCredentials": "L'e-mail, le numéro d'étudiant ou le mot de passe est invalide",
+      "sessionExpired": "Votre session a expiré, veuillez vous reconnecter"
+    }
+  },
+  "applicationsList": {
+    "title": "Candidatures soumises",
+    "offerTitle": "Titre du poste",
+    "acceptedListTitle": "Candidatures acceptées",
+    "SearchPlaceholder": "Rechercher par titre d'offre, organisation ou étudiant...",
+    "noAcceptedApplications": "Aucun résultat trouvé...",
+    "organization": "Organisation",
+    "status": "Statut",
+    "cv": "CV",
+    "noApplications": "Aucune candidature soumise",
+    "row": {
+      "status": {
         "PENDING": "En attente",
-        "ACCEPTED": "Accepté",
-        "REFUSED": "Refusé",
-        "editButton": "Modifier",
-        "deleteButton": "Supprimer"
+        "ACCEPTED": "Acceptée",
+        "REFUSED": "Refusée"
+      }
     },
-    "student": {
-        "seeOffersButton": "Voir les offres"
-    },
-    "manager": {
-        "seeOffersButton": "Voir les offres",
-        "seeCvsButton": "See CVS",
-        "createContractButton": "Créer un contrat",
-        "createContract": {
-            "title": "Créer un contrat",
-            "officeName": "Nom du bureau",
-            "startHour": "Heure de début",
-            "endHour": "Heure de fin",
-            "totalHoursPerWeek": "Total d'heures par semaine",
-            "salary": "Salaire",
-            "internTasksAndResponsibilities": "Tâches et responsabilités de l'étudiant",
-            "errors": {
-                "applicationNotFound": "Application non trouvée",
-                "employerNotFound": "Employeur non trouvé",
-                "contractALreadyExists": "Un contrat existe déjà pour cette application",
-                "emptyOfficeName": "Le nom du bureau ne peut pas être vide",
-                "invalidStartHour": "L'heure de début n'est pas valide",
-                "invalidEndHour": "L'heure de fin n'est pas valide",
-                "invalidTotalHoursPerWeek": "Le total d'heures par semaine n'est pas valide",
-                "invalidSalary": "Le salaire n'est pas valide",
-                "emptyInternTasksAndResponsibilities": "Les tâches et responsabilités de l'étudiant ne peuvent pas être vides"
-            }
-        }
-    },
-    "employer": {
-        "errors": {
-            "employerNotFound": "Aucun employeur trouvé"
-        },
-        "seeOffersButton": "Voir les offres"
-    },
-    "addOffer": {
-        "pageTitle": "Ajout de Stage",
-        "description": "Description",
-        "title": "Titre",
-        "departmentCode": "Code de Departement",
-        "startDate": "Date de début",
-        "endDate": "Date de fin",
-        "offerEndDate": "Date de fin de l'offre",
-        "submit": "Ajouter",
-        "availablePlaces": "Places disponible",
-        "errors": {
-            "titleRequired": "Le titre ne peut pas être vide",
-            "descriptionRequired": "La description ne peut pas être vide",
-            "departmentCodeRequired": "Le code de département ne peut pas être vide",
-            "invalidStartDate": "La date de début n'est pas valide",
-            "invalidEndDate": "La date de fin n'est pas valide",
-            "invalidOfferEndDate": "La date de fin n'est pas valide",
-            "endDateBeforeStartDate": "La date de fin doit être après la date de début"
-        }
-    },
-    "editOffer": {
-        "pageTitle": "Modifier l'offre",
-        "description": "Description",
-        "title": "Titre",
-        "department": "Departement",
-        "startDate": "Date de début",
-        "endDate": "Date de fin",
-        "offerEndDate": "Date de fin de l'offre",
-        "submit": "Modifier"
-    },
-    "upload": {
-        "CvFormTitle": "Téléverser votre CV",
-        "file": "Séléctionner un fichier",
-        "submit": "Téléverser",
-        "success": "Votre CV a été téléversé avec succès"
-    },
-    "login": {
-        "identification": "Courriel ou matricule",
-        "password": "Mot de passe",
-        "userCreated": "Le compte a été créé avec succès",
-        "errors": {
-            "emptyIdentification": "SVP entrez votre courriel ou votre matricule",
-            "emptyPassword": "SVP entrez votre mot de passe",
-            "invalidCredentials": "Courriel, matricule ou mot de passe invalide",
-            "sessionExpired": "Votre session est expirée, veuillez vous reconnecter"
-        }
-    },
-    "logout": "Se déconnecter",
-    "pageNotFound": "Erreur 404: Page pas trouvée"
+    "errors": {
+      "studentNotFound": "Étudiant introuvable"
+    }
+  },
+  "logout": "Déconnexion",
+  "pageNotFound": "Erreur 404 : Page non trouvée",
+  "sessionSelector": {
+    "filterPlaceholder": "Filtrer par date"
+  }
 }

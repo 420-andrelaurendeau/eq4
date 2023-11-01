@@ -7,7 +7,9 @@ import { getManagerById } from "../../../services/userService";
 import { getUserId } from "../../../services/authService";
 import { useNavigate } from "react-router-dom";
 import { CV, CVStatus } from "../../../model/cv";
-import CvsList from "../../../components/CvsList";
+import CvsList from "../../../components/CVsList";
+import { useSessionContext } from "../../../contextsholders/providers/SessionContextHolder";
+import SessionSelector from "../../../components/SessionSelector";
 
 const ManagerCvView = () => {
   const [manager, setManager] = useState<Manager>();
@@ -17,6 +19,7 @@ const ManagerCvView = () => {
   const [error, setError] = useState<string>("");
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { chosenSession } = useSessionContext();
 
   useEffect(() => {
     if (manager !== undefined) return;
@@ -41,8 +44,9 @@ const ManagerCvView = () => {
 
   useEffect(() => {
     if (manager === undefined) return;
+    if (chosenSession === undefined) return;
 
-    getManagerCvsByDepartment(manager.department!.id!)
+    getManagerCvsByDepartment(manager.department!.id!, chosenSession.id)
       .then((res) => {
         let acceptedCvs = [];
         let refusedCvs = [];
@@ -65,7 +69,7 @@ const ManagerCvView = () => {
         if (err.request.status === 404)
           setError(t("cvsList.errors.departmentNotFound"));
       });
-  }, [manager, t]);
+  }, [manager, t, chosenSession]);
 
   const updateCvsState = (cv: CV, cvStatus: CVStatus) => {
     let newCvs = cvs.filter((c) => c.id !== cv.id);
@@ -80,6 +84,9 @@ const ManagerCvView = () => {
   return (
     <Container>
       <h1>{t("managerCvsList.viewTitle")}</h1>
+
+      <SessionSelector />
+
       {cvs.length > 0 ? (
         <CvsList
           cvs={cvs}
@@ -88,7 +95,7 @@ const ManagerCvView = () => {
           updateCvsState={updateCvsState}
         />
       ) : (
-        <p>{t("managerCvsList.noMorePendingCvs")}</p>
+        <p className="text-center">{t("managerCvsList.noMorePendingCvs")}</p>
       )}
       {cvsAccepted.length > 0 ? (
         <CvsList

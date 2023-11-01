@@ -12,14 +12,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ApplicationDTO {
     private Long id;
-    private OfferDTO offer;
     private CvDTO cv;
+    private OfferDTO offer;
+    private Application.ApplicationStatus applicationStatus;
 
     public Application fromDTO(){
-        return new Application(
-                id,
-                cv.fromDTO(),
-                offer.fromDTO()
-        );
+        return new Application(id, cv.fromDTO(), offer.fromDTO(), applicationStatus);
     }
 }

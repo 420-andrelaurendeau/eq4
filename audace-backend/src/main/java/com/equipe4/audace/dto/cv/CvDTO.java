@@ -14,15 +14,11 @@ public class CvDTO {
     private Long id;
     private String fileName;
     private byte[] content;
-    private StudentDTO student;
     private Cv.CvStatus cvStatus;
+    private StudentDTO student;
 
     public Cv fromDTO() {
         return new Cv(
-                id,
-                student.fromDTO(),
-                content,
-                fileName
-        );
+                id, fileName, content, student.fromDTO());
     }
 }

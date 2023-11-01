@@ -55,6 +55,7 @@
     "title": "Title",
     "internshipEndDate": "End Date",
     "internshipStartDate": "Start Date",
+    "availablePlaces": "Available Places",
     "noOffers": "No offers available",
     "viewTitle": "Available Offers",
     "applyButton": "Apply",
@@ -103,7 +104,7 @@
     "REFUSED": "Refused",
     "noMorePendingCvs": "There are no more pending CVs"
   },
-  "employerCvsList": {
+  "employerApplicationsList": {
     "title": "Applications",
     "acceptButton": "Accept",
     "refuseButton": "Refuse",
@@ -117,7 +118,8 @@
     "ACCEPTED": "Accepted",
     "REFUSED": "Refused",
     "editButton": "Edit",
-    "deleteButton": "Delete"
+    "deleteButton": "Delete",
+    "applicationButton": "See applications"
   },
   "student": {
     "seeOffersButton": "See Offers"
@@ -201,6 +203,30 @@
       "sessionExpired": "Your session has expired, please log in again"
     }
   },
+  "applicationsList": {
+    "title": "Applications submitted",
+    "offerTitle": "Position title",
+    "acceptedListTitle": "Accepted applications",
+    "SearchPlaceholder": "Search by Offer Title, Organisation or Student...",
+    "noAcceptedApplications": "No results found...",
+    "organization": "Organization",
+    "status": "Status",
+    "cv": "CV",
+    "noApplications": "No applications submitted",
+    "row": {
+      "status": {
+        "PENDING": "Pending",
+        "ACCEPTED": "Accepted",
+        "REFUSED": "Refused"
+      }
+    },
+    "errors": {
+      "studentNotFound": "Student wasn't found"
+    }
+  },
   "logout": "Log out",
-  "pageNotFound": "Error 404: Page Not Found"
+  "pageNotFound": "Error 404: Page Not Found",
+  "sessionSelector": {
+    "filterPlaceholder": "Filter by date"
+  }
 }

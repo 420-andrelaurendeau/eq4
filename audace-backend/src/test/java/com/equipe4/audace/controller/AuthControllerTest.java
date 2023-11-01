@@ -3,13 +3,15 @@ package com.equipe4.audace.controller;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.UserDTO;
-import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
-import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.UserRepository;
+import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
+import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.security.jwt.TimedJwt;
 import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.StudentService;
@@ -38,29 +40,33 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AuthControllerTest {
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
-    private EmployerService employerService;
-    @MockBean
-    private DepartmentRepository departmentRepository;
-    @MockBean
-    private EmployerRepository employerRepository;
-    @MockBean
-    private StudentRepository studentRepository;
-    @MockBean
-    private ManagerRepository managerRepository;
-    @MockBean
-    private UserRepository userRepository;
-    @MockBean
-    private JwtManipulator jwtManipulator;
-    @MockBean
-    private StudentService studentService;
+    private CvRepository cvRepository;
     @MockBean
     private SaltRepository saltRepository;
     @MockBean
+    private SessionRepository sessionRepository;
+    @MockBean
+    private UserRepository userRepository;
+    @MockBean
+    private ManagerRepository managerRepository;
+    @MockBean
+    private DepartmentRepository departmentRepository;
+    @MockBean
+    private OfferRepository offerRepository;
+    @MockBean
+    private OfferSessionRepository offerSessionRepository;
+    @MockBean
+    private ApplicationRepository applicationRepository;
+    @MockBean
     private AuthService authService;
     @MockBean
-    private CvRepository cvRepository;
+    private StudentService studentService;
+    @MockBean
+    private EmployerService employerService;
+
+    @MockBean
+    private JwtManipulator jwtManipulator;
 
     @Test
     @WithMockUser

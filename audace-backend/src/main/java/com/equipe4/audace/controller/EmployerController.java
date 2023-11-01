@@ -2,6 +2,7 @@ package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.GenericUserController;
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
@@ -13,18 +14,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/employers")
+@CrossOrigin(origins = "http://localhost:3000")
+
 public class EmployerController extends GenericUserController<Employer, EmployerService> {
     public EmployerController(EmployerService employerService) {
         super(employerService);
-    }
-
-    @GetMapping
-    public ResponseEntity<List<EmployerDTO>> getAllEmployers(){
-        logger.info("getAllEmployers");
-        return ResponseEntity.ok(service.findAllEmployers());
     }
 
     @GetMapping("/{id}")
@@ -35,27 +31,28 @@ public class EmployerController extends GenericUserController<Employer, Employer
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{id}/offers")
-    public ResponseEntity<List<OfferDTO>> getAllOffersByEmployerId(@PathVariable Long id) {
-        logger.info("getAllOffersByEmployerId");
-        return ResponseEntity.ok(service.findAllOffersByEmployerId(id));
-    }
-
-    @GetMapping("/offers/{offerId}")
-    public ResponseEntity<OfferDTO> getOfferById(@PathVariable Long offerId) {
+    @GetMapping("/offers")
+    public ResponseEntity<OfferDTO> getOfferById(@RequestParam("offerId") Long offerId){
         logger.info("getOfferById");
-        return service.findOfferById(offerId)
+        return service.getOfferById(offerId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/{id}/offers")
-    public ResponseEntity<OfferDTO> createOffer(@RequestBody OfferDTO offerDTO){
+    @GetMapping("/offers/{sessionId}")
+    public ResponseEntity<List<OfferDTO>> getAllOffersByEmployerIdAndSessionId(@RequestParam("employerId") Long employerId, @PathVariable Long sessionId) {
+        logger.info("getAllOffersByEmployerId");
+        return ResponseEntity.ok(service.findAllOffersByEmployerIdAndSessionId(employerId, sessionId));
+    }
+
+    @PostMapping("/offers")
+    public ResponseEntity<HttpStatus> createOffer(@RequestBody OfferDTO offerDTO){
         logger.info("createOffer");
-        logger.info(offerDTO.toString());
-        return service.createOffer(offerDTO).map(offer -> ResponseEntity.status(HttpStatus.CREATED).body(offerDTO))
+        return service.createOffer(offerDTO)
+                .map(offer -> new ResponseEntity<HttpStatus>(HttpStatus.CREATED))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
+
     @PutMapping("/offers")
     public ResponseEntity<OfferDTO> updateOffer(@RequestBody OfferDTO offerDTO){
         logger.info("updateOffer");
@@ -66,17 +63,37 @@ public class EmployerController extends GenericUserController<Employer, Employer
         return ResponseEntity.ok(updatedOffer);
     }
 
-    @DeleteMapping("/offers/{offerId}")
-    public ResponseEntity<HttpStatus> deleteOffer(@PathVariable("offerId") Long offerId){
+    @DeleteMapping("/offers")
+    public ResponseEntity<HttpStatus> deleteOffer(@RequestParam("offerId") Long offerId){
         logger.info("deleteOffer");
         service.deleteOffer(offerId);
         return ResponseEntity.ok().build();
 
     }
 
+    @GetMapping("/applications/{offerId}")
+    public ResponseEntity<List<ApplicationDTO>> getAllApplicationsByEmployerIdAndOfferId(@RequestParam("employerId") Long employerId, @PathVariable Long offerId) {
+        logger.info("getAllApplicationsByEmployerId");
+        return ResponseEntity.ok(service.findAllApplicationsByEmployerIdAndOfferId(employerId, offerId));
+    }
+    @PutMapping("/accept_application/{applicationId}")
+    public ResponseEntity<HttpStatus> acceptApplication(@RequestParam("employerId") Long employerId, @PathVariable Long applicationId) {
+        logger.info("acceptApplication");
+        return service.acceptApplication(employerId, applicationId)
+                .map(applicationDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    }
+    @PutMapping("/refuse_application/{applicationId}")
+    public ResponseEntity<HttpStatus> refuseApplication(@RequestParam("employerId") Long employerId, @PathVariable Long applicationId) {
+        logger.info("refuseApplication");
+        return service.refuseApplication(employerId, applicationId)
+                .map(applicationDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    }
+
     @GetMapping("/departments")
-    public ResponseEntity<List<DepartmentDTO>> getAllDepartments(){
+    public ResponseEntity<List<DepartmentDTO>> getAllDepartments() {
         logger.info("getAllDepartments");
-        return ResponseEntity.ok(service.findAllDepartments());
+        return ResponseEntity.ok(service.getAllDepartments());
     }
 }

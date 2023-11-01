@@ -10,21 +10,22 @@ import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.offer.Offer.OfferStatus;
-import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.StudentRepository;
+import com.equipe4.audace.model.session.Session;
+import com.equipe4.audace.model.session.StudentSession;
+import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.StudentSessionRepository;
+import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import lombok.AllArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class StudentService extends GenericUserService<Student> {
@@ -33,21 +34,20 @@ public class StudentService extends GenericUserService<Student> {
     private final StudentRepository studentRepository;
     private final CvRepository cvRepository;
     private final ApplicationRepository applicationRepository;
+    private final StudentSessionRepository studentSessionRepository;
+    private final SessionManipulator sessionManipulator;
 
-    public StudentService(
-            SaltRepository saltRepository,
-            DepartmentRepository departmentRepository,
-            OfferRepository offerRepository,
-            StudentRepository studentRepository,
-            CvRepository cvRepository,
-            ApplicationRepository applicationRepository
-    ) {
+    public StudentService(SaltRepository saltRepository, DepartmentRepository departmentRepository, OfferRepository offerRepository,
+                          StudentRepository studentRepository, CvRepository cvRepository, ApplicationRepository applicationRepository,
+                          StudentSessionRepository studentSessionRepository, SessionManipulator sessionManipulator) {
         super(saltRepository);
         this.departmentRepository = departmentRepository;
         this.offerRepository = offerRepository;
         this.studentRepository = studentRepository;
         this.cvRepository = cvRepository;
         this.applicationRepository = applicationRepository;
+        this.studentSessionRepository = studentSessionRepository;
+        this.sessionManipulator = sessionManipulator;
     }
 
     @Transactional
@@ -68,19 +68,27 @@ public class StudentService extends GenericUserService<Student> {
         }
         studentDTO.setDepartment(departmentOptional.get().toDTO());
 
+        Session session = sessionManipulator.getCurrentSession();
+
         Student student = studentDTO.fromDTO();
         hashAndSaltPassword(student);
+
+        studentSessionRepository.save(new StudentSession(null, student, session));
 
         return Optional.of(studentRepository.save(student).toDTO());
     }
 
     @Transactional
-    public List<OfferDTO> getAcceptedOffersByDepartment(Long departmentId) {
+    public List<OfferDTO> getAcceptedOffersByDepartment(Long departmentId, Long sessionId) {
         Department department = departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
         List<Offer> offers = offerRepository.findAllByDepartmentAndOfferStatus(department, OfferStatus.ACCEPTED);
 
-        return offers.stream().map(Offer::toDTO).toList();
+        return sessionManipulator
+                .removeOffersNotInSession(offers, sessionId)
+                .stream()
+                .map(Offer::toDTO)
+                .toList();
     }
 
     public Optional<StudentDTO> getStudentById(Long id) {
@@ -104,7 +112,7 @@ public class StudentService extends GenericUserService<Student> {
             throw new IllegalArgumentException("File cannot be read");
         }
 
-        Cv cv = new Cv(null, student, bytes, fileName);
+        Cv cv = new Cv(null, fileName, bytes, student);
         return Optional.of(cvRepository.save(cv).toDTO());
     }
 
@@ -113,6 +121,12 @@ public class StudentService extends GenericUserService<Student> {
 
         Long cvId = applicationDTO.getCv().getId();
         Long offerId = applicationDTO.getOffer().getId();
+        Long studentId = applicationDTO.getCv().getStudent().getId();
+
+        List<Application> alreadyApplied = applicationRepository.findApplicationsByCvStudentIdAndOfferId(studentId, offerId);
+
+        if (!alreadyApplied.isEmpty()) throw new IllegalArgumentException("Student already applied to this offer");
+
 
         Cv cv = cvRepository.findById(cvId).orElseThrow(() -> new NoSuchElementException("Cv not found"));
         Offer offer = offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
@@ -123,11 +137,19 @@ public class StudentService extends GenericUserService<Student> {
     }
 
     public List<CvDTO> getCvsByStudent(Long studentId) {
-        if (studentId == null) {
-            throw new IllegalArgumentException("Student ID cannot be null");
-        }
+        if (studentId == null) throw new IllegalArgumentException("Student ID cannot be null");
+
         List<Cv> cvs = cvRepository.findAllByStudentId(studentId);
 
         return cvs.stream().map(Cv::toDTO).toList();
+    }
+
+    public List<ApplicationDTO> getApplicationsByStudentIdAndSessionId(Long studentId, Long sessionId) {
+        if (studentId == null) throw new IllegalArgumentException("Student ID cannot be null");
+
+        Student student = studentRepository.findById(studentId).orElseThrow(() -> new NoSuchElementException("Student not found"));
+        List<Application> applications = applicationRepository.findApplicationsByCv_Student(student);
+
+        return sessionManipulator.removeApplicationsNotInSession(applications, sessionId).stream().map(Application::toDTO).toList();
     }
 }
