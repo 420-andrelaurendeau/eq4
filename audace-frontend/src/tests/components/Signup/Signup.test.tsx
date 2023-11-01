@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import Signup from "../../../components/Signup";
 import { User } from "../../../model/user";
+import { AxiosResponse } from "axios";
 
 const allErrors = [
   "signup.errors.email",
@@ -75,4 +76,88 @@ it("should display errors on faulty submit assuming submit already done", async 
   await screen.findByText(/signup.errors.city/i);
   await screen.findByText(/signup.errors.postalCode/i);
   await screen.findByText(/signup.errors.phone/i);
+});
+
+it("should properly submit a form", async () => {
+  render(
+    <Signup
+      handleSubmit={(user: User) => {
+        return new Promise((resolve) => {
+          resolve({} as unknown as AxiosResponse);
+        });
+      }}
+      errors={[]}
+      setErrors={(errors: string[]) => {}}
+    />
+  );
+
+  const emailInput = screen.getByLabelText(/signup.emailEntry/i);
+  const passwordInput = screen.getByLabelText(/signup.password$/i);
+  const passwordConfirmationInput = screen.getByLabelText(
+    /signup.passwordConfirmation/i
+  );
+  const firstNameInput = screen.getByLabelText(/signup.firstNameEntry/i);
+  const lastNameInput = screen.getByLabelText(/signup.lastNameEntry/i);
+  const addressInput = screen.getByLabelText(/signup.addressEntry/i);
+  const cityInput = screen.getByLabelText(/signup.cityEntry/i);
+  const postalCodeInput = screen.getByLabelText(/signup.postalCodeEntry/i);
+  const phoneInput = screen.getByLabelText(/signup.phoneEntry/i);
+  const submitButton = screen.getByText(/signup.signup/i);
+
+  fireEvent.change(emailInput, { target: { value: "asd@hotmail.com" } });
+  fireEvent.change(passwordInput, { target: { value: "Aa12345!" } });
+  fireEvent.change(passwordConfirmationInput, {
+    target: { value: "Aa12345!" },
+  });
+  fireEvent.change(firstNameInput, { target: { value: "John" } });
+  fireEvent.change(lastNameInput, { target: { value: "Doe" } });
+  fireEvent.change(addressInput, { target: { value: "1234 Main St" } });
+  fireEvent.change(cityInput, { target: { value: "Montreal" } });
+  fireEvent.change(postalCodeInput, { target: { value: "h1h 1h1" } });
+  fireEvent.change(phoneInput, { target: { value: "1234567890" } });
+
+  fireEvent.click(submitButton);
+});
+
+it("should display unexpected error on failed submit request", async () => {
+  render(
+    <Signup
+      handleSubmit={(user: User) => {
+        return new Promise((resolve, reject) => {
+          reject({ code: "ERR_NETWORK" });
+        });
+      }}
+      errors={[]}
+      setErrors={(errors: string[]) => {}}
+    />
+  );
+
+  const emailInput = screen.getByLabelText(/signup.emailEntry/i);
+  const passwordInput = screen.getByLabelText(/signup.password$/i);
+  const passwordConfirmationInput = screen.getByLabelText(
+    /signup.passwordConfirmation/i
+  );
+  const firstNameInput = screen.getByLabelText(/signup.firstNameEntry/i);
+  const lastNameInput = screen.getByLabelText(/signup.lastNameEntry/i);
+  const addressInput = screen.getByLabelText(/signup.addressEntry/i);
+  const cityInput = screen.getByLabelText(/signup.cityEntry/i);
+  const postalCodeInput = screen.getByLabelText(/signup.postalCodeEntry/i);
+  const phoneInput = screen.getByLabelText(/signup.phoneEntry/i);
+  const submitButton = screen.getByText(/signup.signup/i);
+
+  fireEvent.change(emailInput, { target: { value: "asd@hotmail.com" } });
+  fireEvent.change(passwordInput, { target: { value: "Aa12345!" } });
+  fireEvent.change(passwordConfirmationInput, {
+    target: { value: "Aa12345!" },
+  });
+  fireEvent.change(firstNameInput, { target: { value: "John" } });
+  fireEvent.change(lastNameInput, { target: { value: "Doe" } });
+  fireEvent.change(addressInput, { target: { value: "1234 Main St" } });
+  fireEvent.change(cityInput, { target: { value: "Montreal" } });
+  fireEvent.change(postalCodeInput, { target: { value: "h1h 1h1" } });
+  fireEvent.change(phoneInput, { target: { value: "1234567890" } });
+
+  fireEvent.click(submitButton);
+
+  await screen.findByText(/signup.errors.network/i);
 });
