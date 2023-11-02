@@ -7,6 +7,7 @@ import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
 import { Contract } from '../../model/contract';
 import Application from '../../model/application';
 import { createContract, getApplicationById } from '../../services/managerService';
+import { getContractByApplicationId } from '../../services/applicationService';
 
 const AddContract = () => {
   const navigate = useNavigate();
@@ -17,24 +18,34 @@ const AddContract = () => {
   const [application, setApplication] = useState<Application>();
   const [officeName, setOfficeName] = useState('');
   const [startHour, setStartHour] = useState('09:00');
-  const [endHour, setEndHour] = useState('05:00');
+  const [endHour, setEndHour] = useState('17:00');
   const [totalHoursPerWeek, setTotalHoursPerWeek] = useState(40);
   const [salary, setSalary] = useState(15.25);
   const [internTasksAndResponsibilities, setInternTasksAndResponsibilities] = useState('');
 
   useEffect(() => {
-    const fetchApplication = async () => {
-      getApplicationById(parseInt(applicationId!))
-        .then((applicationResponse) => {
-          setApplication(applicationResponse.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching application: " + error);
-        });
-    };
-
-    fetchApplication();
+    getApplicationById(parseInt(applicationId!))
+      .then((applicationResponse) => {
+        setApplication(applicationResponse.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching application: " + error);
+      });
   }, [applicationId]);
+
+  useEffect(() => {
+    if (application === undefined) return;
+    
+    getContractByApplicationId(application.id!)
+      .then((res) => {
+        if (res.data !== null) {
+          navigate('/manager');
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching contract: " + error);
+      });
+  })
 
   const isTimeFormatValid = (time: string): boolean => {
     const timeRegex = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/;
