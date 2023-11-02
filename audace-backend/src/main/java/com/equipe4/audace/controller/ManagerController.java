@@ -117,4 +117,24 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/applications/{applicationId}/contract")
+    public ResponseEntity<ContractDTO> getContractByApplicationId(@PathVariable Long applicationId) {
+        logger.info("getContractByApplicationId");
+        try {
+            return ResponseEntity.ok(
+                    service.getContractByApplicationId(applicationId).orElseThrow()
+            );
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/contracts/department/{departmentId}")
+    public ResponseEntity<List<ContractDTO>> getContractsByDepartment(@PathVariable Long departmentId) {
+        logger.info("getContractsByDepartment");
+        return ResponseEntity.ok(
+                service.getContractsByDepartment(departmentId)
+        );
+    }
 }
