@@ -8,6 +8,7 @@ import { Contract } from '../../model/contract';
 import Application from '../../model/application';
 import { createContract, getApplicationById } from '../../services/managerService';
 import { getContractByApplicationId } from '../../services/applicationService';
+import { is } from 'date-fns/locale';
 
 const AddContract = () => {
   const navigate = useNavigate();
@@ -22,6 +23,7 @@ const AddContract = () => {
   const [totalHoursPerWeek, setTotalHoursPerWeek] = useState(40);
   const [salary, setSalary] = useState(15.25);
   const [internTasksAndResponsibilities, setInternTasksAndResponsibilities] = useState('');
+  const [isContractCreated, setIsContractCreated] = useState(true);
 
   useEffect(() => {
     getApplicationById(parseInt(applicationId!))
@@ -34,6 +36,7 @@ const AddContract = () => {
   }, [applicationId]);
 
   useEffect(() => {
+    if (!isContractCreated) return;
     if (application === undefined) return;
     
     getContractByApplicationId(application.id!)
@@ -44,13 +47,9 @@ const AddContract = () => {
       })
       .catch((error) => {
         console.error("Error fetching contract: " + error);
+        setIsContractCreated(false);
       });
   })
-
-  const isTimeFormatValid = (time: string): boolean => {
-    const timeRegex = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/;
-    return timeRegex.test(time);
-  }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -82,8 +81,6 @@ const AddContract = () => {
 
     if (application === undefined) errorsToDisplay.push("manager.createContract.errors.applicationNotFound");
     if (officeName === '') errorsToDisplay.push("manager.createContract.errors.emptyOfficeName");
-    if (isTimeFormatValid(startHour) === false) errorsToDisplay.push("manager.createContract.errors.invalidStartHour");
-    if (isTimeFormatValid(endHour) === false) errorsToDisplay.push("manager.createContract.errors.invalidEndHour");
     if (totalHoursPerWeek <= 0 || totalHoursPerWeek > 168) errorsToDisplay.push("manager.createContract.errors.invalidTotalHoursPerWeek");
     if (salary <= 0) errorsToDisplay.push("manager.createContract.errors.invalidSalary");
     if (internTasksAndResponsibilities === '') errorsToDisplay.push("manager.createContract.errors.emptyInternTasksAndResponsibilities");
@@ -116,9 +113,10 @@ const AddContract = () => {
             <Form.Group controlId="formBasicStartHour">
               <Form.Label>{t("manager.createContract.startHour")}</Form.Label>
               <Form.Control
-                type="text"
+                type="time"
                 size="sm"
                 min="1"
+                step={2700}
                 value={startHour}
                 isInvalid={errors.includes("contract.errors.invalidStartHour")}
                 onChange={(e) => setStartHour(e.target.value)}
@@ -131,7 +129,7 @@ const AddContract = () => {
             <Form.Group controlId="formBasicEndHour">
               <Form.Label>{t("manager.createContract.endHour")}</Form.Label>
               <Form.Control
-                type="text"
+                type="time"
                 size="sm"
                 min="1"
                 value={endHour}
