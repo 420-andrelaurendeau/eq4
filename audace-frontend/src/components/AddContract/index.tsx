@@ -37,7 +37,7 @@ const AddContract = () => {
   }, [applicationId]);
 
   const isTimeFormatValid = (time: string): boolean => {
-    const timeRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
+    const timeRegex = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/;
     return timeRegex.test(time);
   }
 
@@ -59,7 +59,7 @@ const AddContract = () => {
 
     try {
       await createContract(formData);
-      navigate('/');
+      navigate('/manager');
     } catch (error) {
       console.error(error);
       setIsLoading(false);
