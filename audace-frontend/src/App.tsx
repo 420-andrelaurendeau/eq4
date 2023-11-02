@@ -57,6 +57,7 @@ function App() {
               <AuthorizedRoute requiredAuthority={Authority.MANAGER}>
                 <Routes>
                   <Route index element={<ManagerView />} />
+                  <Route path="createdContract" element={<ManagerView isContractCreated={true} />} />
                   <Route path="offers" element={<ManagerOfferView />} />
                   <Route path="cvs" element={<ManagerCvView />} />
                   <Route path="contracts/new/:applicationId" element={<AddContract />} />

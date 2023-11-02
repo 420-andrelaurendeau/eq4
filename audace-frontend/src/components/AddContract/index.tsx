@@ -8,7 +8,6 @@ import { Contract } from '../../model/contract';
 import Application from '../../model/application';
 import { createContract, getApplicationById } from '../../services/managerService';
 import { getContractByApplicationId } from '../../services/applicationService';
-import { is } from 'date-fns/locale';
 
 const AddContract = () => {
   const navigate = useNavigate();
@@ -69,7 +68,7 @@ const AddContract = () => {
 
     try {
       await createContract(formData);
-      navigate('/manager');
+      navigate('/manager/createdContract');
     } catch (error) {
       console.error(error);
       setIsLoading(false);

@@ -1,4 +1,4 @@
-import { Container } from "react-bootstrap";
+import { Alert, Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import {
   getAcceptedApplicationsByDepartment,
@@ -8,9 +8,15 @@ import ManagerApplicationsList from "../../../components/ManagerApplicationsList
 import Application from "../../../model/application";
 import { getUserId } from "../../../services/authService";
 import { getContractsByDepartmentId } from "../../../services/applicationService";
+import { useTranslation } from "react-i18next";
 
-const ManagerView = () => {
+interface Props {
+  isContractCreated?: boolean;
+}
+
+const ManagerView = ({ isContractCreated }: Props) => {
   const [applications, setApplications] = useState<Application[]>([]);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const managerId = getUserId();
@@ -51,8 +57,11 @@ const ManagerView = () => {
   }, []);
 
   return (
-    <Container>
-      <h1>Manager view</h1>
+    <Container className="mt-3">
+      <Alert variant="success" hidden={isContractCreated === undefined}>
+        {t("manager.contractCreated")}
+      </Alert>
+      <h1>{t("manager.title")}</h1>
       <ManagerApplicationsList applications={applications} />
     </Container>
   );
