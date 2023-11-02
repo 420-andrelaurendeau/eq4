@@ -1,5 +1,9 @@
 {
   "langCode": "EN",
+  "common": {
+    "loading": "Loading...",
+    "submit": "Submit"
+  },
   "signin": "Log in",
   "signup": {
     "employerFormTitle": "Employer Registration",
@@ -122,7 +126,29 @@
   },
   "manager": {
     "seeOffersButton": "See Offers",
-    "seeCvsButton": "See CVS"
+    "seeCvsButton": "See CVS",
+    "createContractButton": "Create Contract",
+    "contractCreated": "Contract created successfully",
+    "title": "Manager",
+    "createContract": {
+      "title": "Create Contract",
+      "officeName": "Office Name",
+      "startHour": "Start Hour",
+      "endHour": "End Hour",
+      "totalHoursPerWeek": "Total Hours Per Week",
+      "salary": "Salary",
+      "internTasksAndResponsibilities": "Intern Tasks And Responsibilities",
+      "errors": {
+        "applicationNotFound": "Application not found",
+        "contractAlreadyExists": "A contract already exists for this offer",
+        "emptyOfficeName": "Office name cannot be empty",
+        "invalidStartHour": "Start hour is invalid",
+        "invalidEndHour": "End hour is invalid",
+        "invalidTotalHoursPerWeek": "Total hours per week is invalid",
+        "invalidSalary": "Salary is invalid",
+        "emptyInternTasksAndResponsibilities": "Intern tasks and responsibilities cannot be empty"
+      }
+    }
   },
   "employer": {
     "errors": {
@@ -182,7 +208,7 @@
     "title": "Applications submitted",
     "offerTitle": "Position title",
     "acceptedListTitle": "Accepted applications",
-    "SearchPlaceholder" : "Search by Offer Title, Organisation or Student...",
+    "SearchPlaceholder": "Search by Offer Title, Organisation or Student...",
     "noAcceptedApplications": "No results found...",
     "organization": "Organization",
     "status": "Status",

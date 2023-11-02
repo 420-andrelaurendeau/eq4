@@ -28,4 +28,12 @@ public class OfferDTO {
     public Offer fromDTO() {
         return new Offer(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, availablePlaces, department.fromDTO(), employer.fromDTO());
     }
+
+    public Long getEmployerId() {
+        return employer.getId();
+    }
+
+    public String getDepartmentCode() {
+        return department.getCode();
+    }
 }

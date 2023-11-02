@@ -54,7 +54,7 @@ const EditOffer: React.FC = () => {
         setDescription(offerData.description);
         setDepartment(
           offerData.department ||
-            ({ id: 1, code: "GLO", name: "Genie" } as Department)
+          ({ id: 1, code: "GLO", name: "Genie" } as Department)
         );
         setInternshipStartDate(new Date(offerData.internshipStartDate));
         setInternshipEndDate(new Date(offerData.internshipEndDate));

@@ -1,7 +1,7 @@
 import { AxiosResponse } from "axios";
 import http from "../constants/http";
 import { CV } from "../model/cv";
-import {MANAGER_PREFIX, STUDENT_PREFIX} from "../constants/apiPrefixes";
+import { MANAGER_PREFIX, STUDENT_PREFIX } from "../constants/apiPrefixes";
 
 export const getManagerCvsByDepartment = async (departmentId: number, sessionId: number): Promise<AxiosResponse<CV[]>> => {
     return http.get<CV[]>(`${MANAGER_PREFIX}/cvs/${departmentId}/${sessionId}`);

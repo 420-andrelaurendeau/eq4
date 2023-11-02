@@ -1,6 +1,9 @@
 package com.equipe4.audace.controller;
 
+import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
@@ -26,6 +29,7 @@ import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.ManagerService;
 import com.equipe4.audace.service.StudentService;
 import com.equipe4.audace.utils.JwtManipulator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -36,6 +40,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
@@ -43,10 +48,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -54,9 +64,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ManagerControllerTest {
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private ObjectMapper objectMapper;
     @MockBean
     private JwtManipulator jwtManipulator;
-
     @MockBean
     private CvRepository cvRepository;
     @MockBean
@@ -85,8 +96,6 @@ public class ManagerControllerTest {
     private EmployerService employerService;
     @MockBean
     private ManagerService managerService;
-
-
 
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
@@ -363,5 +372,80 @@ public class ManagerControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.name").value("Department 1"));
+    }
+
+    @Test
+    @WithMockUser(username = "manager", authorities = {"Manager"})
+    public void givenContractObject_whenCreateContract_thenReturnIsCreated() throws Exception {
+        // given - precondition or setup
+        ContractDTO contractDTO = createContractDTO();
+
+        when(managerService.createContract(any(ContractDTO.class))).thenReturn(Optional.of(contractDTO));
+
+        // when - action or behaviour that we are going test
+        ResultActions response = mockMvc.perform(post("/managers/contracts")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(Optional.of(contractDTO))));
+
+        // then - verify the result or output using assert statements
+        response.andDo(print()).
+                andExpect(status().isCreated());
+
+    }
+
+    @Test
+    @WithMockUser(username = "manager", authorities = {"Manager"})
+    public void givenContractId_whenGetContractById_thenReturnContractObject() throws Exception{
+        // given - precondition or setup
+        long contractId = 1L;
+        ContractDTO contractDTO = createContractDTO();
+
+        given(managerService.findContractById(contractId)).willReturn(Optional.of(contractDTO));
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/managers/contracts/{contractId}", contractId));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.id").value(contractDTO.getId()))
+                .andExpect(jsonPath("$.officeName", is(contractDTO.getOfficeName())))
+                .andExpect(jsonPath("$.startHour", is(contractDTO.getStartHour())))
+                .andExpect(jsonPath("$.endHour", is(contractDTO.getEndHour())))
+                .andExpect(jsonPath("$.totalHoursPerWeek", is(contractDTO.getTotalHoursPerWeek())))
+                .andExpect(jsonPath("$.salary", is(contractDTO.getSalary())))
+                .andExpect(jsonPath("$.internTasksAndResponsibilities", is(contractDTO.getInternTasksAndResponsibilities())))
+                .andExpect(jsonPath("$.supervisor.email", is(contractDTO.getSupervisor().getEmail())))
+                .andExpect(jsonPath("$.application.id", is(contractDTO.getApplication().getId().intValue())));
+    }
+
+    private Department createDepartment(){
+        return new Department(1L, "GLO", "Génie logiciel");
+    }
+    private EmployerDTO createEmployerDTO() {
+        return new EmployerDTO(1L, "Employer1", "Employer1", "employer1@gmail.com", "123456eE", "Organisation1", "Position1", "Class Service, Javatown, Qc H8N1C1", "123-456-7890", "12345");
+    }
+    private StudentDTO createStudentDTO() {
+        DepartmentDTO departmentDTO = createDepartment().toDTO();
+        return new StudentDTO(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", departmentDTO);
+    }
+    private Offer createOffer() {
+        Employer employer = createEmployerDTO().fromDTO();
+        Department department = createDepartment();
+        return new Offer(1L,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
+    }
+    private Application createApplication(Offer offer) {
+        Student student = createStudentDTO().fromDTO();
+        Cv cv = mock(Cv.class);
+
+        return new Application(1L, cv, offer);
+    }
+
+    private ContractDTO createContractDTO(){
+        EmployerDTO employerDTO = createEmployerDTO();
+        OfferDTO offerDTO = createOffer().toDTO();
+        ApplicationDTO applicationDTO = createApplication(offerDTO.fromDTO()).toDTO();
+        return new ContractDTO(1L, "Construction", "08:00", "17:00", 40, 18.35, "TODO", employerDTO, applicationDTO);
     }
 }

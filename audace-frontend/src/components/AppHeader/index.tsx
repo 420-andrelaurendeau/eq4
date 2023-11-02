@@ -42,9 +42,11 @@ function AppHeader() {
         )}
 
         {authority === "manager" && (
-          <Button onClick={() => handleClick(authority + "/offers")} variant="light" className="me-2">
-            {t("manager.seeOffersButton")}
-          </Button>
+          <Nav>
+            <Button onClick={() => handleClick(authority + "/offers")} variant="light" className="me-2">
+              {t("manager.seeOffersButton")}
+            </Button>
+          </Nav>
         )}
 
 

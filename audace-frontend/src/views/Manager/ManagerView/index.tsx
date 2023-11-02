@@ -1,4 +1,4 @@
-import { Container } from "react-bootstrap";
+import { Alert, Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import {
   getAcceptedApplicationsByDepartment,
@@ -7,9 +7,16 @@ import {
 import ManagerApplicationsList from "../../../components/ManagerApplicationsList";
 import Application from "../../../model/application";
 import { getUserId } from "../../../services/authService";
+import { getContractsByDepartmentId } from "../../../services/applicationService";
+import { useTranslation } from "react-i18next";
 
-const ManagerView = () => {
+interface Props {
+  isContractCreated?: boolean;
+}
+
+const ManagerView = ({ isContractCreated }: Props) => {
   const [applications, setApplications] = useState<Application[]>([]);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const managerId = getUserId();
@@ -24,7 +31,21 @@ const ManagerView = () => {
           parseInt(managerId),
           departmentRes.data.id!
         );
-        setApplications(applicationsRes.data);
+
+        const contractRes = await getContractsByDepartmentId(
+          departmentRes.data.id!
+        );
+
+        const applications = applicationsRes.data;
+        const contracts = contractRes.data;
+
+        const filteredApplications = applications.filter((application) => {
+          return !contracts.some((contract) => {
+            return contract.application.id === application.id;
+          });
+        });
+
+        setApplications(filteredApplications);
       } catch (err: any) {
         console.log(
           "Accepted applications fetching error: " + err.response.data
@@ -32,12 +53,15 @@ const ManagerView = () => {
       }
     };
 
-    fetchData().then(() => console.log("done"));
+    fetchData();
   }, []);
 
   return (
-    <Container>
-      <h1>Manager view</h1>
+    <Container className="mt-3">
+      <Alert variant="success" hidden={isContractCreated === undefined}>
+        {t("manager.contractCreated")}
+      </Alert>
+      <h1>{t("manager.title")}</h1>
       <ManagerApplicationsList applications={applications} />
     </Container>
   );
