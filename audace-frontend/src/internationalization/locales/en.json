@@ -119,7 +119,7 @@
     "REFUSED": "Refused",
     "editButton": "Edit",
     "deleteButton": "Delete",
-    "applicationButton": "See applications"
+    "applicationButton" : "See applications"
   },
   "student": {
     "seeOffersButton": "See Offers"
@@ -155,16 +155,16 @@
     "seeOffersButton": "See Offers",
     "seeApplicationsButton": "See Applications"
   },
-  "addOffer": {
-    "pageTitle": "Create Offer",
-    "description": "Description",
-    "title": "Title",
-    "departmentCode": "Department Code",
-    "startDate": "Start date",
-    "endDate": "End date",
-    "offerEndDate": "Offer end date",
-    "submit": "Submit",
-    "availablePlaces": "Available places",
+  "addOffer":{
+    "pageTitle" : "Create Offer",
+    "description" : "Description",
+    "title" : "Title",
+    "departmentCode" : "Department Code",
+    "startDate" : "Start date",
+    "endDate" : "End date",
+    "offerEndDate" : "Offer end date",
+    "submit" : "Submit",
+    "availablePlaces" : "Available places",
     "errors": {
       "titleRequired": "Title cannot be empty",
       "descriptionRequired": "Description cannot be empty",

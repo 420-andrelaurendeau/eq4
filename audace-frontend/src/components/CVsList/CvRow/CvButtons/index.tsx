@@ -13,7 +13,7 @@ const CvButtons = ({ userType, disabled, cv, updateCvsState }: Props) => {
     const selectButtons = () => {
         switch (userType) {
             case UserType.Manager:
-                return <ManagerButtons disabled={disabled} cv={cv} updateCvsState={updateCvsState} />;
+                return <ManagerButtons disabled={disabled} cv={cv} updateCvsState={updateCvsState}/>;
         }
     }
 

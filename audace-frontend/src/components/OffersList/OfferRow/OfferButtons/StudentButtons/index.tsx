@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { studentApplyToOffer, getApplicationsByStudentId } from "../../../../../services/applicationService";
+import {studentApplyToOffer, getApplicationsByStudentId} from "../../../../../services/applicationService";
 import { useEffect, useState } from "react";
 import { getUserId } from "../../../../../services/authService";
 import { Offer } from "../../../../../model/offer";
@@ -8,7 +8,7 @@ import Application from "../../../../../model/application";
 import { useCVContext } from "../../../../../contextsholders/providers/CVContextHolder";
 import { useApplicationContext } from "../../../../../contextsholders/providers/ApplicationsContextHolder";
 import { useSessionContext } from "../../../../../contextsholders/providers/SessionContextHolder";
-import { getCvsByStudentId } from "../../../../../services/cvService";
+import {getCvsByStudentId} from "../../../../../services/cvService";
 
 interface Props {
   disabled: boolean;
@@ -30,10 +30,10 @@ const StudentButtons = ({ disabled, offer }: Props) => {
       return true;
 
     return (
-      applications.filter(
-        (application) =>
-          application.offer?.id === offer.id
-      ).length > 0
+        applications.filter(
+            (application) =>
+                application.offer?.id === offer.id
+        ).length > 0
     );
   };
 
@@ -41,12 +41,12 @@ const StudentButtons = ({ disabled, offer }: Props) => {
     if (studentId === undefined) return;
 
     getCvsByStudentId(parseInt(studentId!))
-      .then((res) => {
-        setCvs(res.data);
-      })
-      .catch((err) => {
-        console.log("getCvsByStudentId error", err);
-      });
+        .then((res) => {
+          setCvs(res.data);
+        })
+        .catch((err) => {
+          console.log("getCvsByStudentId error", err);
+        });
   }, [studentId, setCvs]);
 
   const handleApply = async (event: { stopPropagation: () => void }) => {
@@ -76,12 +76,12 @@ const StudentButtons = ({ disabled, offer }: Props) => {
 
   const handleApplicationsUpdate = () => {
     getApplicationsByStudentId(parseInt(studentId!), chosenSession?.id!)
-      .then((res) => {
-        setApplications(res.data);
-      })
-      .catch((err) => {
-        console.log("getApplicationsByStudentId error", err);
-      });
+        .then((res) => {
+          setApplications(res.data);
+        })
+        .catch((err) => {
+          console.log("getApplicationsByStudentId error", err);
+        });
   };
 
   return (

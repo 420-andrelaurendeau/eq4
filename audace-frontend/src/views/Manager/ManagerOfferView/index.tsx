@@ -87,15 +87,15 @@ const ManagerOfferView = () => {
       <SessionSelector />
 
       {offers.length > 0 ? (
-        <OffersList offers={offers} error={error} userType={UserType.Manager} updateOffersState={updateOffersState} />
+        <OffersList offers={offers} error={error} userType={UserType.Manager} updateOffersState={updateOffersState}/>
       ) : (
         <p>{t("managerOffersList.noMorePendingOffers")}</p>
       )}
       {offersAccepted.length > 0 ? (
-        <OffersList offers={offersAccepted} error={error} userType={UserType.Manager} />
+        <OffersList offers={offersAccepted} error={error} userType={UserType.Manager}/>
       ) : null}
       {offersRefused.length > 0 ? (
-        <OffersList offers={offersRefused} error={error} userType={UserType.Manager} />
+        <OffersList offers={offersRefused} error={error} userType={UserType.Manager}/>
       ) : null}
     </Container>
   );

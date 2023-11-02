@@ -6,6 +6,7 @@ import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
@@ -187,8 +188,8 @@ public class EmployerControllerTest {
 
         // when -  action or the behaviour that we are going test
         mockMvc.perform(get("/employers/offers/{sessionId}", 1L)
-                        .param("employerId", "1"))
-                // then - verify the output
+                .param("employerId", "1"))
+        // then - verify the output
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(jsonPath("$.size()", is(listOfOffers.size())));
@@ -240,7 +241,7 @@ public class EmployerControllerTest {
 
         // when -  action or the behaviour that we are going test
         mockMvc.perform(get("/employers/applications/{offerId}", 1L)
-                        .param("employerId", "1"))
+                .param("employerId", "1"))
                 // then - verify the output
                 .andExpect(status().isOk())
                 .andDo(print())

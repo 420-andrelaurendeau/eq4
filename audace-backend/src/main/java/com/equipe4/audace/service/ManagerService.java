@@ -35,9 +35,9 @@ public class ManagerService extends GenericUserService<Manager> {
     private final OfferRepository offerRepository;
     private final DepartmentRepository departmentRepository;
     private final CvRepository cvRepository;
-    private final ContractRepository contractRepository;
     private final ApplicationRepository applicationRepository;
     private final SessionManipulator sessionManipulator;
+    private final ContractRepository contractRepository;
 
     public ManagerService(
             SaltRepository saltRepository,
@@ -117,10 +117,11 @@ public class ManagerService extends GenericUserService<Manager> {
         Cv cv = cvRepository.findById(cvId).orElseThrow();
         Department studentDepartment = cv.getStudent().getDepartment();
         Department managerDepartment = managerRepository.findById(managerId).orElseThrow().getDepartment();
+
         if (!studentDepartment.equals(managerDepartment)) {
             throw new IllegalArgumentException("The manager isn't in the right department");
         }
-        
+
         cv.setCvStatus(cvStatus);
         return Optional.of(cvRepository.save(cv).toDTO());
     }

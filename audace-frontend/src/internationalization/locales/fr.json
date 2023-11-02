@@ -119,7 +119,7 @@
     "REFUSED": "Refusé",
     "editButton": "Modifier",
     "deleteButton": "Supprimer",
-    "applicationButton": "Voir les candidatures"
+    "applicationButton" : "Voir les applications"
   },
   "student": {
     "seeOffersButton": "Voir les offres"

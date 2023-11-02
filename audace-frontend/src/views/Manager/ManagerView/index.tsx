@@ -32,7 +32,7 @@ const ManagerView = () => {
       }
     };
 
-    fetchData().then(() => { });
+    fetchData().then(() => console.log("done"));
   }, []);
 
   return (

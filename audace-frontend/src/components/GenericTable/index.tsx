@@ -15,13 +15,13 @@ const GenericTable = <T,>({
   error,
   children,
   emptyListMessage,
-  // title,
+  title,
 }: Props<T>) => {
   const { t } = useTranslation();
 
   return (
     <>
-      {/* <h2 className="mb-3">{t(title)}</h2> */}
+      <h2 className="mb-3">{t(title)}</h2>
       {error !== "" ? (
         <Alert className="text-center">{error}</Alert>
       ) : list.length > 0 ? (

@@ -21,6 +21,7 @@ const AddOffer: React.FC = () => {
   const [internshipEndDate, setInternshipEndDate] = useState<Date>({} as Date);
   const [offerEndDate, setOfferEndDate] = useState<Date>({} as Date);
   const [availablePlaces, setAvailablePlaces] = useState<number>(3);
+  const [status, setStatus] = useState<OfferStatus>(OfferStatus.PENDING);
   const [employer, setEmployer] = useState<Employer>({} as Employer);
   const [errors, setErrors] = useState<string[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
@@ -80,6 +81,7 @@ const AddOffer: React.FC = () => {
   };
 
   const validateForm = (): boolean => {
+    let isValid = true;
     const errorsToDisplay: string[] = [];
 
     if (!title) errorsToDisplay.push("addOffer.errors.titleRequired");
@@ -92,6 +94,7 @@ const AddOffer: React.FC = () => {
     if (!isValidDate(internshipEndDate)) errorsToDisplay.push("addOffer.errors.invalidEndDate");
     if (!isValidDate(offerEndDate)) errorsToDisplay.push("addOffer.errors.invalidOfferEndDate");
     if (internshipEndDate <= internshipStartDate) errorsToDisplay.push("addOffer.errors.endDateBeforeStartDate");
+
 
     setErrors(errorsToDisplay);
     return errorsToDisplay.length === 0;
@@ -128,17 +131,17 @@ const AddOffer: React.FC = () => {
 
   return (
     <>
-      <h3 className="text-center">{t("addOffer.pageTitle")}</h3>
-      <Form className="container mt-5">
-        {showAlert && (
-          <Alert variant="danger" onClose={resetAlert} dismissible>
-            {errors.map((error, index) => (
-              <p key={index}>{t(error)}</p>
-            ))}
-          </Alert>
-        )}
-        <Row>
-          <FormInput
+    <h3 className="text-center">{t("addOffer.pageTitle")}</h3>
+    <Form className="container mt-5">
+    {showAlert && (
+        <Alert variant="danger" onClose={resetAlert} dismissible>
+          {errors.map((error, index) => (
+            <p key={index}>{t(error)}</p>
+          ))}
+        </Alert>
+      )}
+      <Row>
+        <FormInput
             label="addOffer.title"
             value={title}
             onChange={(e: any) => setTitle(e.target.value)}
@@ -177,7 +180,7 @@ const AddOffer: React.FC = () => {
 
 
         <Row>
-          <Col md="4">
+        <Col md="4">
             <Form.Group controlId="formOfferStartDate">
               <Form.Label>{t("addOffer.startDate")}</Form.Label>
               <Form.Control

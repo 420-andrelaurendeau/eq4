@@ -48,7 +48,7 @@ const ManagerButtons = ({ disabled, offer, updateOffersState }: Props) => {
             {t("managerOffersList.refuseButton")}
           </Button>
         </>) :
-        (<p>{t("managerOffersList." + offer.offerStatus)}</p>)
+          (<p>{t("managerOffersList." + offer.offerStatus)}</p>)
       }
     </>
   );

@@ -68,7 +68,7 @@ const EmployerView = () => {
 
   return (
     <Container className="mt-3">
-      <SessionSelector seeApplications={seeApplications} />
+      <SessionSelector seeApplications={seeApplications}/>
       <OffersList
         offers={offers}
         error={error}

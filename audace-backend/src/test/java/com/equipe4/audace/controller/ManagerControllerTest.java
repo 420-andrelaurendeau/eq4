@@ -68,7 +68,6 @@ public class ManagerControllerTest {
     private ObjectMapper objectMapper;
     @MockBean
     private JwtManipulator jwtManipulator;
-
     @MockBean
     private CvRepository cvRepository;
     @MockBean
