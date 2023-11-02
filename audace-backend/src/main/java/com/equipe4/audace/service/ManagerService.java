@@ -169,4 +169,10 @@ public class ManagerService extends GenericUserService<Manager> {
         Contract contract = contractRepository.findById(contractId).orElseThrow(() -> new NoSuchElementException("Contract not found"));
         return Optional.of(contract.toDTO());
     }
+
+    public Optional<ApplicationDTO> getApplicationsById(Long applicationId) {
+        Application application = applicationRepository.findById(applicationId)
+                .orElseThrow(() -> new NoSuchElementException("Application not found"));
+        return Optional.of(application.toDTO());
+    }
 }
