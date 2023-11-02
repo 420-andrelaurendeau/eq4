@@ -4,11 +4,11 @@ import { Employer } from "./user";
 export interface Contract {
   id?: number;
   officeName: string;
-  startHour: number;
-  endHour: number;
+  startHour: string;
+  endHour: string;
   totalHoursPerWeek: number;
   salary: number;
   internTasksAndResponsibilities: string;
-  employer: Employer;
+  supervisor: Employer;
   application: Application;
 }

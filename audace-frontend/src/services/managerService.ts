@@ -24,7 +24,7 @@ export const getApplicationById = async (id: number): Promise<AxiosResponse<Appl
 }
 
 export const createContract = async (contract: Contract): Promise<AxiosResponse> => {
-    return http.post(`${MANAGER_PREFIX}/contracts/`, contract);
+    return http.post(`${MANAGER_PREFIX}/contracts`, contract);
 }
 
 export const getContractById = async (id: number): Promise<AxiosResponse> => {

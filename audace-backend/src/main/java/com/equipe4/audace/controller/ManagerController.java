@@ -109,8 +109,12 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
     @GetMapping("/applications/{applicationId}")
     public ResponseEntity<ApplicationDTO> getApplicationsById(@PathVariable Long applicationId) {
         logger.info("getApplicationsById");
-        return service.getApplicationsById(applicationId)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        try {
+            return ResponseEntity.ok(
+                    service.getApplicationsById(applicationId).orElseThrow()
+            );
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
