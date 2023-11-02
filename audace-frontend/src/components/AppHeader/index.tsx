@@ -46,9 +46,6 @@ function AppHeader() {
             <Button onClick={() => handleClick(authority + "/offers")} variant="light" className="me-2">
               {t("manager.seeOffersButton")}
             </Button>
-            <Button onClick={() => handleClick(authority + "/contracts/new")} variant="light" className="me-2">
-              {t("manager.createContractButton")}
-            </Button>
           </Nav>
         )}
 

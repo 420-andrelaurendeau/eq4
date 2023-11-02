@@ -59,7 +59,7 @@ function App() {
                 <Route index element={<ManagerView />} />
                 <Route path="offers" element={<ManagerOfferView />} />
                 <Route path="cvs" element={<ManagerCvView />} />
-                <Route path="contracts/new" element={<AddContract application={undefined!} employer={undefined!} />} />\
+                <Route path="contracts/new/:applicationId" element={<AddContract />} />
                 <Route path="*" element={<PageNotFoundView />} />
               </Routes>
             </AuthorizedRoute>

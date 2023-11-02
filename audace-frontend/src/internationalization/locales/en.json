@@ -138,7 +138,6 @@
       "internTasksAndResponsibilities": "Intern Tasks And Responsibilities",
       "errors": {
         "applicationNotFound": "Application not found",
-        "employerNotFound": "Employer not found",
         "contractAlreadyExists": "A contract already exists for this offer",
         "emptyOfficeName": "Office name cannot be empty",
         "invalidStartHour": "Start hour is invalid",

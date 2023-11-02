@@ -1,30 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from "react-router";
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import FormInput from '../FormInput';
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
-import { managerCreateContract } from '../../services/contractService';
 import { Contract } from '../../model/contract';
-import { Employer } from '../../model/user';
 import Application from '../../model/application';
+import { createContract, getApplicationById } from '../../services/managerService';
 
-interface Props {
-  employer: Employer;
-  application: Application;
-}
-
-const AddContract = ({ employer, application }: Props) => {
+const AddContract = () => {
   const navigate = useNavigate();
+  const { applicationId } = useParams();
   const { t } = useTranslation();
   const [errors, setErrors] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [application, setApplication] = useState<Application>();
   const [officeName, setOfficeName] = useState('');
   const [startHour, setStartHour] = useState(9);
   const [endHour, setEndHour] = useState(5);
   const [totalHoursPerWeek, setTotalHoursPerWeek] = useState(40);
   const [salary, setSalary] = useState(15.25);
   const [internTasksAndResponsibilities, setInternTasksAndResponsibilities] = useState('');
+
+  useEffect(() => {
+    const fetchApplication = async () => {
+      getApplicationById(parseInt(applicationId!))
+        .then((applicationResponse) => {
+          setApplication(applicationResponse.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching application: " + error);
+        });
+    };
+
+    fetchApplication();
+  }, [applicationId]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -38,12 +48,12 @@ const AddContract = ({ employer, application }: Props) => {
       totalHoursPerWeek: totalHoursPerWeek,
       salary: salary,
       internTasksAndResponsibilities: internTasksAndResponsibilities,
-      employer: employer,
-      application: application
+      employer: application!.offer!.employer,
+      application: application!
     };
 
     try {
-      await managerCreateContract(formData);
+      await createContract(formData);
       navigate('/');
     } catch (error) {
       console.error(error);
@@ -54,6 +64,7 @@ const AddContract = ({ employer, application }: Props) => {
   const validateForm = (): boolean => {
     const errorsToDisplay: string[] = [];
 
+    if (application === undefined) errorsToDisplay.push("manager.createContract.errors.applicationNotFound");
     if (officeName === '') errorsToDisplay.push("manager.createContract.errors.emptyOfficeName");
     if (startHour <= 0 || startHour >= 24) errors.push("manager.createContract.errors.invalidStartHour");
     if (endHour <= 0 || endHour >= 24) errorsToDisplay.push("manager.createContract.errors.invalidEndHour");
