@@ -64,7 +64,6 @@ public class AuthControllerTest {
     private StudentService studentService;
     @MockBean
     private EmployerService employerService;
-
     @MockBean
     private JwtManipulator jwtManipulator;
 

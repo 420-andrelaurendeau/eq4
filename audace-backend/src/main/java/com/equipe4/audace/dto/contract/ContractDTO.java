@@ -12,7 +12,6 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class ContractDTO {
     private Long id;
-    private String officeName;
     private String startHour;
     private String endHour;
     private int totalHoursPerWeek;
@@ -25,7 +24,6 @@ public class ContractDTO {
     public Contract fromDTO(){
         return new Contract(
                 id,
-                officeName,
                 LocalTime.parse(startHour),
                 LocalTime.parse(endHour),
                 totalHoursPerWeek,

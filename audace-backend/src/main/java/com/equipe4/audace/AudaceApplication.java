@@ -106,7 +106,7 @@ public class AudaceApplication implements CommandLineRunner {
 		cv1.setCvStatus(Cv.CvStatus.ACCEPTED);
 		cvRepository.save(cv1);
 
-		Cv cv2 = new Cv(2L, "cv.pdf", content, student2);
+		Cv cv2 = new Cv(2L, "cv2.pdf", content, student2);
 		cv2.setCvStatus(Cv.CvStatus.ACCEPTED);
 		cvRepository.save(cv2);
 

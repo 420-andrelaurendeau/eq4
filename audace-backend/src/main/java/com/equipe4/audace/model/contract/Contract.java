@@ -22,7 +22,6 @@ public class Contract {
     @Column(name = "contract_id")
     private Long id;
 
-    private String officeName;
     private LocalTime startHour;
     private LocalTime endHour;
     private int totalHoursPerWeek;
@@ -41,7 +40,6 @@ public class Contract {
     public ContractDTO toDTO(){
         return new ContractDTO(
                 id,
-                officeName,
                 startHour.toString(),
                 endHour.toString(),
                 totalHoursPerWeek,

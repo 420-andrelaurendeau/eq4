@@ -37,7 +37,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -445,7 +445,6 @@ public class ManagerServiceTest {
     }
     @Test
     public void getAcceptedApplicationsByDepartment_invalidDepartment() {
-        Manager mockedManager = mock(Manager.class);
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> managerService.getAcceptedApplicationsByDepartment(1L, 1L))
@@ -481,7 +480,7 @@ public class ManagerServiceTest {
 
         ContractDTO dto = managerService.createContract(contractDTO).get();
 
-        assertThat(dto.equals(contractDTO));
+        assertEquals(dto, contractDTO);
         verify(contractRepository, times(1)).save(contractDTO.fromDTO());
     }
     @Test
@@ -520,6 +519,6 @@ public class ManagerServiceTest {
     private Contract createContract() {
         Employer employer = createEmployer();
         Application application = createApplication();
-        return new Contract(1L, "Construction", LocalTime.parse("08:00"), LocalTime.parse("17:00"), 40, 18.35, "TODO", employer, application);
+        return new Contract(1L, LocalTime.parse("08:00"), LocalTime.parse("17:00"), 40, 18.35, "TODO", employer, application);
     }
 }
