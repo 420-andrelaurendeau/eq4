@@ -2,6 +2,7 @@ package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
@@ -9,11 +10,13 @@ import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.application.Application;
+import com.equipe4.audace.model.contract.Contract;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.ManagerRepository;
+import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
@@ -26,6 +29,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -46,6 +50,8 @@ public class ManagerServiceTest {
     private ManagerRepository managerRepository;
     @Mock
     private CvRepository cvRepository;
+    @Mock
+    private ContractRepository contractRepository;
     @Mock
     private SessionManipulator sessionManipulator;
     @Mock
@@ -466,6 +472,25 @@ public class ManagerServiceTest {
                 .hasMessage("Manager not found with ID: " + 1L);
     }
 
+    @Test
+    public void createContract_HappyPath(){
+        // Arrange
+        ContractDTO contractDTO = createContract().toDTO();
+
+        when(contractRepository.save(any(Contract.class))).thenReturn(contractDTO.fromDTO());
+
+        ContractDTO dto = managerService.createContract(contractDTO).get();
+
+        assertThat(dto.equals(contractDTO));
+        verify(contractRepository, times(1)).save(contractDTO.fromDTO());
+    }
+    @Test
+    public void createContract_NullContract(){
+        assertThatThrownBy(() -> managerService.createContract(null))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Contract cannot be null");
+    }
+
     private Department createDepartment(){
         return new Department(1L, "GLO", "Génie logiciel");
     }
@@ -485,5 +510,16 @@ public class ManagerServiceTest {
     private Offer createOffer(Long id, Employer employer) {
         Department department = createDepartment();
         return new Offer(id,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
+    }
+
+    private Application createApplication() {
+        Offer offer = createOffer(1L, createEmployer());
+        return new Application(1L, createCv(), offer);
+    }
+
+    private Contract createContract() {
+        Employer employer = createEmployer();
+        Application application = createApplication();
+        return new Contract(1L, "Construction", LocalTime.parse("08:00"), LocalTime.parse("17:00"), 40, 18.35, "TODO", employer, application);
     }
 }

@@ -19,32 +19,20 @@ function AppHeader() {
       <Navbar.Brand href="/">Audace</Navbar.Brand>
 
       <Navbar.Collapse id="basic-navbar-nav">
-        {authority === "student" && (
-          <Nav>
-            <Button onClick={() => handleClick(authority + "/offers")} variant="light" className="me-2">
-              {t("student.seeOffersButton")}
-            </Button>
-            <Button onClick={() => handleClick(authority + "/upload")} variant="light" className="me-2">
-              {t("upload.CvFormTitle")}
-            </Button>
-          </Nav>
-        )}
-
         {authority === "employer" && (
           <Nav>
             <Button onClick={() => handleClick(authority + "/offers/new")} variant="light" className="me-2">
               Create Offer
             </Button>
-            <Button onClick={() => handleClick(authority + "/offers")} variant="light" className="me-2">
-              View Offers
-            </Button>
           </Nav>
         )}
 
         {authority === "manager" && (
-          <Button onClick={() => handleClick(authority + "/offers")} variant="light" className="me-2">
-            {t("manager.seeOffersButton")}
-          </Button>
+          <Nav>
+            <Button onClick={() => handleClick(authority + "/offers")} variant="light" className="me-2">
+              {t("manager.seeOffersButton")}
+            </Button>
+          </Nav>
         )}
 
 

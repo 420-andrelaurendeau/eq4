@@ -21,8 +21,8 @@ export interface DecodedJwt {
 }
 
 export enum Authority {
-    STUDENT = "STUDENT",
-    EMPLOYER = "EMPLOYER",
-    MANAGER = "MANAGER",
-    USER = "USER",
+  STUDENT = "STUDENT",
+  EMPLOYER = "EMPLOYER",
+  MANAGER = "MANAGER",
+  USER = "USER",
 }

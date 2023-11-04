@@ -1,4 +1,3 @@
-import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
@@ -12,13 +11,14 @@ import PageNotFoundView from "./views/PageNotFoundView";
 import StudentView from "./views/Student/StudentView";
 import ManagerView from "./views/Manager/ManagerView";
 import ManagerOfferView from "./views/Manager/ManagerOfferView";
-import EmployerView from "./views/Employer/EmployerView";
 import ManagerCvView from "./views/Manager/ManagerCvView";
 import { Authority } from "./model/auth";
 import { getAuthorities } from "./services/authService";
+import AddContract from "./components/AddContract";
 import ProviderWrapper from "./contextsholders/providers/ProviderWrapper";
 import AddOffer from "./components/AddOffer";
 import EditOffer from "./components/EditOffer";
+import EmployerView from "./views/Employer/EmployerView";
 
 function App() {
   return (
@@ -57,8 +57,10 @@ function App() {
               <AuthorizedRoute requiredAuthority={Authority.MANAGER}>
                 <Routes>
                   <Route index element={<ManagerView />} />
+                  <Route path="createdContract" element={<ManagerView isContractCreated={true} />} />
                   <Route path="offers" element={<ManagerOfferView />} />
                   <Route path="cvs" element={<ManagerCvView />} />
+                  <Route path="contracts/new/:applicationId" element={<AddContract />} />
                   <Route path="*" element={<PageNotFoundView />} />
                 </Routes>
               </AuthorizedRoute>

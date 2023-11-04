@@ -6,6 +6,7 @@ import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.service.EmployerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +56,10 @@ public class EmployerController extends GenericUserController<Employer, Employer
     @PutMapping("/offers")
     public ResponseEntity<OfferDTO> updateOffer(@RequestBody OfferDTO offerDTO){
         logger.info("updateOffer");
-        OfferDTO updatedOffer = service.updateOffer(offerDTO).orElseThrow();
+        logger.info("Received offer for update: " + offerDTO.toString());
+
+        OfferDTO updatedOffer = service.updateOffer(offerDTO).get();
+        logger.info("Updated offer: " + updatedOffer.toString());
         return ResponseEntity.ok(updatedOffer);
     }
 
@@ -64,6 +68,7 @@ public class EmployerController extends GenericUserController<Employer, Employer
         logger.info("deleteOffer");
         service.deleteOffer(offerId);
         return ResponseEntity.ok().build();
+
     }
 
     @GetMapping("/applications/{offerId}")

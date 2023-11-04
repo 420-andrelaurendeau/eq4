@@ -1,15 +1,15 @@
 import { UserType } from "../../../../model/user";
-import ManagerButtons from "./ManagerButtons";
 import { CV, CVStatus } from "../../../../model/cv";
+import ManagerButtons from "./ManagerButtons";
 
 interface Props {
-    userType : UserType;
-    disabled? : boolean;
-    cv : CV;
-    updateCvsState?: (cv : CV, cvStatus : CVStatus) => void;
+    userType: UserType;
+    disabled?: boolean;
+    cv: CV;
+    updateCvsState?: (cv: CV, cvStatus: CVStatus) => void;
 }
 
-const CvButtons = ({userType, disabled, cv, updateCvsState} : Props) => {
+const CvButtons = ({ userType, disabled, cv, updateCvsState }: Props) => {
     const selectButtons = () => {
         switch (userType) {
             case UserType.Manager:

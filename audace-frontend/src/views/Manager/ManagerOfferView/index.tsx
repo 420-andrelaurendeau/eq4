@@ -81,9 +81,7 @@ const ManagerOfferView = () => {
     }
   };
   return (
-    <Container>
-      <h1>{t("managerOffersList.viewTitle")}</h1>
-
+    <Container className="mt-3">
       <SessionSelector />
 
       {offers.length > 0 ? (
