@@ -40,6 +40,7 @@ const Applications = ({offer, userType, updateAvailablePlaces} : Props) => {
     const updateApplicationsState = (application: Application, applicationStatus: ApplicationStatus) => {
         let newApplications = applications.filter((a) => a.id !== application.id);
         application.applicationStatus = applicationStatus
+        application.offer!.availablePlaces = -- application.offer!.availablePlaces
         newApplications.push(application);
         setApplications(newApplications);
         if (applicationStatus === ApplicationStatus.ACCEPTED) updateAvailablePlaces!(offer);

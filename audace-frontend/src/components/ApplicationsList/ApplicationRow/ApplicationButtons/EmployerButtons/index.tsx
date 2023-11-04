@@ -11,7 +11,6 @@ interface Props {
 
 const EmployerButtons = ({application, updateApplicationsState}: Props) => {
     const {t} = useTranslation();
-    const employerId = getUserId();
 
     const acceptButtonClick = (event: React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();

@@ -196,6 +196,7 @@
     "offerTitle": "Titre de la position",
     "organization": "Organisation",
     "status": "État",
+    "studentName": "Nom de l'etudiant",
     "cv": "CV",
     "noApplications": "Aucune application soumise",
     "row": {

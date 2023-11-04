@@ -20,6 +20,7 @@ const ApplicationsList = ({ applications, error, userType, updateApplicationsSta
         <thead>
           <tr>
             <th>{t("applicationsList.offerTitle")}</th>
+            {userType != UserType.Student && <th>{t("applicationsList.studentName")}</th>}
             <th>{t("applicationsList.cv")}</th>
             <th>{t("applicationsList.organization")}</th>
             <th>{t("applicationsList.status")}</th>

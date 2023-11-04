@@ -22,13 +22,14 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
     <>
       <tr>
         <td>{application.offer!.title}</td>
+        {userType != UserType.Student && <th>{application.cv!.student.firstName} {application.cv!.student.lastName}</th>}
         <td>
           <Col>{application.cv!.fileName}</Col>
           <Col className="text-muted small"><u className="hovered" onClick={handleClick}>{t("cvsList.viewMore")}</u></Col>
         </td>
         <td>{application.offer!.employer.organisation}</td>
         <td>
-          {userType === UserType.Employer ?  (
+          {userType === UserType.Employer && application.offer!.availablePlaces > 0?  (
               <div className="d-flex justify-content-center">
                 <EmployerButtons application={application} updateApplicationsState={updateApplicationsState} />
               </div>
