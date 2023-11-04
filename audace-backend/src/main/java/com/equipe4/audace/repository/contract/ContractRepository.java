@@ -11,4 +11,5 @@ public interface ContractRepository extends JpaRepository<Contract, Long> {
     Optional<Contract> findByApplicationId(Long applicationId);
 
     List<Contract> findAllByApplicationOfferDepartmentId(Long departmentId);
+    List<Contract> findAllByApplicationCvStudentDepartmentId(Long departmentId);
 }

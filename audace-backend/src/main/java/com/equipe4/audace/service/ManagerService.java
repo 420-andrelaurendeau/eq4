@@ -1,13 +1,16 @@
 package com.equipe4.audace.service;
 
-import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.ManagerDTO;
+import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.application.StudentsByInternshipFoundStatus;
 import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.Manager;
+import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.cv.Cv.CvStatus;
@@ -16,6 +19,7 @@ import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.offer.Offer.OfferStatus;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.ManagerRepository;
+import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
@@ -38,6 +42,7 @@ public class ManagerService extends GenericUserService<Manager> {
     private final ApplicationRepository applicationRepository;
     private final SessionManipulator sessionManipulator;
     private final ContractRepository contractRepository;
+    private final StudentRepository studentRepository;
 
     public ManagerService(
             SaltRepository saltRepository,
@@ -47,7 +52,8 @@ public class ManagerService extends GenericUserService<Manager> {
             CvRepository cvRepository,
             ContractRepository contractRepository,
             SessionManipulator sessionManipulator,
-            ApplicationRepository applicationRepository
+            ApplicationRepository applicationRepository,
+            StudentRepository studentRepository
     ) {
         super(saltRepository);
         this.managerRepository = managerRepository;
@@ -57,6 +63,7 @@ public class ManagerService extends GenericUserService<Manager> {
         this.contractRepository = contractRepository;
         this.sessionManipulator = sessionManipulator;
         this.applicationRepository = applicationRepository;
+        this.studentRepository = studentRepository;
     }
 
     @Transactional
@@ -185,6 +192,62 @@ public class ManagerService extends GenericUserService<Manager> {
         return contractRepository.findAllByApplicationOfferDepartmentId(departmentId)
                 .stream()
                 .map(Contract::toDTO)
+                .toList();
+    }
+
+    @Transactional
+    public StudentsByInternshipFoundStatus getStudentsByInternshipFoundStatus(Long departmentId) {
+        departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new NoSuchElementException("Department not found"));
+
+        List<StudentDTO> studentsWithInternship = getStudentsWithInternship(departmentId);
+        List<StudentDTO> studentsWithPendingResponse = getStudentsWithPendingResponse(departmentId);
+        List<StudentDTO> studentsWithoutInternship = getStudentsWithoutInternship(
+                departmentId,
+                studentsWithInternship,
+                studentsWithPendingResponse
+        );
+
+        return new StudentsByInternshipFoundStatus(
+                studentsWithInternship,
+                studentsWithPendingResponse,
+                studentsWithoutInternship
+        );
+    }
+
+    private List<StudentDTO> getStudentsWithInternship(Long departmentId) {
+        return contractRepository
+                .findAllByApplicationCvStudentDepartmentId(departmentId)
+                .stream()
+                .map(Contract::getApplication)
+                .map(Application::getCv)
+                .map(Cv::getStudent)
+                .map(Student::toDTO)
+                .toList();
+    }
+
+    private List<StudentDTO> getStudentsWithPendingResponse(Long departmentId) {
+        return applicationRepository
+                .findAllByCvStudentDepartmentId(departmentId)
+                .stream()
+                .filter(application -> application.getApplicationStatus() == Application.ApplicationStatus.PENDING)
+                .map(Application::getCv)
+                .map(Cv::getStudent)
+                .map(Student::toDTO)
+                .toList();
+    }
+
+    private List<StudentDTO> getStudentsWithoutInternship(
+            Long departmentId,
+            List<StudentDTO> studentsWithInternship,
+            List<StudentDTO> studentsWithPendingResponse
+    ) {
+        return studentRepository
+                .findAllByDepartmentId(departmentId)
+                .stream()
+                .map(Student::toDTO)
+                .filter(dto -> !studentsWithInternship.contains(dto))
+                .filter(dto -> !studentsWithPendingResponse.contains(dto))
                 .toList();
     }
 }
