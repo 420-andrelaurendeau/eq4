@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import {Container} from "react-bootstrap";
+import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 import {useTranslation} from "react-i18next";
 import {Offer} from "../../../model/offer";
 import {Employer, UserType} from "../../../model/user";
@@ -68,8 +69,7 @@ const EmployerView = () => {
   return (
       <Container className="mt-3">
         <SessionSelector />
-        <OffersList offers={offers} error={error} userType={UserType.Employer} seeApplications={seeApplications}/>
-        {offerApplication !== undefined && <Applications offer={offerApplication } userType={UserType.Employer} updateAvailablePlaces={updateAvailablePlaces}/> }
+        <OffersList offers={offers} error={error} userType={UserType.Employer} seeApplications={seeApplications} updateAvailablePlaces={updateAvailablePlaces}/>
       </Container>
   );
 };

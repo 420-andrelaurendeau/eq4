@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import { Button, useAccordionButton } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Offer } from "../../../../../model/offer";
 import { useNavigate } from 'react-router-dom';
@@ -54,10 +54,12 @@ const EmployerButtons = ({ disabled, seeApplications, offer, hideRow }: Props) =
             setIsDeleting(false);
         }
     };
-    const seeApplicationsButtonClick = (event: React.MouseEvent<HTMLElement>) => {
-        event.stopPropagation();
-        seeApplications!(offer);
-    };
+    const seeApplicationsButtonClick = useAccordionButton(offer.id!.toString(), () =>
+        seeApplications!(offer)
+    );
+
+
+
 
     return (
         <>
@@ -68,7 +70,7 @@ const EmployerButtons = ({ disabled, seeApplications, offer, hideRow }: Props) =
                 {isDeleting ? t("employerOffersList.deletingButton") : t("employerOffersList.deleteButton")}
             </Button>
             {seeApplications !== undefined ? (
-                <Button disabled={disabled} onClick={seeApplicationsButtonClick} className="ms-2 btn-light btn-outline-success text-dark">
+                <Button onClick={seeApplicationsButtonClick} className="ms-2 btn-light btn-outline-success text-dark">
                     {t("employerOffersList.applicationButton")}
                 </Button>
             ) : null}

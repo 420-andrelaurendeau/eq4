@@ -25,10 +25,8 @@ const OfferRow = ({offer, userType, updateOffersState, seeApplications}: Props) 
   const [disabled, setDisabled] = useState<boolean>(true);
   const [isVisible, setIsVisible] = useState(true);
 
-  const handleClick = () => {
-    setShow(true);
-    setDisabled(false);
-  };
+  const handleClick = () => setShow(true);
+
   const handleClose = () => setShow(false);
   const hideRow = () => setIsVisible(false);
 
