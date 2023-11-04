@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/managers")
@@ -142,8 +143,13 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
     @GetMapping("/studentsWithInternshipFoundStatus/{departmentId}")
     public ResponseEntity<StudentsByInternshipFoundStatus> getStudentsWithInternshipStatus(@PathVariable Long departmentId) {
         logger.info("getStudentsWithInternshipFoundStatus");
-        return ResponseEntity.ok(
-                service.getStudentsByInternshipFoundStatus(departmentId)
-        );
+
+        try {
+            return ResponseEntity.ok(
+                    service.getStudentsByInternshipFoundStatus(departmentId)
+            );
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
