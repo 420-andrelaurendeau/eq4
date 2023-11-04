@@ -29,6 +29,7 @@ import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -201,9 +202,21 @@ public class ManagerService extends GenericUserService<Manager> {
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
 
         List<StudentDTO> studentsWithInternship = getStudentsWithInternship(departmentId);
-        List<StudentDTO> studentsWithAcceptedResponse = getStudentsWithAcceptedResponse(departmentId, studentsWithInternship);
-        List<StudentDTO> studentsWithPendingResponse = getStudentsWithPendingResponse(departmentId, studentsWithInternship);
-        List<StudentDTO> studentsWithRefusedResponse = getStudentsWithRefusedResponse(departmentId, studentsWithInternship);
+        List<StudentDTO> studentsWithHigherPriorityStatuses = new ArrayList<>(studentsWithInternship);
+
+        List<StudentDTO> studentsWithAcceptedResponse = getStudentsWithAcceptedResponse(
+                departmentId,
+                studentsWithHigherPriorityStatuses
+        );
+        List<StudentDTO> studentsWithPendingResponse = getStudentsWithPendingResponse(
+                departmentId,
+                studentsWithHigherPriorityStatuses
+        );
+        List<StudentDTO> studentsWithRefusedResponse = getStudentsWithRefusedResponse(
+                departmentId,
+                studentsWithHigherPriorityStatuses
+        );
+
         List<StudentDTO> studentsWithoutApplications = getStudentsWithoutApplications(departmentId);
 
         return new StudentsByInternshipFoundStatus(
@@ -226,44 +239,57 @@ public class ManagerService extends GenericUserService<Manager> {
                 .toList();
     }
 
-    private List<StudentDTO> getStudentsWithAcceptedResponse(Long departmentId, List<StudentDTO> studentsWithInternship) {
+    private List<StudentDTO> getStudentsWithAcceptedResponse(
+            Long departmentId,
+            List<StudentDTO> studentsWithHigherPriorityStatuses
+    ) {
         return getStudentsWithApplicationResponse(
                 departmentId,
-                studentsWithInternship,
+                studentsWithHigherPriorityStatuses,
                 Application.ApplicationStatus.ACCEPTED
         );
     }
 
-    private List<StudentDTO> getStudentsWithPendingResponse(Long departmentId, List<StudentDTO> studentsWithInternship) {
+    private List<StudentDTO> getStudentsWithPendingResponse(
+            Long departmentId,
+            List<StudentDTO> studentsWithHigherPriorityStatuses
+    ) {
         return getStudentsWithApplicationResponse(
                 departmentId,
-                studentsWithInternship,
+                studentsWithHigherPriorityStatuses,
                 Application.ApplicationStatus.PENDING
         );
     }
 
-    private List<StudentDTO> getStudentsWithRefusedResponse(Long departmentId, List<StudentDTO> studentsWithInternship) {
+    private List<StudentDTO> getStudentsWithRefusedResponse(
+            Long departmentId,
+            List<StudentDTO> studentsWithHigherPriorityStatuses
+    ) {
         return getStudentsWithApplicationResponse(
                 departmentId,
-                studentsWithInternship,
+                studentsWithHigherPriorityStatuses,
                 Application.ApplicationStatus.REFUSED
         );
     }
 
     private List<StudentDTO> getStudentsWithApplicationResponse(
             Long departmentId,
-            List<StudentDTO> studentsWithInternship,
+            List<StudentDTO> studentsWithHigherPriorityStatuses,
             Application.ApplicationStatus applicationStatus
     ) {
-        return applicationRepository
+        List<StudentDTO> studentsWithApplicationResponse = applicationRepository
                 .findAllByCvStudentDepartmentId(departmentId)
                 .stream()
                 .filter(application -> application.getApplicationStatus() == applicationStatus)
                 .map(Application::getCv)
                 .map(Cv::getStudent)
                 .map(Student::toDTO)
-                .filter(dto -> !studentsWithInternship.contains(dto))
+                .filter(dto -> !studentsWithHigherPriorityStatuses.contains(dto))
                 .toList();
+
+        studentsWithHigherPriorityStatuses.addAll(studentsWithApplicationResponse);
+
+        return studentsWithApplicationResponse;
     }
 
     private List<StudentDTO> getStudentsWithoutApplications(Long departmentId) {
