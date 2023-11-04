@@ -201,17 +201,17 @@ public class ManagerService extends GenericUserService<Manager> {
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));
 
         List<StudentDTO> studentsWithInternship = getStudentsWithInternship(departmentId);
-        List<StudentDTO> studentsWithPendingResponse = getStudentsWithPendingResponse(departmentId);
-        List<StudentDTO> studentsWithoutInternship = getStudentsWithoutInternship(
-                departmentId,
-                studentsWithInternship,
-                studentsWithPendingResponse
-        );
+        List<StudentDTO> studentsWithAcceptedResponse = getStudentsWithAcceptedResponse(departmentId, studentsWithInternship);
+        List<StudentDTO> studentsWithPendingResponse = getStudentsWithPendingResponse(departmentId, studentsWithInternship);
+        List<StudentDTO> studentsWithRefusedResponse = getStudentsWithRefusedResponse(departmentId, studentsWithInternship);
+        List<StudentDTO> studentsWithoutApplications = getStudentsWithoutApplications(departmentId);
 
         return new StudentsByInternshipFoundStatus(
                 studentsWithInternship,
+                studentsWithAcceptedResponse,
                 studentsWithPendingResponse,
-                studentsWithoutInternship
+                studentsWithRefusedResponse,
+                studentsWithoutApplications
         );
     }
 
@@ -226,28 +226,51 @@ public class ManagerService extends GenericUserService<Manager> {
                 .toList();
     }
 
-    private List<StudentDTO> getStudentsWithPendingResponse(Long departmentId) {
+    private List<StudentDTO> getStudentsWithAcceptedResponse(Long departmentId, List<StudentDTO> studentsWithInternship) {
+        return getStudentsWithApplicationResponse(
+                departmentId,
+                studentsWithInternship,
+                Application.ApplicationStatus.ACCEPTED
+        );
+    }
+
+    private List<StudentDTO> getStudentsWithPendingResponse(Long departmentId, List<StudentDTO> studentsWithInternship) {
+        return getStudentsWithApplicationResponse(
+                departmentId,
+                studentsWithInternship,
+                Application.ApplicationStatus.PENDING
+        );
+    }
+
+    private List<StudentDTO> getStudentsWithRefusedResponse(Long departmentId, List<StudentDTO> studentsWithInternship) {
+        return getStudentsWithApplicationResponse(
+                departmentId,
+                studentsWithInternship,
+                Application.ApplicationStatus.REFUSED
+        );
+    }
+
+    private List<StudentDTO> getStudentsWithApplicationResponse(
+            Long departmentId,
+            List<StudentDTO> studentsWithInternship,
+            Application.ApplicationStatus applicationStatus
+    ) {
         return applicationRepository
                 .findAllByCvStudentDepartmentId(departmentId)
                 .stream()
-                .filter(application -> application.getApplicationStatus() == Application.ApplicationStatus.PENDING)
+                .filter(application -> application.getApplicationStatus() == applicationStatus)
                 .map(Application::getCv)
                 .map(Cv::getStudent)
                 .map(Student::toDTO)
+                .filter(dto -> !studentsWithInternship.contains(dto))
                 .toList();
     }
 
-    private List<StudentDTO> getStudentsWithoutInternship(
-            Long departmentId,
-            List<StudentDTO> studentsWithInternship,
-            List<StudentDTO> studentsWithPendingResponse
-    ) {
+    private List<StudentDTO> getStudentsWithoutApplications(Long departmentId) {
         return studentRepository
-                .findAllByDepartmentId(departmentId)
+                .findAllWithoutApplicationsByDepartmentId(departmentId)
                 .stream()
                 .map(Student::toDTO)
-                .filter(dto -> !studentsWithInternship.contains(dto))
-                .filter(dto -> !studentsWithPendingResponse.contains(dto))
                 .toList();
     }
 }
