@@ -202,6 +202,10 @@
   "logout": "Se déconnecter",
   "pageNotFound": "Erreur 404: Page pas trouvée",
   "sessionSelector": {
-    "filterPlaceholder": "Filtrer par la date"
+    "filterPlaceholder": "Filtrer par la date",
+    "selectSession": "Choisir une session",
+    "fall": "Automne",
+    "winter": "Hiver",
+    "summer": "Été"
   }
 }
