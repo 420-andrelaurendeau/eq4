@@ -30,10 +30,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -517,8 +516,9 @@ public class ManagerServiceTest {
     }
 
     private Contract createContract() {
+        DateTimeFormatter dtf = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("H:mm").toFormatter(Locale.ENGLISH);
         Employer employer = createEmployer();
         Application application = createApplication();
-        return new Contract(1L, LocalTime.parse("08:00"), LocalTime.parse("17:00"), 40, 18.35, "TODO", employer, application);
+        return new Contract(1L, LocalTime.parse("08:00", dtf), LocalTime.parse("17:00", dtf), 40, 18.35, employer, application);
     }
 }

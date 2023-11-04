@@ -26,10 +26,8 @@ public class Contract {
     private LocalTime endHour;
     private int totalHoursPerWeek;
     private double salary;
-    private String internTasksAndResponsibilities;
 
-    @ManyToOne
-    @JoinColumn(name = "employer_id")
+    @ManyToOne(cascade = CascadeType.ALL)
     @ToString.Exclude
     private Employer supervisor;
 
@@ -44,7 +42,6 @@ public class Contract {
                 endHour.toString(),
                 totalHoursPerWeek,
                 salary,
-                internTasksAndResponsibilities,
                 supervisor.toDTO(),
                 application.toDTO()
         );

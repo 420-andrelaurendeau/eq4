@@ -6,6 +6,9 @@ import com.equipe4.audace.model.contract.Contract;
 import lombok.*;
 
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.Locale;
 
 @Data
 @AllArgsConstructor
@@ -16,7 +19,6 @@ public class ContractDTO {
     private String endHour;
     private int totalHoursPerWeek;
     private double salary;
-    private String internTasksAndResponsibilities;
 
     private EmployerDTO supervisor;
     private ApplicationDTO application;
@@ -24,11 +26,10 @@ public class ContractDTO {
     public Contract fromDTO(){
         return new Contract(
                 id,
-                LocalTime.parse(startHour),
-                LocalTime.parse(endHour),
+                LocalTime.parse(startHour, DateTimeFormatter.ofPattern("H:mm").localizedBy(Locale.ENGLISH)),
+                LocalTime.parse(endHour, DateTimeFormatter.ofPattern("H:mm").localizedBy(Locale.ENGLISH)),
                 totalHoursPerWeek,
                 salary,
-                internTasksAndResponsibilities,
                 supervisor.fromDTO(),
                 application.fromDTO()
         );

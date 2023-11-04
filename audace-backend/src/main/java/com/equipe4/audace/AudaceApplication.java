@@ -2,10 +2,13 @@ package com.equipe4.audace;
 
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.application.Application;
+import com.equipe4.audace.model.contract.Contract;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
@@ -14,6 +17,7 @@ import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.model.session.OfferSession;
 import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.ManagerRepository;
+import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
@@ -21,6 +25,7 @@ import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.service.EmployerService;
+import com.equipe4.audace.service.ManagerService;
 import com.equipe4.audace.service.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -38,12 +43,14 @@ public class AudaceApplication implements CommandLineRunner {
 	private EmployerService employerService;
 	private SaltRepository saltRepository;
 	private ManagerRepository managerRepository;
+	private ManagerService managerService;
 	private StudentService studentService;
 	private SessionRepository sessionRepository;
 	private OfferRepository offerRepository;
 	private OfferSessionRepository offerSessionRepository;
 	private ApplicationRepository applicationRepository;
 	private CvRepository cvRepository;
+	public ContractRepository contractRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AudaceApplication.class, args);
@@ -60,6 +67,7 @@ public class AudaceApplication implements CommandLineRunner {
 		if (optionalEmployerDTO.isEmpty()) return;
 		EmployerDTO employerDTO = optionalEmployerDTO.get();
 		Employer employer = employerDTO.fromDTO();
+
 
 		Student student = new Student(null, "Kylian", "Mbappe", "kylian@live.fr", "123123", "34 de Montpellier", "4387654545", "2080350", department);
 		Optional<StudentDTO> optionalStudent = studentService.createStudent(student.toDTO(), department.getCode());
@@ -122,5 +130,16 @@ public class AudaceApplication implements CommandLineRunner {
 		manager.setPassword(BCrypt.hashpw(managerPassword, managerSalt));
 		manager = managerRepository.save(manager);
 		saltRepository.save(new Salt(null, manager, managerSalt));
+
+
+		ApplicationDTO applicationDTO = new ApplicationDTO(3L, cv2.toDTO(), offer3.toDTO(), Application.ApplicationStatus.ACCEPTED);
+		applicationRepository.save(applicationDTO.fromDTO());
+		Optional<ContractDTO> optionalContractDTO = managerService.createContract(
+				new ContractDTO(1L, "8:00", "17:00", 40, 19.50,
+						new EmployerDTO(1L, "super", "visor", "supervisor@email.com", "password", "Temp Baklungel", "Big Baklunger", "123 Street Street", "1234567890", "-123"),
+						applicationDTO));
+		if (optionalContractDTO.isEmpty()) return;
+		ContractDTO contractDTO = optionalContractDTO.get();
+		Contract contract = contractDTO.fromDTO();
 	}
 }

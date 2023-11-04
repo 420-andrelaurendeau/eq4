@@ -14,6 +14,7 @@ import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.*;
+import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
@@ -86,6 +87,8 @@ public class ManagerControllerTest {
     private ApplicationRepository applicationRepository;
     @MockBean
     private OfferSessionRepository offerSessionRepository;
+    @MockBean
+    private ContractRepository contractRepository;
     @MockBean
     private StudentService studentService;
     @MockBean
@@ -360,7 +363,6 @@ public class ManagerControllerTest {
                 .andExpect(jsonPath("$.endHour", is(contractDTO.getEndHour())))
                 .andExpect(jsonPath("$.totalHoursPerWeek", is(contractDTO.getTotalHoursPerWeek())))
                 .andExpect(jsonPath("$.salary", is(contractDTO.getSalary())))
-                .andExpect(jsonPath("$.internTasksAndResponsibilities", is(contractDTO.getInternTasksAndResponsibilities())))
                 .andExpect(jsonPath("$.supervisor.email", is(contractDTO.getSupervisor().getEmail())))
                 .andExpect(jsonPath("$.application.id", is(contractDTO.getApplication().getId().intValue())));
     }
@@ -393,6 +395,6 @@ public class ManagerControllerTest {
 
     private ContractDTO createContractDTO(ApplicationDTO applicationDTO){
         EmployerDTO employerDTO = createEmployerDTO();
-        return new ContractDTO(1L, "08:00", "17:00", 40, 18.35, "TODO", employerDTO, applicationDTO);
+        return new ContractDTO(1L, "08:00", "17:00", 40, 18.35, employerDTO, applicationDTO);
     }
 }
