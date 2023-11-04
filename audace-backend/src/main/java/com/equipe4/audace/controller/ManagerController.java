@@ -3,6 +3,7 @@ package com.equipe4.audace.controller;
 import com.equipe4.audace.controller.abstracts.GenericUserController;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.ManagerDTO;
+import com.equipe4.audace.dto.application.StudentsByInternshipFoundStatus;
 import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
@@ -135,6 +136,14 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
         logger.info("getContractsByDepartment");
         return ResponseEntity.ok(
                 service.getContractsByDepartment(departmentId)
+        );
+    }
+
+    @GetMapping("/studentsWithInternshipFoundStatus/{departmentId}")
+    public ResponseEntity<StudentsByInternshipFoundStatus> getStudentsWithInternshipStatus(@PathVariable Long departmentId) {
+        logger.info("getStudentsWithInternshipFoundStatus");
+        return ResponseEntity.ok(
+                service.getStudentsByInternshipFoundStatus(departmentId)
         );
     }
 }
