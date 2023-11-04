@@ -1,5 +1,7 @@
 import { Department } from "./department";
+import {useTranslation} from "react-i18next";
 
+const { t } = useTranslation();
 export interface User {
   id?: number;
   firstName?: string;
@@ -30,4 +32,37 @@ export enum UserType {
   Student,
   Employer,
   Manager
+}
+
+export interface StudentsWithInternship {
+  students: Student[];
+  status: "INTERN";
+}
+
+export interface StudentsWithAcceptedResponse {
+    students: Student[];
+    status: "ACCEPTED";
+}
+
+export interface StudentsWithRefusedResponse {
+    students: Student[];
+    status: "REFUSED";
+}
+
+export interface StudentsWithNoApplications {
+    students: Student[];
+    status: "NO_APPLICATIONS";
+}
+
+export interface StudentsWithPendingResponse {
+    students: Student[];
+    status: "PENDING";
+}
+
+export interface StudentsByInternshipFoundStatus {
+    studentsWithInternship: StudentsWithInternship;
+    studentsWithAcceptedResponse: StudentsWithAcceptedResponse;
+    studentsWithPendingResponse: StudentsWithPendingResponse;
+    studentsWithRefusedResponse: StudentsWithRefusedResponse;
+    studentsWithoutApplications: StudentsWithNoApplications;
 }

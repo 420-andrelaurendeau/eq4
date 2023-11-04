@@ -11,10 +11,6 @@ export const getAcceptedApplicationsByDepartment = async (managerId: number, dep
     return http.get<Application[]>(`${MANAGER_PREFIX}/${managerId}/acceptedApplications/${departmentId}`);
 }
 
-export const getStudentsByInternshipStatus = async (departmentId: number): Promise<AxiosResponse<Student[]>> => {
-    return http.get<Student[]>(`${MANAGER_PREFIX}/studentsWithInternshipFoundStatus/${departmentId}`);
-}
-
 export const getStudentByCv = async (cv: CV): Promise<AxiosResponse<Student>> => {
     return http.get<Student>(`${STUDENT_PREFIX}/${cv.student.id}`);
 }
@@ -34,3 +30,5 @@ export const createContract = async (contract: Contract): Promise<AxiosResponse>
 export const getContractById = async (id: number): Promise<AxiosResponse> => {
     return http.get(`${MANAGER_PREFIX}/contracts/${id}`);
 }
+
+
