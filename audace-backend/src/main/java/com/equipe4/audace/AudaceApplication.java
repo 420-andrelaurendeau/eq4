@@ -73,8 +73,13 @@ public class AudaceApplication implements CommandLineRunner {
 		if (optionalStudent2.isEmpty()) return;
 		student2 = optionalStudent2.get().fromDTO();
 
+		Student student3 = new Student(null, "Joshua", "Cedric", "student3@email.com", "password", "123 Street Street", "1234567890", "204009878", department);
+		Optional<StudentDTO> optionalStudent3 = studentService.createStudent(student3.toDTO(), department.getCode());
+		if (optionalStudent3.isEmpty()) return;
+		student3 = optionalStudent3.get().fromDTO();
+
         Offer offer1 = offerRepository.save(
-				new Offer(null, "Stage en génie logiciel PROTOTYPE", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer)
+				new Offer(null, "Stage en génie logiciel PROTOTYPE", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 2, department, employer)
 		);
 		offer1.setOfferStatus(Offer.OfferStatus.ACCEPTED);
         offerSessionRepository.save(new OfferSession(null, offer1, session));
@@ -104,16 +109,21 @@ public class AudaceApplication implements CommandLineRunner {
 		String cvContent = "cv content for fun";
 		byte[] content = cvContent.getBytes();
 
-		Cv cv1 = new Cv(1L, "cv.pdf", content, student);
+		Cv cv1 = new Cv(1L, "cvStudent1.pdf", content, student);
 		cv1.setCvStatus(Cv.CvStatus.ACCEPTED);
 		cvRepository.save(cv1);
 
-		Cv cv2 = new Cv(2L, "cv.pdf", content, student2);
+		Cv cv2 = new Cv(2L, "cvStudent2.pdf", content, student2);
 		cv2.setCvStatus(Cv.CvStatus.ACCEPTED);
 		cvRepository.save(cv2);
 
+		Cv cv3 = new Cv(3L, "cvStudent3.pdf", content, student3);
+		cv3.setCvStatus(Cv.CvStatus.ACCEPTED);
+		cvRepository.save(cv3);
+
 		applicationRepository.save(new Application(1L, cv1, offer1));
 		applicationRepository.save(new Application(2L, cv2, offer1));
+		applicationRepository.save(new Application(3L, cv3, offer1));
 
 
 		Manager manager = new Manager(null, "manager", "managerman", "manager@email.com", "password", "yeete", "1234567890", department);
