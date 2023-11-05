@@ -1,5 +1,6 @@
 package com.equipe4.audace.service;
 
+import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.contract.ContractDTO;
@@ -15,6 +16,7 @@ import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.ApplicationRepository;
+import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
@@ -43,6 +45,8 @@ import static org.mockito.Mockito.*;
 public class ManagerServiceTest {
     @Mock
     private OfferRepository offerRepository;
+    @Mock
+    private EmployerRepository employerRepository;
     @Mock
     private DepartmentRepository departmentRepository;
     @Mock
@@ -425,7 +429,7 @@ public class ManagerServiceTest {
         Offer offer = new Offer(1L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, department, employer);
         applications.add(new Application(1L, cv, offer));
 
-        when(applicationRepository.findApplicationsByApplicationStatusAndOfferDepartmentId(any(), anyLong())).thenReturn(applications);
+        when(applicationRepository.findAllByApplicationStatusAndAndOffer_Department(any(), any(Department.class))).thenReturn(applications);
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(new Manager(1L, "firstName", "lastName", "email", "password", "address", "phone", department)));
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(department));
 
@@ -434,13 +438,13 @@ public class ManagerServiceTest {
         assertThat(result.size()).isEqualTo(1);
     }
     @Test
-    public void getAcceptedApplicationsByDepartment_invalidManager() {
+    public void getAcceptedApplicationsByManagerIdAndDepartmentId_invalidManager() {
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(new Department(1L, "code", "name")));
         when(managerRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> managerService.getAcceptedApplicationsByManagerIdAndDepartmentId(1L, 1L))
                 .isInstanceOf(NoSuchElementException.class)
-                .hasMessage("Manager is not found");
+                .hasMessage("Manager not found");
     }
     @Test
     public void getAcceptedApplicationsByDepartment_invalidDepartment() {
@@ -473,8 +477,10 @@ public class ManagerServiceTest {
     @Test
     public void createContract_HappyPath(){
         // Arrange
+        Employer supervisor = createSupervisor();
         ContractDTO contractDTO = createContract().toDTO();
 
+        when(employerRepository.findByEmail(supervisor.getEmail())).thenReturn(Optional.of(supervisor));
         when(contractRepository.save(any(Contract.class))).thenReturn(contractDTO.fromDTO());
 
         ContractDTO dto = managerService.createContract(contractDTO).get();
@@ -519,6 +525,9 @@ public class ManagerServiceTest {
         DateTimeFormatter dtf = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("H:mm").toFormatter(Locale.ENGLISH);
         Employer employer = createEmployer();
         Application application = createApplication();
-        return new Contract(1L, LocalTime.parse("08:00", dtf), LocalTime.parse("17:00", dtf), 40, 18.35, employer, application);
+        return new Contract(1L, LocalTime.parse("08:00", dtf), LocalTime.parse("17:00", dtf), 40, 18.35, createSupervisor(), application);
+    }
+    private Employer createSupervisor(){
+        return new Employer(null, "super", "visor", "supervisor@email.com", "password", "Temp Baklungel", "Big Baklunger", "123 Street Street", "1234567890", "-123");
     }
 }

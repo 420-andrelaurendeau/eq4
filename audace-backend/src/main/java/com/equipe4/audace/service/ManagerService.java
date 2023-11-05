@@ -155,7 +155,6 @@ public class ManagerService extends GenericUserService<Manager> {
         if(optionalSupervisor.isEmpty()){
             supervisor = employerRepository.save(supervisor);
             contract.setSupervisor(supervisor);
-
         }
         else {
             contract.setSupervisor(optionalSupervisor.get());
