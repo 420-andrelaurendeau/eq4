@@ -234,7 +234,7 @@ public class ManagerServiceTest {
         when(offerRepository.findAllByDepartment(mockedDepartment)).thenReturn(offers);
         when(sessionManipulator.removeOffersNotInSession(offers, 1L)).thenReturn(offers);
 
-        List<OfferDTO> result = managerService.getOffersByDepartment(1L, 1L);
+        List<OfferDTO> result = managerService.getOffersByDepartmentIdAndSessionId(1L, 1L);
 
         assertThat(result.size()).isEqualTo(offers.size());
         assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
@@ -244,7 +244,7 @@ public class ManagerServiceTest {
     void getOffersByDepartment_departmentNotFound() {
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> managerService.getOffersByDepartment(1L, 1L))
+        assertThatThrownBy(() -> managerService.getOffersByDepartmentIdAndSessionId(1L, 1L))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Department not found");
     }
@@ -256,7 +256,7 @@ public class ManagerServiceTest {
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
         when(offerRepository.findAllByDepartment(mockedDepartment)).thenReturn(new ArrayList<>());
 
-        List<OfferDTO> result = managerService.getOffersByDepartment(1L, 1L);
+        List<OfferDTO> result = managerService.getOffersByDepartmentIdAndSessionId(1L, 1L);
 
         assertThat(result.size()).isEqualTo(0);
     }
@@ -429,7 +429,7 @@ public class ManagerServiceTest {
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(new Manager(1L, "firstName", "lastName", "email", "password", "address", "phone", department)));
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(department));
 
-        List<ApplicationDTO> result = managerService.getAcceptedApplicationsByDepartment(1L, 1L);
+        List<ApplicationDTO> result = managerService.getAcceptedApplicationsByManagerIdAndDepartmentId(1L, 1L);
 
         assertThat(result.size()).isEqualTo(1);
     }
@@ -438,7 +438,7 @@ public class ManagerServiceTest {
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(new Department(1L, "code", "name")));
         when(managerRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> managerService.getAcceptedApplicationsByDepartment(1L, 1L))
+        assertThatThrownBy(() -> managerService.getAcceptedApplicationsByManagerIdAndDepartmentId(1L, 1L))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Manager is not found");
     }
@@ -446,7 +446,7 @@ public class ManagerServiceTest {
     public void getAcceptedApplicationsByDepartment_invalidDepartment() {
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> managerService.getAcceptedApplicationsByDepartment(1L, 1L))
+        assertThatThrownBy(() -> managerService.getAcceptedApplicationsByManagerIdAndDepartmentId(1L, 1L))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Department not found");
     }

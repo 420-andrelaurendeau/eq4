@@ -1,6 +1,7 @@
 package com.equipe4.audace.model;
 
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.model.contract.Contract;
 import com.equipe4.audace.model.offer.Offer;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,6 +19,10 @@ public class Employer extends User {
     @ToString.Exclude
     @OneToMany(mappedBy = "employer", cascade = CascadeType.ALL)
     private List<Offer> offers = new ArrayList<>();
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "supervisor", cascade = CascadeType.ALL)
+    private List<Contract> contracts = new ArrayList<>();
 
     public Employer(
             Long id,

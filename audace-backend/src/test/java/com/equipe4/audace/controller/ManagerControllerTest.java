@@ -162,7 +162,7 @@ public class ManagerControllerTest {
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void getOffersByDepartment_happyPath() throws Exception {
         List<OfferDTO> offerDTOList = List.of(mock(OfferDTO.class));
-        when(managerService.getOffersByDepartment(1L, 1L)).thenReturn(offerDTOList);
+        when(managerService.getOffersByDepartmentIdAndSessionId(1L, 1L)).thenReturn(offerDTOList);
 
         mockMvc.perform(get("/managers/offers/{departmendId}/{sessionId}", 1L, 1L))
                 .andExpect(status().isOk());
@@ -289,7 +289,7 @@ public class ManagerControllerTest {
         OfferDTO offerDTO = createOfferDTO(1L);
         ApplicationDTO applicationDTO = createApplicationDTO(offerDTO);
         applicationDTOList.add(applicationDTO);
-        when(managerService.getAcceptedApplicationsByDepartment(1L, 1L)).thenReturn(applicationDTOList);
+        when(managerService.getAcceptedApplicationsByManagerIdAndDepartmentId(1L, 1L)).thenReturn(applicationDTOList);
 
         mockMvc.perform(get("/managers/1/acceptedApplications/1"))
                 .andExpect(status().isOk())
@@ -395,6 +395,10 @@ public class ManagerControllerTest {
 
     private ContractDTO createContractDTO(ApplicationDTO applicationDTO){
         EmployerDTO employerDTO = createEmployerDTO();
-        return new ContractDTO(1L, "08:00", "17:00", 40, 18.35, employerDTO, applicationDTO);
+        return new ContractDTO(1L, "08:00", "17:00", 40, 18.35, createSupervisor(), applicationDTO);
+    }
+
+    private EmployerDTO createSupervisor(){
+        return new EmployerDTO(null, "super", "visor", "supervisor@email.com", "password", "Temp Baklungel", "Big Baklunger", "123 Street Street", "1234567890", "-123");
     }
 }
