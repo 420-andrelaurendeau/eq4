@@ -8,6 +8,8 @@ import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
+import com.equipe4.audace.model.notification.NotificationCv;
+import com.equipe4.audace.model.notification.NotificationOffer;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.security.Salt;
 import com.equipe4.audace.repository.ApplicationRepository;
@@ -16,6 +18,7 @@ import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
+import com.equipe4.audace.repository.notification.NotificationRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.OfferSessionRepository;
@@ -30,7 +33,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.time.LocalDate;
 import java.util.Optional;
-
+//TODO : TESTS NOTIFICATIONS
 @SpringBootApplication
 @AllArgsConstructor
 public class AudaceApplication implements CommandLineRunner {
@@ -44,6 +47,7 @@ public class AudaceApplication implements CommandLineRunner {
 	private OfferSessionRepository offerSessionRepository;
 	private ApplicationRepository applicationRepository;
 	private CvRepository cvRepository;
+	private NotificationRepository notificationRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AudaceApplication.class, args);
@@ -122,5 +126,7 @@ public class AudaceApplication implements CommandLineRunner {
 		manager.setPassword(BCrypt.hashpw(managerPassword, managerSalt));
 		manager = managerRepository.save(manager);
 		saltRepository.save(new Salt(null, manager, managerSalt));
+		notificationRepository.save(new NotificationOffer(null, student2, offer1));
+		notificationRepository.save(new NotificationCv(null, student2, cv1));
 	}
 }

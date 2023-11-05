@@ -1,10 +1,13 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.UserDTO;
+import com.equipe4.audace.dto.notification.NotificationDTO;
 import com.equipe4.audace.dto.session.SessionDTO;
 import com.equipe4.audace.model.User;
+import com.equipe4.audace.model.notification.Notification;
 import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.UserRepository;
+import com.equipe4.audace.repository.notification.NotificationRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.utils.SessionManipulator;
@@ -17,17 +20,20 @@ import java.util.Optional;
 public class UserService extends GenericUserService<User> {
     private final UserRepository userRepository;
     private final SessionRepository sessionRepository;
+    private final NotificationRepository notificationRepository;
     private final SessionManipulator sessionManipulator;
 
     public UserService(
             SaltRepository saltRepository,
             UserRepository userRepository,
             SessionRepository sessionRepository,
+            NotificationRepository notificationRepository,
             SessionManipulator sessionManipulator
     ) {
         super(saltRepository);
         this.userRepository = userRepository;
         this.sessionRepository = sessionRepository;
+        this.notificationRepository = notificationRepository;
         this.sessionManipulator = sessionManipulator;
     }
 
@@ -45,5 +51,11 @@ public class UserService extends GenericUserService<User> {
 
     public Optional<SessionDTO> getSessionById(Long sessionId) {
         return sessionRepository.findById(sessionId).map(Session::toDTO);
+    }
+
+    public List<NotificationDTO> getAllNotificationByUserId(Long userId) {
+        List<Notification> notifications = notificationRepository.findAllByUserId(userId);
+        notificationRepository.deleteAll();
+        return notifications.stream().map(Notification::toDTO).toList();
     }
 }

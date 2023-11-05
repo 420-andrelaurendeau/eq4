@@ -2,6 +2,8 @@ package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.UserDTO;
+import com.equipe4.audace.dto.notification.NotificationDTO;
+import com.equipe4.audace.dto.notification.NotificationOfferDTO;
 import com.equipe4.audace.dto.session.SessionDTO;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
@@ -10,6 +12,7 @@ import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
+import com.equipe4.audace.repository.notification.NotificationRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
@@ -27,6 +30,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -56,6 +61,8 @@ class UserControllerTest {
     private CvRepository cvRepository;
     @MockBean
     private UserRepository userRepository;
+    @MockBean
+    private NotificationRepository notificationRepository;
 
     @MockBean
     private SaltRepository saltRepository;
@@ -144,5 +151,15 @@ class UserControllerTest {
 
         mockMvc.perform(get("/users/sessions/{id}", 1L))
                 .andExpect(status().isNotFound());
+    }
+    @Test
+    @WithMockUser(username = "user")
+    void testGetAllNotificationsByUserId() throws Exception {
+        NotificationDTO notificationDTO = mock(NotificationOfferDTO.class);
+        List<NotificationDTO> notificationDTOs = new ArrayList<>();
+        notificationDTOs.add(notificationDTO);
+        when(userService.getAllNotificationByUserId(1L)).thenReturn(notificationDTOs);
+        mockMvc.perform(get("/users/notifications/1"))
+                .andExpect(status().isOk());
     }
 }

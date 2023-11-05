@@ -1,12 +1,15 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.UserDTO;
+import com.equipe4.audace.dto.notification.NotificationDTO;
 import com.equipe4.audace.dto.session.SessionDTO;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.User;
 import com.equipe4.audace.model.department.Department;
+import com.equipe4.audace.model.notification.Notification;
 import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.UserRepository;
+import com.equipe4.audace.repository.notification.NotificationRepository;
 import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.utils.SessionManipulator;
 import org.junit.jupiter.api.Test;
@@ -16,13 +19,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -30,6 +33,8 @@ class UserServiceTest {
     private UserRepository userRepository;
     @Mock
     private SessionRepository sessionRepository;
+    @Mock
+    private NotificationRepository notificationRepository;
     @Mock
     private SessionManipulator sessionManipulator;
     @InjectMocks
@@ -98,6 +103,16 @@ class UserServiceTest {
 
         assertTrue(sessionDTO.isPresent());
         assertThat(sessionDTO.get()).isEqualTo(session.toDTO());
+    }
+    @Test
+    void getAllNotificationsByUserId_happyPath() {
+        Notification notification = mock(Notification.class);
+        List<Notification> notifications = new ArrayList<>();
+        notifications.add(notification);
+        when(notificationRepository.findAllByUserId(1L)).thenReturn(notifications);
+        when(notification.toDTO()).thenReturn(mock(NotificationDTO.class));
+        List<NotificationDTO> notificationDTOs = userService.getAllNotificationByUserId(1L);
+        assertThat(notificationDTOs).hasSize(1);
     }
 }
 

@@ -18,3 +18,6 @@ export const getStudentById = async (id: number): Promise<AxiosResponse<Student>
 export const getUserById = async (id: number): Promise<AxiosResponse<User>> => {
     return http.get<User>(`${USER_PREFIX}/${id}`);
 }
+export const getNotificationsByUserId = async (id: number): Promise<AxiosResponse<Notification[]>> => { //TODO : I'm a disgrace
+    return http.get<Notification[]>(`${USER_PREFIX}/notifications/${id}`);
+}

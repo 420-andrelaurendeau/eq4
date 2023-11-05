@@ -2,6 +2,7 @@ package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.GenericUserController;
 import com.equipe4.audace.dto.UserDTO;
+import com.equipe4.audace.dto.notification.NotificationDTO;
 import com.equipe4.audace.dto.session.SessionDTO;
 import com.equipe4.audace.model.User;
 import com.equipe4.audace.service.UserService;
@@ -49,5 +50,10 @@ public class UserController extends GenericUserController<User, UserService> {
         return service.getSessionById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @GetMapping("/notifications/{id}")
+    public ResponseEntity<List<NotificationDTO>> getAllNotificationByUserId(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getAllNotificationByUserId(id));
     }
 }
