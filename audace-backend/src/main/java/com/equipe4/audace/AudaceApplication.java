@@ -63,11 +63,10 @@ public class AudaceApplication implements CommandLineRunner {
 
 		Department department = departmentRepository.save(new Department(null, "GLO", "Génie logiciel"));
 
-		Optional<EmployerDTO> optionalEmployerDTO = employerService.createEmployer(new EmployerDTO(1L, "employer", "employerman", "employer@email.com", "password", "Temp Baklungel", "Big Baklunger", "123 Street Street", "1234567890", "-123"));
+		Employer employer = new Employer(1L, "employer", "employerman", "employer@email.com", "password", "Temp Baklungel", "Big Baklunger", "123 Street Street", "1234567890", "-123");
+		Optional<EmployerDTO> optionalEmployerDTO = employerService.createEmployer(employer.toDTO());
 		if (optionalEmployerDTO.isEmpty()) return;
-		EmployerDTO employerDTO = optionalEmployerDTO.get();
-		Employer employer = employerDTO.fromDTO();
-
+		employer = optionalEmployerDTO.get().fromDTO();
 
 		Student student = new Student(null, "Kylian", "Mbappe", "kylian@live.fr", "123123", "34 de Montpellier", "4387654545", "2080350", department);
 		Optional<StudentDTO> optionalStudent = studentService.createStudent(student.toDTO(), department.getCode());
@@ -135,9 +134,7 @@ public class AudaceApplication implements CommandLineRunner {
 		ApplicationDTO applicationDTO = new ApplicationDTO(3L, cv2.toDTO(), offer3.toDTO(), Application.ApplicationStatus.ACCEPTED);
 		applicationRepository.save(applicationDTO.fromDTO());
 		Optional<ContractDTO> optionalContractDTO = managerService.createContract(
-				new ContractDTO(1L, "8:00", "17:00", 40, 19.50,
-						new EmployerDTO(1L, "super", "visor", "supervisor@email.com", "password", "Temp Baklungel", "Big Baklunger", "123 Street Street", "1234567890", "-123"),
-						applicationDTO));
+				new ContractDTO(1L, "8:00", "17:00", 40, 19.50, employer.toDTO(), applicationDTO));
 		if (optionalContractDTO.isEmpty()) return;
 		ContractDTO contractDTO = optionalContractDTO.get();
 		Contract contract = contractDTO.fromDTO();

@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from "react-router";
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import FormInput from '../FormInput';
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
 import { Contract } from '../../model/contract';
 import Application from '../../model/application';
 import { createContract, getApplicationById } from '../../services/managerService';
 import { getContractByApplicationId } from '../../services/applicationService';
+import { Employer, Student } from '../../model/user';
+import InfoCardView from '../../views/InfoCardView';
 
 const AddContract = () => {
   const navigate = useNavigate();
@@ -16,12 +17,10 @@ const AddContract = () => {
   const [errors, setErrors] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [application, setApplication] = useState<Application>();
-  const [officeName, setOfficeName] = useState('');
   const [startHour, setStartHour] = useState('09:00');
   const [endHour, setEndHour] = useState('17:00');
   const [totalHoursPerWeek, setTotalHoursPerWeek] = useState(40);
   const [salary, setSalary] = useState(15.25);
-  const [internTasksAndResponsibilities, setInternTasksAndResponsibilities] = useState('');
   const [isContractCreated, setIsContractCreated] = useState(true);
 
   useEffect(() => {
@@ -37,7 +36,7 @@ const AddContract = () => {
   useEffect(() => {
     if (!isContractCreated) return;
     if (application === undefined) return;
-    
+
     getContractByApplicationId(application.id!)
       .then((res) => {
         if (res.data !== null) {
@@ -56,12 +55,10 @@ const AddContract = () => {
     setIsLoading(true);
 
     const formData: Contract = {
-      officeName: officeName,
       startHour: startHour,
       endHour: endHour,
       totalHoursPerWeek: totalHoursPerWeek,
       salary: salary,
-      internTasksAndResponsibilities: internTasksAndResponsibilities,
       supervisor: application!.offer!.employer,
       application: application!
     };
@@ -79,10 +76,8 @@ const AddContract = () => {
     const errorsToDisplay: string[] = [];
 
     if (application === undefined) errorsToDisplay.push("manager.createContract.errors.applicationNotFound");
-    if (officeName === '') errorsToDisplay.push("manager.createContract.errors.emptyOfficeName");
     if (totalHoursPerWeek <= 0 || totalHoursPerWeek > 168) errorsToDisplay.push("manager.createContract.errors.invalidTotalHoursPerWeek");
     if (salary <= 0) errorsToDisplay.push("manager.createContract.errors.invalidSalary");
-    if (internTasksAndResponsibilities === '') errorsToDisplay.push("manager.createContract.errors.emptyInternTasksAndResponsibilities");
 
     setErrors(errorsToDisplay);
     return errorsToDisplay.length === 0;
@@ -91,6 +86,16 @@ const AddContract = () => {
   return (
     <Container>
       <h1>{t('manager.createContract.title')}</h1>
+
+      <Row xs={1} md={2} className="g-4 mb-3">
+        <Col>
+          <InfoCardView employer={application?.offer?.employer as Employer} />
+        </Col>
+        <Col>
+          <InfoCardView student={application?.cv?.student as Student} />
+        </Col>
+      </Row>
+
       {errors.length > 0 && (
         <Alert variant="danger" onClose={() => setErrors([])} dismissible>
           {errors.map((error, index) => (
@@ -99,14 +104,6 @@ const AddContract = () => {
         </Alert>
       )}
       <Form onSubmit={handleSubmit}>
-        <FormInput
-          label="manager.createContract.officeName"
-          value={officeName}
-          onChange={(e) => setOfficeName(e.target.value)}
-          controlId="formBasicOfficeName"
-          errors={errors}
-          formError={"contract.errors.emptyOfficeName"}
-        />
         <Row className="mb-3">
           <Col>
             <Form.Group controlId="formBasicStartHour">
@@ -173,15 +170,6 @@ const AddContract = () => {
             </Form.Group>
           </Col>
         </Row>
-        <Form.Group controlId="formBasicInternTasksAndResponsibilities">
-          <Form.Label>{t("manager.createContract.internTasksAndResponsibilities")}</Form.Label>
-          <Form.Control
-            as="textarea"
-            value={internTasksAndResponsibilities}
-            onChange={(e) => setInternTasksAndResponsibilities(e.target.value)}
-          />
-          {errors.includes("contract.errors.emptyInternTasksAndResponsibilities")}
-        </Form.Group>
         <Button variant="primary" type="submit" disabled={isLoading} className="mt-3">
           {isLoading ? t('common.loading') : t('common.submit')}
         </Button>

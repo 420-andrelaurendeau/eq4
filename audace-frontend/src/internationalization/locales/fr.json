@@ -119,7 +119,7 @@
     "REFUSED": "Refusé",
     "editButton": "Modifier",
     "deleteButton": "Supprimer",
-    "applicationButton" : "Voir les applications"
+    "applicationButton": "Voir les applications"
   },
   "student": {
     "seeOffersButton": "Voir les offres"
@@ -132,22 +132,18 @@
     "title": "Gestionnaire",
     "createContract": {
       "title": "Créer un contrat",
-      "officeName": "Nom du bureau",
       "startHour": "Heure de début",
       "endHour": "Heure de fin",
       "totalHoursPerWeek": "Heures totales par semaine",
       "salary": "Salaire",
-      "internTasksAndResponsibilities": "Tâches et responsabilités de stagiaire",
       "errors": {
         "applicationNotFound": "Candidature non trouvée",
         "employerNotFound": "Employeur non trouvé",
         "contractAlreadyExists": "Un contrat existe déjà pour cette offre",
-        "emptyOfficeName": "Le nom du bureau ne peut pas être vide",
         "invalidStartHour": "L'heure de début est invalide",
         "invalidEndHour": "L'heure de fin est invalide",
         "invalidTotalHoursPerWeek": "Le nombre d'heures par semaine est invalide",
-        "invalidSalary": "Le salaire est invalide",
-        "emptyInternTasksAndResponsibilities": "Les tâches et responsabilités de stagiaire ne peuvent pas être vides"
+        "invalidSalary": "Le salaire est invalide"
       }
     }
   },
@@ -230,5 +226,21 @@
   "pageNotFound": "Erreur 404 : Page non trouvée",
   "sessionSelector": {
     "filterPlaceholder": "Filtrer par date"
+  },
+  "infoCard": {
+    "employer": {
+      "title": "Entreprise",
+      "name": "Nom",
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "extension": "Ext.",
+      "address": "Adresse"
+    },
+    "student": {
+      "title": "Étudiant",
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "address": "Adresse"
+    }
   }
 }

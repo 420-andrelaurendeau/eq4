@@ -119,7 +119,7 @@
     "REFUSED": "Refused",
     "editButton": "Edit",
     "deleteButton": "Delete",
-    "applicationButton" : "See applications"
+    "applicationButton": "See applications"
   },
   "student": {
     "seeOffersButton": "See Offers"
@@ -132,21 +132,17 @@
     "title": "Manager",
     "createContract": {
       "title": "Create Contract",
-      "officeName": "Office Name",
       "startHour": "Start Hour",
       "endHour": "End Hour",
       "totalHoursPerWeek": "Total Hours Per Week",
       "salary": "Salary",
-      "internTasksAndResponsibilities": "Intern Tasks And Responsibilities",
       "errors": {
         "applicationNotFound": "Application not found",
         "contractAlreadyExists": "A contract already exists for this offer",
-        "emptyOfficeName": "Office name cannot be empty",
         "invalidStartHour": "Start hour is invalid",
         "invalidEndHour": "End hour is invalid",
         "invalidTotalHoursPerWeek": "Total hours per week is invalid",
-        "invalidSalary": "Salary is invalid",
-        "emptyInternTasksAndResponsibilities": "Intern tasks and responsibilities cannot be empty"
+        "invalidSalary": "Salary is invalid"
       }
     }
   },
@@ -157,16 +153,16 @@
     "seeOffersButton": "See Offers",
     "seeApplicationsButton": "See Applications"
   },
-  "addOffer":{
-    "pageTitle" : "Create Offer",
-    "description" : "Description",
-    "title" : "Title",
-    "departmentCode" : "Department Code",
-    "startDate" : "Start date",
-    "endDate" : "End date",
-    "offerEndDate" : "Offer end date",
-    "submit" : "Submit",
-    "availablePlaces" : "Available places",
+  "addOffer": {
+    "pageTitle": "Create Offer",
+    "description": "Description",
+    "title": "Title",
+    "departmentCode": "Department Code",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "offerEndDate": "Offer end date",
+    "submit": "Submit",
+    "availablePlaces": "Available places",
     "errors": {
       "titleRequired": "Title cannot be empty",
       "descriptionRequired": "Description cannot be empty",
@@ -229,5 +225,21 @@
   "pageNotFound": "Error 404: Page Not Found",
   "sessionSelector": {
     "filterPlaceholder": "Filter by date"
+  },
+  "infoCard": {
+    "employer": {
+      "title": "Company",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "extension": "Ext.",
+      "address": "Address"
+    },
+    "student": {
+      "title": "Student",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address"
+    }
   }
 }
