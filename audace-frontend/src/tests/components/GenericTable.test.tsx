@@ -3,7 +3,7 @@ import GenericTable from "../../components/GenericTable";
 
 it("should render the list of strings", () => {
   const stringList = ["test1", "test2", "test3"];
-  const children = stringList.map((string) => <>{string}</>);
+  const children = stringList.map((string) => <p key={string}>{string}</p>);
   render(
     <GenericTable
       list={stringList}
@@ -11,7 +11,12 @@ it("should render the list of strings", () => {
       emptyListMessage=""
       title="Generic table test"
     >
-      {children}
+      <thead></thead>
+      <tbody>
+        <tr>
+          <td>{children}</td>
+        </tr>
+      </tbody>
     </GenericTable>
   );
 
