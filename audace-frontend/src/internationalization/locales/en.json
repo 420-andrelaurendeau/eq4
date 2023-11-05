@@ -131,6 +131,14 @@
     "contractCreated": "Contract created successfully",
     "title": "Manager",
     "createContract": {
+      "supervisor": {
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "email": "Email",
+        "phone": "Phone",
+        "position": "Position",
+        "extension": "Extension"
+      },
       "title": "Create Contract",
       "startHour": "Start Hour",
       "endHour": "End Hour",

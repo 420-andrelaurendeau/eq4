@@ -39,10 +39,3 @@ export const getApplicationsByStudentId = async (studentId: number, sessionId: n
     });
 }
 
-export const getContractByApplicationId = async (applicationId: number): Promise<AxiosResponse<Contract>> => {
-    return http.get<Contract>(`${MANAGER_PREFIX}/applications/${applicationId}/contract`);
-}
-
-export const getContractsByDepartmentId = async (departmentId: number): Promise<AxiosResponse<Contract[]>> => {
-    return http.get<Contract[]>(`${MANAGER_PREFIX}/contracts/department/${departmentId}`);
-}

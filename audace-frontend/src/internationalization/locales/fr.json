@@ -131,6 +131,14 @@
     "contractCreated": "Contract créé avec succès",
     "title": "Gestionnaire",
     "createContract": {
+      "supervisor": {
+        "firstName": "Prénom",
+        "lastName": "Nom de famille",
+        "email": "E-mail",
+        "phone": "Téléphone",
+        "position": "Poste",
+        "extension": "Extension"
+      },
       "title": "Créer un contrat",
       "startHour": "Heure de début",
       "endHour": "Heure de fin",
