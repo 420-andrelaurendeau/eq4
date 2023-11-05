@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import StudentSignup from "../../../components/Signup/StudentSignup";
 import { AxiosResponse } from "axios";
 
@@ -21,7 +21,9 @@ it("should display errors on faulty submit", async () => {
 
   fireEvent.click(submitButton);
 
-  const studentIdError = await screen.findByText(/signup.errors.studentId/i);
+  const studentIdError = await waitFor(() =>
+    screen.findByText(/signup.errors.studentId/i)
+  );
 
   expect(studentIdError).not.toBeUndefined();
 });
@@ -77,7 +79,9 @@ it("should display an error on submit failure", async () => {
 
   fireEvent.click(submitButton);
 
-  const error = await screen.findByText(/signup.errors.network/i);
+  const error = await waitFor(() =>
+    screen.findByText(/signup.errors.network/i)
+  );
 
   expect(error).not.toBeUndefined();
 });

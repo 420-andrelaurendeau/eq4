@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Signup from "../../../components/Signup";
 import { User } from "../../../model/user";
 import { AxiosResponse } from "axios";
@@ -159,5 +159,5 @@ it("should display unexpected error on failed submit request", async () => {
 
   fireEvent.click(submitButton);
 
-  await screen.findByText(/signup.errors.network/i);
+  await waitFor(() => screen.findByText(/signup.errors.network/i));
 });

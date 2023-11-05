@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import EmployerSignup from "../../../components/Signup/EmployerSignup";
 import { AxiosResponse } from "axios";
 
@@ -84,5 +84,5 @@ it("should display an error on submit failure", async () => {
 
   fireEvent.click(submitButton);
 
-  await screen.findByText(/signup.errors.network/i);
+  await waitFor(() => screen.findByText(/signup.errors.network/i));
 });
