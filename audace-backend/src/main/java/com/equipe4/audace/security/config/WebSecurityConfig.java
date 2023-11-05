@@ -31,6 +31,8 @@ public class WebSecurityConfig {
                 .requestMatchers("/employers/**").hasAnyAuthority(Authorities.ADMIN.name(), Authorities.EMPLOYER.name())
                 .requestMatchers("/managers/**").hasAnyAuthority(Authorities.ADMIN.name(), Authorities.MANAGER.name())
                 .requestMatchers("/users/**").hasAnyAuthority(Authorities.ADMIN.name(), Authorities.USER.name())
+
+
             );
 
         http.sessionManagement((sessionManagement) ->

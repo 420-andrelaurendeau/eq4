@@ -1,7 +1,6 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import FileUploader from "../../components/FileUploader";
 import { Student } from "../../model/user";
-import userEvent from "@testing-library/user-event";
 
 const student: Student = {
   studentNumber: "1234567890",
@@ -35,12 +34,10 @@ it("should submit a file", async () => {
 
   const input = screen.getByLabelText(/upload.file/i) as HTMLInputElement;
 
-  userEvent.upload(input, file);
-  await waitFor(() => {
-    expect(input.files).toHaveLength(1);
-  });
+  fireEvent.change(input, { target: { files: [file] } });
+  await waitFor(() => expect(input.files).toHaveLength(1));
 
-  userEvent.click(screen.getByText(/upload.submit/i));
+  fireEvent.click(screen.getByText(/upload.submit/i));
 
   await screen.findByText(/upload.success/i);
 });
@@ -48,7 +45,7 @@ it("should submit a file", async () => {
 it("should not submit without a file", async () => {
   render(<FileUploader student={student} />);
 
-  userEvent.click(screen.getByText(/upload.submit/i));
+  fireEvent.click(screen.getByText(/upload.submit/i));
 });
 
 it("should pop an alert on submit failure", async () => {
@@ -64,12 +61,10 @@ it("should pop an alert on submit failure", async () => {
 
   const input = screen.getByLabelText(/upload.file/i) as HTMLInputElement;
 
-  userEvent.upload(input, file);
-  await waitFor(() => {
-    expect(input.files).toHaveLength(1);
-  });
+  fireEvent.change(input, { target: { files: [file] } });
+  await waitFor(() => expect(input.files).toHaveLength(1));
 
-  userEvent.click(screen.getByText(/upload.submit/i));
+  fireEvent.click(screen.getByText(/upload.submit/i));
 
   await screen.findByText(/upload.error/i);
 });

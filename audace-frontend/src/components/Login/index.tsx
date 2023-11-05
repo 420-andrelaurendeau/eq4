@@ -23,16 +23,14 @@ const LoginForm = () => {
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const [showExpiredSessionNotif, setShowExpiredSessionNotif] =
-    useState<boolean>(false);
-  const [showUserCreatedNotif, setShowUserCreatedNotif] =
-    useState<boolean>(false);
+  const [showExpiredSessionNotif, setShowExpiredSessionNotif] = useState<boolean>(false);
+  const [showUserCreatedNotif, setShowUserCreatedNotif] = useState<boolean>(false);
 
   const isSessionProperlyExpired = useCallback(() => {
     return (
-        location.pathname === "/login/disconnected" &&
-        !isConnected() &&
-        hasSessionExpiredRecently()
+      location.pathname === "/login/disconnected" &&
+      !isConnected() &&
+      hasSessionExpiredRecently()
     );
   }, [location.pathname]);
 
@@ -59,16 +57,16 @@ const LoginForm = () => {
     };
 
     login(loginRequest)
-        .then((response) => {
-          authenticate(response.data);
+      .then((response) => {
+        authenticate(response.data);
 
-          const id = getUserId();
+        const id = getUserId();
 
-          if (id == null) {
-            logout();
-            navigate("/pageNotFound");
-            return;
-          }
+        if (id == null) {
+          logout();
+          navigate("/pageNotFound");
+          return;
+        }
 
         getUserById(parseInt(id))
           .then((res) => {
@@ -84,8 +82,8 @@ const LoginForm = () => {
         console.log(error);
         if (error.response.status === 401 || error.response.status === 403) setAreCredentialsValid(false);
 
-          setIsDisabled(false);
-        });
+        setIsDisabled(false);
+      });
   };
 
   const navigateToUserTypeHomePage = (userType: string) => {
@@ -158,13 +156,9 @@ const LoginForm = () => {
           formError={"login.errors.emptyPassword"}
           type="password"
         />
-        <Button onClick={submitForm} disabled={isDisabled}>
-          {t("signin")}
-        </Button>
+        <Button onClick={submitForm} disabled={isDisabled}>{t("signin")}</Button>
         {!areCredentialsValid && (
-          <p className="invalid-credentials">
-            {t("login.errors.invalidCredentials")}
-          </p>
+          <p className="invalid-credentials">{t("login.errors.invalidCredentials")}</p>
         )}
       </Form>
       {showExpiredSessionNotif && (

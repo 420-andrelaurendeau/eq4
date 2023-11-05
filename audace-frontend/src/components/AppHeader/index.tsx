@@ -19,45 +19,47 @@ function AppHeader() {
       <Navbar.Brand href="/">Audace</Navbar.Brand>
 
       <Navbar.Collapse id="basic-navbar-nav">
-        {authority === "student" && (
-          <Nav>
-            <Button onClick={() => handleClick(authority + "/offers")} variant="light" className="me-2">
-              {t("student.seeOffersButton")}
-            </Button>
-            <Button onClick={() => handleClick(authority + "/upload")} variant="light" className="me-2">
-              {t("upload.CvFormTitle")}
-            </Button>
-          </Nav>
-        )}
-
         {authority === "employer" && (
           <Nav>
-            <Button onClick={() => handleClick(authority + "/offers/new")} variant="light" className="me-2">
+            <Button
+              onClick={() => handleClick(authority + "/offers/new")}
+              variant="light"
+              className="me-2"
+            >
               {t("employer.addOfferButton")}
-            </Button>
-            <Button onClick={() => handleClick(authority + "/offers")} variant="light" className="me-2">
-              {t("employer.seeOffersButton")}
             </Button>
           </Nav>
         )}
 
         {authority === "manager" && (
-          <Button onClick={() => handleClick(authority + "/offers")} variant="light" className="me-2">
-            {t("manager.seeOffersButton")}
-          </Button>
+          <Nav>
+            <Button
+              onClick={() => handleClick(authority + "/offers")}
+              variant="light"
+              className="me-2"
+            >
+              {t("manager.seeOffersButton")}
+            </Button>
+          </Nav>
         )}
-
-
       </Navbar.Collapse>
 
       <Nav className="justify-content-end">
         {!isConnected() ? (
           <>
             <ButtonGroup>
-              <Button onClick={() => handleClick("/signup/employer")} variant="outline-success" className="me-2">
+              <Button
+                onClick={() => handleClick("/signup/employer")}
+                variant="outline-success"
+                className="me-2"
+              >
                 {t("signup.signup")}
               </Button>
-              <Button onClick={() => handleClick("/login")} variant="outline-primary" className="me-2">
+              <Button
+                onClick={() => handleClick("/login")}
+                variant="outline-primary"
+                className="me-2"
+              >
                 {t("signin")}
               </Button>
             </ButtonGroup>

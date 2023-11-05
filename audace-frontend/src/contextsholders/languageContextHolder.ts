@@ -1,12 +1,13 @@
 import i18next from "i18next";
-import {createContext} from "react";
+import { createContext } from "react";
 import { ALL_LOCALES, Locale } from "../internationalization/config";
 
 export class LanguageContextHolder {
     public currentLanguage;
 
     constructor() {
-        this.currentLanguage = 'en';
+        this.currentLanguage = localStorage.getItem("lang") || "en";
+        i18next.changeLanguage(this.currentLanguage);
     }
 
     public setLanguage = (languageCode: string): void => {

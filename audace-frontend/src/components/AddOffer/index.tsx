@@ -94,7 +94,7 @@ const AddOffer: React.FC = () => {
     if (!isValidDate(internshipEndDate)) errorsToDisplay.push("addOffer.errors.invalidEndDate");
     if (!isValidDate(offerEndDate)) errorsToDisplay.push("addOffer.errors.invalidOfferEndDate");
     if (internshipEndDate <= internshipStartDate) errorsToDisplay.push("addOffer.errors.endDateBeforeStartDate");
-    
+
 
     setErrors(errorsToDisplay);
     return errorsToDisplay.length === 0;

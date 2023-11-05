@@ -168,6 +168,8 @@ public class StudentControllerTest {
         Department department = new Department(1L, "GLO", "Génie logiciel");
         Employer employer = new Employer(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
 
+        Student student = new Student(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", department);
+
         Cv cv = mock(Cv.class);
 
         Offer offer = new Offer(1L, "Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
