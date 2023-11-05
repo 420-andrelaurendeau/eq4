@@ -19,10 +19,12 @@ it("should display errors on faulty submit", async () => {
 
   fireEvent.click(submitButton);
 
-  const organisationError = await screen.findByText(
-    /signup.errors.organisation/i
+  const organisationError = await waitFor(() =>
+    screen.findByText(/signup.errors.organisation/i)
   );
-  const positionError = await screen.findByText(/signup.errors.position/i);
+  const positionError = await waitFor(() =>
+    screen.findByText(/signup.errors.position/i)
+  );
 
   expect(organisationError).not.toBeUndefined();
   expect(positionError).not.toBeUndefined();

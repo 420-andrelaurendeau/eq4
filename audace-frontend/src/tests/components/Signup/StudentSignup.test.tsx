@@ -29,6 +29,10 @@ it("should display errors on faulty submit", async () => {
 });
 
 it("should properly submit a form", async () => {
+  const mockedUseNavigate = jest
+    .spyOn(require("react-router-dom"), "useNavigate")
+    .mockImplementation(() => () => {});
+
   jest
     .spyOn(require("../../../services/signupService"), "studentSignup")
     .mockImplementation(() =>
@@ -38,8 +42,37 @@ it("should properly submit a form", async () => {
   render(<StudentSignup />);
 
   const studentIdInput = screen.getByLabelText(/signup.studentId/i);
+  const emailInput = screen.getByLabelText(/signup.emailEntry/i);
+  const passwordInput = screen.getByLabelText(/signup.password$/i);
+  const passwordConfirmationInput = screen.getByLabelText(
+    /signup.passwordConfirmation/i
+  );
+  const firstNameInput = screen.getByLabelText(/signup.firstNameEntry/i);
+  const lastNameInput = screen.getByLabelText(/signup.lastNameEntry/i);
+  const addressInput = screen.getByLabelText(/signup.addressEntry/i);
+  const cityInput = screen.getByLabelText(/signup.cityEntry/i);
+  const postalCodeInput = screen.getByLabelText(/signup.postalCodeEntry/i);
+  const phoneInput = screen.getByLabelText(/signup.phoneEntry/i);
 
-  fireEvent.change(studentIdInput, { target: { value: "test" } });
+  fireEvent.change(emailInput, { target: { value: "asd@hotmail.com" } });
+  fireEvent.change(passwordInput, { target: { value: "Aa12345!" } });
+  fireEvent.change(passwordConfirmationInput, {
+    target: { value: "Aa12345!" },
+  });
+  fireEvent.change(firstNameInput, { target: { value: "John" } });
+  fireEvent.change(lastNameInput, { target: { value: "Doe" } });
+  fireEvent.change(addressInput, { target: { value: "1234 Main St" } });
+  fireEvent.change(cityInput, { target: { value: "Montreal" } });
+  fireEvent.change(postalCodeInput, { target: { value: "h1h 1h1" } });
+  fireEvent.change(phoneInput, { target: { value: "1234567890" } });
+
+  fireEvent.change(studentIdInput, { target: { value: "1234" } });
+
+  const submitButton = screen.getByText(/signup.signup/i);
+
+  fireEvent.click(submitButton);
+
+  await waitFor(() => expect(mockedUseNavigate).toHaveBeenCalledTimes(1));
 });
 
 it("should display an error on submit failure", async () => {
