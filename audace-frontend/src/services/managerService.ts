@@ -31,7 +31,7 @@ export const getContractById = async (id: number): Promise<AxiosResponse> => {
     return http.get(`${MANAGER_PREFIX}/contracts/${id}`);
 }
 
-export async function getStudentsByInternshipStatusTest (departmentId: number): Promise<any> {
+export async function getStudentsByInternshipStatus (departmentId: number): Promise<any> {
     try {
         const response: AxiosResponse<any> = await http.get(`${MANAGER_PREFIX}/studentsWithInternshipFoundStatus/${departmentId}`);
 
@@ -60,8 +60,4 @@ export async function getStudentsByInternshipStatusTest (departmentId: number): 
     } catch (error) {
         throw error;
     }
-}
-
-export const getStudentsByInternshipStatus = async (departmentId: number): Promise<AxiosResponse<any>> => {
-    return http.get<any>(`${MANAGER_PREFIX}/studentsWithInternshipFoundStatus/${departmentId}`);
 }

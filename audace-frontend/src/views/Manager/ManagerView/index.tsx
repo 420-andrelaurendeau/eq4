@@ -65,7 +65,7 @@ const ManagerView = ({ isContractCreated }: Props) => {
       </Alert>
       <h1>{t("manager.title")}</h1>
       <ManagerApplicationsList applications={applications} />
-      <ManagerStudentByInternshipStatusList departmentId={department?.id!}/>
+      <ManagerStudentByInternshipStatusList/>
     </Container>
   );
 };
