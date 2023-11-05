@@ -27,6 +27,7 @@ const EditOffer: React.FC = () => {
   const [employer, setEmployer] = useState<Employer>({} as Employer);
   const [status, setStatus] = useState<OfferStatus>(OfferStatus.PENDING);
 
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -73,7 +74,6 @@ const EditOffer: React.FC = () => {
   }
 
   const validateForm = (): boolean => {
-    let isValid = true;
     const errorsToDisplay: string[] = [];
 
     if (!title) errorsToDisplay.push("addOffer.errors.titleRequired");
@@ -102,7 +102,6 @@ const EditOffer: React.FC = () => {
     if (validateForm()) {
       const paths = window.location.pathname.split("/");
       const offerId = paths[paths.length - 1];
-      const employerId = paths[paths.length - 3];
 
       const updatedOffer: Offer = {
         id: parseInt(offerId),
@@ -117,7 +116,7 @@ const EditOffer: React.FC = () => {
         offerStatus: status as OfferStatus,
       };
       editOffer(updatedOffer, parseInt(offerId));
-      navigate(`/`);
+      navigate(`/employer`);
     }
   };
 
@@ -129,7 +128,6 @@ const EditOffer: React.FC = () => {
         throw new Error(`Backend returned code ${response.status}, body: ${response.statusText}`);
       }
 
-      const responseData = response.data;
     } catch (error) {
       console.error("There was an error sending the data:", error);
     }
