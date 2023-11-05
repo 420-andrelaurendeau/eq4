@@ -31,41 +31,37 @@ export const getContractById = async (id: number): Promise<AxiosResponse> => {
     return http.get(`${MANAGER_PREFIX}/contracts/${id}`);
 }
 
-async function getStudentsByInternshipStatus(departmentId: number): Promise<StudentsByInternshipFoundStatus> {
+export async function getStudentsByInternshipStatusTest (departmentId: number): Promise<any> {
     try {
-        const response: AxiosResponse<StudentsByInternshipFoundStatus> = await http.get(`${MANAGER_PREFIX}/studentsByInternshipStatus/${departmentId}`);
-
-        const {
-            studentsWithInternship,
-            studentsWithAcceptedResponse,
-            studentsWithPendingResponse,
-            studentsWithRefusedResponse,
-            studentsWithoutApplications,
-        } = response.data;
+        const response: AxiosResponse<any> = await http.get(`${MANAGER_PREFIX}/studentsWithInternshipFoundStatus/${departmentId}`);
 
         return {
             studentsWithInternship: {
-                students: studentsWithInternship.students,
+                students: response.data.studentsWithInternship,
                 status: 'INTERN',
             },
             studentsWithAcceptedResponse: {
-                students: studentsWithAcceptedResponse.students,
+                students: response.data.studentsWithAcceptedResponse,
                 status: 'ACCEPTED',
             },
             studentsWithPendingResponse: {
-                students: studentsWithPendingResponse.students,
+                students: response.data.studentsWithPendingResponse,
                 status: 'PENDING',
             },
             studentsWithRefusedResponse: {
-                students: studentsWithRefusedResponse.students,
+                students: response.data.studentsWithRefusedResponse,
                 status: 'REFUSED',
             },
             studentsWithoutApplications: {
-                students: studentsWithoutApplications.students,
+                students: response.data.studentsWithoutApplications,
                 status: 'NO_APPLICATIONS',
             },
         };
     } catch (error) {
         throw error;
     }
+}
+
+export const getStudentsByInternshipStatus = async (departmentId: number): Promise<AxiosResponse<any>> => {
+    return http.get<any>(`${MANAGER_PREFIX}/studentsWithInternshipFoundStatus/${departmentId}`);
 }
