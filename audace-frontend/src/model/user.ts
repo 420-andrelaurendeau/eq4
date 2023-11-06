@@ -63,4 +63,5 @@ export interface StudentsByInternshipFoundStatus {
     studentsWithPendingResponse: StudentsWithPendingResponse;
     studentsWithRefusedResponse: StudentsWithRefusedResponse;
     studentsWithoutApplications: StudentsWithNoApplications;
+    [key: string]: StudentsWithInternship | StudentsWithAcceptedResponse | StudentsWithPendingResponse | StudentsWithRefusedResponse | StudentsWithNoApplications;
 }

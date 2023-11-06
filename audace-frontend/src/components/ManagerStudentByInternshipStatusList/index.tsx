@@ -6,8 +6,7 @@ import ManagerStudentByInternshipStatusRow from "./ManagerStudentByInternshipSta
 
 const ManagerStudentByInternshipStatusList = () => {
     const [studentsByInternshipStatus, setStudentsByInternshipStatus] = useState<StudentsByInternshipFoundStatus>();
-    const currentTypeOfStudent = "studentsWithPendingResponse";
-    const currentTypeOfStudentObject = studentsByInternshipStatus?.studentsWithPendingResponse;
+    const [selectedOption, setSelectedOption] = useState("studentsWithPendingResponse");
 
     useEffect(() => {
         getStudentsByInternshipStatus(1).then((res) => {
@@ -15,6 +14,14 @@ const ManagerStudentByInternshipStatusList = () => {
             console.log(studentsByInternshipStatus);
         });
     }, []);
+
+    const handleDropdownChange = (event: any) => {
+        setSelectedOption(event.target.value);
+    };
+
+    const currentTypeOfStudentObject = studentsByInternshipStatus
+        ? studentsByInternshipStatus[selectedOption]
+        : undefined;
 
 
     return (
@@ -34,7 +41,14 @@ const ManagerStudentByInternshipStatusList = () => {
             {/*    </Form>*/}
             {/*</div>*/}
 
-            {/*{filteredApplications.length > 0 ? (*/}
+            <select value={selectedOption} onChange={handleDropdownChange}>
+                <option value="studentsWithPendingResponse">Pending</option>
+                <option value="studentsWithAcceptedResponse">Accepted</option>
+                <option value="studentsWithRefusedResponse">Refused</option>
+                <option value="studentsWithoutApplications">No applications</option>
+            </select>
+
+            {currentTypeOfStudentObject!.students.length > 0 ? (
                 <div style={{ overflow: "auto", maxHeight: "18.5rem" }}>
                     <Table className="table-custom" striped bordered hover size="sm">
                         <thead className="table-custom">
@@ -46,18 +60,15 @@ const ManagerStudentByInternshipStatusList = () => {
                         </tr>
                         </thead>
                         <tbody className="table-custom">
-                        {/*{filteredApplications.map((application) => (*/}
-                        {/*    <ManagerApplicationRow key={application.id} application={application}/>*/}
-                        {/*))}*/}
                         {currentTypeOfStudentObject?.students.map((student) => (
                             <ManagerStudentByInternshipStatusRow key={student.id} student={student} status={currentTypeOfStudentObject?.status}/>
                         ))}
                         </tbody>
                     </Table>
                 </div>
-            {/* ) : (*/}
-            {/*     <p>No student</p>*/}
-            {/* )}*/}
+             ) : (
+                 <p>No student</p>
+             )}
         </>
     )
 }

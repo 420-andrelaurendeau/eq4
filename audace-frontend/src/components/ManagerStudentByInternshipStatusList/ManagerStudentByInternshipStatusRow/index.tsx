@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import {Student} from "../../../model/user";
 
 interface Props {
-    // application: Application;
     student: Student;
     status: string;
 }
