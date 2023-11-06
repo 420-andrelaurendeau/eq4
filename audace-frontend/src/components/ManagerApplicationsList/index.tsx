@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Table, Form } from "react-bootstrap";
+import {Table, Form, Row, Col} from "react-bootstrap";
 import Application from "../../model/application";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
@@ -33,9 +33,9 @@ const ManagerApplicationsList = ({ applications }: Props) => {
 
     return (
                 <>
-                    <div className={"row"} style={{ padding: "16px 0", display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
-                        <h3 className={"col"}>{t("applicationsList.acceptedListTitle")}</h3>
-                        <Form className={"col"}>
+                    <Row style={{ padding: "16px 0", display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
+                        <Col><h3>{t("applicationsList.acceptedListTitle")}</h3></Col>
+                        <Col><Form>
                             <Form.Group controlId="searchText" style={{ margin: 0 }}>
                                 <Form.Control
                                     type="text"
@@ -45,8 +45,8 @@ const ManagerApplicationsList = ({ applications }: Props) => {
                                     className="custom-search-input"
                                 />
                             </Form.Group>
-                        </Form>
-                    </div>
+                        </Form></Col>
+                    </Row>
 
                     {filteredApplications.length > 0 ? (
                         <div style={{ overflow: "auto", maxHeight: "18.5rem" }}>

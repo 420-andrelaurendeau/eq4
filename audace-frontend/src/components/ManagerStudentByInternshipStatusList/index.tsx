@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Student, StudentsByInternshipFoundStatus } from "../../model/user";
 import { getStudentsByInternshipStatus } from "../../services/managerService";
-import { Form, Table } from "react-bootstrap";
+import {Col, Form, Row, Table} from "react-bootstrap";
 import ManagerStudentByInternshipStatusRow from "./ManagerStudentByInternshipStatusRow";
 
 const ManagerStudentByInternshipStatusList = () => {
@@ -42,22 +42,34 @@ const ManagerStudentByInternshipStatusList = () => {
 
     return (
         <>
-            <select value={selectedOption} onChange={handleDropdownChange}>
-                <option value="studentsWithPendingResponse">Pending</option>
-                <option value="studentsWithAcceptedResponse">Accepted</option>
-                <option value="studentsWithRefusedResponse">Refused</option>
-                <option value="studentsWithoutApplications">No applications</option>
-            </select>
+            <Row style={{ paddingBottom: "10px" }}>
+            <Col>
+                <h3>Students By Internship Status</h3>
+            </Col>
+            <Col className="d-flex">
+                <Col style={{ flex: "1" }}>
+                    <select className="select-custom" value={selectedOption} onChange={handleDropdownChange}>
+                        <option value="studentsWithPendingResponse">Pending</option>
+                        <option value="studentsWithAcceptedResponse">Accepted</option>
+                        <option value="studentsWithRefusedResponse">Refused</option>
+                        <option value="studentsWithoutApplications">No applications</option>
+                    </select>
+                </Col>
+                <Col style={{ flex: "2" }}>
+                    <Form.Control
+                        className="custom-search-input"
+                        type="text"
+                        placeholder="Search by name, number, or department"
+                        value={searchText}
+                        onChange={(e) => {
+                            setSearchText(e.target.value);
+                            filterStudents(e.target.value, selectedOption);
+                        }}
+                    />
+                </Col>
+            </Col>
+        </Row>
 
-            <Form.Control
-                type="text"
-                placeholder="Search by name, number, or department"
-                value={searchText}
-                onChange={(e) => {
-                    setSearchText(e.target.value);
-                    filterStudents(e.target.value, selectedOption);
-                }}
-            />
 
             {filteredStudents.length > 0 ? (
                 <div style={{ overflow: "auto", maxHeight: "18.5rem" }}>
