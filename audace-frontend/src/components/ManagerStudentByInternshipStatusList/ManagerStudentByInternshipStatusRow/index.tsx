@@ -13,10 +13,10 @@ const ManagerStudentByInternshipStatusRow = ({student, status}: Props) => {
 
     return (
         <tr>
-            <td>a</td>
-            <td>b</td>
+            <td>{student.lastName}, {student.firstName}</td>
+            <td>{student.studentNumber}</td>
             <td>
-                c
+                {student.department!.name}
             </td>
             <td>
                 {status}
