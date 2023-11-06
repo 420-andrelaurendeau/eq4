@@ -70,6 +70,8 @@ it("should properly submit a form", async () => {
 
   const submitButton = screen.getByText(/signup.signup/i);
 
+  jest.clearAllMocks();
+
   fireEvent.click(submitButton);
 
   await waitFor(() => expect(mockedUseNavigate).toHaveBeenCalledTimes(1));

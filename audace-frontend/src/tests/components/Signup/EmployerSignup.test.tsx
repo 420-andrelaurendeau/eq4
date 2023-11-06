@@ -31,6 +31,10 @@ it("should display errors on faulty submit", async () => {
 });
 
 it("should properly submit a form", async () => {
+  const mockedUseNavigate = jest
+    .spyOn(require("react-router-dom"), "useNavigate")
+    .mockImplementation(() => () => {});
+
   jest
     .spyOn(require("../../../services/signupService"), "employerSignup")
     .mockImplementation(() =>
@@ -43,9 +47,17 @@ it("should properly submit a form", async () => {
   const positionInput = screen.getByLabelText(/signup.positionEntry/i);
   const emailInput = screen.getByLabelText(/signup.emailEntry/i);
 
+  const submitButton = screen.getByText(/signup.signup/i);
+
   fireEvent.change(organisationInput, { target: { value: "test" } });
   fireEvent.change(positionInput, { target: { value: "test" } });
   fireEvent.change(emailInput, { target: { value: "" } });
+
+  jest.clearAllMocks();
+
+  fireEvent.click(submitButton);
+
+  await waitFor(() => expect(mockedUseNavigate).toHaveBeenCalledTimes(1));
 });
 
 it("should display an error on submit failure", async () => {

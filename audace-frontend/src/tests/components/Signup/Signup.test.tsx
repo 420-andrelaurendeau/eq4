@@ -79,6 +79,10 @@ it("should display errors on faulty submit", async () => {
 });
 
 it("should properly submit a form", async () => {
+  const mockedUseNavigate = jest
+    .spyOn(require("react-router-dom"), "useNavigate")
+    .mockImplementation(() => () => {});
+
   render(
     <Signup
       handleSubmit={(user: User) => {
@@ -116,7 +120,11 @@ it("should properly submit a form", async () => {
   fireEvent.change(postalCodeInput, { target: { value: "h1h 1h1" } });
   fireEvent.change(phoneInput, { target: { value: "1234567890" } });
 
+  jest.clearAllMocks();
+
   fireEvent.click(submitButton);
+
+  await waitFor(() => expect(mockedUseNavigate).toHaveBeenCalledTimes(1));
 });
 
 it("should display unexpected error on failed submit request", async () => {
