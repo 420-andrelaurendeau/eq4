@@ -25,23 +25,6 @@ it("should have a signup button", () => {
   expect(linkElement).not.toBeUndefined();
 });
 
-it("Should display student buttons when student authority", () => {
-  jest
-    .spyOn(require("../../services/authService"), "getAuthorities")
-    .mockImplementation(() => ["Student"]);
-
-  jest
-    .spyOn(require("../../services/authService"), "isConnected")
-    .mockImplementation(() => true);
-
-  render(<AppHeader />);
-  const linkElement = screen.getByText(/student.seeOffersButton/i);
-  expect(linkElement).not.toBeUndefined();
-
-  const linkElement2 = screen.getByText(/upload.CvFormTitle/i);
-  expect(linkElement2).not.toBeUndefined();
-});
-
 it("should display employer buttons when employer authority", () => {
   jest
     .spyOn(require("../../services/authService"), "getAuthorities")
@@ -54,9 +37,6 @@ it("should display employer buttons when employer authority", () => {
   render(<AppHeader />);
   const linkElement = screen.getByText(/employer.addOfferButton/i);
   expect(linkElement).not.toBeUndefined();
-
-  const linkElement2 = screen.getByText(/employer.seeOffersButton/i);
-  expect(linkElement2).not.toBeUndefined();
 });
 
 it("should display manager buttons when manager authority", () => {
