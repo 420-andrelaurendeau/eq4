@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import SessionSelector from "../../components/SessionSelector";
-import { Session } from "../../model/session";
+import SessionSelector from "../../../components/SessionSelector";
+import { Session } from "../../../model/session";
 
 const sessions: Session[] = [
   {
@@ -17,7 +17,7 @@ const sessions: Session[] = [
 
 jest
   .spyOn(
-    require("../../contextsholders/providers/SessionContextHolder"),
+    require("../../../contextsholders/providers/SessionContextHolder"),
     "useSessionContext"
   )
   .mockImplementation(() => {
