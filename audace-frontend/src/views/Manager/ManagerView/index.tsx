@@ -9,7 +9,7 @@ import Application from "../../../model/application";
 import { getUserId } from "../../../services/authService";
 import { getContractsByDepartmentId } from "../../../services/applicationService";
 import { useTranslation } from "react-i18next";
-import {Department} from "../../../model/department";
+import { Department } from "../../../model/department";
 import ManagerStudentByInternshipStatusList from "../../../components/ManagerStudentByInternshipStatusList";
 
 interface Props {
@@ -65,7 +65,7 @@ const ManagerView = ({ isContractCreated }: Props) => {
       </Alert>
       <h1>{t("manager.title")}</h1>
       <ManagerApplicationsList applications={applications} />
-      <ManagerStudentByInternshipStatusList/>
+      <ManagerStudentByInternshipStatusList />
     </Container>
   );
 };
