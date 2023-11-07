@@ -1,14 +1,12 @@
 import { Offer, OfferStatus } from "../../model/offer";
 import { useTranslation } from "react-i18next";
 import OfferRow from "./OfferRow";
-import { UserType } from "../../model/user";
 import GenericTable from "../GenericTable";
 import { useSessionContext } from "../../contextsholders/providers/SessionContextHolder";
 
 interface Props {
   offers: Offer[];
   error: string;
-  userType: UserType;
   updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
   seeApplications?: (offer: Offer) => void;
 }
@@ -16,7 +14,6 @@ interface Props {
 const OffersList = ({
   offers,
   error,
-  userType,
   updateOffersState,
   seeApplications,
 }: Props) => {
@@ -38,7 +35,7 @@ const OffersList = ({
         <tbody>
           {offers.map((offer) => {
             return (
-              <OfferRow key={offer.id} offer={offer} userType={userType} updateOffersState={updateOffersState} seeApplications={seeApplications}/>
+              <OfferRow key={offer.id} offer={offer} updateOffersState={updateOffersState} seeApplications={seeApplications}/>
             );
           })}
         </tbody>

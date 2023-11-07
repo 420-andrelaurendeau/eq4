@@ -1,5 +1,5 @@
 import { Offer, OfferStatus } from "../../../../model/offer";
-import { Employer, UserType } from "../../../../model/user";
+import { Employer } from "../../../../model/user";
 import { Col, Modal, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { formatDate } from "../../../../services/formatService";
@@ -10,7 +10,6 @@ interface Props {
   offer: Offer;
   show: boolean;
   handleClose: () => void;
-  userType: UserType;
   employer: Employer;
   updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
   disabled: boolean;
@@ -21,7 +20,6 @@ const OfferModal = ({
   offer,
   show,
   handleClose,
-  userType,
   employer,
   updateOffersState,
   disabled,
@@ -76,7 +74,6 @@ const OfferModal = ({
         {chosenSession?.id === currentSession?.id && (
           <Modal.Footer>
             <OfferButtons
-              userType={userType}
               disabled={disabled}
               offer={offer}
               updateOffersState={updateOffersState}

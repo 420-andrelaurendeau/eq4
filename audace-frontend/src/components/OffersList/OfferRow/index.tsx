@@ -3,7 +3,6 @@ import { Offer, OfferStatus } from "../../../model/offer";
 import OfferModal from "./OfferModal";
 import "./styles.css";
 import { formatDate } from "../../../services/formatService";
-import { UserType } from "../../../model/user";
 import OfferButtons from "./OfferButtons";
 
 import { Col } from "react-bootstrap";
@@ -12,14 +11,12 @@ import { useSessionContext } from "../../../contextsholders/providers/SessionCon
 
 interface Props {
   offer: Offer;
-  userType: UserType;
   updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
   seeApplications?: (offer: Offer) => void;
 }
 
 const OfferRow = ({
   offer,
-  userType,
   updateOffersState,
   seeApplications,
 }: Props) => {
@@ -57,7 +54,6 @@ const OfferRow = ({
           <td>
             <div className="d-flex justify-content-center">
               <OfferButtons
-                userType={userType}
                 disabled={disabled}
                 offer={offer}
                 updateOffersState={updateOffersState}
@@ -73,7 +69,6 @@ const OfferRow = ({
           offer={offer}
           show={show}
           handleClose={handleClose}
-          userType={userType}
           employer={offer.employer}
           updateOffersState={updateOffersState}
           disabled={disabled}

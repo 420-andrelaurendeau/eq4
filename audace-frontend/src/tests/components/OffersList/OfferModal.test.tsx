@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import OfferModal from "../../../components/OffersList/OfferRow/OfferModal";
 import { Offer, OfferStatus } from "../../../model/offer";
-import { Employer, UserType } from "../../../model/user";
+import { Employer } from "../../../model/user";
 import "@testing-library/jest-dom/extend-expect";
 
 const employer: Employer = {
@@ -41,7 +41,6 @@ it("is visible when props is true", () => {
       show={true}
       offer={offer}
       handleClose={() => {}}
-      userType={UserType.Employer}
       disabled={false}
       employer={employer}
     />
