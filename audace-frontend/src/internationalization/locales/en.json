@@ -229,5 +229,23 @@
   "pageNotFound": "Error 404: Page Not Found",
   "sessionSelector": {
     "filterPlaceholder": "Filter by date"
+  },
+  "studentsByInternship": {
+    "title": "Students by Internship Status",
+    "noStudents": "No students found",
+    "row": {
+      "name": "Name",
+      "department": "Department",
+      "status": "Status",
+      "studentNumber": "Student Number",
+      "searchBarPlaceholder": "Search by Name, Student Number or Department...",
+      "statusValues": {
+        "ACCEPTED": "Accepted",
+        "REFUSED": "Refused",
+        "PENDING": "Pending",
+        "NO_APPLICATIONS": "No applications",
+        "INTERN": "Intern"
+      }
+    }
   }
 }

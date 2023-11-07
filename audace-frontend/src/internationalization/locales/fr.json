@@ -230,5 +230,23 @@
   "pageNotFound": "Erreur 404 : Page non trouvée",
   "sessionSelector": {
     "filterPlaceholder": "Filtrer par date"
+  },
+  "studentsByInternship": {
+    "title": "Étudiants par Statut de Stage",
+    "noStudents": "Aucun étudiant trouvé",
+    "row": {
+      "name": "Nom",
+      "department": "Département",
+      "status": "Statut",
+      "studentNumber": "Matricule",
+      "searchBarPlaceholder": "Rechercher par Nom, Matricule ou Département...",
+      "statusValues": {
+        "ACCEPTED": "Accepté",
+        "REFUSED": "Refusé",
+        "PENDING": "En Attente",
+        "NO_APPLICATIONS": "Aucune application",
+        "INTERN": "Stagiaire"
+      }
+    }
   }
 }
