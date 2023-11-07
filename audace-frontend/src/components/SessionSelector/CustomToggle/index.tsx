@@ -1,12 +1,11 @@
-import { ReactNode, forwardRef } from "react";
+import { PropsWithChildren, forwardRef } from "react";
 import { Button } from "react-bootstrap";
 
 interface Props {
-  children: ReactNode[];
   onClick: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
-const CustomToggle = forwardRef<HTMLButtonElement, Props>(
+const CustomToggle = forwardRef<HTMLButtonElement, PropsWithChildren<Props>>(
   ({ children, onClick }, ref) => {
     return (
       <Button
