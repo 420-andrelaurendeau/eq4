@@ -3,7 +3,7 @@ import { Offer, OfferStatus } from "../../../model/offer";
 import OfferModal from "./OfferModal";
 import "./styles.css";
 import { formatDate } from "../../../services/formatService";
-import { Employer, UserType } from "../../../model/user";
+import { UserType } from "../../../model/user";
 import OfferButtons from "./OfferButtons";
 
 import { Col } from "react-bootstrap";
@@ -24,7 +24,6 @@ const OfferRow = ({
   seeApplications,
 }: Props) => {
   const [show, setShow] = useState<boolean>(false);
-  const [employer, setEmployer] = useState<Employer>(offer.employer);
   const { t } = useTranslation();
   const { currentSession, chosenSession } = useSessionContext();
   const [disabled, setDisabled] = useState<boolean>(true);
@@ -46,7 +45,9 @@ const OfferRow = ({
         <td>
           <Col className="h5">{offer.title}</Col>
           <Col className="text-muted small mt-2">
-            <u className="hovered" onClick={handleClick}>{t("offersList.viewMore")}</u>
+            <u className="hovered" onClick={handleClick}>
+              {t("offersList.viewMore")}
+            </u>
           </Col>
         </td>
         <td>{formatDate(offer.internshipStartDate)}</td>
@@ -73,8 +74,7 @@ const OfferRow = ({
           show={show}
           handleClose={handleClose}
           userType={userType}
-          employer={employer}
-          setEmployer={setEmployer}
+          employer={offer.employer}
           updateOffersState={updateOffersState}
           disabled={disabled}
           hideRow={hideRow}
