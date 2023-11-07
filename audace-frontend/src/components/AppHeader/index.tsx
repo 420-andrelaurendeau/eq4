@@ -10,10 +10,6 @@ function AppHeader() {
   const { t } = useTranslation();
   const authority = getAuthorities()?.[0]?.toString().toLowerCase();
 
-  const handleClick = (path: string) => {
-    navigate(path);
-  };
-
   return (
     <Navbar bg="light" sticky="top" className="px-3 shadow-sm" expand="md">
       <Navbar.Brand href="/">Audace</Navbar.Brand>
@@ -22,7 +18,7 @@ function AppHeader() {
         {authority === "employer" && (
           <Nav>
             <Button
-              onClick={() => handleClick(authority + "/offers/new")}
+              onClick={() => navigate(authority + "/offers/new")}
               variant="light"
               className="me-2"
             >
@@ -34,7 +30,7 @@ function AppHeader() {
         {authority === "manager" && (
           <Nav>
             <Button
-              onClick={() => handleClick(authority + "/offers")}
+              onClick={() => navigate(authority + "/offers")}
               variant="light"
               className="me-2"
             >
@@ -49,14 +45,14 @@ function AppHeader() {
           <>
             <ButtonGroup>
               <Button
-                onClick={() => handleClick("/signup/employer")}
+                onClick={() => navigate("/signup/employer")}
                 variant="outline-success"
                 className="me-2"
               >
                 {t("signup.signup")}
               </Button>
               <Button
-                onClick={() => handleClick("/login")}
+                onClick={() => navigate("/login")}
                 variant="outline-primary"
                 className="me-2"
               >

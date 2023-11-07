@@ -1,64 +1,146 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import AppHeader from "../../components/AppHeader";
 
-it("should say Audace in the header", () => {
-  render(<AppHeader />);
-  const linkElement = screen.getByText(/Audace/i);
-  expect(linkElement).not.toBeUndefined();
+const mockedUseNavigate = jest.fn(() => {});
+
+describe("employer authority", () => {
+  beforeEach(() => {
+    jest
+      .spyOn(require("../../services/authService"), "getAuthorities")
+      .mockImplementation(() => ["Employer"]);
+
+    jest
+      .spyOn(require("../../services/authService"), "isConnected")
+      .mockImplementation(() => true);
+
+    jest
+      .spyOn(require("react-router-dom"), "useNavigate")
+      .mockImplementation(() => mockedUseNavigate);
+  });
+
+  it("should display buttons", () => {
+    render(<AppHeader />);
+    const linkElement = screen.getByText(/employer.addOfferButton/i);
+    expect(linkElement).not.toBeUndefined();
+  });
+
+  it("should redirect to proper page on offer button click", async () => {
+    render(<AppHeader />);
+    const linkElement = screen.getByText(/employer.addOfferButton/i);
+    expect(linkElement).not.toBeUndefined();
+
+    fireEvent.click(linkElement);
+
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith("employer/offers/new");
+    });
+  });
 });
 
-it("should have an I18N button", () => {
-  render(<AppHeader />);
-  const linkElement = screen.getByText(/langcode/i);
-  expect(linkElement).not.toBeUndefined();
+describe("manager authority", () => {
+  beforeEach(() => {
+    jest
+      .spyOn(require("../../services/authService"), "getAuthorities")
+      .mockImplementation(() => ["Manager"]);
+
+    jest
+      .spyOn(require("../../services/authService"), "isConnected")
+      .mockImplementation(() => true);
+
+    jest
+      .spyOn(require("react-router-dom"), "useNavigate")
+      .mockImplementation(() => mockedUseNavigate);
+  });
+
+  it("should display buttons", () => {
+    render(<AppHeader />);
+    const linkElement = screen.getByText(/manager.seeOffersButton/i);
+    expect(linkElement).not.toBeUndefined();
+  });
+
+  it("should redirect to proper page on offer button click", async () => {
+    render(<AppHeader />);
+    const linkElement = screen.getByText(/manager.seeOffersButton/i);
+    expect(linkElement).not.toBeUndefined();
+
+    fireEvent.click(linkElement);
+
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith("manager/offers");
+    });
+  });
 });
 
-it("should have a login button", () => {
-  render(<AppHeader />);
-  const linkElement = screen.getByText(/signin/i);
-  expect(linkElement).not.toBeUndefined();
+describe("unconnected user", () => {
+  beforeEach(() => {
+    jest
+      .spyOn(require("../../services/authService"), "isConnected")
+      .mockImplementation(() => false);
+
+    jest
+      .spyOn(require("react-router-dom"), "useNavigate")
+      .mockImplementation(() => mockedUseNavigate);
+  });
+
+  it("should display proper buttons", () => {
+    render(<AppHeader />);
+    const employerSignupButton = screen.getByText(/signup.signup/i);
+    expect(employerSignupButton).not.toBeUndefined();
+
+    const signinButton = screen.getByText(/signin/i);
+    expect(signinButton).not.toBeUndefined();
+  });
+
+  it("should redirect to proper page on signup button click", async () => {
+    render(<AppHeader />);
+    const employerSignupButton = screen.getByText(/signup.signup/i);
+    expect(employerSignupButton).not.toBeUndefined();
+
+    fireEvent.click(employerSignupButton);
+
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith("/signup/employer");
+    });
+  });
+
+  it("should redirect to proper page on signin button click", async () => {
+    render(<AppHeader />);
+    const signinButton = screen.getByText(/signin/i);
+    expect(signinButton).not.toBeUndefined();
+
+    fireEvent.click(signinButton);
+
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith("/login");
+    });
+  });
 });
 
-it("should have a signup button", () => {
-  render(<AppHeader />);
-  const linkElement = screen.getByText(/signup.signup/i);
-  expect(linkElement).not.toBeUndefined();
-});
+describe("connected user", () => {
+  beforeEach(() => {
+    jest
+      .spyOn(require("../../services/authService"), "isConnected")
+      .mockImplementation(() => true);
 
-it("should display employer buttons when employer authority", () => {
-  jest
-    .spyOn(require("../../services/authService"), "getAuthorities")
-    .mockImplementation(() => ["Employer"]);
+    jest
+      .spyOn(require("react-router-dom"), "useNavigate")
+      .mockImplementation(() => mockedUseNavigate);
+  });
 
-  jest
-    .spyOn(require("../../services/authService"), "isConnected")
-    .mockImplementation(() => true);
+  it("should display proper buttons", () => {
+    render(<AppHeader />);
+    const linkElement = screen.getByText(/logout/i);
+    expect(linkElement).not.toBeUndefined();
+  });
 
-  render(<AppHeader />);
-  const linkElement = screen.getByText(/employer.addOfferButton/i);
-  expect(linkElement).not.toBeUndefined();
-});
+  it("should redirect to proper page on logout button click", async () => {
+    render(<AppHeader />);
 
-it("should display manager buttons when manager authority", () => {
-  jest
-    .spyOn(require("../../services/authService"), "getAuthorities")
-    .mockImplementation(() => ["Manager"]);
+    const linkElement = screen.getByText(/logout/i);
+    fireEvent.click(linkElement);
 
-  jest
-    .spyOn(require("../../services/authService"), "isConnected")
-    .mockImplementation(() => true);
-
-  render(<AppHeader />);
-  const linkElement = screen.getByText(/manager.seeOffersButton/i);
-  expect(linkElement).not.toBeUndefined();
-});
-
-it("should display proper buttons when connected", () => {
-  jest
-    .spyOn(require("../../services/authService"), "isConnected")
-    .mockImplementation(() => true);
-
-  render(<AppHeader />);
-  const linkElement = screen.getByText(/logout/i);
-  expect(linkElement).not.toBeUndefined();
+    await waitFor(() => {
+      expect(mockedUseNavigate).toHaveBeenCalledWith("/login");
+    });
+  });
 });
