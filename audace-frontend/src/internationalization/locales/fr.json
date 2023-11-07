@@ -231,6 +231,10 @@
   "logout": "Déconnexion",
   "pageNotFound": "Erreur 404 : Page non trouvée",
   "sessionSelector": {
-    "filterPlaceholder": "Filtrer par date"
+    "filterPlaceholder": "Filtrer par la date",
+    "selectSession": "Choisir une session",
+    "fall": "Automne",
+    "winter": "Hiver",
+    "summer": "Été"
   }
 }
