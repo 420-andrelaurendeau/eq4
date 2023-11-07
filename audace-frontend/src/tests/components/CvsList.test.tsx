@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { CVStatus } from "../../model/cv";
 import CVsList from "../../components/CVsList";
+import { UserType } from "../../model/user";
 
 jest.mock("../../components/PDFViewer", () => ({
   return: {
@@ -40,6 +41,10 @@ it("should render the list of cvs", () => {
   expect(linkElement).not.toBeUndefined();
 });
 it("should have the accept and refuse buttons as manager", () => {
+  jest
+    .spyOn(require("../../services/authService"), "getUserType")
+    .mockImplementation(() => UserType.Manager);
+
   render(<CVsList cvs={cvs} error={""} />);
   const acceptButton = screen.getByText(/Accept/i);
   const refuseButton = screen.getByText(/Refuse/i);
