@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react";
-import { UserType } from "../../model/user";
 import { CVStatus } from "../../model/cv";
 import CVsList from "../../components/CVsList";
 
@@ -36,12 +35,12 @@ const cvs = [
 ];
 
 it("should render the list of cvs", () => {
-  render(<CVsList cvs={cvs} error={""} userType={UserType.Manager} />);
+  render(<CVsList cvs={cvs} error={""} />);
   const linkElement = screen.getByText(/Cv1/i);
   expect(linkElement).not.toBeUndefined();
 });
 it("should have the accept and refuse buttons as manager", () => {
-  render(<CVsList cvs={cvs} error={""} userType={UserType.Manager} />);
+  render(<CVsList cvs={cvs} error={""} />);
   const acceptButton = screen.getByText(/Accept/i);
   const refuseButton = screen.getByText(/Refuse/i);
   expect(acceptButton).not.toBeUndefined();
