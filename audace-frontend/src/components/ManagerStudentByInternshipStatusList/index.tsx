@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Student, StudentsByInternshipFoundStatus } from "../../model/user";
-import { getStudentsByInternshipStatus } from "../../services/managerService";
+import {getDepartmentByManager, getStudentsByInternshipStatus} from "../../services/managerService";
 import { Col, Form, Row, Table } from "react-bootstrap";
 import ManagerStudentByInternshipStatusRow from "./ManagerStudentByInternshipStatusRow";
 import { useTranslation } from "react-i18next";
+import {getUserId} from "../../services/authService";
 
 const ManagerStudentByInternshipStatusList = () => {
     const [studentsByInternshipStatus, setStudentsByInternshipStatus] = useState<
@@ -13,13 +14,25 @@ const ManagerStudentByInternshipStatusList = () => {
     const [selectedOption, setSelectedOption] = useState("studentsWithPendingResponse");
     const [searchText, setSearchText] = useState("");
     const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
+    const managerId = parseInt(getUserId()!);
 
     useEffect(() => {
-        getStudentsByInternshipStatus(1).then((res) => {
-            setStudentsByInternshipStatus(res);
-            filterStudents(searchText, selectedOption);
-        });
-    }, [searchText, selectedOption]);
+        const fetchData = async () => {
+            try {
+                const departmentResponse = await getDepartmentByManager(managerId);
+
+                const studentsResponse = await getStudentsByInternshipStatus(departmentResponse.data.id!);
+                setStudentsByInternshipStatus(studentsResponse);
+
+                filterStudents(searchText, selectedOption);
+            } catch (error) {
+                console.error("StudentsByInternship retrieval failed : " + error);
+            }
+        };
+
+        fetchData();
+    }, [searchText, selectedOption, studentsByInternshipStatus]);
+
 
     const handleDropdownChange = (event: any) => {
         setSelectedOption(event.target.value);
