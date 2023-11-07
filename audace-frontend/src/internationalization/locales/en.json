@@ -233,12 +233,12 @@
   "studentsByInternship": {
     "title": "Students by Internship Status",
     "noStudents": "No students found",
+    "searchBarPlaceholder": "Search by Name, Student Number or Department...",
     "row": {
-      "name": "Name",
-      "department": "Department",
-      "status": "Status",
-      "studentNumber": "Student Number",
-      "searchBarPlaceholder": "Search by Name, Student Number or Department...",
+      "nameTh": "Name",
+      "departmentTh": "Department",
+      "statusTh": "Status",
+      "studentNumberTh": "Student Number",
       "statusValues": {
         "ACCEPTED": "Accepted",
         "REFUSED": "Refused",

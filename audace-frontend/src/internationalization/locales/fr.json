@@ -234,12 +234,12 @@
   "studentsByInternship": {
     "title": "Étudiants par Statut de Stage",
     "noStudents": "Aucun étudiant trouvé",
+    "searchBarPlaceholder": "Rechercher par Nom, Matricule ou Département...",
     "row": {
-      "name": "Nom",
-      "department": "Département",
-      "status": "Statut",
-      "studentNumber": "Matricule",
-      "searchBarPlaceholder": "Rechercher par Nom, Matricule ou Département...",
+      "nameTh": "Nom",
+      "departmentTh": "Département",
+      "statusTh": "Statut",
+      "studentNumberTh": "Matricule",
       "statusValues": {
         "ACCEPTED": "Accepté",
         "REFUSED": "Refusé",
