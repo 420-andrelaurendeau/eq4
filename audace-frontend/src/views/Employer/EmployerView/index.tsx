@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Offer } from "../../../model/offer";
-import { Employer, UserType } from "../../../model/user";
+import { Employer } from "../../../model/user";
 import { useNavigate } from "react-router";
 import { getUserId } from "../../../services/authService";
 import { getEmployerById } from "../../../services/userService";
@@ -77,7 +77,6 @@ const EmployerView = () => {
       {offerApplication !== undefined && (
         <Applications
           offer={offerApplication}
-          userType={UserType.Employer}
           updateAvailablePlaces={updateAvailablePlaces}
         />
       )}

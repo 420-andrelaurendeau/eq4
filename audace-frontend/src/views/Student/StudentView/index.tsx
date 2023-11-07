@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Container } from "react-bootstrap";
 import { getStudentById } from "../../../services/userService";
 import { useTranslation } from "react-i18next";
-import { Student, UserType } from "../../../model/user";
+import { Student } from "../../../model/user";
 import { Offer } from "../../../model/offer";
 import { getStudentOffersByDepartment } from "../../../services/offerService";
 import OffersList from "../../../components/OffersList";
@@ -115,11 +115,7 @@ const StudentView = ({
       )}
       <CVsList cvs={cvs} error={cvsError} />
       {viewUpload && <FileUploader student={student!} />}
-      <ApplicationsList
-        applications={applications}
-        error={applicationsError}
-        userType={UserType.Student}
-      />
+      <ApplicationsList applications={applications} error={applicationsError} />
     </Container>
   );
 };
