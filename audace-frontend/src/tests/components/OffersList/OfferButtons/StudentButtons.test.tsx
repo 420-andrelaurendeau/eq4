@@ -1,36 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import StudentButtons from "../../../../components/OffersList/OfferRow/OfferButtons/StudentButtons";
-import { Offer, OfferStatus } from "../../../../model/offer";
 import "@testing-library/jest-dom/extend-expect";
-
-const offer: Offer = {
-  id: 1,
-  title: "title",
-  description: "description",
-  internshipStartDate: new Date(),
-  internshipEndDate: new Date(),
-  offerEndDate: new Date(),
-  availablePlaces: 1,
-  department: {
-    id: 1,
-    code: "code",
-    name: "name",
-  },
-  employer: {
-    id: 1,
-    firstName: "firstName",
-    lastName: "lastName",
-    email: "email",
-    phone: "phone",
-    address: "address",
-    password: "password",
-    type: "employer",
-    organisation: "organisation",
-    position: "position",
-    extension: "extension",
-  },
-  offerStatus: OfferStatus.PENDING,
-};
+import { offer } from "../OffersListTestUtils";
 
 it("should render apply button", () => {
   render(<StudentButtons disabled={false} offer={offer} />);
