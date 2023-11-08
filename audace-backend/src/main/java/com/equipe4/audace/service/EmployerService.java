@@ -7,6 +7,7 @@ import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.department.Department;
+import com.equipe4.audace.model.notification.Notification;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.session.OfferSession;
 import com.equipe4.audace.model.session.Session;
@@ -16,6 +17,7 @@ import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.OfferSessionRepository;
+import com.equipe4.audace.utils.NotificationManipulator;
 import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -33,6 +35,7 @@ public class EmployerService extends GenericUserService<Employer> {
     private final OfferSessionRepository offerSessionRepository;
     private final SessionManipulator sessionManipulator;
     private final DepartmentRepository departmentRepository;
+    private final NotificationManipulator notificationManipulator;
 
     public EmployerService(
             SaltRepository saltRepository,
@@ -41,7 +44,8 @@ public class EmployerService extends GenericUserService<Employer> {
             OfferSessionRepository offerSessionRepository,
             SessionManipulator sessionManipulator,
             ApplicationRepository applicationRepository,
-            DepartmentRepository departmentRepository
+            DepartmentRepository departmentRepository,
+            NotificationManipulator notificationManipulator
     ) {
         super(saltRepository);
         this.employerRepository = employerRepository;
@@ -50,6 +54,7 @@ public class EmployerService extends GenericUserService<Employer> {
         this.sessionManipulator = sessionManipulator;
         this.applicationRepository = applicationRepository;
         this.departmentRepository = departmentRepository;
+        this.notificationManipulator = notificationManipulator;
     }
 
     @Transactional
@@ -85,6 +90,8 @@ public class EmployerService extends GenericUserService<Employer> {
 
         offerSessionRepository.save(new OfferSession(null, offer, session));
 
+        notificationManipulator.makeNotificationOfferToAllManagers(offer, Notification.NotificationCause.CREATED);
+
         return Optional.of(offer.toDTO());
     }
 
@@ -114,7 +121,9 @@ public class EmployerService extends GenericUserService<Employer> {
         Offer offer = offerRepository.findById(offerDTO.getId()).orElseThrow(() -> new NoSuchElementException("Offer not found"));
         if (!sessionManipulator.isOfferInCurrentSession(offer)) throw new IllegalStateException("Offer is not in current session");
         offer = offerDTO.fromDTO();
-        return Optional.of(offerRepository.save(offer).toDTO());
+        Offer returnedOffer = offerRepository.save(offer);
+        notificationManipulator.makeNotificationOfferToAllManagers(returnedOffer, Notification.NotificationCause.UPDATED);
+        return Optional.of(returnedOffer.toDTO());
     }
 
     @Transactional
@@ -164,8 +173,9 @@ public class EmployerService extends GenericUserService<Employer> {
 
         }
         application.setApplicationStatus(applicationStatus);
-        applicationRepository.save(application);
-        return Optional.of(application.toDTO());
+        Application returnedApplication = applicationRepository.save(application);
+        notificationManipulator.makeNotificationApplicationToStudent(returnedApplication, Notification.NotificationCause.UPDATED);
+        return Optional.of(returnedApplication.toDTO());
     }
 
     public List<DepartmentDTO> getAllDepartments() {

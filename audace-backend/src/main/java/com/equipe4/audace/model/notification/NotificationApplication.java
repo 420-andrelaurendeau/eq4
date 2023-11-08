@@ -6,8 +6,8 @@ import com.equipe4.audace.model.application.Application;
 import jakarta.persistence.ManyToOne;
 
 public class NotificationApplication extends Notification {
-    public NotificationApplication(Long id, User user, Application content) {
-        super(id, user);
+    public NotificationApplication(Long id, User user, NotificationCause cause, Application content) {
+        super(id, user, cause);
         this.content = content;
     }
     @ManyToOne

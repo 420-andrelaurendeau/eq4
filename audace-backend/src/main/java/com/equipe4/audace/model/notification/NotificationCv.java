@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 public class NotificationCv extends Notification {
-    public NotificationCv(Long id, User user, Cv content) {
-        super(id, user);
+    public NotificationCv(Long id, User user, NotificationCause cause, Cv content) {
+        super(id, user, cause);
         this.content = content;
     }
     @ManyToOne
@@ -21,6 +21,7 @@ public class NotificationCv extends Notification {
         return new NotificationCvDTO(
                 id,
                 user.toDTO(),
+                cause,
                 content.toDTO()
         );
     }

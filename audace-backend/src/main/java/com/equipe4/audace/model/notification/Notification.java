@@ -29,6 +29,14 @@ public abstract class Notification {
     @ManyToOne
     @JoinColumn(name = "user_id")
     protected User user;
+    protected NotificationCause cause;
 
     public abstract NotificationDTO toDTO();
+
+    public enum NotificationCause {
+        CREATED,
+        UPDATED,
+        DELETED,
+        EXPIRED
+    }
 }

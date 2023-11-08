@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 public class NotificationOffer extends Notification {
-    public NotificationOffer(Long id, User user, Offer content) {
-        super(id, user);
+    public NotificationOffer(Long id, User user, NotificationCause cause, Offer content) {
+        super(id, user, cause);
         this.content = content;
     }
     @ManyToOne
@@ -21,6 +21,7 @@ public class NotificationOffer extends Notification {
         return new NotificationOfferDTO(
                 id,
                 user.toDTO(),
+                cause,
                 content.toDTO()
         );
     }

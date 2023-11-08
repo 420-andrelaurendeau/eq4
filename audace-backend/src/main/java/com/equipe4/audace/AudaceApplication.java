@@ -8,6 +8,7 @@ import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
+import com.equipe4.audace.model.notification.Notification;
 import com.equipe4.audace.model.notification.NotificationCv;
 import com.equipe4.audace.model.notification.NotificationOffer;
 import com.equipe4.audace.model.offer.Offer;
@@ -126,7 +127,7 @@ public class AudaceApplication implements CommandLineRunner {
 		manager.setPassword(BCrypt.hashpw(managerPassword, managerSalt));
 		manager = managerRepository.save(manager);
 		saltRepository.save(new Salt(null, manager, managerSalt));
-		notificationRepository.save(new NotificationOffer(null, student2, offer1));
-		notificationRepository.save(new NotificationCv(null, student2, cv1));
+		notificationRepository.save(new NotificationOffer(null, student2, Notification.NotificationCause.CREATED, offer1));
+		notificationRepository.save(new NotificationCv(null, student2, Notification.NotificationCause.CREATED, cv1));
 	}
 }
