@@ -2,11 +2,11 @@ import { Accordion, Card, Placeholder } from "react-bootstrap";
 import { Employer, Student } from "../../model/user";
 import { useTranslation } from "react-i18next";
 
-interface CompanyInfoCardViewProps {
+interface CompanyInfoCardProps {
   employer: Employer;
 }
 
-const CompanyInfoCardView = ({ employer }: CompanyInfoCardViewProps) => {
+const CompanyInfoCard = ({ employer }: CompanyInfoCardProps) => {
   const { t } = useTranslation();
   return (
     <Accordion defaultActiveKey={['0']} alwaysOpen className="shadow-sm">
@@ -46,11 +46,11 @@ const CompanyInfoCardView = ({ employer }: CompanyInfoCardViewProps) => {
   );
 }
 
-interface StudentInfoCardViewProps {
+interface StudentInfoCardProps {
   student: Student;
 }
 
-const StudentInfoCardView = ({ student }: StudentInfoCardViewProps) => {
+const StudentInfoCard = ({ student }: StudentInfoCardProps) => {
   const { t } = useTranslation();
   return (
     <Accordion defaultActiveKey={['0']} alwaysOpen className="shadow-sm">
@@ -87,21 +87,21 @@ const StudentInfoCardView = ({ student }: StudentInfoCardViewProps) => {
   );
 }
 
-interface InfoCardViewProps {
+interface InfoCardProps {
   employer?: Employer;
   student?: Student;
 }
 
-const InfoCardView = ({ employer, student }: InfoCardViewProps) => {
+const InfoCard = ({ employer, student }: InfoCardProps) => {
   return (
     <>
       {employer ? (
-        <CompanyInfoCardView employer={employer as Employer} />
+        <CompanyInfoCard employer={employer as Employer} />
       ) : (
-        <StudentInfoCardView student={student as Student} />
+        <StudentInfoCard student={student as Student} />
       )}
     </>
   );
 }
 
-export default InfoCardView;
+export default InfoCard;
