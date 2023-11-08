@@ -15,7 +15,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class NotificationManipulatorTest {
@@ -39,5 +39,7 @@ public class NotificationManipulatorTest {
         when(notificationRepository.save(any())).thenReturn(null);
 
         notificationManipulator.makeNotificationOfferToAllStudents(null, null);
+
+        verify(notificationRepository, times(2)).save(any());
     }
 }
