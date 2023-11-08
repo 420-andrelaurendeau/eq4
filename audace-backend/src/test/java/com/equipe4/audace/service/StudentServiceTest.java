@@ -206,6 +206,7 @@ public class StudentServiceTest {
 
         verify(cvRepository, times(1)).save(any());
         assertThat(result).isEqualTo(expected);
+        verify(notificationManipulator, times(1)).makeNotificationCvToAllManagersByDepartment(any(), any());
     }
 
     @Test
@@ -300,6 +301,7 @@ public class StudentServiceTest {
 
         assertThat(dto).isEqualTo(applicationDTO);
         verify(applicationRepository, times(1)).save(application);
+        verify(notificationManipulator, times(1)).makeNotificationApplicationToOfferEmployer(any(), any());
     }
 
     @Test

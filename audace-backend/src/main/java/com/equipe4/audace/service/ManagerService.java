@@ -67,7 +67,7 @@ public class ManagerService extends GenericUserService<Manager> {
     @Transactional
     public Optional<OfferDTO> acceptOffer(Long managerId, Long offerId) {
         Optional<OfferDTO> returnedOffer = setOfferStatus(managerId, offerId, OfferStatus.ACCEPTED);
-        notificationManipulator.makeNotificationOfferToAllStudents(returnedOffer.orElseThrow().fromDTO(), Notification.NotificationCause.UPDATED);
+        notificationManipulator.makeNotificationOfferToAllStudents(returnedOffer.orElseThrow().fromDTO(), Notification.NotificationCause.CREATED);
         return returnedOffer;
     }
 

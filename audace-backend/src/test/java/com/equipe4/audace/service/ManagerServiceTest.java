@@ -13,6 +13,7 @@ import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
+import com.equipe4.audace.model.notification.Notification;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.ManagerRepository;
@@ -94,6 +95,9 @@ public class ManagerServiceTest {
 
         managerService.acceptOffer(1L, 1L);
 
+        verify(notificationManipulator, times(1)).makeNotificationOfferToAllStudents(any(), any());
+        verify(notificationManipulator, times(1)).makeNotificationOfferToOfferEmployer(any(), any());
+
         assert(offer1.getOfferStatus() == Offer.OfferStatus.ACCEPTED);
     }
 
@@ -168,6 +172,8 @@ public class ManagerServiceTest {
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
         managerService.refuseOffer(1L, 1L);
+
+        verify(notificationManipulator, times(1)).makeNotificationOfferToOfferEmployer(offer1, Notification.NotificationCause.UPDATED);
 
         assert(offer1.getOfferStatus() == Offer.OfferStatus.REFUSED);
     }
@@ -353,6 +359,7 @@ public class ManagerServiceTest {
         else {
             assert(false);
         }
+        verify(notificationManipulator, times(1)).makeNotificationCvToCvStudent(any(), any());
     }
 
     @Test
@@ -392,6 +399,7 @@ public class ManagerServiceTest {
         else {
             assert(false);
         }
+        verify(notificationManipulator, times(1)).makeNotificationCvToCvStudent(any(), any());
     }
     @Test
     public void refuseCv_Invalid_Id() {

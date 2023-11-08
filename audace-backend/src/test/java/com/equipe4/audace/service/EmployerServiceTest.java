@@ -8,6 +8,7 @@ import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
+import com.equipe4.audace.model.notification.Notification;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.security.Salt;
 import com.equipe4.audace.model.session.OfferSession;
@@ -151,6 +152,7 @@ public class EmployerServiceTest {
 
         assertThat(dto.equals(offer.toDTO()));
         verify(offerRepository, times(1)).save(any(Offer.class));
+        verify(notificationManipulator, times(1)).makeNotificationOfferToAllManagers(any(Offer.class), any(Notification.NotificationCause.class));
     }
 
     @Test
@@ -242,6 +244,7 @@ public class EmployerServiceTest {
         verify(offerRepository).findById(offer.getId());
         assertThat(originalOffer.getAvailablePlaces()).isEqualTo(3);
         assertThat(updatedOffer.getAvailablePlaces()).isEqualTo(2);
+        verify(notificationManipulator, times(2)).makeNotificationOfferToAllManagers(any(Offer.class), any(Notification.NotificationCause.class));
     }
 
     @Test
@@ -285,6 +288,7 @@ public class EmployerServiceTest {
 
         ApplicationDTO applicationDTO = employerService.acceptApplication(1L, 1L).orElseThrow();
         assertThat(applicationDTO.getApplicationStatus()).isEqualTo(Application.ApplicationStatus.ACCEPTED);
+        verify(notificationManipulator, times(1)).makeNotificationApplicationToStudent(any(Application.class), any(Notification.NotificationCause.class));
     }
 
     @Test
@@ -329,6 +333,7 @@ public class EmployerServiceTest {
 
         ApplicationDTO applicationDTO = employerService.refuseApplication(1L, 1L).orElseThrow();
         assertThat(applicationDTO.getApplicationStatus()).isEqualTo(Application.ApplicationStatus.REFUSED);
+        verify(notificationManipulator, times(1)).makeNotificationApplicationToStudent(any(Application.class), any(Notification.NotificationCause.class));
     }
     @Test
     public void refuseApplication_invalidId() {
