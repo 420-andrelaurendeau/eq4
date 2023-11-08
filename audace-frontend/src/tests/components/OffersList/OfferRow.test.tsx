@@ -77,3 +77,26 @@ it("should open modal when view more is clicked", async () => {
   const internDateEndText = screen.getByText(/offer.modal.internDate.end/i);
   expect(internDateEndText).toBeInTheDocument();
 });
+
+it("should close modal when close is clicked", async () => {
+  render(
+    <Table>
+      <tbody>
+        <OfferRow offer={offer} />
+      </tbody>
+    </Table>
+  );
+
+  const viewMore = screen.getByText(/offersList.viewMore/i);
+  expect(viewMore).toBeInTheDocument();
+
+  fireEvent.click(viewMore);
+
+  const closeButton = screen.getByLabelText(/close/i);
+  expect(closeButton).toBeInTheDocument();
+
+  fireEvent.click(closeButton);
+  
+  const orgText = screen.queryByText(/offer.modal.org/i);
+  expect(orgText).not.toBeInTheDocument();
+});
