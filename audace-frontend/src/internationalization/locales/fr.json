@@ -239,14 +239,14 @@
     "employer": {
       "title": "Entreprise",
       "name": "Nom",
-      "email": "E-mail",
+      "email": "Courriel",
       "phone": "Téléphone",
       "extension": "Ext.",
       "address": "Adresse"
     },
     "student": {
       "title": "Étudiant",
-      "email": "E-mail",
+      "email": "Courriel",
       "phone": "Téléphone",
       "address": "Adresse"
     }
