@@ -2,6 +2,7 @@ package com.equipe4.audace.model.contract;
 
 import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.application.Application;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,9 +28,8 @@ public class Contract {
     private int totalHoursPerWeek;
     private double salary;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private Employer supervisor;
+    @Embedded
+    private Supervisor supervisor;
 
     @OneToOne
     @ToString.Exclude
@@ -42,7 +42,7 @@ public class Contract {
                 endHour.toString(),
                 totalHoursPerWeek,
                 salary,
-                supervisor.toDTO(),
+                supervisor,
                 application.toDTO()
         );
     }

@@ -2,6 +2,7 @@ package com.equipe4.audace.dto.contract;
 
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.contract.Contract;
 import lombok.*;
 
@@ -20,7 +21,7 @@ public class ContractDTO {
     private int totalHoursPerWeek;
     private double salary;
 
-    private EmployerDTO supervisor;
+    private Supervisor supervisor;
     private ApplicationDTO application;
 
     public Contract fromDTO(){
@@ -30,7 +31,7 @@ public class ContractDTO {
                 LocalTime.parse(endHour, DateTimeFormatter.ofPattern("H:mm").localizedBy(Locale.ENGLISH)),
                 totalHoursPerWeek,
                 salary,
-                supervisor.fromDTO(),
+                supervisor,
                 application.fromDTO()
         );
     }

@@ -1,14 +1,13 @@
 package com.equipe4.audace.service;
 
-import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.ManagerDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.Employer;
-import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.Manager;
+import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.cv.Cv.CvStatus;
@@ -16,7 +15,6 @@ import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.offer.Offer.OfferStatus;
 import com.equipe4.audace.repository.ApplicationRepository;
-import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
@@ -27,14 +25,13 @@ import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ManagerService extends GenericUserService<Manager> {
     private final ManagerRepository managerRepository;
-    private final EmployerRepository employerRepository;
     private final OfferRepository offerRepository;
     private final DepartmentRepository departmentRepository;
     private final CvRepository cvRepository;
@@ -42,13 +39,11 @@ public class ManagerService extends GenericUserService<Manager> {
     private final SessionManipulator sessionManipulator;
     private final ContractRepository contractRepository;
 
-    public ManagerService(SaltRepository saltRepository, ManagerRepository managerRepository, EmployerRepository employerRepository,
-                          OfferRepository offerRepository, DepartmentRepository departmentRepository, CvRepository cvRepository,
-                          ContractRepository contractRepository, SessionManipulator sessionManipulator,
-                          ApplicationRepository applicationRepository) {
+    public ManagerService(SaltRepository saltRepository, ManagerRepository managerRepository, OfferRepository offerRepository,
+                          DepartmentRepository departmentRepository, CvRepository cvRepository, ContractRepository contractRepository,
+                          SessionManipulator sessionManipulator, ApplicationRepository applicationRepository) {
         super(saltRepository);
         this.managerRepository = managerRepository;
-        this.employerRepository = employerRepository;
         this.offerRepository = offerRepository;
         this.departmentRepository = departmentRepository;
         this.cvRepository = cvRepository;
@@ -149,16 +144,6 @@ public class ManagerService extends GenericUserService<Manager> {
         if(contractDTO == null) throw new IllegalArgumentException("Contract cannot be null");
 
         Contract contract = contractDTO.fromDTO();
-        Employer supervisor = contract.getSupervisor();
-
-        Optional<Employer> optionalSupervisor = employerRepository.findByEmail(supervisor.getEmail());
-        if(optionalSupervisor.isEmpty()){
-            supervisor = employerRepository.save(supervisor);
-            contract.setSupervisor(supervisor);
-        }
-        else {
-            contract.setSupervisor(optionalSupervisor.get());
-        }
 
         return Optional.of(contractRepository.save(contract).toDTO());
     }

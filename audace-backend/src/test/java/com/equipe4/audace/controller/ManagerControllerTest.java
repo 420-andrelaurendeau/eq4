@@ -9,6 +9,7 @@ import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Manager;
+import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
@@ -394,11 +395,10 @@ public class ManagerControllerTest {
     }
 
     private ContractDTO createContractDTO(ApplicationDTO applicationDTO){
-        EmployerDTO employerDTO = createEmployerDTO();
         return new ContractDTO(1L, "08:00", "17:00", 40, 18.35, createSupervisor(), applicationDTO);
     }
 
-    private EmployerDTO createSupervisor(){
-        return new EmployerDTO(null, "super", "visor", "supervisor@email.com", "password", "Temp Baklungel", "Big Baklunger", "123 Street Street", "1234567890", "-123");
+    private Supervisor createSupervisor(){
+        return new Supervisor("super", "visor", "supervisor@email.com", "supervisor", "1234567890", "-123");
     }
 }

@@ -20,10 +20,6 @@ public class Employer extends User {
     @OneToMany(mappedBy = "employer", cascade = CascadeType.ALL)
     private List<Offer> offers = new ArrayList<>();
 
-    @ToString.Exclude
-    @OneToMany(mappedBy = "supervisor", cascade = CascadeType.ALL)
-    private List<Contract> contracts = new ArrayList<>();
-
     public Employer(
             Long id,
             String firstName,

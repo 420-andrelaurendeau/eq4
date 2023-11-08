@@ -1,6 +1,5 @@
 package com.equipe4.audace.service;
 
-import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.contract.ContractDTO;
@@ -10,6 +9,7 @@ import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
 import com.equipe4.audace.model.cv.Cv;
@@ -38,7 +38,8 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -477,10 +478,8 @@ public class ManagerServiceTest {
     @Test
     public void createContract_HappyPath(){
         // Arrange
-        Employer supervisor = createSupervisor();
         ContractDTO contractDTO = createContract().toDTO();
 
-        when(employerRepository.findByEmail(supervisor.getEmail())).thenReturn(Optional.of(supervisor));
         when(contractRepository.save(any(Contract.class))).thenReturn(contractDTO.fromDTO());
 
         ContractDTO dto = managerService.createContract(contractDTO).get();
@@ -523,11 +522,10 @@ public class ManagerServiceTest {
 
     private Contract createContract() {
         DateTimeFormatter dtf = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("H:mm").toFormatter(Locale.ENGLISH);
-        Employer employer = createEmployer();
         Application application = createApplication();
         return new Contract(1L, LocalTime.parse("08:00", dtf), LocalTime.parse("17:00", dtf), 40, 18.35, createSupervisor(), application);
     }
-    private Employer createSupervisor(){
-        return new Employer(null, "super", "visor", "supervisor@email.com", "password", "Temp Baklungel", "Big Baklunger", "123 Street Street", "1234567890", "-123");
+    private Supervisor createSupervisor(){
+        return new Supervisor("super", "visor", "supervisor", "supervisor@email.com", "1234567890", "-123");
     }
 }
