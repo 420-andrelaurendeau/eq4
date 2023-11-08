@@ -69,15 +69,11 @@ const AddContract = () => {
       totalHoursPerWeek: totalHoursPerWeek,
       salary: salary,
       supervisor: {
-        type: "employer",
         firstName: supervisorFirstName,
         lastName: supervisorLastName,
-        email: supervisorEmail,
-        password: application!.offer!.employer!.password,
-        phone: supervisorPhone,
-        address: application!.offer!.employer!.address,
-        organisation: application!.offer!.employer!.organisation,
         position: supervisorPosition,
+        email: supervisorEmail,
+        phone: supervisorPhone,
         extension: supervisorExtension
       },
       application: application!
@@ -106,7 +102,7 @@ const AddContract = () => {
   }
 
   return (
-    <Container>
+    <Container className="p-3">
       <h1>{t('manager.createContract.title')}</h1>
 
       <Row xs={1} md={2} className="g-4 mb-3">
@@ -126,7 +122,7 @@ const AddContract = () => {
         </Alert>
       )}
       <Form onSubmit={handleSubmit}>
-        <Accordion defaultActiveKey={['0']} alwaysOpen className="shadow-sm">
+        <Accordion defaultActiveKey={['0']} alwaysOpen className="shadow-sm mb-4">
           <Accordion.Item eventKey="0">
             <Accordion.Header>
               <Card.Title>Supervisor</Card.Title>
@@ -138,8 +134,7 @@ const AddContract = () => {
                     <Form.Group controlId="formBasicSupervisorFirstName">
                       <Form.Label>{t("manager.createContract.supervisor.firstName")}</Form.Label>
                       <Form.Control type="text" size="sm" value={supervisorFirstName}
-                        isInvalid={errors.includes("contract.errors.invalidStartHour")}
-                        onChange={(e) => setSupervisorFirstName(e.target.value)}
+                                    onChange={(e) => setSupervisorFirstName(e.target.value)}
                       />
                       {errors.includes("contract.errors.invalidStartHour")}
                     </Form.Group>
@@ -148,8 +143,7 @@ const AddContract = () => {
                     <Form.Group controlId="formBasicSupervisorLastName">
                       <Form.Label>{t("manager.createContract.supervisor.lastName")}</Form.Label>
                       <Form.Control type="text" size="sm" value={supervisorLastName}
-                        isInvalid={errors.includes("contract.errors.invalidEndHour")}
-                        onChange={(e) => setSupervisorLastName(e.target.value)}
+                                    onChange={(e) => setSupervisorLastName(e.target.value)}
                       />
                       {errors.includes("contract.errors.invalidEndHour")}
                     </Form.Group>
@@ -160,8 +154,7 @@ const AddContract = () => {
                     <Form.Group controlId="formBasicSupervisorEmail">
                       <Form.Label>{t("manager.createContract.supervisor.email")}</Form.Label>
                       <Form.Control type="email" size="sm" value={supervisorEmail}
-                        isInvalid={errors.includes("contract.errors.invalidStartHour")}
-                        onChange={(e) => setSupervisorEmail(e.target.value)}
+                                    onChange={(e) => setSupervisorEmail(e.target.value)}
                       />
                       {errors.includes("contract.errors.invalidStartHour")}
                     </Form.Group>
@@ -170,8 +163,7 @@ const AddContract = () => {
                     <Form.Group controlId="formBasicSupervisorPosition">
                       <Form.Label>{t("manager.createContract.supervisor.position")}</Form.Label>
                       <Form.Control type="text" size="sm" value={supervisorPosition}
-                        isInvalid={errors.includes("contract.errors.invalidEndHour")}
-                        onChange={(e) => setSupervisorPosition(e.target.value)}
+                                    onChange={(e) => setSupervisorPosition(e.target.value)}
                       />
                       {errors.includes("contract.errors.invalidEndHour")}
                     </Form.Group>
@@ -182,8 +174,7 @@ const AddContract = () => {
                     <Form.Group controlId="formBasicSupervisorPhone">
                       <Form.Label>{t("manager.createContract.supervisor.phone")}</Form.Label>
                       <Form.Control type="phone" size="sm" value={supervisorPhone}
-                        isInvalid={errors.includes("contract.errors.invalidStartHour")}
-                        onChange={(e) => setSupervisorPhone(e.target.value)}
+                                    onChange={(e) => setSupervisorPhone(e.target.value)}
                       />
                       {errors.includes("contract.errors.invalidStartHour")}
                     </Form.Group>
@@ -192,8 +183,7 @@ const AddContract = () => {
                     <Form.Group controlId="formBasicSupervisorExtension">
                       <Form.Label>{t("manager.createContract.supervisor.extension")}</Form.Label>
                       <Form.Control type="text" size="sm" value={supervisorExtension}
-                        isInvalid={errors.includes("contract.errors.invalidEndHour")}
-                        onChange={(e) => setSupervisorExtension(e.target.value)}
+                                    onChange={(e) => setSupervisorExtension(e.target.value)}
                       />
                       {errors.includes("contract.errors.invalidEndHour")}
                     </Form.Group>
@@ -208,9 +198,9 @@ const AddContract = () => {
           <Col>
             <Form.Group controlId="formBasicStartHour">
               <Form.Label>{t("manager.createContract.startHour")}</Form.Label>
-              <Form.Control type="time" size="sm" min="1" step={2700} value={startHour}
-                isInvalid={errors.includes("contract.errors.invalidStartHour")}
-                onChange={(e) => setStartHour(e.target.value)}
+              <Form.Control type="time" size="sm" min="1" step={2700} value={startHour} 
+                            isInvalid={errors.includes("contract.errors.invalidStartHour")} 
+                            onChange={(e) => setStartHour(e.target.value)}
               />
               {errors.includes("contract.errors.invalidStartHour")}
             </Form.Group>
@@ -218,9 +208,9 @@ const AddContract = () => {
           <Col>
             <Form.Group controlId="formBasicEndHour">
               <Form.Label>{t("manager.createContract.endHour")}</Form.Label>
-              <Form.Control type="time" size="sm" min="1" value={endHour}
-                isInvalid={errors.includes("contract.errors.invalidEndHour")}
-                onChange={(e) => setEndHour(e.target.value)}
+              <Form.Control type="time" size="sm" min="1" value={endHour} 
+                            isInvalid={errors.includes("contract.errors.invalidEndHour")} 
+                            onChange={(e) => setEndHour(e.target.value)}
               />
               {errors.includes("contract.errors.invalidEndHour")}
             </Form.Group>
@@ -230,9 +220,9 @@ const AddContract = () => {
           <Col>
             <Form.Group controlId="formBasicTotalHoursPerWeek">
               <Form.Label>{t("manager.createContract.totalHoursPerWeek")}</Form.Label>
-              <Form.Control type="number" size="sm" min="1" value={totalHoursPerWeek}
-                isInvalid={errors.includes("contract.errors.invalidTotalHoursPerWeek")}
-                onChange={(e) => setTotalHoursPerWeek(Number(e.target.value))}
+              <Form.Control type="number" size="sm" min="1" value={totalHoursPerWeek} 
+                            isInvalid={errors.includes("contract.errors.invalidTotalHoursPerWeek")} 
+                            onChange={(e) => setTotalHoursPerWeek(Number(e.target.value))}
               />
               {errors.includes("contract.errors.invalidTotalHoursPerWeek")}
             </Form.Group>
@@ -240,10 +230,10 @@ const AddContract = () => {
           <Col>
             <Form.Group controlId="formBasicSalary">
               <Form.Label>{t("manager.createContract.salary")}</Form.Label>
-              <Form.Control type="text" size="sm" min="1" value={salary}
-                isInvalid={errors.includes("contract.errors.invalidSalary")}
-                onChange={(e) => setSalary(Number(e.target.value))}
-                pattern="[0-9]+([,.][0-9]+)?"
+              <Form.Control type="text" size="sm" min="1" value={salary} 
+                            isInvalid={errors.includes("contract.errors.invalidSalary")} 
+                            onChange={(e) => setSalary(Number(e.target.value))} 
+                            pattern="[0-9]+([,.][0-9]+)?"
               />
               {errors.includes("contract.errors.invalidSalary")}
             </Form.Group>

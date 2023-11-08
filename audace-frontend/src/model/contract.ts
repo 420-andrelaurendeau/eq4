@@ -1,5 +1,4 @@
 import Application from "./application";
-import { Employer } from "./user";
 
 export interface Contract {
   id?: number;
@@ -7,6 +6,15 @@ export interface Contract {
   endHour: string;
   totalHoursPerWeek: number;
   salary: number;
-  supervisor: Employer;
+  supervisor: Supervisor;
   application: Application;
+}
+
+export interface Supervisor{
+  firstName: string;
+  lastName: string;
+  position: string;
+  email: string;
+  phone:string;
+  extension: string;
 }
