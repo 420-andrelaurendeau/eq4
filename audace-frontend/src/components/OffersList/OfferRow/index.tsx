@@ -34,10 +34,10 @@ const OfferRow = ({offer, userType, updateOffersState, seeApplications}: Props) 
 
   return (
     <>
-      <tr className="hovered" onClick={handleClick}>
+      <tr >
         <td>
           <Col className="h5">{offer.title}</Col>
-          <Col className="text-muted small mt-2"><u>{t("offersList.viewMore")}</u></Col>
+          <Col className="text-muted small mt-2"><u className="hovered" onClick={handleClick}>{t("offersList.viewMore")}</u></Col>
         </td>
         <td>{formatDate(offer.internshipStartDate)}</td>
         <td>{formatDate(offer.internshipEndDate)}</td>

@@ -39,15 +39,18 @@ const OffersList = ({ offers, error, userType, updateOffersState, seeApplication
                         return(
                             <>
                                 <OfferRow key={offer.id} offer={offer} userType={userType} updateOffersState={updateOffersState} seeApplications={seeApplications}/>
-                                <tr>
-                                    <td colSpan={12}>
-                                        <Accordion.Collapse eventKey={offer.id!.toString()}>
-                                            <Card.Body>
-                                                <Applications offer={offer} userType={userType} updateAvailablePlaces={updateAvailablePlaces}/>
-                                            </Card.Body>
-                                        </Accordion.Collapse>
-                                    </td>
-                                </tr>
+                                {userType != UserType.Student &&
+                                    <tr>
+                                        <td colSpan={12}>
+                                            <Accordion.Collapse eventKey={offer.id!.toString()}>
+                                                <Card.Body>
+                                                    <Applications offer={offer} userType={userType} updateAvailablePlaces={updateAvailablePlaces}/>
+                                                </Card.Body>
+                                            </Accordion.Collapse>
+                                        </td>
+                                    </tr>
+                                }
+
                             </>
                             )
                         })

@@ -58,9 +58,6 @@ const EmployerButtons = ({ disabled, seeApplications, offer, hideRow }: Props) =
         seeApplications!(offer)
     );
 
-
-
-
     return (
         <>
             <Button disabled={disabled} onClick={editButtonClick} className="btn-light btn-outline-warning text-dark">
