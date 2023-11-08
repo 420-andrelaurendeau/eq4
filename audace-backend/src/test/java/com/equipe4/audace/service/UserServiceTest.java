@@ -112,7 +112,7 @@ class UserServiceTest {
         Notification notification = mock(Notification.class);
         List<Notification> notifications = new ArrayList<>();
         notifications.add(notification);
-        when(notificationManipulator.getAllNotificationByUser(any())).thenReturn(notifications);
+        when(notificationManipulator.getAllNotificationsByUserId(any())).thenReturn(notifications);
         when(notification.toDTO()).thenReturn(mock(NotificationDTO.class));
         List<NotificationDTO> notificationDTOs = userService.getAllNotificationByUserId(1L);
         assertThat(notificationDTOs).hasSize(1);

@@ -24,39 +24,60 @@ public class NotificationManipulator {
     private final ManagerRepository managerRepository;
 
     public void makeNotificationOfferToAllStudents(Offer offer, Notification.NotificationCause cause) {
+        nullCheck(offer);
+        nullCheck(cause);
         List<Student> students = studentRepository.findAll();
         for (Student student : students) {
             notificationRepository.save(new NotificationOffer(null, student, cause, offer));
         }
     }
     public void makeNotificationOfferToAllManagers(Offer offer, Notification.NotificationCause cause) {
+        nullCheck(offer);
+        nullCheck(cause);
         List<Manager> managers = managerRepository.findAll();
         for (Manager manager : managers) {
             notificationRepository.save(new NotificationOffer(null, manager, cause, offer));
         }
     }
     public void makeNotificationCvToCvStudent(Cv cv, Notification.NotificationCause cause) {
+        nullCheck(cv);
+        nullCheck(cause);
         notificationRepository.save(new NotificationCv(null, cv.getStudent(), cause, cv));
     }
     public void makeNotificationOfferToOfferEmployer(Offer offer, Notification.NotificationCause cause) {
+        nullCheck(offer);
+        nullCheck(cause);
         notificationRepository.save(new NotificationOffer(null, offer.getEmployer(), cause, offer));
     }
     public void makeNotificationApplicationToOfferEmployer(Application application, Notification.NotificationCause cause) {
+        nullCheck(application);
+        nullCheck(cause);
         notificationRepository.save(new NotificationOffer(null, application.getOffer().getEmployer(), cause, application.getOffer()));
     }
     public void makeNotificationApplicationToStudent(Application application, Notification.NotificationCause cause) {
+        nullCheck(application);
+        nullCheck(cause);
         notificationRepository.save(new NotificationOffer(null, application.getCv().getStudent(), cause, application.getOffer()));
     }
     public void makeNotificationCvToAllManagersByDepartment(Cv cv, Notification.NotificationCause cause) {
+        nullCheck(cv);
+        nullCheck(cause);
         List<Manager> managers = managerRepository.findManagersByDepartmentId(cv.getStudent().getDepartment().getId());
         for (Manager manager : managers) {
             notificationRepository.save(new NotificationCv(null, manager, cause, cv));
         }
     }
-    public List<Notification> getAllNotificationByUser(Long id) {
+    public List<Notification> getAllNotificationsByUserId(Long id) {
+        nullCheck(id);
         return notificationRepository.findAllByUserId(id);
     }
     public void deleteAllByUserId(Long userId) {
+        nullCheck(userId);
         notificationRepository.deleteAllByUserId(userId);
+    }
+    private void nullCheck(Object object) {
+        if (object == null) {
+            throw new IllegalArgumentException();
+        }
     }
 }

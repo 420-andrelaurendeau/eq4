@@ -7,7 +7,6 @@ import com.equipe4.audace.model.User;
 import com.equipe4.audace.model.notification.Notification;
 import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.UserRepository;
-import com.equipe4.audace.repository.notification.NotificationRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.utils.NotificationManipulator;
@@ -55,7 +54,7 @@ public class UserService extends GenericUserService<User> {
     }
 
     public List<NotificationDTO> getAllNotificationByUserId(Long userId) {
-        List<Notification> notifications = notificationManipulator.getAllNotificationByUser(userId);
+        List<Notification> notifications = notificationManipulator.getAllNotificationsByUserId(userId);
         notificationManipulator.deleteAllByUserId(userId);
         return notifications.stream().map(Notification::toDTO).toList();
     }
