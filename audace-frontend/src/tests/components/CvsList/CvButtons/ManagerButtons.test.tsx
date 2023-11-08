@@ -1,8 +1,8 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import ManagerButtons from "../../../../../components/CVsList/CvRow/CvButtons/ManagerButtons";
-import { cv } from "../../CvsListTestUtils";
+import ManagerButtons from "../../../../components/CVsList/CvRow/CvButtons/ManagerButtons";
+import { cv } from "../CvsListTestUtils";
 import "@testing-library/jest-dom/extend-expect";
-import { CVStatus } from "../../../../../model/cv";
+import { CVStatus } from "../../../../model/cv";
 
 it("should display buttons properly", () => {
   render(<ManagerButtons cv={cv} />);
