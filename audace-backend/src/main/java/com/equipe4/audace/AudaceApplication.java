@@ -34,7 +34,6 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.time.LocalDate;
 import java.util.Optional;
-//TODO : TESTS NOTIFICATIONS
 @SpringBootApplication
 @AllArgsConstructor
 public class AudaceApplication implements CommandLineRunner {
