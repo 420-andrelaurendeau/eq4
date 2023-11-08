@@ -11,6 +11,7 @@ import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.notification.NotificationRepository;
 import com.equipe4.audace.repository.session.SessionRepository;
+import com.equipe4.audace.utils.NotificationManipulator;
 import com.equipe4.audace.utils.SessionManipulator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,6 +38,8 @@ class UserServiceTest {
     private NotificationRepository notificationRepository;
     @Mock
     private SessionManipulator sessionManipulator;
+    @Mock
+    private NotificationManipulator notificationManipulator;
     @InjectMocks
     private UserService userService;
 
@@ -109,7 +112,7 @@ class UserServiceTest {
         Notification notification = mock(Notification.class);
         List<Notification> notifications = new ArrayList<>();
         notifications.add(notification);
-        when(notificationRepository.findAllByUserId(1L)).thenReturn(notifications);
+        when(notificationManipulator.getAllNotificationByUser(any())).thenReturn(notifications);
         when(notification.toDTO()).thenReturn(mock(NotificationDTO.class));
         List<NotificationDTO> notificationDTOs = userService.getAllNotificationByUserId(1L);
         assertThat(notificationDTOs).hasSize(1);

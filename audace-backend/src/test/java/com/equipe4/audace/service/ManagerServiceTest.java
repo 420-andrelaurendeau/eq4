@@ -20,6 +20,7 @@ import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.utils.NotificationManipulator;
 import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -56,12 +57,14 @@ public class ManagerServiceTest {
     private SessionManipulator sessionManipulator;
     @Mock
     private ApplicationRepository applicationRepository;
+    @Mock
+    private NotificationManipulator notificationManipulator;
     @InjectMocks
     private ManagerService managerService;
 
     @Test
     public void acceptOffer() {
-        Employer employer = mock(Employer.class);
+        Employer employer = createEmployer();
         Department department = new Department(1L, "code", "name");
         Offer offer1 = new Offer(
                 1L,

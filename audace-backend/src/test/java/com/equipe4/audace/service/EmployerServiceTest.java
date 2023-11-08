@@ -18,6 +18,7 @@ import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.OfferSessionRepository;
+import com.equipe4.audace.utils.NotificationManipulator;
 import com.equipe4.audace.utils.SessionManipulator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,6 +52,8 @@ public class EmployerServiceTest {
     private ApplicationRepository applicationRepository;
     @Mock
     private DepartmentRepository departmentRepository;
+    @Mock
+    private NotificationManipulator notificationManipulator;
     @InjectMocks
     private EmployerService employerService;
 

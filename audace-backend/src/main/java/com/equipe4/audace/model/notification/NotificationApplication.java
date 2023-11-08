@@ -17,6 +17,7 @@ public class NotificationApplication extends Notification {
         return new NotificationApplicationDTO(
                 id,
                 user.toDTO(),
+                cause,
                 content.toDTO()
         );
     }

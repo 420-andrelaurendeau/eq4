@@ -10,6 +10,7 @@ import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.notification.NotificationRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.SessionRepository;
+import com.equipe4.audace.utils.NotificationManipulator;
 import com.equipe4.audace.utils.SessionManipulator;
 import org.springframework.stereotype.Service;
 
@@ -20,20 +21,20 @@ import java.util.Optional;
 public class UserService extends GenericUserService<User> {
     private final UserRepository userRepository;
     private final SessionRepository sessionRepository;
-    private final NotificationRepository notificationRepository;
+    private final NotificationManipulator notificationManipulator;
     private final SessionManipulator sessionManipulator;
 
     public UserService(
             SaltRepository saltRepository,
             UserRepository userRepository,
             SessionRepository sessionRepository,
-            NotificationRepository notificationRepository,
+            NotificationManipulator notificationManipulator,
             SessionManipulator sessionManipulator
     ) {
         super(saltRepository);
         this.userRepository = userRepository;
         this.sessionRepository = sessionRepository;
-        this.notificationRepository = notificationRepository;
+        this.notificationManipulator = notificationManipulator;
         this.sessionManipulator = sessionManipulator;
     }
 
@@ -54,8 +55,8 @@ public class UserService extends GenericUserService<User> {
     }
 
     public List<NotificationDTO> getAllNotificationByUserId(Long userId) {
-        List<Notification> notifications = notificationRepository.findAllByUserId(userId);
-        notificationRepository.deleteAll();
+        List<Notification> notifications = notificationManipulator.getAllNotificationByUser(userId);
+        notificationManipulator.deleteAllByUserId(userId);
         return notifications.stream().map(Notification::toDTO).toList();
     }
 }

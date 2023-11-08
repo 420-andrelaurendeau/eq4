@@ -53,4 +53,10 @@ public class NotificationManipulator {
             notificationRepository.save(new NotificationCv(null, manager, cause, cv));
         }
     }
+    public List<Notification> getAllNotificationByUser(Long id) {
+        return notificationRepository.findAllByUserId(id);
+    }
+    public void deleteAllByUserId(Long userId) {
+        notificationRepository.deleteAllByUserId(userId);
+    }
 }
