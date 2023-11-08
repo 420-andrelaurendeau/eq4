@@ -29,7 +29,7 @@ const ManagerButtons = ({ disabled, offer, updateOffersState }: Props) => {
 
   return (
     <>
-      {offer.offerStatus === "PENDING" ? (
+      {offer.offerStatus === OfferStatus.PENDING ? (
         <>
           <Button
             disabled={disabled}

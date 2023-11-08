@@ -36,15 +36,10 @@ const EmployerButtons = ({ disabled, seeApplications, offer }: Props) => {
 
   const deleteButtonClick = async (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
-
-    if (offer === undefined || offer.id === undefined) {
-      return;
-    }
-
     setIsDeleting(true);
 
     try {
-      const response = await employerDeleteOffer(offer.id);
+      const response = await employerDeleteOffer(offer.id!);
 
       const offersResponse = await getAllOffersByEmployerIdAndSessionId(
         parseInt(getUserId()!),
