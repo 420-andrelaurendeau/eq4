@@ -104,6 +104,8 @@ it("should call useNavigate when edit button is clicked", () => {
 });
 
 it("should call employerDeleteOffer when delete button is clicked", async () => {
+  jest.spyOn(console, "log").mockImplementation(() => {});
+
   const employerDeleteOffer = jest.fn(() => Promise.resolve({ status: 200 }));
   jest
     .spyOn(require("../../../../services/offerService"), "employerDeleteOffer")
@@ -162,6 +164,8 @@ it("should show error message when delete is unsuccessful", async () => {
       },
       setChosenSession: () => {},
     }));
+
+  jest.spyOn(console, "error").mockImplementation(() => {});
 
   render(<EmployerButtons disabled={false} offer={offer} />);
 

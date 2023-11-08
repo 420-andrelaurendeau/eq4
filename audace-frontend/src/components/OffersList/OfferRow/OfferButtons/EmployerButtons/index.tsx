@@ -19,7 +19,6 @@ interface Props {
 
 const EmployerButtons = ({ disabled, seeApplications, offer }: Props) => {
   const { t } = useTranslation();
-  const [isDeleting, setIsDeleting] = useState(false);
   const navigate = useNavigate();
   const { setOffers } = useOfferContext();
   const { chosenSession } = useSessionContext();
@@ -36,7 +35,6 @@ const EmployerButtons = ({ disabled, seeApplications, offer }: Props) => {
 
   const deleteButtonClick = async (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
-    setIsDeleting(true);
 
     try {
       const response = await employerDeleteOffer(offer.id!);
@@ -54,8 +52,6 @@ const EmployerButtons = ({ disabled, seeApplications, offer }: Props) => {
       console.log("Offer deleted successfully");
     } catch (error) {
       console.error("Failed to delete offer:", error);
-    } finally {
-      setIsDeleting(false);
     }
   };
 
@@ -75,13 +71,11 @@ const EmployerButtons = ({ disabled, seeApplications, offer }: Props) => {
         {t("employerOffersList.editButton")}
       </Button>
       <Button
-        disabled={disabled || isDeleting}
+        disabled={disabled}
         onClick={deleteButtonClick}
         variant="outline-danger text-dark"
       >
-        {isDeleting
-          ? t("employerOffersList.deletingButton")
-          : t("employerOffersList.deleteButton")}
+        {t("employerOffersList.deleteButton")}
       </Button>
       {seeApplications !== undefined ? (
         <Button
