@@ -24,7 +24,6 @@ const OfferRow = ({
   const { t } = useTranslation();
   const { currentSession, chosenSession } = useSessionContext();
   const [disabled, setDisabled] = useState<boolean>(true);
-  const [isVisible, setIsVisible] = useState(true);
 
   const handleClick = () => {
     setShow(true);
@@ -32,9 +31,6 @@ const OfferRow = ({
   };
 
   const handleClose = () => setShow(false);
-  const hideRow = () => setIsVisible(false);
-
-  if (!isVisible) return null;
 
   return (
     <>
@@ -58,7 +54,6 @@ const OfferRow = ({
                 offer={offer}
                 updateOffersState={updateOffersState}
                 seeApplications={seeApplications}
-                hideRow={hideRow}
               />
             </div>
           </td>
@@ -72,7 +67,6 @@ const OfferRow = ({
           employer={offer.employer}
           updateOffersState={updateOffersState}
           disabled={disabled}
-          hideRow={hideRow}
         />
       )}
     </>

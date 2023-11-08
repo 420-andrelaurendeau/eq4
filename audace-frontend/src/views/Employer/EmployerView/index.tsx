@@ -11,15 +11,16 @@ import OffersList from "../../../components/OffersList";
 import { useSessionContext } from "../../../contextsholders/providers/SessionContextHolder";
 import SessionSelector from "../../../components/SessionSelector";
 import Applications from "../../../components/Applications";
+import { useOfferContext } from "../../../contextsholders/providers/OfferContextHolder";
 
 const EmployerView = () => {
   const [employer, setEmployer] = useState<Employer>();
-  const [offers, setOffers] = useState<Offer[]>([]);
   const [error, setError] = useState<string>("");
   const [offerApplication, setOfferApplication] = useState<Offer>();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { chosenSession } = useSessionContext();
+  const { offers, setOffers } = useOfferContext();
 
   useEffect(() => {
     if (employer !== undefined) return;
@@ -51,7 +52,7 @@ const EmployerView = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, [employer, chosenSession]);
+  }, [employer, chosenSession, setOffers]);
 
   const seeApplications = (offer: Offer) => {
     setOfferApplication(offer);

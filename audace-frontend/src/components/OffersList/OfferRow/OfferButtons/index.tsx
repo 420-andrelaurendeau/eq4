@@ -10,14 +10,12 @@ interface Props {
   offer: Offer;
   updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
   seeApplications?: (offer: Offer) => void;
-  hideRow?: () => void;
 }
 const OfferButtons = ({
   disabled,
   offer,
   updateOffersState,
   seeApplications,
-  hideRow,
 }: Props) => {
   const selectButtons = () => {
     const userType = getUserType();
@@ -39,7 +37,6 @@ const OfferButtons = ({
             disabled={disabled}
             seeApplications={seeApplications}
             offer={offer}
-            hideRow={hideRow}
           />
         );
     }

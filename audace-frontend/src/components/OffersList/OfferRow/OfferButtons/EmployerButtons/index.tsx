@@ -3,24 +3,26 @@ import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import { Offer } from "../../../../../model/offer";
 import { useNavigate } from "react-router-dom";
-import { employerDeleteOffer } from "../../../../../services/offerService";
+import {
+  employerDeleteOffer,
+  getAllOffersByEmployerIdAndSessionId,
+} from "../../../../../services/offerService";
+import { useOfferContext } from "../../../../../contextsholders/providers/OfferContextHolder";
+import { getUserId } from "../../../../../services/authService";
+import { useSessionContext } from "../../../../../contextsholders/providers/SessionContextHolder";
 
 interface Props {
   disabled: boolean;
   seeApplications?: (offer: Offer) => void;
   offer: Offer;
-  hideRow?: () => void;
 }
 
-const EmployerButtons = ({
-  disabled,
-  seeApplications,
-  offer,
-  hideRow,
-}: Props) => {
+const EmployerButtons = ({ disabled, seeApplications, offer }: Props) => {
   const { t } = useTranslation();
   const [isDeleting, setIsDeleting] = useState(false);
   const navigate = useNavigate();
+  const { setOffers } = useOfferContext();
+  const { chosenSession } = useSessionContext();
 
   const editButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -39,11 +41,17 @@ const EmployerButtons = ({
       return;
     }
 
-    hideRow!();
     setIsDeleting(true);
 
     try {
       const response = await employerDeleteOffer(offer.id);
+
+      const offersResponse = await getAllOffersByEmployerIdAndSessionId(
+        parseInt(getUserId()!),
+        chosenSession!.id
+      );
+
+      setOffers(offersResponse.data);
 
       if (response.status !== 200) {
         throw new Error(`Failed to delete offer. Status: ${response.status}`);
