@@ -7,7 +7,7 @@ import { getUserId } from "../../../../../services/authService";
 interface Props {
   disabled: boolean;
   offer: Offer;
-  updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
+  updateOffersState: (offer: Offer, offerStatus: OfferStatus) => void;
 }
 
 const ManagerButtons = ({ disabled, offer, updateOffersState }: Props) => {

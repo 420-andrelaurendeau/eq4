@@ -28,7 +28,7 @@ const OfferButtons = ({
           <ManagerButtons
             disabled={disabled}
             offer={offer}
-            updateOffersState={updateOffersState}
+            updateOffersState={updateOffersState!}
           />
         );
       case UserType.Employer:
