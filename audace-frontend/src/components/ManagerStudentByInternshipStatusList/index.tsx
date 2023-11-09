@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import { Student, StudentsByInternshipFoundStatus } from "../../model/user";
 import {getDepartmentByManager, getStudentsByInternshipStatus} from "../../services/managerService";
 import { Col, Form, Row, Table } from "react-bootstrap";
@@ -16,6 +16,32 @@ const ManagerStudentByInternshipStatusList = () => {
     const [filteredStudents, setFilteredStudents] = useState<Student[]>([]);
     const managerId = parseInt(getUserId()!);
 
+    const filterStudentsRef = useRef<Function>();
+
+    const filterStudents = useCallback((text: string, tab: string) => {
+        if (!studentsByInternshipStatus) return;
+
+        try {
+            const filtered = studentsByInternshipStatus[tab].students.filter((student) => {
+                const lowerCaseText = text.toLowerCase();
+                return (
+                    student.firstName!.toLowerCase().includes(lowerCaseText) ||
+                    student.studentNumber.toLowerCase().includes(lowerCaseText) ||
+                    student.department!.name.toLowerCase().includes(lowerCaseText) ||
+                    student.lastName!.toLowerCase().includes(lowerCaseText)
+                );
+            });
+            setFilteredStudents(filtered);
+        }
+        catch (error) {
+            console.error("Filtering error : " + error);
+        }
+    },
+    [studentsByInternshipStatus, setFilteredStudents]
+    );
+
+    filterStudentsRef.current = filterStudents;
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -24,35 +50,19 @@ const ManagerStudentByInternshipStatusList = () => {
                 const studentsResponse = await getStudentsByInternshipStatus(departmentResponse.data.id!);
                 setStudentsByInternshipStatus(studentsResponse);
 
-                filterStudents(searchText, selectedOption);
+                filterStudentsRef.current!(searchText, selectedOption);
             } catch (error) {
                 console.error("StudentsByInternship retrieval failed : " + error);
             }
         };
 
         fetchData();
-    }, [searchText, selectedOption, studentsByInternshipStatus]);
-
+    }, [managerId, searchText, selectedOption]);
 
     const handleDropdownChange = (event: any) => {
         setSelectedOption(event.target.value);
         setFilteredStudents([]);
         filterStudents(searchText, event.target.value);
-    };
-
-    const filterStudents = (text: string, tab: string) => {
-        if (!studentsByInternshipStatus) return;
-
-        const filtered = studentsByInternshipStatus[tab].students.filter((student) => {
-            const lowerCaseText = text.toLowerCase();
-            return (
-                student.firstName!.toLowerCase().includes(lowerCaseText) ||
-                student.studentNumber.toLowerCase().includes(lowerCaseText) ||
-                student.department!.name.toLowerCase().includes(lowerCaseText) ||
-                student.lastName!.toLowerCase().includes(lowerCaseText)
-            );
-        });
-        setFilteredStudents(filtered);
     };
 
     return (
@@ -84,7 +94,6 @@ const ManagerStudentByInternshipStatusList = () => {
                     </Col>
                 </Col>
             </Row>
-
 
             {filteredStudents.length > 0 ? (
                 <div style={{ overflow: "auto", maxHeight: "18.5rem" }}>
