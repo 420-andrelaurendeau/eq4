@@ -1,27 +1,27 @@
 package com.equipe4.audace.model.contract;
 
 import com.equipe4.audace.model.User;
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Embeddable
 public class Signature<T extends User> {
 
-    @OneToOne
+    @ManyToOne(targetEntity = User.class)
+    @JoinColumn(name = "user_id")
     private T signatory;
 
-    private LocalDate date;
+    private LocalDate signatureDate;
 
     public Signature(T signatory) {
         this.signatory = signatory;
-        this.date = LocalDate.now();
+        this.signatureDate = LocalDate.now();
     }
 }

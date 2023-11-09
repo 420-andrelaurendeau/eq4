@@ -37,13 +37,13 @@ public class Contract {
     @ToString.Exclude
     private Application application;
 
-    @Embedded
+    @OneToOne
     private Signature<Student> studentSignature;
 
-    @Embedded
+    @OneToOne
     private Signature<Employer> employerSignature;
 
-    @Embedded
+    @OneToOne
     private Signature<Manager> managerSignature;
 
     public Contract(Long id, LocalTime startHour, LocalTime endHour, int totalHoursPerWeek, double salary, Supervisor supervisor, Application application) {
@@ -77,9 +77,9 @@ public class Contract {
                 salary,
                 supervisor,
                 application.toDTO(),
-                studentSignature.getDate(),
-                employerSignature.getDate(),
-                managerSignature.getDate()
+                studentSignature.getSignatureDate(),
+                employerSignature.getSignatureDate(),
+                managerSignature.getSignatureDate()
         );
     }
 }
