@@ -8,6 +8,8 @@
 - Le code est vérifiée par un pair (peer programming ou code review)
 - La branche est à jour depuis main
 - Changements faits ne doivent pas briser frontend/backend (Test yo shit yo)
+- Merge dans main et test le fonctionnement avant de mettre a done
+- ACTUALLY USE THE GOD DAMN CHECKLIST
 
 ### Frontend:
 - Typage complet et logique (pas de any)

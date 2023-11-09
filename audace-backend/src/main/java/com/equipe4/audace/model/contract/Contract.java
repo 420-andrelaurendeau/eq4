@@ -2,6 +2,7 @@ package com.equipe4.audace.model.contract;
 
 import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.application.Application;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,17 +23,13 @@ public class Contract {
     @Column(name = "contract_id")
     private Long id;
 
-    private String officeName;
     private LocalTime startHour;
     private LocalTime endHour;
     private int totalHoursPerWeek;
     private double salary;
-    private String internTasksAndResponsibilities;
 
-    @ManyToOne
-    @JoinColumn(name = "employer_id")
-    @ToString.Exclude
-    private Employer supervisor;
+    @Embedded
+    private Supervisor supervisor;
 
     @OneToOne
     @ToString.Exclude
@@ -41,13 +38,11 @@ public class Contract {
     public ContractDTO toDTO(){
         return new ContractDTO(
                 id,
-                officeName,
                 startHour.toString(),
                 endHour.toString(),
                 totalHoursPerWeek,
                 salary,
-                internTasksAndResponsibilities,
-                supervisor.toDTO(),
+                supervisor,
                 application.toDTO()
         );
     }

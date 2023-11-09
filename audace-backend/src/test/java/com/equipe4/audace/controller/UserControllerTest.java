@@ -10,6 +10,7 @@ import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.ApplicationRepository;
+import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.notification.NotificationRepository;
@@ -18,6 +19,7 @@ import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.service.EmployerService;
+import com.equipe4.audace.service.ManagerService;
 import com.equipe4.audace.service.StudentService;
 import com.equipe4.audace.service.UserService;
 import com.equipe4.audace.utils.JwtManipulator;
@@ -75,11 +77,15 @@ class UserControllerTest {
     @MockBean
     private OfferRepository offerRepository;
     @MockBean
+    private ContractRepository contractRepository;
+    @MockBean
     private UserService userService;
     @MockBean
     private EmployerService employerService;
     @MockBean
     private StudentService studentService;
+    @MockBean
+    private ManagerService managerService;
 
     @Test
     @WithMockUser(username = "user")

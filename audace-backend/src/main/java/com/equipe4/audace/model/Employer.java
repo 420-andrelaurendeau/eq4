@@ -1,6 +1,7 @@
 package com.equipe4.audace.model;
 
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.model.contract.Contract;
 import com.equipe4.audace.model.offer.Offer;
 import jakarta.persistence.*;
 import lombok.*;

@@ -60,18 +60,12 @@ const EmployerSignup = () => {
         <h3>{t("signup.employerFormTitle")}</h3>
         <Form>
           <Row>
-            <FormInput
-                label="signup.companyNameEntry"
-                value={organisation}
-                onChange={(e) => setOrganisation(e.target.value)}
-                errors={errors}
-                formError="signup.errors.organisation"
-                controlId="formBasicCompanyName"
+            <FormInput label="signup.companyNameEntry" value={organisation} 
+                       onChange={(e) => setOrganisation(e.target.value)} 
+                       errors={errors} formError="signup.errors.organisation" controlId="formBasicCompanyName"
             />
 
-            <FormInput
-                label="signup.positionEntry"
-                value={position}
+            <FormInput label="signup.positionEntry" value={position}
                 onChange={(e) => setPosition(e.target.value)}
                 errors={errors}
                 formError="signup.errors.position"
