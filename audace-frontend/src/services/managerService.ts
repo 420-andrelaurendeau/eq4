@@ -3,7 +3,7 @@ import Application from "../model/application";
 import http from "../constants/http";
 import { MANAGER_PREFIX, STUDENT_PREFIX } from "../constants/apiPrefixes";
 import { CV } from "../model/cv";
-import {InternshipStatus, Student, StudentsByInternshipFoundStatus, mapStudentsWithStatus} from "../model/user";
+import { Student, StudentsByInternshipFoundStatus, mapStudentsWithStatus} from "../model/user";
 import { Department } from "../model/department";
 import { Contract } from "../model/contract";
 
