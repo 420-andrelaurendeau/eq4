@@ -118,10 +118,15 @@ public class ManagerService extends GenericUserService<Manager> {
         if (!sessionManipulator.isOfferInCurrentSession(offer)) throw new NoSuchElementException("Offer not found");
 
         offer.setOfferStatus(offerStatus);
+        notificationManipulator.makeNotificationOfferToOfferEmployer(offer, Notification.NotificationCause.UPDATED);
         return Optional.of(offerRepository.save(offer).toDTO());
     }
     @Transactional
     public Optional<OfferDTO> acceptOffer(Long managerId, Long offerId) {
+        notificationManipulator.makeNotificationOfferToAllStudents(
+                offerRepository.findById(offerId).orElseThrow(),
+                Notification.NotificationCause.UPDATED
+        );
         return setOfferStatus(managerId, offerId, OfferStatus.ACCEPTED);
     }
 
