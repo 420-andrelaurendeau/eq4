@@ -232,7 +232,12 @@
   "logout": "Log out",
   "pageNotFound": "Error 404: Page Not Found",
   "sessionSelector": {
-    "filterPlaceholder": "Filter by date"
+    "filterPlaceholder": "Filter by date",
+    "selectSession": "Select a session",
+    "fall": "Fall",
+    "winter": "Winter",
+    "summer": "Summer",
+    "spring": "Spring"
   },
   "infoCard": {
     "employer": {
