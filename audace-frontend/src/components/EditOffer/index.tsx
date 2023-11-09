@@ -117,14 +117,10 @@ const EditOffer: React.FC = () => {
       };
   
       try {
-        // Wait for the editOffer operation to complete
         await editOffer(updatedOffer, parseInt(offerId));
-        // After completion, navigate to the /employer page
         navigate(`/employer`);
       } catch (error) {
-        // Handle any errors that occur during the editOffer operation
         console.error("There was an error updating the offer:", error);
-        // Optionally, you can set an error state here and display it to the user
       }
     }
   };

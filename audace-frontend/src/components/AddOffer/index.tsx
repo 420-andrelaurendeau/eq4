@@ -113,14 +113,10 @@ const AddOffer: React.FC = () => {
       };
   
       try {
-        // Wait for the addOffer operation to complete
         await addOffer(formData);
-        // After completion, navigate to the /employer page
         navigate(`/employer`);
       } catch (error) {
-        // Handle any errors that occur during the addOffer operation
         console.error("There was an error adding the offer:", error);
-        // Optionally, you can set an error state here and display it to the user
       }
     } else {
       setShowAlert(true);
