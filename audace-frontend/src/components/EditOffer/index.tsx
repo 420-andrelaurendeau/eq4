@@ -110,12 +110,11 @@ const EditOffer: React.FC = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (validateForm()) {
       const paths = window.location.pathname.split("/");
       const offerId = paths[paths.length - 1];
-      const employerId = paths[paths.length - 3];
-
+  
       const updatedOffer: Offer = {
         id: parseInt(offerId),
         title,
@@ -128,10 +127,16 @@ const EditOffer: React.FC = () => {
         employer,
         offerStatus: status as OfferStatus,
       };
-      editOffer(updatedOffer, parseInt(offerId));
-      navigate(`/employer`);
+  
+      try {
+        await editOffer(updatedOffer, parseInt(offerId));
+        navigate(`/employer`);
+      } catch (error) {
+        console.error("There was an error updating the offer:", error);
+      }
     }
   };
+  
 
   const editOffer = async (updatedOffer: Offer, id: number) => {
     try {

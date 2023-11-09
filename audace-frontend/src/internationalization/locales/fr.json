@@ -119,7 +119,7 @@
     "REFUSED": "Refusé",
     "editButton": "Modifier",
     "deleteButton": "Supprimer",
-    "applicationButton" : "Voir les applications"
+    "applicationButton": "Voir les applications"
   },
   "student": {
     "seeOffersButton": "Voir les offres"
@@ -131,23 +131,27 @@
     "contractCreated": "Contract créé avec succès",
     "title": "Gestionnaire",
     "createContract": {
+      "supervisor": {
+        "firstName": "Prénom",
+        "lastName": "Nom de famille",
+        "email": "E-mail",
+        "phone": "Téléphone",
+        "position": "Poste",
+        "extension": "Extension"
+      },
       "title": "Créer un contrat",
-      "officeName": "Nom du bureau",
       "startHour": "Heure de début",
       "endHour": "Heure de fin",
       "totalHoursPerWeek": "Heures totales par semaine",
       "salary": "Salaire",
-      "internTasksAndResponsibilities": "Tâches et responsabilités de stagiaire",
       "errors": {
         "applicationNotFound": "Candidature non trouvée",
         "employerNotFound": "Employeur non trouvé",
         "contractAlreadyExists": "Un contrat existe déjà pour cette offre",
-        "emptyOfficeName": "Le nom du bureau ne peut pas être vide",
         "invalidStartHour": "L'heure de début est invalide",
         "invalidEndHour": "L'heure de fin est invalide",
         "invalidTotalHoursPerWeek": "Le nombre d'heures par semaine est invalide",
-        "invalidSalary": "Le salaire est invalide",
-        "emptyInternTasksAndResponsibilities": "Les tâches et responsabilités de stagiaire ne peuvent pas être vides"
+        "invalidSalary": "Le salaire est invalide"
       }
     }
   },
@@ -234,5 +238,21 @@
     "fall": "Automne",
     "winter": "Hiver",
     "summer": "Été"
+  },
+},
+"infoCard": {
+  "employer": {
+    "title": "Entreprise",
+    "name": "Nom",
+    "email": "Courriel",
+    "phone": "Téléphone",
+    "extension": "Ext.",
+    "address": "Adresse"
+  },
+  "student": {
+    "title": "Étudiant",
+    "email": "Courriel",
+    "phone": "Téléphone",
+    "address": "Adresse"
   }
 }
