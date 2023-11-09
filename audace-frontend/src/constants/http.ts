@@ -14,7 +14,7 @@ http.interceptors.request.use((config) => {
 
   return config;
 });
-
+/* //TODO : Uncomment
 http.interceptors.response.use(
   (response: AxiosResponse<any>) => {
     if (isResponseInvalid(response)) {
@@ -29,7 +29,7 @@ http.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
+*/
 const isResponseInvalid = (response: AxiosResponse<any>) => {
   return isConnected() && (response.status === 401 || response.status === 403);
 };

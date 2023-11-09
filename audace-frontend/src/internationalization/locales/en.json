@@ -154,6 +154,7 @@
     "errors": {
       "employerNotFound": "Employer not found"
     },
+    "createOfferButton": "Create Offer",
     "seeOffersButton": "See Offers",
     "seeApplicationsButton": "See Applications"
   },

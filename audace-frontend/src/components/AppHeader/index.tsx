@@ -4,8 +4,10 @@ import LanguageToggler from "../LanguageToggler";
 import { useTranslation } from "react-i18next";
 import LogoutButton from "../LogoutButton";
 import { getAuthorities, isConnected } from "../../services/authService";
-
-function AppHeader() {
+interface Props {
+  notificationClick: () => void;
+}
+function AppHeader({notificationClick} : Props) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const authority = getAuthorities()?.[0]?.toString().toLowerCase();
@@ -19,10 +21,17 @@ function AppHeader() {
       <Navbar.Brand href="/">Audace</Navbar.Brand>
 
       <Navbar.Collapse id="basic-navbar-nav">
+        {isConnected() && (
+          <Nav>
+            <Button onClick={() => notificationClick()} variant="light">
+              Notification Bell PLACEHOLDER //TODO
+            </Button>
+          </Nav>
+        )}
         {authority === "employer" && (
           <Nav>
             <Button onClick={() => handleClick(authority + "/offers/new")} variant="light" className="me-2">
-              Create Offer
+              {t("employer.createOfferButton")}
             </Button>
           </Nav>
         )}

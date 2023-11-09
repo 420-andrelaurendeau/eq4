@@ -103,6 +103,8 @@ const StudentView = ({
 
   useEffect(() => {
     if (student === undefined) return;
+    if (notifications.length > 0) return;
+    if (chosenSession === undefined) return;
     
     getNotificationsByUserId(student.id!)
       .then((res) => {
@@ -111,7 +113,7 @@ const StudentView = ({
           console.log(res.data);
         }
       })
-  });
+  }, [student, notifications, chosenSession]);
 
   return (
     <Container>
