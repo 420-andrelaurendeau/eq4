@@ -51,9 +51,18 @@ public class UserController extends GenericUserController<User, UserService> {
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
-
     @GetMapping("/notifications/{id}")
     public ResponseEntity<List<NotificationDTO>> getAllNotificationByUserId(@PathVariable Long id) {
         return ResponseEntity.ok(service.getAllNotificationByUserId(id));
+    }
+    @PostMapping("/deleteAllNotificationsByUserId/{id}") //TODO : Tests
+    public HttpStatus deleteAllNotificationsByUserId(@PathVariable Long id) {
+        service.deleteAllNotificationsByUserId(id);
+        return HttpStatus.OK;
+    }
+    @PostMapping("/deleteNotificationById/{id}") //TODO : Tests
+    public HttpStatus deleteNotificationById(@PathVariable Long id) {
+        service.deleteNotificationById(id);
+        return HttpStatus.OK;
     }
 }

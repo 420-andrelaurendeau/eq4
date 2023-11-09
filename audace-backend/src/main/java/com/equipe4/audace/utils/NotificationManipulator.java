@@ -11,6 +11,7 @@ import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.notification.NotificationRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +24,7 @@ public class NotificationManipulator {
     private final StudentRepository studentRepository;
     private final ManagerRepository managerRepository;
 
+    @Transactional
     public void makeNotificationOfferToAllStudents(Offer offer, Notification.NotificationCause cause) {
         nullCheck(offer);
         nullCheck(cause);
@@ -31,6 +33,7 @@ public class NotificationManipulator {
             notificationRepository.save(new NotificationOffer(null, student, cause, offer));
         }
     }
+    @Transactional
     public void makeNotificationOfferToAllManagers(Offer offer, Notification.NotificationCause cause) {
         nullCheck(offer);
         nullCheck(cause);
@@ -59,6 +62,7 @@ public class NotificationManipulator {
         nullCheck(cause);
         notificationRepository.save(new NotificationOffer(null, application.getCv().getStudent(), cause, application.getOffer()));
     }
+    @Transactional
     public void makeNotificationCvToAllManagersByDepartment(Cv cv, Notification.NotificationCause cause) {
         nullCheck(cv);
         nullCheck(cause);
@@ -71,13 +75,17 @@ public class NotificationManipulator {
         nullCheck(id);
         return notificationRepository.findAllByUserId(id);
     }
-    public void deleteAllByUserId(Long userId) {
+    public void deleteAllNotificationsByUserId(Long userId) {
         nullCheck(userId);
         notificationRepository.deleteAllByUserId(userId);
     }
-    private void nullCheck(Object object) {
+    private <T> void nullCheck(T object) {
         if (object == null) {
             throw new IllegalArgumentException();
         }
+    }
+    public void deleteNotificationById(Long id) { //TODO : Tests
+        nullCheck(id);
+        notificationRepository.deleteById(id);
     }
 }

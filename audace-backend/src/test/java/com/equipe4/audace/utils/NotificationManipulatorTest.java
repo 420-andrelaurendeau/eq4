@@ -11,7 +11,6 @@ import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.notification.NotificationRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -220,12 +219,12 @@ public class NotificationManipulatorTest {
     }
     @Test
     public void deleteAllByUserId_happyPath() {
-        notificationManipulator.deleteAllByUserId(1L);
+        notificationManipulator.deleteAllNotificationsByUserId(1L);
         verify(notificationRepository, times(1)).deleteAllByUserId(1L);
     }
     @Test
     public void deleteAllByUserId_nullId() {
-        assertThatThrownBy(() -> notificationManipulator.deleteAllByUserId(null))
+        assertThatThrownBy(() -> notificationManipulator.deleteAllNotificationsByUserId(null))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }
