@@ -13,10 +13,20 @@ export const determineSessionSeason = (chosenSession: Session): string => {
   const startDate = new Date(chosenSession.startDate);
 
   if (isFall(startDate)) return "sessionSelector.fall";
+  if (isWinter(startDate)) return "sessionSelector.winter";
+  if (isSpring(startDate)) return "sessionSelector.spring";
 
-  return isWinter(startDate)
-    ? "sessionSelector.winter"
-    : "sessionSelector.summer";
+  return "sessionSelector.summer";
+};
+
+const isFall = (startDate: Date): boolean => {
+  const month = startDate.getMonth();
+
+  if (month < 8 || month > 11) return false;
+  if (month === 11) return startDate.getDate() < 21;
+  if (month === 8) return startDate.getDate() >= 23;
+
+  return true;
 };
 
 const isWinter = (startDate: Date): boolean => {
@@ -29,12 +39,12 @@ const isWinter = (startDate: Date): boolean => {
   return true;
 };
 
-const isFall = (startDate: Date): boolean => {
+const isSpring = (startDate: Date): boolean => {
   const month = startDate.getMonth();
 
-  if (month < 8 || month > 11) return false;
-  if (month === 11) return startDate.getDate() < 21;
-  if (month === 8) return startDate.getDate() >= 23;
+  if (month < 2 || month > 5) return false;
+  if (month === 5) return startDate.getDate() < 21;
+  if (month === 2) return startDate.getDate() >= 19;
 
   return true;
 };

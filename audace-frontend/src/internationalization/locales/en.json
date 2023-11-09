@@ -236,7 +236,8 @@
     "selectSession": "Select a session",
     "fall": "Fall",
     "winter": "Winter",
-    "summer": "Summer"
+    "summer": "Summer",
+    "spring": "Spring"
   },
   "infoCard": {
     "employer": {
