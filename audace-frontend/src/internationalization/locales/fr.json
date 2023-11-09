@@ -239,22 +239,22 @@
     "selectSession": "Choisir une session",
     "fall": "Automne",
     "winter": "Hiver",
-    "summer": "Été",
-    "infoCard": {
-      "employer": {
-        "title": "Entreprise",
-        "name": "Nom",
-        "email": "Courriel",
-        "phone": "Téléphone",
-        "extension": "Ext.",
-        "address": "Adresse"
-      },
-      "student": {
-        "title": "Étudiant",
-        "email": "Courriel",
-        "phone": "Téléphone",
-        "address": "Adresse"
-      }
+    "summer": "Été"
+  },
+  "infoCard": {
+    "employer": {
+      "title": "Entreprise",
+      "name": "Nom",
+      "email": "Courriel",
+      "phone": "Téléphone",
+      "extension": "Ext.",
+      "address": "Adresse"
+    },
+    "student": {
+      "title": "Étudiant",
+      "email": "Courriel",
+      "phone": "Téléphone",
+      "address": "Adresse"
     }
   }
 }
