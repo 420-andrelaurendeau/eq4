@@ -23,10 +23,4 @@ export const getApplicationById = async (id: number): Promise<AxiosResponse<Appl
     return http.get<Application>(`${MANAGER_PREFIX}/applications/${id}`);
 }
 
-export const createContract = async (contract: Contract): Promise<AxiosResponse> => {
-    return http.post(`${MANAGER_PREFIX}/contracts`, contract);
-}
 
-export const getContractById = async (id: number): Promise<AxiosResponse> => {
-    return http.get(`${MANAGER_PREFIX}/contracts/${id}`);
-}

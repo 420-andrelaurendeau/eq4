@@ -93,11 +93,7 @@ public class EmployerService extends GenericUserService<Employer> {
         Employer employer = employerRepository.findById(employerId).orElseThrow(() -> new NoSuchElementException("Employer not found"));
         List<Offer> offers = offerRepository.findAllByEmployer(employer);
 
-        return sessionManipulator
-                .removeOffersNotInSession(offers, sessionId)
-                .stream()
-                .map(Offer::toDTO)
-                .toList();
+        return sessionManipulator.removeOffersNotInSession(offers, sessionId).stream().map(Offer::toDTO).toList();
     }
 
     public Optional<OfferDTO> findOfferById(Long offerId){
@@ -119,12 +115,9 @@ public class EmployerService extends GenericUserService<Employer> {
 
     @Transactional
     public void deleteOffer(Long offerId){
-        Offer offer = offerRepository.findById(offerId).orElseThrow(
-                () -> new NoSuchElementException("Offer not found"));
+        Offer offer = offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
 
-        if (!sessionManipulator.isOfferInCurrentSession(offer)) {
-            throw new IllegalStateException("Offer is not in current session");
-        }
+        if (!sessionManipulator.isOfferInCurrentSession(offer)) throw new IllegalStateException("Offer is not in current session");
 
         OfferSession offerSession = offerSessionRepository.findByOffer(offer).orElseThrow();
         offerSessionRepository.delete(offerSession);
