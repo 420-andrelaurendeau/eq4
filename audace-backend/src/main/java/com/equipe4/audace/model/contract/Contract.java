@@ -2,6 +2,8 @@ package com.equipe4.audace.model.contract;
 
 import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.Manager;
+import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.application.Application;
 import jakarta.persistence.*;
@@ -36,13 +38,25 @@ public class Contract {
     private Application application;
 
     @Embedded
-    private Signature studentSignature;
+    private Signature<Student> studentSignature;
 
     @Embedded
-    private Signature employerSignature;
+    private Signature<Employer> employerSignature;
 
     @Embedded
-    private Signature managerSignature;
+    private Signature<Manager> managerSignature;
+
+    public boolean isSignedBy(Class<?> signatoryClass){
+        if(signatoryClass == Student.class){
+            return studentSignature != null;
+        } else if(signatoryClass == Employer.class){
+            return employerSignature != null;
+        } else if(signatoryClass == Manager.class){
+            return managerSignature != null;
+        } else {
+            return false;
+        }
+    }
 
     public ContractDTO toDTO(){
         return new ContractDTO(

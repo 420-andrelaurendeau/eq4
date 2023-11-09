@@ -9,6 +9,7 @@ import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
+import com.equipe4.audace.model.contract.Signature;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.cv.Cv.CvStatus;
 import com.equipe4.audace.model.department.Department;
@@ -162,5 +163,28 @@ public class ManagerService extends GenericUserService<Manager> {
         Department department = departmentRepository.findById(departmentId).orElseThrow(() -> new NoSuchElementException("Department not found"));
 
         return contractRepository.findAllByApplication_Offer_Department(department).stream().map(Contract::toDTO).toList();
+    }
+
+    private Optional<ContractDTO> toggleContractSignature(Long managerId, Long contractId) {
+        Contract contract = contractRepository.findById(contractId).orElseThrow(() -> new NoSuchElementException("Contract not found"));
+        Manager manager = managerRepository.findById(managerId).orElseThrow(() -> new NoSuchElementException("Manager not found"));
+        Department contractDepartment = contract.getApplication().getOffer().getDepartment();
+
+        if (!manager.getDepartment().equals(contractDepartment)) throw new IllegalArgumentException("The manager isn't in the right department");
+
+        if (!sessionManipulator.isOfferInCurrentSession(contract.getApplication().getOffer())) throw new NoSuchElementException("Offer not found");
+
+        if (contract.isSignedBy(Manager.class)) {
+            contract.setManagerSignature(null);
+        } else {
+            contract.setManagerSignature(new Signature<>(manager));
+        }
+
+        return Optional.of(contractRepository.save(contract).toDTO());
+    }
+
+    @Transactional
+    public Optional<ContractDTO> signContract(Long managerId, Long contractId) {
+        return toggleContractSignature(managerId, contractId);
     }
 }

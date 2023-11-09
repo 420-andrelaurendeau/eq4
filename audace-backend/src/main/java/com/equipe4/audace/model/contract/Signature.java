@@ -13,13 +13,13 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Embeddable
-public class Signature {
+public class Signature<T extends User> {
     LocalDate date;
 
     @OneToOne
-    private User signatory;
+    private T signatory;
 
-    public Signature(User signatory) {
+    public Signature(T signatory) {
         this.date = LocalDate.now();
         this.signatory = signatory;
     }
