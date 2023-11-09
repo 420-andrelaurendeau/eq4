@@ -12,6 +12,7 @@ import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
+import com.equipe4.audace.model.contract.Signature;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
@@ -494,6 +495,53 @@ public class ManagerServiceTest {
                 .hasMessage("Contract cannot be null");
     }
 
+    @Test
+    public void signContract_HappyPath(){
+        Manager manager = createManager();
+        Contract contract = createContract();
+        contract.setManagerSignature(new Signature<>(manager));
+
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
+        when(contractRepository.findById(anyLong())).thenReturn(Optional.of(contract));
+        when(contractRepository.save(any(Contract.class))).thenReturn(contract);
+
+        ContractDTO contractDTO = managerService.signContract(1L, 1L).get();
+        assertEquals(contractDTO.fromDTO().getManagerSignature(), contract.getManagerSignature());
+    }
+
+    @Test
+    public void signContract_InvalidManagerId(){
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.empty());
+        when(contractRepository.findById(anyLong())).thenReturn(Optional.of(createContract()));
+
+        assertThatThrownBy(() -> managerService.signContract(1L, 1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Manager not found");
+    }
+
+    @Test
+    public void signContract_InvalidContractId(){
+        when(contractRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> managerService.signContract(1L, 1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Contract not found");
+    }
+
+    @Test
+    public void signContract_WrongDepartment(){
+        Manager manager = createManager();
+        manager.setDepartment(new Department(2L, "code2", "name2"));
+        Contract contract = createContract();
+
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
+        when(contractRepository.findById(anyLong())).thenReturn(Optional.of(contract));
+
+        assertThatThrownBy(() -> managerService.signContract(1L, 1L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("The manager isn't in the right department");
+    }
+
     private Department createDepartment(){
         return new Department(1L, "GLO", "Génie logiciel");
     }
@@ -504,6 +552,11 @@ public class ManagerServiceTest {
     private Student createStudent() {
         Department department = createDepartment();
         return new Student(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", department);
+    }
+
+    private Manager createManager() {
+        Department department = createDepartment();
+        return new Manager(1L, "firstName", "lastName", "email", "password", "address", "phone", department);
     }
 
     private Cv createCv() {

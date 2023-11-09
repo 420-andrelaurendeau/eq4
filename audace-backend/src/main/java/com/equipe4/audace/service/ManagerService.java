@@ -173,8 +173,6 @@ public class ManagerService extends GenericUserService<Manager> {
 
         if (!manager.getDepartment().equals(contractDepartment)) throw new IllegalArgumentException("The manager isn't in the right department");
 
-        if (!sessionManipulator.isOfferInCurrentSession(contract.getApplication().getOffer())) throw new NoSuchElementException("Offer not found");
-
         if (contract.isSignedBy(Manager.class)) {
             contract.setManagerSignature(null);
         } else {

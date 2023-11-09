@@ -77,9 +77,9 @@ public class Contract {
                 salary,
                 supervisor,
                 application.toDTO(),
-                studentSignature.getSignatureDate(),
-                employerSignature.getSignatureDate(),
-                managerSignature.getSignatureDate()
+                studentSignature != null ? studentSignature.getSignatureDate() : null,
+                employerSignature != null ? employerSignature.getSignatureDate() : null,
+                managerSignature != null ? managerSignature.getSignatureDate() : null
         );
     }
 }
