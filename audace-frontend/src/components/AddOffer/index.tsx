@@ -21,7 +21,6 @@ const AddOffer: React.FC = () => {
   const [internshipEndDate, setInternshipEndDate] = useState<Date>({} as Date);
   const [offerEndDate, setOfferEndDate] = useState<Date>({} as Date);
   const [availablePlaces, setAvailablePlaces] = useState<number>(3);
-  const [status, setStatus] = useState<OfferStatus>(OfferStatus.PENDING);
   const [employer, setEmployer] = useState<Employer>({} as Employer);
   const [errors, setErrors] = useState<string[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
@@ -81,7 +80,6 @@ const AddOffer: React.FC = () => {
   };
 
   const validateForm = (): boolean => {
-    let isValid = true;
     const errorsToDisplay: string[] = [];
 
     if (!title) errorsToDisplay.push("addOffer.errors.titleRequired");
@@ -100,7 +98,7 @@ const AddOffer: React.FC = () => {
     return errorsToDisplay.length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (validateForm()) {
       const formData: Offer = {
         title,
@@ -113,16 +111,26 @@ const AddOffer: React.FC = () => {
         offerStatus: OfferStatus.PENDING,
         employer
       };
-      addOffer(formData);
-      navigate(`/`);
+  
+      try {
+        // Wait for the addOffer operation to complete
+        await addOffer(formData);
+        // After completion, navigate to the /employer page
+        navigate(`/employer`);
+      } catch (error) {
+        // Handle any errors that occur during the addOffer operation
+        console.error("There was an error adding the offer:", error);
+        // Optionally, you can set an error state here and display it to the user
+      }
     } else {
       setShowAlert(true);
     }
   };
+  
 
   const addOffer = async (offerData: Offer) => {
     try {
-      employerCreateOffer(offerData);
+      await employerCreateOffer(offerData);
 
     } catch (error) {
       console.error("There was an error sending the data:", error);
