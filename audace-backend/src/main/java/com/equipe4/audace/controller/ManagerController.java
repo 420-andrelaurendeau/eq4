@@ -132,7 +132,7 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
             return ResponseEntity.ok(
                     service.getApplicationById(applicationId).orElseThrow()
             );
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
     }
