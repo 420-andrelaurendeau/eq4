@@ -14,13 +14,14 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Embeddable
 public class Signature<T extends User> {
-    LocalDate date;
 
     @OneToOne
     private T signatory;
 
+    private LocalDate date;
+
     public Signature(T signatory) {
-        this.date = LocalDate.now();
         this.signatory = signatory;
+        this.date = LocalDate.now();
     }
 }

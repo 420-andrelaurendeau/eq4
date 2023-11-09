@@ -46,6 +46,16 @@ public class Contract {
     @Embedded
     private Signature<Manager> managerSignature;
 
+    public Contract(Long id, LocalTime startHour, LocalTime endHour, int totalHoursPerWeek, double salary, Supervisor supervisor, Application application) {
+        this.id = id;
+        this.startHour = startHour;
+        this.endHour = endHour;
+        this.totalHoursPerWeek = totalHoursPerWeek;
+        this.salary = salary;
+        this.supervisor = supervisor;
+        this.application = application;
+    }
+
     public boolean isSignedBy(Class<?> signatoryClass){
         if(signatoryClass == Student.class){
             return studentSignature != null;
@@ -66,7 +76,10 @@ public class Contract {
                 totalHoursPerWeek,
                 salary,
                 supervisor,
-                application.toDTO()
+                application.toDTO(),
+                studentSignature.getDate(),
+                employerSignature.getDate(),
+                managerSignature.getDate()
         );
     }
 }

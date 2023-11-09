@@ -137,5 +137,13 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
         }
     }
 
+    @PostMapping("/{managerId}/sign_contract/{contractId}")
+    public ResponseEntity<HttpStatus> signContract(@PathVariable Long managerId, @PathVariable Long contractId) {
+        logger.info("signContract");
+        return service.signContract(managerId, contractId)
+                .map(contractDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    }
+
 
 }
