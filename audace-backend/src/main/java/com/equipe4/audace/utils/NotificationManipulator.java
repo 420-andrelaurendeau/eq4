@@ -33,6 +33,7 @@ public class NotificationManipulator {
             notificationRepository.save(new NotificationOffer(null, student, cause, offer));
         }
     }
+
     @Transactional
     public void makeNotificationOfferToAllManagers(Offer offer, Notification.NotificationCause cause) {
         nullCheck(offer);
@@ -42,26 +43,31 @@ public class NotificationManipulator {
             notificationRepository.save(new NotificationOffer(null, manager, cause, offer));
         }
     }
+
     public void makeNotificationCvToCvStudent(Cv cv, Notification.NotificationCause cause) {
         nullCheck(cv);
         nullCheck(cause);
         notificationRepository.save(new NotificationCv(null, cv.getStudent(), cause, cv));
     }
+
     public void makeNotificationOfferToOfferEmployer(Offer offer, Notification.NotificationCause cause) {
         nullCheck(offer);
         nullCheck(cause);
         notificationRepository.save(new NotificationOffer(null, offer.getEmployer(), cause, offer));
     }
+
     public void makeNotificationApplicationToOfferEmployer(Application application, Notification.NotificationCause cause) {
         nullCheck(application);
         nullCheck(cause);
         notificationRepository.save(new NotificationOffer(null, application.getOffer().getEmployer(), cause, application.getOffer()));
     }
+
     public void makeNotificationApplicationToStudent(Application application, Notification.NotificationCause cause) {
         nullCheck(application);
         nullCheck(cause);
         notificationRepository.save(new NotificationOffer(null, application.getCv().getStudent(), cause, application.getOffer()));
     }
+
     @Transactional
     public void makeNotificationCvToAllManagersByDepartment(Cv cv, Notification.NotificationCause cause) {
         nullCheck(cv);
@@ -71,14 +77,17 @@ public class NotificationManipulator {
             notificationRepository.save(new NotificationCv(null, manager, cause, cv));
         }
     }
+
     public List<Notification> getAllNotificationsByUserId(Long id) {
         nullCheck(id);
         return notificationRepository.findAllByUserId(id);
     }
+
     public void deleteAllNotificationsByUserId(Long userId) {
         nullCheck(userId);
         notificationRepository.deleteAllByUserId(userId);
     }
+
     private <T> void nullCheck(T object) {
         if (object == null) {
             throw new IllegalArgumentException();
