@@ -32,7 +32,10 @@ public class ContractDTO {
                 totalHoursPerWeek,
                 salary,
                 supervisor,
-                application.fromDTO()
+                application.fromDTO(),
+                null,
+                null,
+                null
         );
     }
 

@@ -35,6 +35,15 @@ public class Contract {
     @ToString.Exclude
     private Application application;
 
+    @Embedded
+    private Signature studentSignature;
+
+    @Embedded
+    private Signature employerSignature;
+
+    @Embedded
+    private Signature managerSignature;
+
     public ContractDTO toDTO(){
         return new ContractDTO(
                 id,
