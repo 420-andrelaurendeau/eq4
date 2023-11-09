@@ -36,6 +36,7 @@ const config: Config = {
     '!**/src/internationalization/**',
     '!**/src/services/**',
     '!**/src/contextsholders/**',
+    '!**/src/views/**'
   ],
 
   // The directory where Jest should output its coverage files
