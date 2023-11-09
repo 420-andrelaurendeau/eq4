@@ -13,6 +13,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Signature<T extends User> {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "signature_gen")
+    @SequenceGenerator(name = "signature_gen", sequenceName = "signature_sec", allocationSize = 1)
+    @Column(name = "signature_id")
+    private Long id;
 
     @ManyToOne(targetEntity = User.class)
     @JoinColumn(name = "user_id")
