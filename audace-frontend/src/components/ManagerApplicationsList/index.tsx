@@ -56,6 +56,7 @@ const ManagerApplicationsList = ({ applications }: Props) => {
                                     <th>{t("applicationsList.offerTitle")}</th>
                                     <th>{t("applicationsList.organization")}</th>
                                     <th>{t("cvsList.studentName")}</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody className="table-custom">

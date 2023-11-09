@@ -32,36 +32,24 @@ export enum UserType {
   Manager
 }
 
-export interface StudentsWithInternship {
-  students: Student[];
-  status: string;
-}
-
-export interface StudentsWithAcceptedResponse {
+export interface StudentsWithStatus {
     students: Student[];
     status: string;
 }
 
-export interface StudentsWithRefusedResponse {
-    students: Student[];
-    status: string;
-}
-
-export interface StudentsWithNoApplications {
-    students: Student[];
-    status: string;
-}
-
-export interface StudentsWithPendingResponse {
-    students: Student[];
-    status: string;
+export enum InternshipStatus {
+    studentsWithIntership = "INTERN",
+    studentsWithPendingResponse = "PENDING",
+    studentsWithRefusedResponse = "REFUSED",
+    studentsWithAcceptedResponse = "ACCEPTED",
+    studentsWithNoApplications = "NO_APPLICATION"
 }
 
 export interface StudentsByInternshipFoundStatus {
-    studentsWithInternship: StudentsWithInternship;
-    studentsWithAcceptedResponse: StudentsWithAcceptedResponse;
-    studentsWithPendingResponse: StudentsWithPendingResponse;
-    studentsWithRefusedResponse: StudentsWithRefusedResponse;
-    studentsWithoutApplications: StudentsWithNoApplications;
-    [key: string]: StudentsWithInternship | StudentsWithAcceptedResponse | StudentsWithPendingResponse | StudentsWithRefusedResponse | StudentsWithNoApplications;
+    [key: string]: StudentsWithStatus;
 }
+
+export const mapStudentsWithStatus = (statusKey: string, response: any): StudentsWithStatus => ({
+    students: response[statusKey],
+    status: InternshipStatus[statusKey as keyof typeof InternshipStatus] || statusKey,
+});
