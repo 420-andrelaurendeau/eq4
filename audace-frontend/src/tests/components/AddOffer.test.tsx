@@ -9,10 +9,11 @@ jest.mock("react-i18next", () => ({
   }),
 }));
 
+const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useNavigate: () => jest.fn(),
-  }));
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockNavigate,
+}));
 
 jest.mock("../../services/authService", () => ({
   getUserId: jest.fn(),
@@ -41,6 +42,8 @@ const mockEmployer = {
 };
 
 beforeEach(() => {
+    jest.clearAllMocks();
+  jest.resetAllMocks();
   const authService = require("../../services/authService");
   const userService = require("../../services/userService");
   const departmentService = require("../../services/departmentService");
@@ -68,29 +71,42 @@ describe('AddOffer', () => {
     render(<AddOffer />);
 
     await act(async () => {
-    fireEvent.change(screen.getByLabelText(/addOffer.title/i), { target: { value: 'Test Title' } });
-    fireEvent.change(screen.getByLabelText(/addOffer.description/i), { target: { value: 'Test Description' } });
-    fireEvent.change(screen.getByLabelText(/addOffer.departmentCode/i), { target: { value: 'D1' } });
-    fireEvent.change(screen.getByLabelText(/addOffer.startDate/i), { target: { value: '2021-01-01' } });
-    fireEvent.change(screen.getByLabelText(/addOffer.endDate/i), { target: { value: '2021-06-01' } });
-    fireEvent.change(screen.getByLabelText(/addOffer.offerEndDate/i), { target: { value: '2021-02-01' } });
-    fireEvent.change(screen.getByLabelText(/addOffer.availablePlaces/i), { target: { value: '3' } });
+      fireEvent.change(screen.getByLabelText(/addOffer.title/i), { target: { value: 'Test Title' } });
+      fireEvent.change(screen.getByLabelText(/addOffer.description/i), { target: { value: 'Test Description' } });
+      fireEvent.change(screen.getByLabelText(/addOffer.departmentCode/i), { target: { value: 'D1' } });
+      fireEvent.change(screen.getByLabelText(/addOffer.startDate/i), { target: { value: '2021-01-01' } });
+      fireEvent.change(screen.getByLabelText(/addOffer.endDate/i), { target: { value: '2021-06-01' } });
+      fireEvent.change(screen.getByLabelText(/addOffer.offerEndDate/i), { target: { value: '2021-02-01' } });
+      fireEvent.change(screen.getByLabelText(/addOffer.availablePlaces/i), { target: { value: '3' } });
+      fireEvent.click(screen.getByText(/addOffer.submit/i));
     });
-
-    await act(async () => {
-        fireEvent.click(screen.getByText(/addOffer.submit/i));
-      });
 
   });
 
   it('shows validation errors on submit with invalid data', async () => {
     render(<AddOffer />);
 
+    fireEvent.click(screen.getByText(/addOffer.submit/i));
+
     await waitFor(() => {
+      expect(screen.getByText(/addOffer.errors.titleRequired/i)).toBeInTheDocument();
+      expect(screen.getByText(/addOffer.errors.descriptionRequired/i)).toBeInTheDocument();
+    });
+  });
+
+  it('handles submit errors', async () => {
+    const offerService = require("../../services/offerService");
+    offerService.employerCreateOffer.mockRejectedValueOnce(new Error('Async error'));
+
+    render(<AddOffer />);
+
+    await act(async () => {
+      fireEvent.change(screen.getByLabelText(/addOffer.title/i), { target: { value: 'Test Title' } });
       fireEvent.click(screen.getByText(/addOffer.submit/i));
     });
 
-    expect(screen.getByText(/addOffer.errors.titleRequired/i)).toBeInTheDocument();
-    expect(screen.getByText(/addOffer.errors.descriptionRequired/i)).toBeInTheDocument();
   });
+
+  
+
 });
