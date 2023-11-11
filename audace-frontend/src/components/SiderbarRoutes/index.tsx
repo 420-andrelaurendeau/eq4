@@ -17,10 +17,17 @@ import EmployerView from "../../views/Employer/EmployerView";
 import NotificationSidebar from "../NotificationSidebar";
 import { Navigate, Route, Routes } from "react-router-dom";
 
-const SidebarRoutes: React.FC = () => {
+interface Props {
+    showNotifications: boolean,
+}
+
+const SidebarRoutes = ({showNotifications} : Props) => {
     return (
-        <div className="col">
+        <div className="col d-md-flex">
+            {showNotifications ?
             <NotificationSidebar/>
+            : null}
+            <div className="col">
             <Routes>
                 <Route path="/signup/*" element={
                     <Routes>
@@ -74,6 +81,7 @@ const SidebarRoutes: React.FC = () => {
                 <Route path="*" element={<PageNotFoundView />} />
                 <Route path="/" element={<Navigate to={getAuthorities()?.[0]?.toString().toLowerCase() || "/login"}/>}/>
             </Routes>
+            </div>
         </div>
     );
 }

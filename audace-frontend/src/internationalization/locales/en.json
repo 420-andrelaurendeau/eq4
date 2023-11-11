@@ -255,5 +255,19 @@
       "phone": "Phone",
       "address": "Address"
     }
+  },
+  "notifications": {
+    "student": {
+      "offer": {
+        "UPDATED1" : "The offer ",
+        "UPDATED2" : " can now be applied to."
+      },
+      "cv": {
+  
+      },
+      "application": {
+  
+      }  
+    }
   }
 }

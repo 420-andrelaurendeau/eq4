@@ -1,14 +1,13 @@
+import { useState } from "react";
 import AppHeader from "../AppHeader";
 import SidebarRoutes from "../SiderbarRoutes";
 
 const HeaderSidebar: React.FC = () => {
-    const showSidebar = () => {
-
-    }
+    const [showNotifications, setShowNotifications] = useState<boolean>(false)
     return (
         <div>
-            <AppHeader notificationClick={showSidebar}/>
-            <SidebarRoutes/>
+            <AppHeader showNotifications={showNotifications} setShowNotifications={setShowNotifications}/>
+            <SidebarRoutes showNotifications={showNotifications}/>
         </div>
     );
 }

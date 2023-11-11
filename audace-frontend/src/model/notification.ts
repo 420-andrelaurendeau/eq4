@@ -3,18 +3,22 @@ import { CV } from "./cv";
 import { Offer } from "./offer";
 import { User } from "./user";
 
-export interface Notification<T> {
+export interface Notification {
   id?: number;
   user : User;
   seen : boolean;
-  content : T; //TODO : Still a disgrace
+  offer? : Offer;
+  application? : Application;
+  cv? : CV;
   type : String;
+  cause : NotificationCause;
 }
-export interface NotificationOffer extends Notification<Offer> {
+
+enum NotificationCause {
+  CREATED = "CREATED",
+  UPDATED = "UPDATED",
+  DELETED = "DELETED",
+  EXPIRED = "EXPIRED"
 }
-export interface NotificationCv extends Notification<CV> {
-}
-export interface NotificationApplication extends Notification<Application> {
-    
-}
+
 export default Notification;

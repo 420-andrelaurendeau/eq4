@@ -101,20 +101,6 @@ const StudentView = ({
       });
   }, [student, t, setApplications, chosenSession]);
 
-  useEffect(() => {
-    if (student === undefined) return;
-    if (notifications.length > 0) return;
-    if (chosenSession === undefined) return;
-    
-    getNotificationsByUserId(student.id!)
-      .then((res) => {
-        if (res.data.length > 0) {
-          setNotifications(res.data);
-          console.log(res.data);
-        }
-      })
-  }, [student, notifications, chosenSession]);
-
   return (
     <Container>
       <h1 className="my-3" style={{ textTransform: "capitalize" }}>
