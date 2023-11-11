@@ -270,6 +270,33 @@
         "UPDATED1" : "The application ",
         "UPDATED2" : " has had it's status updated."
       }
+    },
+    "manager": {
+      "offer": {
+        "CREATED1" : "The offer ",
+        "CREATED2" : " is waiting for your approval.",
+        "UPDATED1" : "The offer ",
+        "UPDATED2" : " has been updated."
+      },
+      "cv": {
+        "CREATED1" : "The CV ",
+        "CREATED2" : " is waiting for your approval.",
+        "UPDATED1" : "The CV ",
+        "UPDATED2" : " has been updated."
+      },
+      "application": {
+        
+      }
+    },
+    "employer": {
+      "offer": {
+        "UPDATED1" : "The offer ",
+        "UPDATED2" : " has had it's status updated."
+      },
+      "application": {
+        "CREATED1" : "The offer ",
+        "CREATED2" : " has a new application."
+      }
     }
   }
 }

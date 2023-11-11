@@ -46,14 +46,12 @@ public class AudaceApplication implements CommandLineRunner {
 	private EmployerService employerService;
 	private SaltRepository saltRepository;
 	private ManagerRepository managerRepository;
-	private ManagerService managerService;
 	private StudentService studentService;
 	private SessionRepository sessionRepository;
 	private OfferRepository offerRepository;
 	private OfferSessionRepository offerSessionRepository;
 	private ApplicationRepository applicationRepository;
 	private CvRepository cvRepository;
-	private NotificationRepository notificationRepository;
 	public ContractRepository contractRepository;
 
 	public static void main(String[] args) {
@@ -147,8 +145,5 @@ public class AudaceApplication implements CommandLineRunner {
 		manager.setPassword(BCrypt.hashpw(managerPassword, managerSalt));
 		manager = managerRepository.save(manager);
 		saltRepository.save(new Salt(null, manager, managerSalt));
-		notificationRepository.save(new NotificationOffer(null, student2, Notification.NotificationCause.CREATED, offer1));
-		notificationRepository.save(new NotificationCv(null, student2, Notification.NotificationCause.CREATED, cv1));
-
 	}
 }
