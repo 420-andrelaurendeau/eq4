@@ -9,8 +9,11 @@ import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Manager;
+import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.application.Application;
+import com.equipe4.audace.model.contract.Contract;
+import com.equipe4.audace.model.contract.Signature;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
@@ -52,8 +55,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -343,7 +345,6 @@ public class ManagerControllerTest {
                 andExpect(status().isCreated());
 
     }
-
     @Test
     @WithMockUser(username = "manager", authorities = {"Manager"})
     public void givenContractId_whenGetContractById_thenReturnContractObject() throws Exception{
@@ -366,6 +367,28 @@ public class ManagerControllerTest {
                 .andExpect(jsonPath("$.salary", is(contractDTO.getSalary())))
                 .andExpect(jsonPath("$.supervisor.email", is(contractDTO.getSupervisor().getEmail())))
                 .andExpect(jsonPath("$.application.id", is(contractDTO.getApplication().getId().intValue())));
+    }
+
+    @Test
+    @WithMockUser(username = "manager", authorities = {"Manager"})
+    public void givenContractId_whenSignContractForStudent_thenReturnIsOk() throws Exception{
+        // given - precondition or setup
+        ApplicationDTO applicationDTO = createApplicationDTO(createOfferDTO(1L));
+        applicationDTO.setApplicationStatus(Application.ApplicationStatus.ACCEPTED);
+
+        ContractDTO contractDTO = createContractDTO(applicationDTO);
+        Student student = createStudentDTO(createDepartmentDTO()).fromDTO();
+
+        contractDTO.setStudentSignature(new Signature<Student>(student, LocalDate.now()));
+
+        when(managerService.signContractForStudent(contractDTO.getId())).thenReturn(Optional.of(contractDTO));
+
+        mockMvc.perform(put("/managers/contract/student_signature")
+                .param("contractId", "1")
+                .with(csrf())
+                .accept(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk());
+
     }
 
 

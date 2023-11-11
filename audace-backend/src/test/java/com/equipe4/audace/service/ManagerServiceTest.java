@@ -12,12 +12,14 @@ import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
+import com.equipe4.audace.model.contract.Signature;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
+import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
@@ -52,6 +54,8 @@ public class ManagerServiceTest {
     private DepartmentRepository departmentRepository;
     @Mock
     private ManagerRepository managerRepository;
+    @Mock
+    private StudentRepository studentRepository;
     @Mock
     private CvRepository cvRepository;
     @Mock
@@ -493,6 +497,30 @@ public class ManagerServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Contract cannot be null");
     }
+
+    @Test
+    public void signContractForStudent_HappyPath(){
+        Contract contract = createContract();
+        Student student = createStudent();
+
+        contract.setStudentSignature(new Signature<Student>(student, LocalDate.now()));
+
+        when(contractRepository.findById(anyLong())).thenReturn(Optional.of(contract));
+        when(studentRepository.findByCv(any(Cv.class))).thenReturn(Optional.of(student));
+        when(contractRepository.save(any(Contract.class))).thenReturn(contract);
+
+        ContractDTO contractDTO = managerService.signContractForStudent(contract.getId()).orElseThrow();
+        assertThat(contractDTO.getStudentSignature()).isEqualTo(contract.getStudentSignature());
+    }
+    @Test
+    public void signContractForStudent_invalidId(){
+        when(contractRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> managerService.signContractForStudent(anyLong()))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Contract not found");
+    }
+
 
     private Department createDepartment(){
         return new Department(1L, "GLO", "Génie logiciel");

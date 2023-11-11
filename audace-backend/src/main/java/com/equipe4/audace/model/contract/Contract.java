@@ -2,6 +2,8 @@ package com.equipe4.audace.model.contract;
 
 import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.Manager;
+import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.application.Application;
 import jakarta.persistence.*;
@@ -35,6 +37,23 @@ public class Contract {
     @ToString.Exclude
     private Application application;
 
+    @Embedded
+    private Signature<Student> studentSignature;
+    @Embedded
+    private Signature<Employer> employerSignature;
+    @Embedded
+    private Signature<Manager> managerSignature;
+
+    public Contract(Long id, LocalTime startHour, LocalTime endHour, int totalHoursPerWeek, double salary, Supervisor supervisor, Application application) {
+        this.id = id;
+        this.startHour = startHour;
+        this.endHour = endHour;
+        this.totalHoursPerWeek = totalHoursPerWeek;
+        this.salary = salary;
+        this.supervisor = supervisor;
+        this.application = application;
+    }
+
     public ContractDTO toDTO(){
         return new ContractDTO(
                 id,
@@ -43,7 +62,10 @@ public class Contract {
                 totalHoursPerWeek,
                 salary,
                 supervisor,
-                application.toDTO()
+                application.toDTO(),
+                studentSignature,
+                employerSignature,
+                managerSignature
         );
     }
 }
