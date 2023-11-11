@@ -13,14 +13,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        property = "type"
-)
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = NotificationCv.class, name = "cv"),
-        @JsonSubTypes.Type(value = NotificationOffer.class, name = "offer")
-})
 public abstract class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQUENCE_NOTIFICATION")

@@ -125,7 +125,7 @@ public class ManagerService extends GenericUserService<Manager> {
     public Optional<OfferDTO> acceptOffer(Long managerId, Long offerId) {
         notificationManipulator.makeNotificationOfferToAllStudents(
                 offerRepository.findById(offerId).orElseThrow(),
-                Notification.NotificationCause.UPDATED
+                Notification.NotificationCause.CREATED
         );
         return setOfferStatus(managerId, offerId, OfferStatus.ACCEPTED);
     }

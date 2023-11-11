@@ -6,7 +6,7 @@ import com.equipe4.audace.model.notification.Notification;
 import com.equipe4.audace.model.notification.NotificationCv;
 
 public class NotificationCvDTO extends NotificationDTO {
-    public CvDTO content;
+    public CvDTO cv;
 
     public NotificationCvDTO(
             Long id,
@@ -15,10 +15,10 @@ public class NotificationCvDTO extends NotificationDTO {
             CvDTO content
     ) {
         super(id, userDTO, cause);
-        this.content = content;
+        this.cv = content;
     }
 
     public NotificationCv fromDTO() {
-        return new NotificationCv(id, userDTO.fromDTO(), cause, content.fromDTO());
+        return new NotificationCv(id, user.fromDTO(), cause, cv.fromDTO());
     }
 }

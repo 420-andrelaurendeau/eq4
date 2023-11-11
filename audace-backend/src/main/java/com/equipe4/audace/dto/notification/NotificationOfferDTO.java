@@ -6,7 +6,7 @@ import com.equipe4.audace.model.notification.Notification;
 import com.equipe4.audace.model.notification.NotificationOffer;
 
 public class NotificationOfferDTO extends NotificationDTO {
-    public OfferDTO content;
+    public OfferDTO offer;
 
     public NotificationOfferDTO(
             Long id,
@@ -15,10 +15,10 @@ public class NotificationOfferDTO extends NotificationDTO {
             OfferDTO content
     ) {
         super(id, userDTO, cause);
-        this.content = content;
+        this.offer = content;
     }
 
     public NotificationOffer fromDTO() {
-        return new NotificationOffer(id, userDTO.fromDTO(), cause, content.fromDTO());
+        return new NotificationOffer(id, user.fromDTO(), cause, offer.fromDTO());
     }
 }

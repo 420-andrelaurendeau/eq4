@@ -263,11 +263,13 @@
         "UPDATED2" : " can now be applied to."
       },
       "cv": {
-  
+        "UPDATED1" : "The CV ",
+        "UPDATED2" : " has had it's status updated."
       },
       "application": {
-  
-      }  
+        "UPDATED1" : "The application ",
+        "UPDATED2" : " has had it's status updated."
+      }
     }
   }
 }

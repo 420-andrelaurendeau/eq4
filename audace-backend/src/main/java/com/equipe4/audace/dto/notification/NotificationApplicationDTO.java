@@ -6,7 +6,7 @@ import com.equipe4.audace.model.notification.Notification;
 import com.equipe4.audace.model.notification.NotificationApplication;
 
 public class NotificationApplicationDTO extends NotificationDTO {
-    public ApplicationDTO content;
+    public ApplicationDTO application;
 
     public NotificationApplicationDTO (
             Long id,
@@ -15,9 +15,9 @@ public class NotificationApplicationDTO extends NotificationDTO {
             ApplicationDTO content
     ) {
         super(id, userDTO, cause);
-        this.content = content;
+        this.application = content;
     }
     public NotificationApplication fromDTO() {
-        return new NotificationApplication(id, userDTO.fromDTO(), cause, content.fromDTO());
+        return new NotificationApplication(id, user.fromDTO(), cause, application.fromDTO());
     }
 }
