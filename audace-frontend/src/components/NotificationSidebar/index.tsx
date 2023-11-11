@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './style.css'
-import { deleteNotificationById, getNotificationsByUserId } from '../../services/notificationService';
+import { deleteNotificationById, getNotificationsByUserId, deleteAllNotificationsByUserId } from '../../services/notificationService';
 import { getUserId } from '../../services/authService';
 import Notification from '../../model/notification';
 import { useTranslation } from 'react-i18next';
@@ -22,15 +22,22 @@ const NotificationSidebar = () => {
         setNotifications(notifications.filter((n) => n.id !== notification.id));
     }
 
+    const deleteAllNotifications = () => {
+        deleteAllNotificationsByUserId(parseInt(getUserId()!));
+        setNotifications([]);
+    }
+
     const renderNotifications = () => {
-        return notifications.map((notification : Notification) => {
-            return (
-                <div className="alert alert-danger mb-0 rounded-start-0 notification" key={notification.id}>
-                    <div className="float-end" onClick={() => {deleteNotification(notification)}}>X</div>
-                    {makeNotifications(notification)}
-                </div>
-            )
-        })
+        return(
+            notifications.map((notification : Notification) => {
+                return (
+                    <div className="alert alert-danger mb-0 rounded-start-0 notification" key={notification.id}>
+                        <div className="float-end cursor-pointer" onClick={() => {deleteNotification(notification)}}>X</div>
+                        {makeNotifications(notification)}
+                    </div>
+                )
+            })
+        )
     }
 
     const makeNotifications = (notification : Notification) => {
@@ -63,7 +70,12 @@ const NotificationSidebar = () => {
 
     return (
         <div className="notification-sidebar col-md-3 col-12 pe-md-3 pb-3 notification-sidebar">
-            <h1>Notifications</h1>
+            <div className="ms-2">
+                <h1>Notifications</h1>
+                <button className="mb-2 btn btn-outline btn-outline-danger p-1 text-dark" onClick={deleteAllNotifications}>
+                    {t("notifications.deleteAll")}
+                </button>
+            </div>
             {renderNotifications()}
         </div>
     )

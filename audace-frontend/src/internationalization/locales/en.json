@@ -257,6 +257,7 @@
     }
   },
   "notifications": {
+    "deleteAll" : "Remove all",
     "student": {
       "offer": {
         "CREATED1" : "The offer ",

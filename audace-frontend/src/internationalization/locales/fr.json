@@ -258,6 +258,7 @@
     }
   },
   "notifications": {
+    "deleteAll" : "Effacer tout",
     "student": {
       "offer": {
         "CREATED1" : "L'offre ",

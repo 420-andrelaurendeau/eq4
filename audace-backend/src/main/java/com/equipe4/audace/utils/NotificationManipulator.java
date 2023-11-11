@@ -83,7 +83,7 @@ public class NotificationManipulator {
         nullCheck(id);
         return notificationRepository.findAllByUserId(id);
     }
-
+    @Transactional
     public void deleteAllNotificationsByUserId(Long userId) {
         nullCheck(userId);
         notificationRepository.deleteAllByUserId(userId);

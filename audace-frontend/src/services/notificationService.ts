@@ -10,3 +10,7 @@ export const getNotificationsByUserId = async (id: number): Promise<AxiosRespons
 export const deleteNotificationById = async (id: number): Promise<AxiosResponse<void>> => {
     return http.delete<void>(`${USER_PREFIX}/deleteNotificationById/${id}`);
 }
+
+export const deleteAllNotificationsByUserId = async (id: number): Promise<AxiosResponse<void>> => {
+    return http.delete<void>(`${USER_PREFIX}/deleteAllNotificationsByUserId/${id}`);
+}
