@@ -259,8 +259,8 @@
   "notifications": {
     "student": {
       "offer": {
-        "UPDATED1" : "The offer ",
-        "UPDATED2" : " can now be applied to."
+        "CREATED1" : "The offer ",
+        "CREATED2" : " can now be applied to."
       },
       "cv": {
         "UPDATED1" : "The CV ",

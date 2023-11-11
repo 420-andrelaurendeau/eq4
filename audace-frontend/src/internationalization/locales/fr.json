@@ -260,8 +260,8 @@
   "notifications": {
     "student": {
       "offer": {
-        "UPDATED1" : "L'offre ",
-        "UPDATED2" : " peut maintenant recevoir des candidatures."
+        "CREATED1" : "L'offre ",
+        "CREATED2" : " peut maintenant recevoir des candidatures."
       },
       "cv": {
         "UPDATED1" : "Le CV ",
