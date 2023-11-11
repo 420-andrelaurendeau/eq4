@@ -7,7 +7,6 @@ import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Manager;
-import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
 import com.equipe4.audace.model.contract.Signature;

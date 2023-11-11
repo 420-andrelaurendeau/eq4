@@ -345,6 +345,7 @@ public class ManagerControllerTest {
                 andExpect(status().isCreated());
 
     }
+
     @Test
     @WithMockUser(username = "manager", authorities = {"Manager"})
     public void givenContractId_whenGetContractById_thenReturnContractObject() throws Exception{

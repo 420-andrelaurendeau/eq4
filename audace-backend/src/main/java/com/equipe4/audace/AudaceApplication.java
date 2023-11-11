@@ -68,20 +68,20 @@ public class AudaceApplication implements CommandLineRunner {
 		EmployerDTO employerDTO = optionalEmployerDTO.get();
 		Employer employer = employerDTO.fromDTO();
 
-		Student student = new Student(null, "Kylian", "Mbappe", "kylian@live.fr", "123123", "34 de Montpellier", "4387654545", "2080350", department);
-		Optional<StudentDTO> optionalStudent = studentService.createStudent(student.toDTO(), department.getCode());
+		Optional<StudentDTO> optionalStudent = studentService.createStudent(new StudentDTO(null, "Kylian", "Mbappe", "kylian@live.fr", "34 de Montpellier", "4387654545", "123123", "2080350", department.toDTO()), department.getCode());
 		if (optionalStudent.isEmpty()) return;
-		student = optionalStudent.get().fromDTO();
+		StudentDTO studentDTO = optionalStudent.get();
+		Student student = studentDTO.fromDTO();
 
-		Student student2 = new Student(null, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", department);
-		Optional<StudentDTO> optionalStudent2 = studentService.createStudent(student2.toDTO(), department.getCode());
+		Optional<StudentDTO> optionalStudent2 = studentService.createStudent(new StudentDTO(null, "student", "studentman", "student@email.com", "123 Street Street", "1234567890", "password", "123456789", department.toDTO()), department.getCode());
 		if (optionalStudent2.isEmpty()) return;
-		student2 = optionalStudent2.get().fromDTO();
+		StudentDTO studentDTO2 = optionalStudent2.get();
+		Student student2 = studentDTO2.fromDTO();
 
-		Student student3 = new Student(null, "Joshua", "Cedric", "student3@email.com", "password", "123 Street Street", "1234567890", "204009878", department);
-		Optional<StudentDTO> optionalStudent3 = studentService.createStudent(student3.toDTO(), department.getCode());
+		Optional<StudentDTO> optionalStudent3 = studentService.createStudent(new StudentDTO(null, "student3", "student3", "student3@email.com", "456 Rue Rue", "0123456789", "password", "987654321", department.toDTO()), department.getCode());
 		if (optionalStudent3.isEmpty()) return;
-		student3 = optionalStudent3.get().fromDTO();
+		StudentDTO studentDTO3 = optionalStudent3.get();
+		Student student3 = studentDTO3.fromDTO();
 
         Offer offer1 = offerRepository.save(
 				new Offer(null, "Stage en génie logiciel PROTOTYPE", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 2, department, employer)
