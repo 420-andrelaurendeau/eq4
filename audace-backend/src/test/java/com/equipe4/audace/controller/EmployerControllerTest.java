@@ -41,6 +41,7 @@ import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -220,6 +221,24 @@ public class EmployerControllerTest {
                 .andExpect(jsonPath("$.availablePlaces", is(offerUpdated.getAvailablePlaces())))
                 .andExpect(jsonPath("$.employer.id", is(offerUpdated.getEmployer().getId().intValue())))
                 .andExpect(jsonPath("$.department.code", is(offerUpdated.getDepartment().getCode())));
+    }
+
+    @Test
+    @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
+    public void givenEOfferId_whenDeleteOffer_thenReturnIsOd() throws Exception{
+        // given - precondition or setup
+        willDoNothing().given(employerService).deleteOffer(anyLong());
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(delete("/employers/offers")
+                .with(csrf())
+                .param("offerId", "1")
+                .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print());
     }
 
     @Test
