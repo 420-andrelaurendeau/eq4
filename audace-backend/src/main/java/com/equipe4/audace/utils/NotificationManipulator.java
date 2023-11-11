@@ -60,7 +60,7 @@ public class NotificationManipulator {
     public void makeNotificationApplicationToOfferEmployer(Application application, Notification.NotificationCause cause) {
         nullCheck(application);
         nullCheck(cause);
-        notificationRepository.save(new NotificationOffer(null, application.getOffer().getEmployer(), cause, application.getOffer()));
+        notificationRepository.save(new NotificationApplication(null, application.getOffer().getEmployer(), cause, application));
     }
 
     public void makeNotificationApplicationToStudent(Application application, Notification.NotificationCause cause) {
@@ -97,5 +97,9 @@ public class NotificationManipulator {
     public void deleteNotificationById(Long id) { //TODO : Tests
         nullCheck(id);
         notificationRepository.deleteById(id);
+    }
+    public boolean hasNotificationByUserId(Long userId) { //TODO : Tests
+        nullCheck(userId);
+        return notificationRepository.existsByUserId(userId);
     }
 }

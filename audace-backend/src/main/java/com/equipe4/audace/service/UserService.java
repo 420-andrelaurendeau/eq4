@@ -63,4 +63,7 @@ public class UserService extends GenericUserService<User> {
     public void deleteAllNotificationsByUserId(Long userId) { //TODO : Tests
         notificationManipulator.deleteAllNotificationsByUserId(userId);
     }
+    public boolean hasNotificationByUserId(Long userId) { //TODO : Tests
+        return notificationManipulator.hasNotificationByUserId(userId);
+    }
 }

@@ -65,4 +65,8 @@ public class UserController extends GenericUserController<User, UserService> {
         service.deleteNotificationById(id);
         return HttpStatus.OK;
     }
+    @GetMapping("/hasNotificationByUserId/{userId}") //TODO : Tests
+    public ResponseEntity<Boolean> hasNotificationByUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok(service.hasNotificationByUserId(userId));
+    }
 }
