@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './style.css'
-import { getNotificationsByUserId } from '../../services/userService';
+import { deleteNotificationById, getNotificationsByUserId } from '../../services/notificationService';
 import { getUserId } from '../../services/authService';
 import Notification from '../../model/notification';
 import { useTranslation } from 'react-i18next';
@@ -17,10 +17,16 @@ const NotificationSidebar = () => {
             })
     }, [setNotifications]);
 
+    const deleteNotification = (notification : Notification) => {
+        deleteNotificationById(notification.id!);
+        setNotifications(notifications.filter((n) => n.id !== notification.id));
+    }
+
     const renderNotifications = () => {
         return notifications.map((notification : Notification) => {
             return (
                 <div className="alert alert-danger mb-0 rounded-start-0 notification" key={notification.id}>
+                    <div className="float-end" onClick={() => {deleteNotification(notification)}}>X</div>
                     {makeNotifications(notification)}
                 </div>
             )
@@ -49,7 +55,7 @@ const NotificationSidebar = () => {
                 + "1")} {title} {t("notifications."
                 + notification.user.type
                 + "." + notification.type
-                + "." + notification.cause + "2")} {/*TODO : Actually make I18N*/}
+                + "." + notification.cause + "2")}
             </div>
         )
     }

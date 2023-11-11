@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {Container} from "react-bootstrap";
-import {getNotificationsByUserId, getStudentById} from "../../../services/userService";
+import {getStudentById} from "../../../services/userService";
 import {useTranslation} from "react-i18next";
 import {Student, UserType} from "../../../model/user";
 import {Offer} from "../../../model/offer";
@@ -32,7 +32,6 @@ const StudentView = ({
   const [offersError, setOffersError] = useState<string>("");
   const [cvsError, setCvsError] = useState<string>("");
   const [applicationsError, setApplicationsError] = useState<string>("");
-  const [notifications, setNotifications] = useState<Notification[]>([]);
   const { t } = useTranslation();
   const navigate = useNavigate();
   const {cvs, setCvs} = useCVContext();

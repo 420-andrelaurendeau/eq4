@@ -55,12 +55,12 @@ public class UserController extends GenericUserController<User, UserService> {
     public ResponseEntity<List<NotificationDTO>> getAllNotificationByUserId(@PathVariable Long id) {
         return ResponseEntity.ok(service.getAllNotificationByUserId(id));
     }
-    @PostMapping("/deleteAllNotificationsByUserId/{id}") //TODO : Tests
+    @DeleteMapping("/deleteAllNotificationsByUserId/{id}") //TODO : Tests
     public HttpStatus deleteAllNotificationsByUserId(@PathVariable Long id) {
         service.deleteAllNotificationsByUserId(id);
         return HttpStatus.OK;
     }
-    @PostMapping("/deleteNotificationById/{id}") //TODO : Tests
+    @DeleteMapping("/deleteNotificationById/{id}") //TODO : Tests
     public HttpStatus deleteNotificationById(@PathVariable Long id) {
         service.deleteNotificationById(id);
         return HttpStatus.OK;
