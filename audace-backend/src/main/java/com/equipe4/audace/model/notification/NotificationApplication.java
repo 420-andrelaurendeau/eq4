@@ -3,8 +3,12 @@ package com.equipe4.audace.model.notification;
 import com.equipe4.audace.dto.notification.NotificationApplicationDTO;
 import com.equipe4.audace.model.User;
 import com.equipe4.audace.model.application.Application;
+import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
+import lombok.NoArgsConstructor;
 
+@Entity
+@NoArgsConstructor
 public class NotificationApplication extends Notification {
     public NotificationApplication(Long id, User user, NotificationCause cause, Application content) {
         super(id, user, cause);
