@@ -107,16 +107,12 @@ const StudentView = ({ viewOffers = true, viewUpload = true }: StudentViewProps)
 
       {viewOffers && (
         <>
-          <OffersList
-            offers={offers}
-            error={offersError}
-            userType={UserType.Student}
-          />
+          <OffersList offers={offers} error={offersError} userType={UserType.Student}/>
         </>
       )}
       <CVsList cvs={cvs} error={cvsError} userType={UserType.Student} />
       {viewUpload && <FileUploader student={student!} />}
-      {/*<ApplicationsList applications={applications} error={applicationsError} userType={UserType.Student}/>*/}
+      <ApplicationsList applications={applications} error={applicationsError} userType={UserType.Student}/>
     </Container>
   );
 };

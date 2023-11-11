@@ -6,24 +6,23 @@ import { Offer, OfferStatus } from "../../../../model/offer";
 
 interface Props {
   userType: UserType;
-  disabled: boolean;
+  disabled?: boolean;
   offer: Offer;
   updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
-  seeApplications?: (offer: Offer) => void;
   hideRow?: () => void;
 }
-const OfferButtons = ({userType, disabled, offer, updateOffersState, seeApplications, hideRow}: Props) => {
+const OfferButtons = ({userType, offer, updateOffersState, hideRow}: Props) => {
   const selectButtons = () => {
     switch (userType) {
       case UserType.Student:
-        return <StudentButtons disabled={false} offer={offer} />;
+        return <StudentButtons offer={offer} />;
       case UserType.Manager:
         return (
-          <ManagerButtons disabled={false} offer={offer} updateOffersState={updateOffersState}/>
+          <ManagerButtons offer={offer} updateOffersState={updateOffersState}/>
         );
       case UserType.Employer:
         return (
-          <EmployerButtons disabled={false} seeApplications={seeApplications} offer={offer} hideRow={hideRow} />
+          <EmployerButtons offer={offer} hideRow={hideRow} />
         );
     }
   };

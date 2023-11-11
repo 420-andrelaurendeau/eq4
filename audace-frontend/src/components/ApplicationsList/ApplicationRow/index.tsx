@@ -8,7 +8,7 @@ import EmployerButtons from "./ApplicationButtons/EmployerButtons";
 import {Offer} from "../../../model/offer";
 
 interface Props {
-  offer: Offer;
+  offer?: Offer;
   application: Application;
   userType: UserType;
   updateApplicationsState?: (application: Application, applicationStatus: ApplicationStatus) => void;
@@ -23,15 +23,15 @@ const ApplicationRow = ({offer, application, userType, updateApplicationsState }
   return (
     <>
       <tr>
-        {userType != UserType.Employer && <td>{application.offer!.title}</td>}
-        {userType != UserType.Student && <th>{application.cv!.student.firstName} {application.cv!.student.lastName}</th>}
+        {userType !== UserType.Employer && <td>{application.offer!.title}</td>}
+        {userType !== UserType.Student && <th>{application.cv!.student.firstName} {application.cv!.student.lastName}</th>}
         <td>
           <Col>{application.cv!.fileName}</Col>
           <Col className="text-muted small"><u className="hovered" onClick={handleClick}>{t("cvsList.viewMore")}</u></Col>
         </td>
-        {userType != UserType.Employer && <td>{application.offer!.employer.organisation}</td>}
+        {userType !== UserType.Employer && <td>{application.offer!.employer.organisation}</td>}
         <td>
-          {userType === UserType.Employer && offer.availablePlaces > 0 ?  (
+          {userType === UserType.Employer && offer!.availablePlaces > 0 ?  (
               <div className="d-flex justify-content-center">
                 <EmployerButtons application={application} updateApplicationsState={updateApplicationsState} />
               </div>

@@ -13,11 +13,10 @@ interface Props {
     error: string;
     userType: UserType;
     updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
-    seeApplications?: (offer: Offer) => void;
     updateAvailablePlaces?: (offer: Offer) => void;
 }
 
-const OffersList = ({ offers, error, userType, updateOffersState, seeApplications, updateAvailablePlaces }: Props) => {
+const OffersList = ({ offers, error, userType, updateOffersState, updateAvailablePlaces }: Props) => {
     const { t } = useTranslation();
     const { chosenSession, currentSession } = useSessionContext();
 
@@ -38,8 +37,8 @@ const OffersList = ({ offers, error, userType, updateOffersState, seeApplication
                     {offers.map((offer: Offer) => {
                         return(
                             <>
-                                <OfferRow key={offer.id} offer={offer} userType={userType} updateOffersState={updateOffersState} seeApplications={seeApplications}/>
-                                {userType != UserType.Student &&
+                                <OfferRow key={offer.id} offer={offer} userType={userType} updateOffersState={updateOffersState}/>
+                                {userType !== UserType.Student &&
                                     <tr>
                                         <td colSpan={12}>
                                             <Accordion.Collapse eventKey={offer.id!.toString()}>
@@ -50,12 +49,9 @@ const OffersList = ({ offers, error, userType, updateOffersState, seeApplication
                                         </td>
                                     </tr>
                                 }
-
                             </>
-                            )
-                        })
-                    }
-
+                        )
+                    })}
                 </tbody>
             </GenericTable>
         </Accordion>

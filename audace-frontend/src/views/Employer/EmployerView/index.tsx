@@ -1,6 +1,5 @@
 import {useEffect, useState} from "react";
 import {Container} from "react-bootstrap";
-import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 import {useTranslation} from "react-i18next";
 import {Offer} from "../../../model/offer";
 import {Employer, UserType} from "../../../model/user";
@@ -11,13 +10,12 @@ import {getAllOffersByEmployerIdAndSessionId} from "../../../services/offerServi
 import OffersList from "../../../components/OffersList";
 import {useSessionContext} from "../../../contextsholders/providers/SessionContextHolder";
 import SessionSelector from "../../../components/SessionSelector";
-import Applications from "../../../components/Applications";
 
 const EmployerView = () => {
   const [employer, setEmployer] = useState<Employer>();
   const [offers, setOffers] = useState<Offer[]>([]);
   const [error, setError] = useState<string>("");
-  const [offerApplication, setOfferApplication] = useState<Offer>();
+
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { chosenSession } = useSessionContext();
@@ -54,12 +52,9 @@ const EmployerView = () => {
         });
   }, [employer, chosenSession]);
 
-  const seeApplications = (offer: Offer) => {
-    setOfferApplication(offer);
-  }
   const updateAvailablePlaces = (offer: Offer) => {
     let updatedOffers = offers.map(o => {
-      if(o.id == offer.id) return {...o, availablePlaces: --o.availablePlaces};
+      if(o.id === offer.id) return {...o, availablePlaces: --o.availablePlaces};
       return o;
     })
     setOffers(updatedOffers);
@@ -69,7 +64,7 @@ const EmployerView = () => {
   return (
       <Container className="mt-3">
         <SessionSelector />
-        <OffersList offers={offers} error={error} userType={UserType.Employer} seeApplications={seeApplications} updateAvailablePlaces={updateAvailablePlaces}/>
+        <OffersList offers={offers} error={error} userType={UserType.Employer} updateAvailablePlaces={updateAvailablePlaces}/>
       </Container>
   );
 };

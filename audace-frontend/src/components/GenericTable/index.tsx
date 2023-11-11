@@ -25,7 +25,7 @@ const GenericTable = <T,>({
       {error !== "" ? (
         <Alert className="text-center">{error}</Alert>
       ) : list.length > 0 ? (
-        <Table striped bordered hover >
+        <Table striped bordered >
           {children}
         </Table>
       ) : (

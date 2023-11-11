@@ -14,10 +14,9 @@ interface Props {
   offer: Offer;
   userType: UserType;
   updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
-  seeApplications?: (offer: Offer) => void;
 }
 
-const OfferRow = ({offer, userType, updateOffersState, seeApplications}: Props) => {
+const OfferRow = ({offer, userType, updateOffersState}: Props) => {
   const [show, setShow] = useState<boolean>(false);
   const [employer, setEmployer] = useState<Employer>(offer.employer);
   const { t } = useTranslation();
@@ -45,7 +44,7 @@ const OfferRow = ({offer, userType, updateOffersState, seeApplications}: Props) 
         {chosenSession?.id === currentSession?.id && (
           <td>
             <div className="d-flex justify-content-center">
-              <OfferButtons userType={userType} disabled={disabled} offer={offer} updateOffersState={updateOffersState} seeApplications={seeApplications} hideRow={hideRow}/>
+              <OfferButtons userType={userType} disabled={disabled} offer={offer} updateOffersState={updateOffersState} hideRow={hideRow}/>
             </div>
           </td>
         )}

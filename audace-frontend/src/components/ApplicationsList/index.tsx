@@ -6,7 +6,7 @@ import {UserType} from "../../model/user";
 import {Offer} from "../../model/offer";
 
 interface Props {
-  offer: Offer;
+  offer?: Offer;
   applications: Application[];
   error: string;
   userType: UserType;
@@ -21,10 +21,10 @@ const ApplicationsList = ({offer, applications, error, userType, updateApplicati
       <GenericTable list={applications} error={error} emptyListMessage="applicationsList.noApplications" title="applicationsList.title">
         <thead>
           <tr>
-            {userType != UserType.Employer && <th>{t("applicationsList.offerTitle")}</th>}
-            {userType != UserType.Student && <th>{t("applicationsList.studentName")}</th>}
+            {userType !== UserType.Employer && <th>{t("applicationsList.offerTitle")}</th>}
+            {userType !== UserType.Student && <th>{t("applicationsList.studentName")}</th>}
             <th>{t("applicationsList.cv")}</th>
-            {userType != UserType.Employer && <th>{t("applicationsList.organization")}</th>}
+            {userType !== UserType.Employer && <th>{t("applicationsList.organization")}</th>}
             <th>{t("applicationsList.status")}</th>
           </tr>
         </thead>

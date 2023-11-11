@@ -5,13 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import {useState} from "react";
 import {employerDeleteOffer} from "../../../../../services/offerService";
 interface Props {
-  disabled: boolean;
-  seeApplications?: (offer: Offer) => void;
+  disabled?: boolean;
   offer: Offer;
   hideRow?: () => void;
 }
 
-const EmployerButtons = ({ disabled, seeApplications, offer, hideRow }: Props) => {
+const EmployerButtons = ({ disabled,  offer, hideRow }: Props) => {
   const {t} = useTranslation();
     const [isDeleting, setIsDeleting] = useState(false);
     const navigate = useNavigate();
@@ -54,9 +53,7 @@ const EmployerButtons = ({ disabled, seeApplications, offer, hideRow }: Props) =
             setIsDeleting(false);
         }
     };
-    const seeApplicationsButtonClick = useAccordionButton(offer.id!.toString(), () =>
-        seeApplications!(offer)
-    );
+    const seeApplicationsButtonClick = useAccordionButton(offer.id!.toString());
 
     return (
         <>
@@ -66,11 +63,9 @@ const EmployerButtons = ({ disabled, seeApplications, offer, hideRow }: Props) =
             <Button disabled={disabled || isDeleting} onClick={deleteButtonClick} className="btn-light btn-outline-danger text-dark ms-2">
                 {isDeleting ? t("employerOffersList.deletingButton") : t("employerOffersList.deleteButton")}
             </Button>
-            {seeApplications !== undefined ? (
-                <Button onClick={seeApplicationsButtonClick} className="ms-2 btn-light btn-outline-success text-dark">
-                    {t("employerOffersList.applicationButton")}
-                </Button>
-            ) : null}
+            <Button onClick={seeApplicationsButtonClick} className="ms-2 btn-light btn-outline-success text-dark">
+                {t("employerOffersList.applicationButton")}
+            </Button>
         </>
     );
 };
