@@ -39,7 +39,7 @@ import java.util.Optional;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -166,6 +166,25 @@ class UserControllerTest {
         notificationDTOs.add(notificationDTO);
         when(userService.getAllNotificationByUserId(1L)).thenReturn(notificationDTOs);
         mockMvc.perform(get("/users/notifications/1"))
+                .andExpect(status().isOk());
+    }
+    @Test
+    @WithMockUser(username = "user")
+    void testDeleteAllNotificationsByUserId() throws Exception {
+        mockMvc.perform(delete("/users/deleteAllNotificationsByUserId/1"))
+                .andExpect(status().isOk());
+    }
+    @Test
+    @WithMockUser(username = "user")
+    void testDeleteNotificationById() throws Exception {
+        mockMvc.perform(delete("/users/deleteNotificationById/1"))
+                .andExpect(status().isOk());
+    }
+    @Test
+    @WithMockUser(username = "user")
+    void testHasNotificationByUserId() throws Exception {
+        when(userService.hasNotificationByUserId(1L)).thenReturn(true);
+        mockMvc.perform(get("/users/hasNotificationByUserId/1"))
                 .andExpect(status().isOk());
     }
 }

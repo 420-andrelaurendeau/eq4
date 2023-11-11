@@ -227,4 +227,25 @@ public class NotificationManipulatorTest {
         assertThatThrownBy(() -> notificationManipulator.deleteAllNotificationsByUserId(null))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+    @Test
+    public void hasNotificationByUserId_happyPath() {
+        when(notificationRepository.existsByUserId(1L)).thenReturn(true);
+        boolean hasNotification = notificationManipulator.hasNotificationByUserId(1L);
+        assertThat(hasNotification).isTrue();
+    }
+    @Test
+    public void hasNotificationByUserId_nullId() {
+        assertThatThrownBy(() -> notificationManipulator.hasNotificationByUserId(null))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+    @Test
+    public void deleteNotificationById_happyPath() {
+        notificationManipulator.deleteNotificationById(1L);
+        verify(notificationRepository, times(1)).deleteById(1L);
+    }
+    @Test
+    public void deleteNotificationById_nullId() {
+        assertThatThrownBy(() -> notificationManipulator.deleteNotificationById(null))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 }

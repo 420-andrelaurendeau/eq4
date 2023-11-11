@@ -94,11 +94,11 @@ public class NotificationManipulator {
             throw new IllegalArgumentException();
         }
     }
-    public void deleteNotificationById(Long id) { //TODO : Tests
+    public void deleteNotificationById(Long id) {
         nullCheck(id);
         notificationRepository.deleteById(id);
     }
-    public boolean hasNotificationByUserId(Long userId) { //TODO : Tests
+    public boolean hasNotificationByUserId(Long userId) {
         nullCheck(userId);
         return notificationRepository.existsByUserId(userId);
     }

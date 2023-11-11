@@ -57,13 +57,13 @@ public class UserService extends GenericUserService<User> {
         List<Notification> notifications = notificationManipulator.getAllNotificationsByUserId(userId);
         return notifications.stream().map(Notification::toDTO).toList();
     }
-    public void deleteNotificationById(Long notificationId) { //TODO : Tests
+    public void deleteNotificationById(Long notificationId) {
         notificationManipulator.deleteNotificationById(notificationId);
     }
-    public void deleteAllNotificationsByUserId(Long userId) { //TODO : Tests
+    public void deleteAllNotificationsByUserId(Long userId) {
         notificationManipulator.deleteAllNotificationsByUserId(userId);
     }
-    public boolean hasNotificationByUserId(Long userId) { //TODO : Tests
+    public boolean hasNotificationByUserId(Long userId) {
         return notificationManipulator.hasNotificationByUserId(userId);
     }
 }

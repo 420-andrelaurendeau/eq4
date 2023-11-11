@@ -117,5 +117,21 @@ class UserServiceTest {
         List<NotificationDTO> notificationDTOs = userService.getAllNotificationByUserId(1L);
         assertThat(notificationDTOs).hasSize(1);
     }
+    @Test
+    void deleteNotificationById_happyPath() {
+        userService.deleteNotificationById(1L);
+        verify(notificationManipulator, times(1)).deleteNotificationById(1L);
+    }
+    @Test
+    void deleteAllNotificationsByUserId_happyPath() {
+        userService.deleteAllNotificationsByUserId(1L);
+        verify(notificationManipulator, times(1)).deleteAllNotificationsByUserId(1L);
+    }
+    @Test
+    void hasNotificationByUserId_happyPath() {
+        when(notificationManipulator.hasNotificationByUserId(any())).thenReturn(true);
+        boolean hasNotification = userService.hasNotificationByUserId(1L);
+        assertTrue(hasNotification);
+    }
 }
 
