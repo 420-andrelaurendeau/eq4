@@ -5,6 +5,7 @@ import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.notification.Notification;
+import com.equipe4.audace.model.notification.NotificationApplication;
 import com.equipe4.audace.model.notification.NotificationCv;
 import com.equipe4.audace.model.notification.NotificationOffer;
 import com.equipe4.audace.model.offer.Offer;
@@ -65,7 +66,7 @@ public class NotificationManipulator {
     public void makeNotificationApplicationToStudent(Application application, Notification.NotificationCause cause) {
         nullCheck(application);
         nullCheck(cause);
-        notificationRepository.save(new NotificationOffer(null, application.getCv().getStudent(), cause, application.getOffer()));
+        notificationRepository.save(new NotificationApplication(null, application.getCv().getStudent(), cause, application));
     }
 
     @Transactional
