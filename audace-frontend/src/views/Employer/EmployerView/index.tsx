@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
-import { Container } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import { Offer } from "../../../model/offer";
-import { Employer, UserType } from "../../../model/user";
-import { useNavigate } from "react-router";
-import { getUserId } from "../../../services/authService";
-import { getEmployerById } from "../../../services/userService";
-import { getAllOffersByEmployerIdAndSessionId } from "../../../services/offerService";
+import {useEffect, useState} from "react";
+import {Container} from "react-bootstrap";
+import { useAccordionButton } from 'react-bootstrap/AccordionButton';
+import {useTranslation} from "react-i18next";
+import {Offer} from "../../../model/offer";
+import {Employer, UserType} from "../../../model/user";
+import {useNavigate} from "react-router";
+import {getUserId} from "../../../services/authService";
+import {getEmployerById} from "../../../services/userService";
+import {getAllOffersByEmployerIdAndSessionId} from "../../../services/offerService";
 import OffersList from "../../../components/OffersList";
-import { useSessionContext } from "../../../contextsholders/providers/SessionContextHolder";
+import {useSessionContext} from "../../../contextsholders/providers/SessionContextHolder";
 import SessionSelector from "../../../components/SessionSelector";
 import Applications from "../../../components/Applications";
 
@@ -30,59 +31,45 @@ const EmployerView = () => {
     }
 
     getEmployerById(parseInt(id!))
-      .then((res) => {
-        setEmployer(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-        if (err.request.status === 404)
-          setError(t("employer.errors.employerNotFound"));
-      });
+        .then((res) => {
+          setEmployer(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.request.status === 404)
+            setError(t("employer.errors.employerNotFound"));
+        });
   }, [employer, navigate, t]);
 
   useEffect(() => {
     if (employer === undefined) return;
     if (chosenSession === undefined) return;
 
-    getAllOffersByEmployerIdAndSessionId(employer.id!, chosenSession.id)
-      .then((res) => {
-        setOffers(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      getAllOffersByEmployerIdAndSessionId(employer.id!, chosenSession.id)
+        .then((res) => {
+          setOffers(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
   }, [employer, chosenSession]);
 
   const seeApplications = (offer: Offer) => {
     setOfferApplication(offer);
-  };
-
+  }
   const updateAvailablePlaces = (offer: Offer) => {
-    let updatedOffers = offers.map((o) => {
-      if (o.id === offer.id)
-        return { ...o, availablePlaces: --o.availablePlaces };
+    let updatedOffers = offers.map(o => {
+      if(o.id === offer.id) return {...o, availablePlaces: --o.availablePlaces};
       return o;
     });
     setOffers(updatedOffers);
   };
 
   return (
-    <Container className="mt-3">
-      <SessionSelector seeApplications={seeApplications}/>
-      <OffersList
-        offers={offers}
-        error={error}
-        userType={UserType.Employer}
-        seeApplications={seeApplications}
-      />
-      {offerApplication !== undefined && (
-        <Applications
-          offer={offerApplication}
-          userType={UserType.Employer}
-          updateAvailablePlaces={updateAvailablePlaces}
-        />
-      )}
-    </Container>
+      <Container className="mt-3">
+        <SessionSelector />
+        <OffersList offers={offers} error={error} userType={UserType.Employer} seeApplications={seeApplications} updateAvailablePlaces={updateAvailablePlaces}/>
+      </Container>
   );
 };
 

@@ -17,12 +17,7 @@ interface Props {
   seeApplications?: (offer: Offer) => void;
 }
 
-const OfferRow = ({
-  offer,
-  userType,
-  updateOffersState,
-  seeApplications,
-}: Props) => {
+const OfferRow = ({offer, userType, updateOffersState, seeApplications}: Props) => {
   const [show, setShow] = useState<boolean>(false);
   const [employer, setEmployer] = useState<Employer>(offer.employer);
   const { t } = useTranslation();
@@ -30,10 +25,7 @@ const OfferRow = ({
   const [disabled, setDisabled] = useState<boolean>(true);
   const [isVisible, setIsVisible] = useState(true);
 
-  const handleClick = () => {
-    setShow(true);
-    setDisabled(false);
-  };
+  const handleClick = () => setShow(true);
 
   const handleClose = () => setShow(false);
   const hideRow = () => setIsVisible(false);
@@ -45,9 +37,7 @@ const OfferRow = ({
       <tr>
         <td>
           <Col className="h5">{offer.title}</Col>
-          <Col className="text-muted small mt-2">
-            <u className="hovered" onClick={handleClick}>{t("offersList.viewMore")}</u>
-          </Col>
+          <Col className="text-muted small mt-2"><u className="hovered" onClick={handleClick}>{t("offersList.viewMore")}</u></Col>
         </td>
         <td>{formatDate(offer.internshipStartDate)}</td>
         <td>{formatDate(offer.internshipEndDate)}</td>
@@ -55,30 +45,13 @@ const OfferRow = ({
         {chosenSession?.id === currentSession?.id && (
           <td>
             <div className="d-flex justify-content-center">
-              <OfferButtons
-                userType={userType}
-                disabled={disabled}
-                offer={offer}
-                updateOffersState={updateOffersState}
-                seeApplications={seeApplications}
-                hideRow={hideRow}
-              />
+              <OfferButtons userType={userType} disabled={disabled} offer={offer} updateOffersState={updateOffersState} seeApplications={seeApplications} hideRow={hideRow}/>
             </div>
           </td>
         )}
       </tr>
       {show && (
-        <OfferModal
-          offer={offer}
-          show={show}
-          handleClose={handleClose}
-          userType={userType}
-          employer={employer}
-          setEmployer={setEmployer}
-          updateOffersState={updateOffersState}
-          disabled={disabled}
-          hideRow={hideRow}
-        />
+        <OfferModal offer={offer} show={show} handleClose={handleClose} userType={userType} employer={employer} setEmployer={setEmployer} updateOffersState={updateOffersState} disabled={disabled} hideRow={hideRow}/>
       )}
     </>
   );

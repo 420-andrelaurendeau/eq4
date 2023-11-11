@@ -68,23 +68,23 @@ public class AudaceApplication implements CommandLineRunner {
 		EmployerDTO employerDTO = optionalEmployerDTO.get();
 		Employer employer = employerDTO.fromDTO();
 
-		Optional<StudentDTO> optionalStudent = studentService.createStudent(new StudentDTO(null, "Kylian", "Mbappe", "kylian@live.fr", "34 de Montpellier", "4387654545", "123123", "2080350", department.toDTO()), department.getCode());
+		Student student = new Student(null, "Kylian", "Mbappe", "kylian@live.fr", "123123", "34 de Montpellier", "4387654545", "2080350", department);
+		Optional<StudentDTO> optionalStudent = studentService.createStudent(student.toDTO(), department.getCode());
 		if (optionalStudent.isEmpty()) return;
-		StudentDTO studentDTO = optionalStudent.get();
-		Student student = studentDTO.fromDTO();
+		student = optionalStudent.get().fromDTO();
 
-		Optional<StudentDTO> optionalStudent2 = studentService.createStudent(new StudentDTO(null, "student", "studentman", "student@email.com", "123 Street Street", "1234567890", "password", "123456789", department.toDTO()), department.getCode());
+		Student student2 = new Student(null, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", department);
+		Optional<StudentDTO> optionalStudent2 = studentService.createStudent(student2.toDTO(), department.getCode());
 		if (optionalStudent2.isEmpty()) return;
-		StudentDTO studentDTO2 = optionalStudent2.get();
-		Student student2 = studentDTO2.fromDTO();
+		student2 = optionalStudent2.get().fromDTO();
 
-		Optional<StudentDTO> optionalStudent3 = studentService.createStudent(new StudentDTO(null, "student3", "student3", "student3@email.com", "456 Rue Rue", "0123456789", "password", "987654321", department.toDTO()), department.getCode());
+		Student student3 = new Student(null, "Joshua", "Cedric", "student3@email.com", "password", "123 Street Street", "1234567890", "204009878", department);
+		Optional<StudentDTO> optionalStudent3 = studentService.createStudent(student3.toDTO(), department.getCode());
 		if (optionalStudent3.isEmpty()) return;
-		StudentDTO studentDTO3 = optionalStudent3.get();
-		Student student3 = studentDTO3.fromDTO();
+		student3 = optionalStudent3.get().fromDTO();
 
         Offer offer1 = offerRepository.save(
-				new Offer(null, "Stage en génie logiciel PROTOTYPE", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer)
+				new Offer(null, "Stage en génie logiciel PROTOTYPE", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 2, department, employer)
 		);
 		offer1.setOfferStatus(Offer.OfferStatus.ACCEPTED);
         offerSessionRepository.save(new OfferSession(null, offer1, session));
@@ -114,26 +114,22 @@ public class AudaceApplication implements CommandLineRunner {
 		String cvContent = "cv content for fun";
 		byte[] content = cvContent.getBytes();
 
-		Cv cv1 = new Cv(1L, "cv.pdf", content, student);
+		Cv cv1 = new Cv(1L, "cvStudent1.pdf", content, student);
 		cv1.setCvStatus(Cv.CvStatus.ACCEPTED);
 		cvRepository.save(cv1);
 
-		Cv cv2 = new Cv(2L, "cv2.pdf", content, student2);
+		Cv cv2 = new Cv(2L, "cvStudent2.pdf", content, student2);
 		cv2.setCvStatus(Cv.CvStatus.ACCEPTED);
 		cvRepository.save(cv2);
 
-		Cv cv3 = new Cv(3L, "cv3.pdf", content, student3);
+		Cv cv3 = new Cv(3L, "cvStudent3.pdf", content, student3);
 		cv3.setCvStatus(Cv.CvStatus.ACCEPTED);
 		cvRepository.save(cv3);
 
-		Application application = new Application(1L, cv1, offer1);
-		applicationRepository.save(application);
+		applicationRepository.save(new Application(1L, cv1, offer1));
+		applicationRepository.save(new Application(2L, cv2, offer1));
+		applicationRepository.save(new Application(3L, cv3, offer1));
 
-		Application application2 = new Application(2L, cv2, offer1);
-		applicationRepository.save(application2);
-
-		Application application3 = new Application(3L, cv3, offer1);
-		applicationRepository.save(application3);
 
 		Manager manager = new Manager(null, "manager", "managerman", "manager@email.com", "password", "yeete", "1234567890", department);
 		manager = managerRepository.save(manager);
@@ -143,6 +139,5 @@ public class AudaceApplication implements CommandLineRunner {
 		manager.setPassword(BCrypt.hashpw(managerPassword, managerSalt));
 		manager = managerRepository.save(manager);
 		saltRepository.save(new Salt(null, manager, managerSalt));
-
 	}
 }
