@@ -1,7 +1,7 @@
 import Application, { ApplicationStatus } from "../../../model/application";
 import { CV, CVStatus } from "../../../model/cv";
 import { Offer, OfferStatus } from "../../../model/offer";
-import { Employer, Student } from "../../../model/user";
+import { Employer, Manager, Student } from "../../../model/user";
 
 export const employer: Employer = {
   id: 1,
@@ -48,6 +48,7 @@ export const student: Student = {
     name: "Computer Science",
     code: "CS",
   },
+  type: "student",
 };
 
 export const cv: CV = {
@@ -63,4 +64,20 @@ export const application: Application = {
   offer: offer,
   cv: cv,
   applicationStatus: ApplicationStatus.PENDING,
+};
+
+export const manager: Manager = {
+  id: 1,
+  firstName: "firstName",
+  lastName: "lastName",
+  email: "email",
+  phone: "phone",
+  address: "address",
+  password: "password",
+  type: "manager",
+  department: {
+    id: 1,
+    code: "code",
+    name: "name",
+  },
 };

@@ -1,5 +1,3 @@
-import {Department} from "./department";
-
 export interface LoginRequest {
   identification: string;
   password: string;
