@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import AddOffer from "../../components/AddOffer";
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/extend-expect";
 
 const mockedUseNavigate = jest.fn();
 
