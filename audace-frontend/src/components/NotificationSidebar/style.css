@@ -1,20 +1,20 @@
-@media only screen and (max-width : 767px) {
-    .notification-sidebar {
-        border-bottom: 1px solid #e0e0e0;
-    }
-    .notification {
-        border-radius: 0px;
-    }
+@media only screen and (max-width: 767px) {
+  .notification-sidebar {
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .notification {
+    border-radius: 0px;
+  }
 }
 /* Medium Devices, Desktops */
-@media only screen and (min-width : 768px) {
-    .notification-sidebar {
-        border-right: 1px solid #e0e0e0;
-    }
-    .notification {
-        border-radius: 5px;
-    }
+@media only screen and (min-width: 768px) {
+  .notification-sidebar {
+    border-right: 1px solid #e0e0e0;
+  }
+  .notification {
+    border-radius: 5px;
+  }
 }
 .cursor-pointer {
-    cursor: pointer;
+  cursor: pointer;
 }

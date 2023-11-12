@@ -1,6 +1,7 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {BrowserRouter as Router} from "react-router-dom";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import { BrowserRouter as Router } from "react-router-dom";
 import ProviderWrapper from "./contextsholders/providers/ProviderWrapper";
 import HeaderSidebar from "./components/HeaderSidebar";
 
