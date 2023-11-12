@@ -9,9 +9,7 @@ it("should display default values", () => {
   render(
     <Table>
       <tbody>
-        <td>
-          <CvRow cv={cv} />
-        </td>
+        <CvRow cv={cv} />
       </tbody>
     </Table>
   );
@@ -33,9 +31,7 @@ it("should display cvButtons when user is not student", () => {
   render(
     <Table>
       <tbody>
-        <td>
-          <CvRow cv={cv} />
-        </td>
+        <CvRow cv={cv} />
       </tbody>
     </Table>
   );
@@ -55,9 +51,7 @@ it("should not display cvButtons when user is student", () => {
   render(
     <Table>
       <tbody>
-        <td>
-          <CvRow cv={cv} />
-        </td>
+        <CvRow cv={cv} />
       </tbody>
     </Table>
   );
@@ -69,13 +63,11 @@ it("should not display cvButtons when user is student", () => {
   expect(cvButtons).not.toBeInTheDocument();
 });
 
-it("should open modal when viewMore is clicked", () => {
+it("should open modal when viewMore is clicked", async () => {
   render(
     <Table>
       <tbody>
-        <td>
-          <CvRow cv={cv} />
-        </td>
+        <CvRow cv={cv} />
       </tbody>
     </Table>
   );
@@ -83,12 +75,12 @@ it("should open modal when viewMore is clicked", () => {
   const viewMore = screen.getByText(/cvsList.viewMore/i);
   expect(viewMore).toBeInTheDocument();
 
-  viewMore.click();
+  fireEvent.click(viewMore);
 
-  const studentName = screen.getByText(/john doe/i);
-  expect(studentName).toBeInTheDocument();
+  const studentName = screen.getAllByText(/john doe/i)[1];
+  await waitFor(() => expect(studentName).toBeInTheDocument());
 
-  const cvName = screen.getByText(/The best CV/i);
+  const cvName = screen.getByText(/john doe - The best CV/i);
   expect(cvName).toBeInTheDocument();
 });
 
@@ -96,9 +88,7 @@ it("should close modal when close button is clicked", async () => {
   render(
     <Table>
       <tbody>
-        <td>
-          <CvRow cv={cv} />
-        </td>
+        <CvRow cv={cv} />
       </tbody>
     </Table>
   );

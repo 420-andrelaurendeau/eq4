@@ -31,13 +31,11 @@ describe("toggle button", () => {
         require("../../../contextsholders/providers/SessionContextHolder"),
         "useSessionContext"
       )
-      .mockImplementation(() => {
-        return {
-          chosenSession: sessions[0],
-          setChosenSession: () => {},
-          sessions,
-        };
-      });
+      .mockImplementation(() => ({
+        chosenSession: sessions[0],
+        setChosenSession: () => {},
+        sessions,
+      }));
 
     render(<SessionSelector />);
 
