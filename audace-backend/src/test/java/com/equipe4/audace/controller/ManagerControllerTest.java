@@ -4,6 +4,7 @@ import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.application.StudentsByInternshipFoundStatus;
 import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
@@ -16,6 +17,7 @@ import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.*;
 import com.equipe4.audace.repository.contract.ContractRepository;
+import com.equipe4.audace.repository.*;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
@@ -43,10 +45,12 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -112,6 +116,7 @@ public class ManagerControllerTest {
 
         mockMvc.perform(request).andExpect(status().isOk());
     }
+
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void acceptOffer_invalidId() throws Exception {
@@ -143,6 +148,7 @@ public class ManagerControllerTest {
 
         mockMvc.perform(request).andExpect(status().isOk());
     }
+
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void refuseOffer_invalidId() throws Exception {
@@ -218,6 +224,7 @@ public class ManagerControllerTest {
 
         mockMvc.perform(request).andExpect(status().isOk());
     }
+
     @Test
     @WithMockUser(username = "manager", authorities = {"MANAGER"})
     public void refuseCv_invalidId() throws Exception {
@@ -368,27 +375,67 @@ public class ManagerControllerTest {
                 .andExpect(jsonPath("$.application.id", is(contractDTO.getApplication().getId().intValue())));
     }
 
+    @Test
+    @WithMockUser(username = "manager", authorities = {"Manager"})
+    void getStudentsWithInternshipStatus_happyPath() throws Exception {
+        DepartmentDTO departmentDTO = createDepartmentDTO();
+        StudentDTO student = createStudentDTO(departmentDTO);
+
+        StudentsByInternshipFoundStatus expected = new StudentsByInternshipFoundStatus(
+                List.of(student),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>()
+        );
+
+        when(managerService.getStudentsByInternshipFoundStatus(1L)).thenReturn(expected);
+
+        mockMvc.perform(get("/managers/studentsWithInternshipFoundStatus/{departmentId}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.studentsWithInternship[0].id").value(student.getId()))
+                .andExpect(jsonPath("$.studentsWithInternship[0].firstName").value(student.getFirstName()))
+                .andExpect(jsonPath("$.studentsWithInternship[0].lastName").value(student.getLastName()))
+                .andExpect(jsonPath("$.studentsWithInternship[0].email").value(student.getEmail()))
+                .andExpect(jsonPath("$.studentsWithInternship[0].password").value(student.getPassword()))
+                .andExpect(jsonPath("$.studentsWithInternship[0].address").value(student.getAddress()))
+                .andExpect(jsonPath("$.studentsWithInternship[0].phone").value(student.getPhone()))
+                .andExpect(jsonPath("$.studentsWithInternship[0].studentNumber").value(student.getStudentNumber()));
+    }
+
+    @Test
+    @WithMockUser(username = "manager", authorities = {"Manager"})
+    void getStudentsWithInternshipStatus_invalidDepartmentId() throws Exception {
+        when(managerService.getStudentsByInternshipFoundStatus(-1L))
+                .thenThrow(new NoSuchElementException("Department not found"));
+
+        mockMvc.perform(get("/managers/studentsWithInternshipFoundStatus/{departmentId}", -1L))
+                .andExpect(status().isNotFound());
+    }
 
     private DepartmentDTO createDepartmentDTO(){
         return new DepartmentDTO(1L, "GLO", "Génie logiciel");
     }
-    private ManagerDTO createManagerDTO(DepartmentDTO departmentDTO){
-        return new ManagerDTO(1L, "manager", "managerman", "asd", "ads", "das", "sda", departmentDTO);
-    }
+
     private EmployerDTO createEmployerDTO() {
         return new EmployerDTO(1L, "Employer1", "Employer1", "employer1@gmail.com", "123456eE", "Organisation1", "Position1", "Class Service, Javatown, Qc H8N1C1", "123-456-7890", "12345");
     }
+
     private StudentDTO createStudentDTO(DepartmentDTO departmentDTO) {
         return new StudentDTO(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", departmentDTO);
     }
+
     private CvDTO createCvDTO(StudentDTO studentDTO) {
         return new CvDTO(1L,"fileName", "content".getBytes(), Cv.CvStatus.PENDING, studentDTO);
     }
+
     private OfferDTO createOfferDTO(Long id) {
         EmployerDTO employerDTO = createEmployerDTO();
         DepartmentDTO departmentDTO = createDepartmentDTO();
         return new OfferDTO(id,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, Offer.OfferStatus.PENDING, departmentDTO, employerDTO);
     }
+
     private ApplicationDTO createApplicationDTO(OfferDTO offerDTO) {
         CvDTO cvDTO = createCvDTO(createStudentDTO(createDepartmentDTO()));
         return new ApplicationDTO(1L, cvDTO, offerDTO, Application.ApplicationStatus.PENDING);

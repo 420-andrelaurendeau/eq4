@@ -18,3 +18,11 @@ export const getCvsByStudentId = async (
 ): Promise<AxiosResponse<CV[]>> => {
   return http.get<CV[]>(`${STUDENT_PREFIX}/cvs/${studentId}`);
 };
+
+export const getApplicationsByStudentId = async (
+  studentId: number
+): Promise<AxiosResponse<Application[]>> => {
+  return http.get<Application[]>(
+    `${STUDENT_PREFIX}/${studentId}/appliedOffers`
+  );
+};

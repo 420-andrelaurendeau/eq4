@@ -241,6 +241,24 @@
     "summer": "Summer",
     "spring": "Spring"
   },
+  "studentsByInternship": {
+    "title": "Students by Internship Status",
+    "noStudents": "No students found",
+    "searchBarPlaceholder": "Search by Name, Student Number or Department...",
+    "row": {
+      "nameTh": "Name",
+      "departmentTh": "Department",
+      "statusTh": "Status",
+      "studentNumberTh": "Student Number",
+      "statusValues": {
+        "ACCEPTED": "Accepted",
+        "REFUSED": "Refused",
+        "PENDING": "Pending",
+        "NO_APPLICATIONS": "No applications",
+        "INTERN": "Intern"
+      }
+    }
+  },
   "infoCard": {
     "employer": {
       "title": "Company",

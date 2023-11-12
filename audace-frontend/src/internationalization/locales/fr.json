@@ -235,12 +235,30 @@
   "logout": "Déconnexion",
   "pageNotFound": "Erreur 404 : Page non trouvée",
   "sessionSelector": {
-    "filterPlaceholder": "Filtrer par la date",
+    "filterPlaceholder": "Filtrer par date",
     "selectSession": "Choisir une session",
     "fall": "Automne",
     "winter": "Hiver",
     "summer": "Été",
     "spring": "Printemps"
+  },
+  "studentsByInternship": {
+    "title": "Étudiants par Statut de Stage",
+    "noStudents": "Aucun étudiant trouvé",
+    "searchBarPlaceholder": "Rechercher par Nom, Matricule ou Département...",
+    "row": {
+      "nameTh": "Nom",
+      "departmentTh": "Département",
+      "statusTh": "Statut",
+      "studentNumberTh": "Matricule",
+      "statusValues": {
+        "ACCEPTED": "Accepté",
+        "REFUSED": "Refusé",
+        "PENDING": "En Attente",
+        "NO_APPLICATIONS": "Aucune application",
+        "INTERN": "Stagiaire"
+      }
+    }
   },
   "infoCard": {
     "employer": {
