@@ -119,7 +119,7 @@
     "REFUSED": "Refused",
     "editButton": "Edit",
     "deleteButton": "Delete",
-    "applicationButton" : "See applications"
+    "applicationButton": "See applications"
   },
   "student": {
     "seeOffersButton": "See Offers"
@@ -131,22 +131,26 @@
     "contractCreated": "Contract created successfully",
     "title": "Manager",
     "createContract": {
+      "supervisor": {
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "email": "Email",
+        "phone": "Phone",
+        "position": "Position",
+        "extension": "Extension"
+      },
       "title": "Create Contract",
-      "officeName": "Office Name",
       "startHour": "Start Hour",
       "endHour": "End Hour",
       "totalHoursPerWeek": "Total Hours Per Week",
       "salary": "Salary",
-      "internTasksAndResponsibilities": "Intern Tasks And Responsibilities",
       "errors": {
         "applicationNotFound": "Application not found",
         "contractAlreadyExists": "A contract already exists for this offer",
-        "emptyOfficeName": "Office name cannot be empty",
         "invalidStartHour": "Start hour is invalid",
         "invalidEndHour": "End hour is invalid",
         "invalidTotalHoursPerWeek": "Total hours per week is invalid",
-        "invalidSalary": "Salary is invalid",
-        "emptyInternTasksAndResponsibilities": "Intern tasks and responsibilities cannot be empty"
+        "invalidSalary": "Salary is invalid"
       }
     }
   },
@@ -157,16 +161,16 @@
     "seeOffersButton": "See Offers",
     "seeApplicationsButton": "See Applications"
   },
-  "addOffer":{
-    "pageTitle" : "Create Offer",
-    "description" : "Description",
-    "title" : "Title",
-    "departmentCode" : "Department Code",
-    "startDate" : "Start date",
-    "endDate" : "End date",
-    "offerEndDate" : "Offer end date",
-    "submit" : "Submit",
-    "availablePlaces" : "Available places",
+  "addOffer": {
+    "pageTitle": "Create Offer",
+    "description": "Description",
+    "title": "Title",
+    "departmentCode": "Department Code",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "offerEndDate": "Offer end date",
+    "submit": "Submit",
+    "availablePlaces": "Available places",
     "errors": {
       "titleRequired": "Title cannot be empty",
       "descriptionRequired": "Description cannot be empty",
@@ -228,7 +232,12 @@
   "logout": "Log out",
   "pageNotFound": "Error 404: Page Not Found",
   "sessionSelector": {
-    "filterPlaceholder": "Filter by date"
+    "filterPlaceholder": "Filter by date",
+    "selectSession": "Select a session",
+    "fall": "Fall",
+    "winter": "Winter",
+    "summer": "Summer",
+    "spring": "Spring"
   },
   "studentsByInternship": {
     "title": "Students by Internship Status",
@@ -246,6 +255,22 @@
         "NO_APPLICATIONS": "No applications",
         "INTERN": "Intern"
       }
+    }
+  },
+  "infoCard": {
+    "employer": {
+      "title": "Company",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "extension": "Ext.",
+      "address": "Address"
+    },
+    "student": {
+      "title": "Student",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address"
     }
   }
 }

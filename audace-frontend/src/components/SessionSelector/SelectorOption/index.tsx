@@ -1,7 +1,11 @@
 import { Dropdown } from "react-bootstrap";
 import { Session } from "../../../model/session";
-import { formatSessionDate } from "../../../services/formatService";
+import {
+  determineSessionSeason,
+  getEndDateYear,
+} from "../../../services/formatService";
 import { useSessionContext } from "../../../contextsholders/providers/SessionContextHolder";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   session: Session;
@@ -9,13 +13,14 @@ interface Props {
 
 const SelectorOption = ({ session }: Props) => {
   const { chosenSession } = useSessionContext();
+  const { t } = useTranslation();
 
   return (
     <Dropdown.Item
       eventKey={`${session.id}`}
       active={chosenSession?.id === session.id}
     >
-      {formatSessionDate(session)}
+      {`${t(determineSessionSeason(session))} ${getEndDateYear(session)}`}
     </Dropdown.Item>
   );
 };

@@ -2,14 +2,14 @@ import { Alert, Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import {
   getAcceptedApplicationsByDepartment,
-  getDepartmentByManager
+  getDepartmentByManager,
 } from "../../../services/managerService";
 import ManagerApplicationsList from "../../../components/ManagerApplicationsList";
 import Application from "../../../model/application";
 import { getUserId } from "../../../services/authService";
-import { getContractsByDepartmentId } from "../../../services/applicationService";
 import { useTranslation } from "react-i18next";
 import ManagerStudentByInternshipStatusList from "../../../components/ManagerStudentByInternshipStatusList";
+import { getContractsByDepartmentId } from "../../../services/contractService";
 
 interface Props {
   isContractCreated?: boolean;

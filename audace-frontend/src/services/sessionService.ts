@@ -10,6 +10,8 @@ export const getCurrentSession = async (): Promise<AxiosResponse<Session>> => {
   return http.get<Session>(`/users/sessions/current`);
 };
 
-export const getSessionById = async (sessionId: number): Promise<AxiosResponse<Session>> => {
+export const getSessionById = async (
+  sessionId: number
+): Promise<AxiosResponse<Session>> => {
   return http.get<Session>(`/users/sessions/${sessionId}`);
 };

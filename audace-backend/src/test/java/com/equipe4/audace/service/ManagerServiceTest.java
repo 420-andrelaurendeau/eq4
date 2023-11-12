@@ -11,12 +11,14 @@ import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.ApplicationRepository;
+import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.contract.ContractRepository;
@@ -33,13 +35,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -47,6 +49,8 @@ import static org.mockito.Mockito.*;
 public class ManagerServiceTest {
     @Mock
     private OfferRepository offerRepository;
+    @Mock
+    private EmployerRepository employerRepository;
     @Mock
     private DepartmentRepository departmentRepository;
     @Mock
@@ -240,7 +244,7 @@ public class ManagerServiceTest {
         when(offerRepository.findAllByDepartment(mockedDepartment)).thenReturn(offers);
         when(sessionManipulator.removeOffersNotInSession(offers, 1L)).thenReturn(offers);
 
-        List<OfferDTO> result = managerService.getOffersByDepartment(1L, 1L);
+        List<OfferDTO> result = managerService.getOffersByDepartmentIdAndSessionId(1L, 1L);
 
         assertThat(result.size()).isEqualTo(offers.size());
         assertThat(result).containsExactlyInAnyOrderElementsOf(offers.stream().map(Offer::toDTO).toList());
@@ -250,7 +254,7 @@ public class ManagerServiceTest {
     void getOffersByDepartment_departmentNotFound() {
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> managerService.getOffersByDepartment(1L, 1L))
+        assertThatThrownBy(() -> managerService.getOffersByDepartmentIdAndSessionId(1L, 1L))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Department not found");
     }
@@ -262,7 +266,7 @@ public class ManagerServiceTest {
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
         when(offerRepository.findAllByDepartment(mockedDepartment)).thenReturn(new ArrayList<>());
 
-        List<OfferDTO> result = managerService.getOffersByDepartment(1L, 1L);
+        List<OfferDTO> result = managerService.getOffersByDepartmentIdAndSessionId(1L, 1L);
 
         assertThat(result.size()).isEqualTo(0);
     }
@@ -435,25 +439,24 @@ public class ManagerServiceTest {
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(new Manager(1L, "firstName", "lastName", "email", "password", "address", "phone", department)));
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(department));
 
-        List<ApplicationDTO> result = managerService.getAcceptedApplicationsByDepartment(1L, 1L);
+        List<ApplicationDTO> result = managerService.getAcceptedApplicationsByManagerIdAndDepartmentId(1L, 1L);
 
         assertThat(result.size()).isEqualTo(1);
     }
     @Test
-    public void getAcceptedApplicationsByDepartment_invalidManager() {
+    public void getAcceptedApplicationsByManagerIdAndDepartmentId_invalidManager() {
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(new Department(1L, "code", "name")));
         when(managerRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> managerService.getAcceptedApplicationsByDepartment(1L, 1L))
+        assertThatThrownBy(() -> managerService.getAcceptedApplicationsByManagerIdAndDepartmentId(1L, 1L))
                 .isInstanceOf(NoSuchElementException.class)
-                .hasMessage("Manager is not found");
+                .hasMessage("Manager not found");
     }
     @Test
     public void getAcceptedApplicationsByDepartment_invalidDepartment() {
-        Manager mockedManager = mock(Manager.class);
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> managerService.getAcceptedApplicationsByDepartment(1L, 1L))
+        assertThatThrownBy(() -> managerService.getAcceptedApplicationsByManagerIdAndDepartmentId(1L, 1L))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Department not found");
     }
@@ -486,7 +489,7 @@ public class ManagerServiceTest {
 
         ContractDTO dto = managerService.createContract(contractDTO).get();
 
-        assertThat(dto.equals(contractDTO));
+        assertEquals(dto, contractDTO);
         verify(contractRepository, times(1)).save(contractDTO.fromDTO());
     }
     @Test
@@ -591,8 +594,11 @@ public class ManagerServiceTest {
     }
 
     private Contract createContract() {
-        Employer employer = createEmployer();
+        DateTimeFormatter dtf = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("H:mm").toFormatter(Locale.ENGLISH);
         Application application = createApplication();
-        return new Contract(1L, "Construction", LocalTime.parse("08:00"), LocalTime.parse("17:00"), 40, 18.35, "TODO", employer, application);
+        return new Contract(1L, LocalTime.parse("08:00", dtf), LocalTime.parse("17:00", dtf), 40, 18.35, createSupervisor(), application);
+    }
+    private Supervisor createSupervisor(){
+        return new Supervisor("super", "visor", "supervisor", "supervisor@email.com", "1234567890", "-123");
     }
 }

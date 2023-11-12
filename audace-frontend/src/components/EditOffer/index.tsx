@@ -29,7 +29,6 @@ const EditOffer: React.FC = () => {
   const [errors, setErrors] = useState<string[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
   const [employer, setEmployer] = useState<Employer>({} as Employer);
-  const [status, setStatus] = useState<OfferStatus>(OfferStatus.PENDING);
 
   const navigate = useNavigate();
 
@@ -54,7 +53,7 @@ const EditOffer: React.FC = () => {
         setDescription(offerData.description);
         setDepartment(
           offerData.department ||
-          ({ id: 1, code: "GLO", name: "Genie" } as Department)
+            ({ id: 1, code: "GLO", name: "Genie" } as Department)
         );
         setInternshipStartDate(new Date(offerData.internshipStartDate));
         setInternshipEndDate(new Date(offerData.internshipEndDate));
@@ -78,7 +77,6 @@ const EditOffer: React.FC = () => {
   }
 
   const validateForm = (): boolean => {
-    let isValid = true;
     const errorsToDisplay: string[] = [];
 
     if (!title) errorsToDisplay.push("addOffer.errors.titleRequired");
@@ -110,11 +108,10 @@ const EditOffer: React.FC = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (validateForm()) {
       const paths = window.location.pathname.split("/");
       const offerId = paths[paths.length - 1];
-      const employerId = paths[paths.length - 3];
 
       const updatedOffer: Offer = {
         id: parseInt(offerId),
@@ -126,19 +123,21 @@ const EditOffer: React.FC = () => {
         offerEndDate,
         availablePlaces,
         employer,
-        offerStatus: status as OfferStatus,
+        offerStatus: OfferStatus.PENDING,
       };
-      editOffer(updatedOffer, parseInt(offerId));
-      navigate(`/employer`);
+
+      try {
+        await editOffer(updatedOffer, parseInt(offerId));
+        navigate(`/employer`);
+      } catch (error) {
+        console.error("There was an error updating the offer:", error);
+      }
     }
   };
 
   const editOffer = async (updatedOffer: Offer, id: number) => {
     try {
-      const response = await http.put(
-        `/employers/offers`,
-        updatedOffer
-      );
+      const response = await http.put(`/employers/offers`, updatedOffer);
 
       if (response.status !== 200) {
         throw new Error(
