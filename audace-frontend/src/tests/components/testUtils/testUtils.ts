@@ -1,3 +1,4 @@
+import Application, { ApplicationStatus } from "../../../model/application";
 import { CV, CVStatus } from "../../../model/cv";
 import { Offer, OfferStatus } from "../../../model/offer";
 import { Employer, Student } from "../../../model/user";
@@ -55,4 +56,11 @@ export const cv: CV = {
   content: "This is the best CV ever",
   cvStatus: CVStatus.PENDING,
   student: student,
+};
+
+export const application: Application = {
+  id: 1,
+  offer: offer,
+  cv: cv,
+  applicationStatus: ApplicationStatus.PENDING,
 };
