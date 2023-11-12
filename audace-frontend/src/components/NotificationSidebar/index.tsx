@@ -91,7 +91,7 @@ const NotificationSidebar = () => {
   };
 
   return (
-    <div className="notification-sidebar col-md-3 col-12 pe-md-3 pb-3 notification-sidebar">
+    <div className="notification-sidebar pe-md-3 pb-3">
       <div className="ms-2">
         <h2>Notifications</h2> {/*TODO : I18N for the future chinese peeps*/}
         <Button

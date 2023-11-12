@@ -26,7 +26,9 @@ const SidebarRoutes = ({ showNotifications }: Props) => {
   return (
     <div className="col d-md-flex">
       <Collapse in={showNotifications}>
-        {showNotifications ? <NotificationSidebar /> : null}
+        <div id="NotificationSidebarCollapse" className="col-md-3 col-12">
+          <NotificationSidebar />
+        </div>
       </Collapse>
       <div className="col">
         <Routes>

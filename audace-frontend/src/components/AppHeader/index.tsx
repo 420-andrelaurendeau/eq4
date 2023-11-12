@@ -40,6 +40,8 @@ function AppHeader({ showNotifications, setShowNotifications }: Props) {
           <Button
             onClick={() => setShowNotifications(!showNotifications)}
             variant="light"
+            aria-controls="NotificationSidebarCollapse"
+            aria-expanded={showNotifications}
           >
             {showNotifications ? (
               <div>
