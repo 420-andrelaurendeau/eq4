@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import OfferModal from "../../../components/OffersList/OfferRow/OfferModal";
 import "@testing-library/jest-dom/extend-expect";
-import { employer, offer } from "./OffersListTestUtils";
+import { employer, offer } from "../testUtils/testUtils";
 
 it("is visible when props is true", () => {
   render(

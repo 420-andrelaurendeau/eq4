@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import ManagerButtons from "../../../../components/OffersList/OfferRow/OfferButtons/ManagerButtons";
 import { OfferStatus } from "../../../../model/offer";
 import "@testing-library/jest-dom/extend-expect";
-import { offer } from "../OffersListTestUtils";
+import { offer } from "../../testUtils/testUtils";
 
 describe("button displaying", () => {
   it("should display buttons properly", () => {

@@ -1,9 +1,9 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import CvRow from "../../../components/CVsList/CvRow";
-import { cv } from "./CvsListTestUtils";
 import "@testing-library/jest-dom/extend-expect";
 import { UserType } from "../../../model/user";
 import { Table } from "react-bootstrap";
+import { cv } from "../testUtils/testUtils";
 
 it("should display default values", () => {
   render(

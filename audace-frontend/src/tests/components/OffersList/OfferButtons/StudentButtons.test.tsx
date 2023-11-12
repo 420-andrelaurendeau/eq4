@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import StudentButtons from "../../../../components/OffersList/OfferRow/OfferButtons/StudentButtons";
 import "@testing-library/jest-dom/extend-expect";
-import { offer } from "../OffersListTestUtils";
+import { offer } from "../../testUtils/testUtils";
 
 it("should render apply button", () => {
   render(<StudentButtons disabled={false} offer={offer} />);

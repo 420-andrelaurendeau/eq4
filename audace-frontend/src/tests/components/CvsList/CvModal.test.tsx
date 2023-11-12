@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import CvModal from "../../../components/CVsList/CvRow/CvModal";
-import { cv } from "./CvsListTestUtils";
 import "@testing-library/jest-dom/extend-expect";
+import { cv } from "../testUtils/testUtils";
 
 jest.mock("../../../components/PDFViewer", () => () => <div>PDFViewer</div>);
 

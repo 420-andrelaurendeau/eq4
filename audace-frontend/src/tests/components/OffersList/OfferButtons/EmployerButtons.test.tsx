@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import EmployerButtons from "../../../../components/OffersList/OfferRow/OfferButtons/EmployerButtons";
 import "@testing-library/jest-dom/extend-expect";
-import { offer } from "../OffersListTestUtils";
+import { offer } from "../../testUtils/testUtils";
 
 it("should display default values", () => {
   render(<EmployerButtons disabled={false} offer={offer} />);

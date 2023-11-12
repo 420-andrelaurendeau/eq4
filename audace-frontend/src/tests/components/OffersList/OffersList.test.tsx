@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import OffersList from "../../../components/OffersList";
 import "@testing-library/jest-dom/extend-expect";
-import { offer } from "./OffersListTestUtils";
+import { offer } from "../testUtils/testUtils";
 
 it("should display basic table head values when offers not empty", () => {
   render(<OffersList offers={[offer]} error="" />);

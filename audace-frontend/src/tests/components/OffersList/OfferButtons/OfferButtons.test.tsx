@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import OfferButtons from "../../../../components/OffersList/OfferRow/OfferButtons";
 import { UserType } from "../../../../model/user";
 import "@testing-library/jest-dom/extend-expect";
-import { offer } from "../OffersListTestUtils";
+import { offer } from "../../testUtils/testUtils";
 
 it("should render employer buttons when employer user type", () => {
   jest

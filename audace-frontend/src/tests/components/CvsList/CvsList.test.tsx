@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import CvsList from "../../../components/CVsList";
-import { cv } from "./CvsListTestUtils";
 import "@testing-library/jest-dom/extend-expect";
+import { cv } from "../testUtils/testUtils";
 
 it("should display default values", () => {
   render(<CvsList cvs={[cv]} error={""} />);

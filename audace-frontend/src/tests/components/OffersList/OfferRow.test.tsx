@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import OfferRow from "../../../components/OffersList/OfferRow";
 import "@testing-library/jest-dom/extend-expect";
 import { Table } from "react-bootstrap";
-import { offer } from "./OffersListTestUtils";
+import { offer } from "../testUtils/testUtils";
 
 // Rendered in a table and tbody to avoid getting warnings
 
