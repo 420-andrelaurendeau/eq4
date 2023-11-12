@@ -40,6 +40,9 @@ const config: Config = {
     '!**/src/components/PDFViewer/**',
     '!**/src/react-app-env.d.ts',
     '!**/src/setupTests.ts',
+    '!**/src/App.tsx',
+    '!**/src/index.tsx',
+    '!**/src/reportWebVitals.ts',
   ],
 
   // The directory where Jest should output its coverage files
