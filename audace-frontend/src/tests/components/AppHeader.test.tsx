@@ -19,13 +19,17 @@ describe("employer authority", () => {
   });
 
   it("should display buttons", () => {
-    render(<AppHeader />);
+    render(
+      <AppHeader setShowNotifications={() => {}} showNotifications={true} />
+    );
     const linkElement = screen.getByText(/employer.addOfferButton/i);
     expect(linkElement).not.toBeUndefined();
   });
 
   it("should redirect to proper page on offer button click", async () => {
-    render(<AppHeader />);
+    render(
+      <AppHeader setShowNotifications={() => {}} showNotifications={true} />
+    );
     const linkElement = screen.getByText(/employer.addOfferButton/i);
     expect(linkElement).not.toBeUndefined();
 
@@ -53,13 +57,17 @@ describe("manager authority", () => {
   });
 
   it("should display buttons", () => {
-    render(<AppHeader />);
+    render(
+      <AppHeader setShowNotifications={() => {}} showNotifications={true} />
+    );
     const linkElement = screen.getByText(/manager.seeOffersButton/i);
     expect(linkElement).not.toBeUndefined();
   });
 
   it("should redirect to proper page on offer button click", async () => {
-    render(<AppHeader />);
+    render(
+      <AppHeader setShowNotifications={() => {}} showNotifications={true} />
+    );
     const linkElement = screen.getByText(/manager.seeOffersButton/i);
     expect(linkElement).not.toBeUndefined();
 
@@ -83,7 +91,9 @@ describe("unconnected user", () => {
   });
 
   it("should display proper buttons", () => {
-    render(<AppHeader />);
+    render(
+      <AppHeader setShowNotifications={() => {}} showNotifications={true} />
+    );
     const employerSignupButton = screen.getByText(/signup.signup/i);
     expect(employerSignupButton).not.toBeUndefined();
 
@@ -92,7 +102,9 @@ describe("unconnected user", () => {
   });
 
   it("should redirect to proper page on signup button click", async () => {
-    render(<AppHeader />);
+    render(
+      <AppHeader setShowNotifications={() => {}} showNotifications={true} />
+    );
     const employerSignupButton = screen.getByText(/signup.signup/i);
     expect(employerSignupButton).not.toBeUndefined();
 
@@ -104,7 +116,9 @@ describe("unconnected user", () => {
   });
 
   it("should redirect to proper page on signin button click", async () => {
-    render(<AppHeader />);
+    render(
+      <AppHeader setShowNotifications={() => {}} showNotifications={true} />
+    );
     const signinButton = screen.getByText(/signin/i);
     expect(signinButton).not.toBeUndefined();
 
@@ -128,13 +142,17 @@ describe("connected user", () => {
   });
 
   it("should display proper buttons", () => {
-    render(<AppHeader />);
+    render(
+      <AppHeader setShowNotifications={() => {}} showNotifications={true} />
+    );
     const linkElement = screen.getByText(/logout/i);
     expect(linkElement).not.toBeUndefined();
   });
 
   it("should redirect to proper page on logout button click", async () => {
-    render(<AppHeader />);
+    render(
+      <AppHeader setShowNotifications={() => {}} showNotifications={true} />
+    );
 
     const linkElement = screen.getByText(/logout/i);
     fireEvent.click(linkElement);

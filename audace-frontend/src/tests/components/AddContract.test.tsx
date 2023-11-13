@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import AddContract from "../../components/AddContract";
-import { application, contract } from "./testUtils/testUtils";
+import { application } from "./testUtils/testUtils";
 import "@testing-library/jest-dom/extend-expect";
 
 beforeEach(() => {
