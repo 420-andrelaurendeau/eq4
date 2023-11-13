@@ -425,6 +425,7 @@ public class ManagerServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("The manager isn't in the right department");
     }
+
     @Test
     public void getAcceptedApplicationsByDepartment_happyPath() {
         List<Application> applications = new ArrayList<>();
