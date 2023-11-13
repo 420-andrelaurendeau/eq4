@@ -5,6 +5,9 @@ import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.Supervisor;
+import com.equipe4.audace.model.Manager;
+import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.application.Application;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -37,13 +40,11 @@ public class Contract {
     @ToString.Exclude
     private Application application;
 
-    @OneToOne
+    @Embedded
     private Signature<Student> studentSignature;
-
-    @OneToOne
+    @Embedded
     private Signature<Employer> employerSignature;
-
-    @OneToOne
+    @Embedded
     private Signature<Manager> managerSignature;
 
     public Contract(Long id, LocalTime startHour, LocalTime endHour, int totalHoursPerWeek, double salary, Supervisor supervisor, Application application) {
@@ -56,18 +57,6 @@ public class Contract {
         this.application = application;
     }
 
-    public boolean isSignedBy(Class<?> signatoryClass){
-        if(signatoryClass == Student.class){
-            return studentSignature != null;
-        } else if(signatoryClass == Employer.class){
-            return employerSignature != null;
-        } else if(signatoryClass == Manager.class){
-            return managerSignature != null;
-        } else {
-            return false;
-        }
-    }
-
     public ContractDTO toDTO(){
         return new ContractDTO(
                 id,
@@ -77,9 +66,9 @@ public class Contract {
                 salary,
                 supervisor,
                 application.toDTO(),
-                studentSignature != null ? studentSignature.getSignatureDate() : null,
-                employerSignature != null ? employerSignature.getSignatureDate() : null,
-                managerSignature != null ? managerSignature.getSignatureDate() : null
+                studentSignature,
+                employerSignature,
+                managerSignature
         );
     }
 }

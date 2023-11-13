@@ -7,6 +7,7 @@ import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Manager;
+import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
 import com.equipe4.audace.model.contract.Signature;
@@ -18,6 +19,7 @@ import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.offer.Offer.OfferStatus;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.ManagerRepository;
+import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
@@ -28,6 +30,7 @@ import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.NoSuchElementException;
 import java.util.List;
 import java.util.Optional;
@@ -41,19 +44,12 @@ public class ManagerService extends GenericUserService<Manager> {
     private final ApplicationRepository applicationRepository;
     private final SessionManipulator sessionManipulator;
     private final ContractRepository contractRepository;
-    private final NotificationManipulator notificationManipulator;
+    private final StudentRepository studentRepository;
 
-    public ManagerService(
-            SaltRepository saltRepository,
-            ManagerRepository managerRepository,
-            OfferRepository offerRepository,
-            DepartmentRepository departmentRepository,
-            CvRepository cvRepository,
-            ContractRepository contractRepository,
-            SessionManipulator sessionManipulator,
-            ApplicationRepository applicationRepository,
-            NotificationManipulator notificationManipulator
-    ) {
+    public ManagerService(SaltRepository saltRepository, ManagerRepository managerRepository, OfferRepository offerRepository,
+                          DepartmentRepository departmentRepository, CvRepository cvRepository, ContractRepository contractRepository,
+                          SessionManipulator sessionManipulator, ApplicationRepository applicationRepository,
+                          StudentRepository studentRepository) {
         super(saltRepository);
         this.managerRepository = managerRepository;
         this.offerRepository = offerRepository;

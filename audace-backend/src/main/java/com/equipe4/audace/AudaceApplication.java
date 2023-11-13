@@ -78,7 +78,7 @@ public class AudaceApplication implements CommandLineRunner {
 		Student student3 = studentDTO3.fromDTO();
 
         Offer offer1 = offerRepository.save(
-				new Offer(null, "Stage en génie logiciel PROTOTYPE", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer)
+				new Offer(null, "Stage en génie logiciel PROTOTYPE", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 2, department, employer)
 		);
 		offer1.setOfferStatus(Offer.OfferStatus.ACCEPTED);
         offerSessionRepository.save(new OfferSession(null, offer1, session));
@@ -108,26 +108,22 @@ public class AudaceApplication implements CommandLineRunner {
 		String cvContent = "cv content for fun";
 		byte[] content = cvContent.getBytes();
 
-		Cv cv1 = new Cv(1L, "cv.pdf", content, student);
+		Cv cv1 = new Cv(1L, "cvStudent1.pdf", content, student);
 		cv1.setCvStatus(Cv.CvStatus.ACCEPTED);
 		cvRepository.save(cv1);
 
-		Cv cv2 = new Cv(2L, "cv2.pdf", content, student2);
+		Cv cv2 = new Cv(2L, "cvStudent2.pdf", content, student2);
 		cv2.setCvStatus(Cv.CvStatus.ACCEPTED);
 		cvRepository.save(cv2);
 
-		Cv cv3 = new Cv(3L, "cv3.pdf", content, student3);
+		Cv cv3 = new Cv(3L, "cvStudent3.pdf", content, student3);
 		cv3.setCvStatus(Cv.CvStatus.ACCEPTED);
 		cvRepository.save(cv3);
 
-		Application application = new Application(1L, cv1, offer1);
-		applicationRepository.save(application);
+		applicationRepository.save(new Application(1L, cv1, offer1));
+		applicationRepository.save(new Application(2L, cv2, offer1));
+		applicationRepository.save(new Application(3L, cv3, offer1));
 
-		Application application2 = new Application(2L, cv2, offer1);
-		applicationRepository.save(application2);
-
-		Application application3 = new Application(3L, cv3, offer1);
-		applicationRepository.save(application3);
 
 		Manager manager = new Manager(null, "manager", "managerman", "manager@email.com", "password", "yeete", "1234567890", department);
 		manager = managerRepository.save(manager);

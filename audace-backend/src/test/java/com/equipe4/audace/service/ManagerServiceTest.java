@@ -20,6 +20,7 @@ import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
+import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
@@ -55,6 +56,8 @@ public class ManagerServiceTest {
     private DepartmentRepository departmentRepository;
     @Mock
     private ManagerRepository managerRepository;
+    @Mock
+    private StudentRepository studentRepository;
     @Mock
     private CvRepository cvRepository;
     @Mock

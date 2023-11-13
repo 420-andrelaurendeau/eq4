@@ -1,11 +1,18 @@
 package com.equipe4.audace.controller;
 
+import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.ManagerDTO;
+import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.application.Application;
+import com.equipe4.audace.model.contract.Signature;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
@@ -216,5 +223,60 @@ public class StudentControllerTest {
 
         mockMvc.perform(get("/students/appliedOffers/{sessionId}", 1L).param("studentId", "1"))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
+    public void givenContractId_whenSignContract_thenReturnIsOk() throws Exception{
+        // given - precondition or setup
+        ApplicationDTO applicationDTO = createApplicationDTO(createOfferDTO(1L));
+        applicationDTO.setApplicationStatus(Application.ApplicationStatus.ACCEPTED);
+
+        ContractDTO contractDTO = createContractDTO(applicationDTO);
+        Student student = createStudentDTO(createDepartmentDTO()).fromDTO();
+
+        contractDTO.setStudentSignature(new Signature<Student>(student, LocalDate.now()));
+
+        when(studentService.signContract(contractDTO.getId())).thenReturn(Optional.of(contractDTO));
+
+        mockMvc.perform(put("/students/contract_signature")
+                .param("contractId", "1")
+                .with(csrf())
+                .accept(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk());
+
+    }
+
+    private DepartmentDTO createDepartmentDTO(){
+        return new DepartmentDTO(1L, "GLO", "Génie logiciel");
+    }
+    private ManagerDTO createManagerDTO(DepartmentDTO departmentDTO){
+        return new ManagerDTO(1L, "manager", "managerman", "asd", "ads", "das", "sda", departmentDTO);
+    }
+    private EmployerDTO createEmployerDTO() {
+        return new EmployerDTO(1L, "Employer1", "Employer1", "employer1@gmail.com", "123456eE", "Organisation1", "Position1", "Class Service, Javatown, Qc H8N1C1", "123-456-7890", "12345");
+    }
+    private StudentDTO createStudentDTO(DepartmentDTO departmentDTO) {
+        return new StudentDTO(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", departmentDTO);
+    }
+    private CvDTO createCvDTO(StudentDTO studentDTO) {
+        return new CvDTO(1L,"fileName", "content".getBytes(), Cv.CvStatus.PENDING, studentDTO);
+    }
+    private OfferDTO createOfferDTO(Long id) {
+        EmployerDTO employerDTO = createEmployerDTO();
+        DepartmentDTO departmentDTO = createDepartmentDTO();
+        return new OfferDTO(id,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, Offer.OfferStatus.PENDING, departmentDTO, employerDTO);
+    }
+    private ApplicationDTO createApplicationDTO(OfferDTO offerDTO) {
+        CvDTO cvDTO = createCvDTO(createStudentDTO(createDepartmentDTO()));
+        return new ApplicationDTO(1L, cvDTO, offerDTO, Application.ApplicationStatus.PENDING);
+    }
+
+    private ContractDTO createContractDTO(ApplicationDTO applicationDTO){
+        return new ContractDTO(1L, "08:00", "17:00", 40, 18.35, createSupervisor(), applicationDTO);
+    }
+
+    private Supervisor createSupervisor(){
+        return new Supervisor("super", "visor", "supervisor@email.com", "supervisor", "1234567890", "-123");
     }
 }

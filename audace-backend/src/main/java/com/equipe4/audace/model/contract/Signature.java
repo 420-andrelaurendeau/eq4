@@ -8,25 +8,18 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Entity
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Embeddable
 public class Signature<T extends User> {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "signature_gen")
-    @SequenceGenerator(name = "signature_gen", sequenceName = "signature_sec", allocationSize = 1)
-    @Column(name = "signature_id")
-    private Long id;
 
-    @ManyToOne(targetEntity = User.class)
-    @JoinColumn(name = "user_id")
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
     private T signatory;
 
+    @Column(insertable=false, updatable=false)
     private LocalDate signatureDate;
 
-    public Signature(T signatory) {
-        this.signatory = signatory;
-        this.signatureDate = LocalDate.now();
-    }
 }

@@ -1,8 +1,13 @@
 package com.equipe4.audace.dto.contract;
 
 import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.Manager;
+import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.contract.Contract;
+import com.equipe4.audace.model.contract.Signature;
+import jakarta.persistence.Embedded;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -23,9 +28,9 @@ public class ContractDTO {
     private Supervisor supervisor;
     private ApplicationDTO application;
 
-    private LocalDate studentSignatureDate;
-    private LocalDate employerSignatureDate;
-    private LocalDate managerSignatureDate;
+    private Signature<Student> studentSignature;
+    private Signature<Employer> employerSignature;
+    private Signature<Manager> managerSignature;
 
     public ContractDTO(Long id, String startHour, String endHour, int totalHoursPerWeek, double salary, Supervisor supervisor, ApplicationDTO application) {
         this.id = id;
@@ -45,7 +50,10 @@ public class ContractDTO {
                 totalHoursPerWeek,
                 salary,
                 supervisor,
-                application.fromDTO()
+                application.fromDTO(),
+                studentSignature,
+                employerSignature,
+                managerSignature
         );
     }
 

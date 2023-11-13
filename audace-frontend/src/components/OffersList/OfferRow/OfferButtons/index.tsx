@@ -12,39 +12,23 @@ interface Props {
   seeApplications?: (offer: Offer) => void;
   hideRow?: () => void;
 }
-const OfferButtons = ({
-  userType,
-  disabled,
-  offer,
-  updateOffersState,
-  seeApplications,
-  hideRow,
-}: Props) => {
+const OfferButtons = ({userType, disabled, offer, updateOffersState, seeApplications, hideRow}: Props) => {
   const selectButtons = () => {
     switch (userType) {
       case UserType.Student:
-        return <StudentButtons disabled={disabled} offer={offer} />;
+        return <StudentButtons disabled={false} offer={offer} />;
       case UserType.Manager:
         return (
-          <ManagerButtons
-            disabled={disabled}
-            offer={offer}
-            updateOffersState={updateOffersState}
-          />
+          <ManagerButtons disabled={false} offer={offer} updateOffersState={updateOffersState}/>
         );
       case UserType.Employer:
         return (
-          <EmployerButtons
-            disabled={disabled}
-            seeApplications={seeApplications}
-            offer={offer}
-            hideRow={hideRow}
-          />
+          <EmployerButtons disabled={false} seeApplications={seeApplications} offer={offer} hideRow={hideRow} />
         );
     }
   };
 
-  return <>{selectButtons()}</>;
+  return(<>{selectButtons()}</>);
 };
 
 export default OfferButtons;

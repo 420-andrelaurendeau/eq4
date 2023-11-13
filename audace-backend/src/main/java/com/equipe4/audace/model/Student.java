@@ -19,7 +19,7 @@ public class Student extends User {
     private Department department;
     @ToString.Exclude
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-    private List<Cv> cvs = new ArrayList<>();
+    private List<Cv> cv = new ArrayList<>();
 
     public Student(
             Long id,
