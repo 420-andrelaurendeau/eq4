@@ -370,27 +370,7 @@ public class ManagerControllerTest {
                 .andExpect(jsonPath("$.application.id", is(contractDTO.getApplication().getId().intValue())));
     }
 
-    @Test
-    @WithMockUser(username = "manager", authorities = {"Manager"})
-    public void givenContractId_whenSignContractForStudent_thenReturnIsOk() throws Exception{
-        // given - precondition or setup
-        ApplicationDTO applicationDTO = createApplicationDTO(createOfferDTO(1L));
-        applicationDTO.setApplicationStatus(Application.ApplicationStatus.ACCEPTED);
 
-        ContractDTO contractDTO = createContractDTO(applicationDTO);
-        Student student = createStudentDTO(createDepartmentDTO()).fromDTO();
-
-        contractDTO.setStudentSignature(new Signature<Student>(student, LocalDate.now()));
-
-        when(managerService.signContractForStudent(contractDTO.getId())).thenReturn(Optional.of(contractDTO));
-
-        mockMvc.perform(put("/managers/contract/student_signature")
-                .param("contractId", "1")
-                .with(csrf())
-                .accept(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk());
-
-    }
 
 
     private DepartmentDTO createDepartmentDTO(){

@@ -498,30 +498,6 @@ public class ManagerServiceTest {
                 .hasMessage("Contract cannot be null");
     }
 
-    @Test
-    public void signContractForStudent_HappyPath(){
-        Contract contract = createContract();
-        Student student = createStudent();
-
-        contract.setStudentSignature(new Signature<Student>(student, LocalDate.now()));
-
-        when(contractRepository.findById(anyLong())).thenReturn(Optional.of(contract));
-        when(studentRepository.findByCv(any(Cv.class))).thenReturn(Optional.of(student));
-        when(contractRepository.save(any(Contract.class))).thenReturn(contract);
-
-        ContractDTO contractDTO = managerService.signContractForStudent(contract.getId()).orElseThrow();
-        assertThat(contractDTO.getStudentSignature()).isEqualTo(contract.getStudentSignature());
-    }
-    @Test
-    public void signContractForStudent_invalidId(){
-        when(contractRepository.findById(anyLong())).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> managerService.signContractForStudent(anyLong()))
-                .isInstanceOf(NoSuchElementException.class)
-                .hasMessage("Contract not found");
-    }
-
-
     private Department createDepartment(){
         return new Department(1L, "GLO", "Génie logiciel");
     }

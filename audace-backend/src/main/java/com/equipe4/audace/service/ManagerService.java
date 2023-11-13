@@ -171,13 +171,5 @@ public class ManagerService extends GenericUserService<Manager> {
         return contractRepository.findAllByApplication_Offer_Department(department).stream().map(Contract::toDTO).toList();
     }
 
-    public Optional<ContractDTO> signContractForStudent(Long contractId) {
-        Contract contract = contractRepository.findById(contractId).orElseThrow(() -> new NoSuchElementException("Contract not found"));
 
-        Student student = studentRepository.findByCv(contract.getApplication().getCv()).orElseThrow(() -> new NoSuchElementException("Student not found"));
-
-        contract.setStudentSignature(new Signature<Student>(student, LocalDate.now()));
-
-        return Optional.of(contractRepository.save(contract).toDTO());
-    }
 }

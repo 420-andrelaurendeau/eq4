@@ -137,13 +137,4 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
         }
     }
 
-    @PutMapping("/contract/student_signature")
-    public ResponseEntity<HttpStatus> signContractForStudent(@RequestParam("contractId") Long contractId){
-        logger.info("signContractForStudent");
-        return service.signContractForStudent(contractId)
-                .map(contractDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
-    }
-
-
 }
