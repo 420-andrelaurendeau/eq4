@@ -1,12 +1,15 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.ManagerDTO;
+import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.application.StudentsByInternshipFoundStatus;
 import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Manager;
+import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
 import com.equipe4.audace.model.contract.Signature;
@@ -18,6 +21,7 @@ import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.offer.Offer.OfferStatus;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.ManagerRepository;
+import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
@@ -30,7 +34,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -42,6 +48,7 @@ public class ManagerService extends GenericUserService<Manager> {
     private final ApplicationRepository applicationRepository;
     private final SessionManipulator sessionManipulator;
     private final ContractRepository contractRepository;
+    private final StudentRepository studentRepository;
     private final NotificationManipulator notificationManipulator;
 
     public ManagerService(
@@ -53,7 +60,8 @@ public class ManagerService extends GenericUserService<Manager> {
             ContractRepository contractRepository,
             SessionManipulator sessionManipulator,
             ApplicationRepository applicationRepository,
-            NotificationManipulator notificationManipulator
+            NotificationManipulator notificationManipulator,
+            StudentRepository studentRepository
     ) {
         super(saltRepository);
         this.managerRepository = managerRepository;
@@ -64,11 +72,13 @@ public class ManagerService extends GenericUserService<Manager> {
         this.sessionManipulator = sessionManipulator;
         this.applicationRepository = applicationRepository;
         this.notificationManipulator = notificationManipulator;
+        this.studentRepository = studentRepository;
     }
 
     public Optional<ManagerDTO> getManagerById(Long id) {
         return managerRepository.findById(id).map(Manager::toDTO);
     }
+
     public DepartmentDTO getDepartmentByManager(Long managerId) {
         Manager manager = managerRepository.findById(managerId).orElseThrow(() -> new NoSuchElementException("Manager not found with ID: " + managerId));
 
@@ -157,7 +167,11 @@ public class ManagerService extends GenericUserService<Manager> {
         Department managerDepartment = manager.getDepartment();
         if (!managerDepartment.getCode().equals(department.getCode())) throw new IllegalArgumentException("The manager isn't in the right department");
 
-        return applicationRepository.findAllByApplicationStatusAndAndOffer_Department(Application.ApplicationStatus.ACCEPTED, department).stream().map(Application::toDTO).toList();
+        return applicationRepository
+                .findApplicationsByApplicationStatusAndOfferDepartmentId(Application.ApplicationStatus.ACCEPTED, department.getId())
+                .stream()
+                .map(Application::toDTO)
+                .toList();
     }
 
     public Optional<ContractDTO> createContract(ContractDTO contractDTO){
@@ -195,5 +209,108 @@ public class ManagerService extends GenericUserService<Manager> {
         contract.setManagerSignature(new Signature<>(manager, LocalDate.now()));
 
         return Optional.of(contractRepository.save(contract).toDTO());
+    }
+    
+    public StudentsByInternshipFoundStatus getStudentsByInternshipFoundStatus(Long departmentId) {
+        departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new NoSuchElementException("Department not found"));
+
+        List<StudentDTO> studentsWithInternship = getStudentsWithInternship(departmentId);
+        List<StudentDTO> studentsWithHigherPriorityStatuses = new ArrayList<>(studentsWithInternship);
+
+        List<StudentDTO> studentsWithAcceptedResponse = getStudentsWithAcceptedResponse(
+                departmentId,
+                studentsWithHigherPriorityStatuses
+        );
+        List<StudentDTO> studentsWithPendingResponse = getStudentsWithPendingResponse(
+                departmentId,
+                studentsWithHigherPriorityStatuses
+        );
+        List<StudentDTO> studentsWithRefusedResponse = getStudentsWithRefusedResponse(
+                departmentId,
+                studentsWithHigherPriorityStatuses
+        );
+
+        List<StudentDTO> studentsWithoutApplications = getStudentsWithoutApplications(departmentId);
+
+        return new StudentsByInternshipFoundStatus(
+                studentsWithInternship,
+                studentsWithAcceptedResponse,
+                studentsWithPendingResponse,
+                studentsWithRefusedResponse,
+                studentsWithoutApplications
+        );
+    }
+
+    private List<StudentDTO> getStudentsWithInternship(Long departmentId) {
+        return contractRepository
+                .findAllByApplicationCvStudentDepartmentId(departmentId)
+                .stream()
+                .map(Contract::getApplication)
+                .map(Application::getCv)
+                .map(Cv::getStudent)
+                .map(Student::toDTO)
+                .toList();
+    }
+
+    private List<StudentDTO> getStudentsWithAcceptedResponse(
+            Long departmentId,
+            List<StudentDTO> studentsWithHigherPriorityStatuses
+    ) {
+        return getStudentsWithApplicationResponse(
+                departmentId,
+                studentsWithHigherPriorityStatuses,
+                Application.ApplicationStatus.ACCEPTED
+        );
+    }
+
+    private List<StudentDTO> getStudentsWithPendingResponse(
+            Long departmentId,
+            List<StudentDTO> studentsWithHigherPriorityStatuses
+    ) {
+        return getStudentsWithApplicationResponse(
+                departmentId,
+                studentsWithHigherPriorityStatuses,
+                Application.ApplicationStatus.PENDING
+        );
+    }
+
+    private List<StudentDTO> getStudentsWithRefusedResponse(
+            Long departmentId,
+            List<StudentDTO> studentsWithHigherPriorityStatuses
+    ) {
+        return getStudentsWithApplicationResponse(
+                departmentId,
+                studentsWithHigherPriorityStatuses,
+                Application.ApplicationStatus.REFUSED
+        );
+    }
+
+    private List<StudentDTO> getStudentsWithApplicationResponse(
+            Long departmentId,
+            List<StudentDTO> studentsWithHigherPriorityStatuses,
+            Application.ApplicationStatus applicationStatus
+    ) {
+        List<StudentDTO> studentsWithApplicationResponse = applicationRepository
+                .findAllByCvStudentDepartmentId(departmentId)
+                .stream()
+                .filter(application -> application.getApplicationStatus() == applicationStatus)
+                .map(Application::getCv)
+                .map(Cv::getStudent)
+                .map(Student::toDTO)
+                .filter(dto -> !studentsWithHigherPriorityStatuses.contains(dto))
+                .toList();
+
+        studentsWithHigherPriorityStatuses.addAll(studentsWithApplicationResponse);
+
+        return studentsWithApplicationResponse;
+    }
+
+    private List<StudentDTO> getStudentsWithoutApplications(Long departmentId) {
+        return studentRepository
+                .findAllWithoutApplicationsByDepartmentId(departmentId)
+                .stream()
+                .map(Student::toDTO)
+                .toList();
     }
 }
