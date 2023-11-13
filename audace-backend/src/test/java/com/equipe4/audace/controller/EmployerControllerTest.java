@@ -14,6 +14,7 @@ import com.equipe4.audace.repository.*;
 import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
+import com.equipe4.audace.repository.notification.NotificationRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.OfferSessionRepository;
@@ -22,6 +23,7 @@ import com.equipe4.audace.service.EmployerService;
 import com.equipe4.audace.service.ManagerService;
 import com.equipe4.audace.service.StudentService;
 import com.equipe4.audace.utils.JwtManipulator;
+import com.equipe4.audace.utils.SessionManipulator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,7 +58,10 @@ public class EmployerControllerTest {
     private ObjectMapper objectMapper;
     @MockBean
     private JwtManipulator jwtManipulator;
-
+    @MockBean
+    private SessionManipulator sessionManipulator;
+    @MockBean
+    private NotificationRepository notificationRepository;
     @MockBean
     private CvRepository cvRepository;
     @MockBean

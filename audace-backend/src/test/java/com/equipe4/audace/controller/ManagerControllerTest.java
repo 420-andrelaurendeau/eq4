@@ -18,6 +18,7 @@ import com.equipe4.audace.repository.*;
 import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
+import com.equipe4.audace.repository.notification.NotificationRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.OfferSessionRepository;
@@ -66,6 +67,8 @@ public class ManagerControllerTest {
     private ObjectMapper objectMapper;
     @MockBean
     private JwtManipulator jwtManipulator;
+    @MockBean
+    private NotificationRepository notificationRepository;
     @MockBean
     private CvRepository cvRepository;
     @MockBean
