@@ -191,10 +191,10 @@ public class ManagerService extends GenericUserService<Manager> {
 
         if (!manager.getDepartment().equals(contractDepartment)) throw new IllegalArgumentException("The manager isn't in the right department");
 
-        if (contract.isSignedBy(Manager.class)) {
-            contract.setManagerSignature(null);
-        } else {
+        if (!contract.isSignedBy(Manager.class)) {
             contract.setManagerSignature(new Signature<>(manager));
+        } else {
+            throw new IllegalArgumentException("The contract is already signed by the manager");
         }
 
         return Optional.of(contractRepository.save(contract).toDTO());
