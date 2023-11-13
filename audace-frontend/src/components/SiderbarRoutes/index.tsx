@@ -9,7 +9,7 @@ import ManagerView from "../../views/Manager/ManagerView";
 import ManagerOfferView from "../../views/Manager/ManagerOfferView";
 import ManagerCvView from "../../views/Manager/ManagerCvView";
 import { Authority } from "../../model/auth";
-import { getAuthorities } from "../../services/authService";
+import { getAuthorities, isConnected } from "../../services/authService";
 import AddContract from "../../components/AddContract";
 import AddOffer from "../../components/AddOffer";
 import EditOffer from "../../components/EditOffer";
@@ -25,11 +25,13 @@ interface Props {
 const SidebarRoutes = ({ showNotifications }: Props) => {
   return (
     <div className="col d-md-flex">
-      <Collapse in={showNotifications}>
-        <div id="NotificationSidebarCollapse" className="col-md-3 col-12">
-          <NotificationSidebar />
-        </div>
-      </Collapse>
+      {isConnected() ? (
+        <Collapse in={showNotifications}>
+          <div id="NotificationSidebarCollapse" className="col-md-3 col-12">
+            <NotificationSidebar />
+          </div>
+        </Collapse>
+      ) : null}
       <div className="col">
         <Routes>
           <Route
