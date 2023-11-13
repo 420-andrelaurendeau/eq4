@@ -15,6 +15,7 @@ import com.equipe4.audace.model.contract.Contract;
 import com.equipe4.audace.model.contract.Signature;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
+import com.equipe4.audace.model.notification.Notification;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.EmployerRepository;
@@ -23,6 +24,7 @@ import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.utils.NotificationManipulator;
 import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -61,12 +63,14 @@ public class ManagerServiceTest {
     private SessionManipulator sessionManipulator;
     @Mock
     private ApplicationRepository applicationRepository;
+    @Mock
+    private NotificationManipulator notificationManipulator;
     @InjectMocks
     private ManagerService managerService;
 
     @Test
     public void acceptOffer() {
-        Employer employer = mock(Employer.class);
+        Employer employer = createEmployer();
         Department department = new Department(1L, "code", "name");
         Offer offer1 = new Offer(
                 1L,
@@ -95,6 +99,9 @@ public class ManagerServiceTest {
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
         managerService.acceptOffer(1L, 1L);
+
+        verify(notificationManipulator, times(1)).makeNotificationOfferToAllStudents(any(), any());
+        verify(notificationManipulator, times(1)).makeNotificationOfferToOfferEmployer(any(), any());
 
         assert(offer1.getOfferStatus() == Offer.OfferStatus.ACCEPTED);
     }
@@ -170,6 +177,8 @@ public class ManagerServiceTest {
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
         managerService.refuseOffer(1L, 1L);
+
+        verify(notificationManipulator, times(1)).makeNotificationOfferToOfferEmployer(offer1, Notification.NotificationCause.UPDATED);
 
         assert(offer1.getOfferStatus() == Offer.OfferStatus.REFUSED);
     }
@@ -355,6 +364,7 @@ public class ManagerServiceTest {
         else {
             assert(false);
         }
+        verify(notificationManipulator, times(1)).makeNotificationCvToCvStudent(any(), any());
     }
 
     @Test
@@ -394,6 +404,7 @@ public class ManagerServiceTest {
         else {
             assert(false);
         }
+        verify(notificationManipulator, times(1)).makeNotificationCvToCvStudent(any(), any());
     }
     @Test
     public void refuseCv_Invalid_Id() {
