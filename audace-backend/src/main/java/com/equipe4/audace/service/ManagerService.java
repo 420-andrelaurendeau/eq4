@@ -7,7 +7,6 @@ import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Manager;
-import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
 import com.equipe4.audace.model.contract.Signature;
@@ -19,7 +18,6 @@ import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.offer.Offer.OfferStatus;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.ManagerRepository;
-import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
@@ -44,12 +42,19 @@ public class ManagerService extends GenericUserService<Manager> {
     private final ApplicationRepository applicationRepository;
     private final SessionManipulator sessionManipulator;
     private final ContractRepository contractRepository;
-    private final StudentRepository studentRepository;
+    private final NotificationManipulator notificationManipulator;
 
-    public ManagerService(SaltRepository saltRepository, ManagerRepository managerRepository, OfferRepository offerRepository,
-                          DepartmentRepository departmentRepository, CvRepository cvRepository, ContractRepository contractRepository,
-                          SessionManipulator sessionManipulator, ApplicationRepository applicationRepository,
-                          StudentRepository studentRepository) {
+    public ManagerService(
+            SaltRepository saltRepository,
+            ManagerRepository managerRepository,
+            OfferRepository offerRepository,
+            DepartmentRepository departmentRepository,
+            CvRepository cvRepository,
+            ContractRepository contractRepository,
+            SessionManipulator sessionManipulator,
+            ApplicationRepository applicationRepository,
+            NotificationManipulator notificationManipulator
+    ) {
         super(saltRepository);
         this.managerRepository = managerRepository;
         this.offerRepository = offerRepository;
@@ -187,11 +192,7 @@ public class ManagerService extends GenericUserService<Manager> {
 
         if (!manager.getDepartment().equals(contractDepartment)) throw new IllegalArgumentException("The manager isn't in the right department");
 
-        if (!contract.isSignedBy(Manager.class)) {
-            contract.setManagerSignature(new Signature<>(manager));
-        } else {
-            throw new IllegalArgumentException("The contract is already signed by the manager");
-        }
+        contract.setManagerSignature(new Signature<>(manager, LocalDate.now()));
 
         return Optional.of(contractRepository.save(contract).toDTO());
     }

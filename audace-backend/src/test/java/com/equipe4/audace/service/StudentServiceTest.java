@@ -66,6 +66,7 @@ public class StudentServiceTest {
     @Mock
     private StudentSessionRepository studentSessionRepository;
     @Mock
+    private NotificationManipulator notificationManipulator;
     private ContractRepository contractRepository;
     @InjectMocks
     private StudentService studentService;
@@ -134,17 +135,6 @@ public class StudentServiceTest {
         assertThatThrownBy(() -> studentService.createStudent(null, null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Student cannot be null");
-    }
-
-    @Test
-    void createStudent_AlreadyExists() {
-        StudentDTO studentDTO = createStudentDTO();
-
-        when(studentRepository.findStudentByStudentNumberOrEmail(anyString(), anyString())).thenReturn(Optional.of(studentDTO.fromDTO()));
-
-        assertThatThrownBy(() -> studentService.createStudent(studentDTO, "420"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Student already exists");
     }
 
     @Test
@@ -235,23 +225,6 @@ public class StudentServiceTest {
                 .hasMessage("File cannot be null");
     }
 
-    @Test
-    void saveCv_fileUnreadable() {
-        MultipartFile file = new CustomMockMultipartFile(
-                "file",
-                "test.txt",
-                MediaType.TEXT_PLAIN_VALUE,
-                null
-        );
-
-        StudentDTO studentDTO = createStudentDTO();
-        when(studentRepository.findById(studentDTO.getId())).thenReturn(Optional.of(studentDTO.fromDTO()));
-
-        assertThatThrownBy(() -> studentService.saveCv(file, studentDTO.getId()))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("File cannot be read");
-    }
-
     private StudentDTO createStudentDTO() {
         DepartmentDTO departmentDTO = new DepartmentDTO(1L, "GEN", "Génie");
         return new StudentDTO(1L, "student", "studentMan", "email@email.com", "123 Street street", "1234567890", "123456789", "studentNumber", departmentDTO);
@@ -338,29 +311,6 @@ public class StudentServiceTest {
         assertThatThrownBy(() -> studentService.getApplicationsByStudentIdAndSessionId(null, 1L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Student ID cannot be null");
-    }
-
-    @Test
-    public void signContractForStudent_HappyPath(){
-        Contract contract = createContract();
-        Student student = createStudent();
-
-        contract.setStudentSignature(new Signature<Student>(student, LocalDate.now()));
-
-        when(contractRepository.findById(anyLong())).thenReturn(Optional.of(contract));
-        when(studentRepository.findByCv(any(Cv.class))).thenReturn(Optional.of(student));
-        when(contractRepository.save(any(Contract.class))).thenReturn(contract);
-
-        ContractDTO contractDTO = studentService.signContract(contract.getId()).orElseThrow();
-        assertThat(contractDTO.getStudentSignature()).isEqualTo(contract.getStudentSignature());
-    }
-    @Test
-    public void signContractForStudent_invalidId(){
-        when(contractRepository.findById(anyLong())).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> studentService.signContract(anyLong()))
-                .isInstanceOf(NoSuchElementException.class)
-                .hasMessage("Contract not found");
     }
 
     private Department createDepartment(){

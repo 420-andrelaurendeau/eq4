@@ -513,7 +513,7 @@ public class ManagerServiceTest {
     public void signContract_HappyPath(){
         Manager manager = createManager();
         Contract contract = createContract();
-        contract.setManagerSignature(new Signature<>(manager));
+        contract.setManagerSignature(new Signature<>(manager, LocalDate.now()));
 
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
         when(contractRepository.findById(anyLong())).thenReturn(Optional.of(contract));
