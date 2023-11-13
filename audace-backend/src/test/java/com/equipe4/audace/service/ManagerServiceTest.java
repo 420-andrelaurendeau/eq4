@@ -69,8 +69,6 @@ public class ManagerServiceTest {
     @Mock
     private ApplicationRepository applicationRepository;
     @Mock
-    private StudentRepository studentRepository;
-    @Mock
     private NotificationManipulator notificationManipulator;
     @InjectMocks
     private ManagerService managerService;
