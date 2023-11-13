@@ -1,8 +1,12 @@
 package com.equipe4.audace.model;
 
 import com.equipe4.audace.dto.UserDTO;
+import com.equipe4.audace.model.notification.Notification;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity

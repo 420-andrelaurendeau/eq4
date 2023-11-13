@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class StudentDTO extends UserDTO {
-    //TODO : Spring Validation
     private String studentNumber;
     private DepartmentDTO department;
 

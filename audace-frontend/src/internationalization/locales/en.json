@@ -158,6 +158,7 @@
     "errors": {
       "employerNotFound": "Employer not found"
     },
+    "createOfferButton": "Create Offer",
     "seeOffersButton": "See Offers",
     "seeApplicationsButton": "See Applications"
   },
@@ -271,6 +272,50 @@
       "email": "Email",
       "phone": "Phone",
       "address": "Address"
+    }
+  },
+  "notifications": {
+    "deleteAll" : "Remove all",
+    "student": {
+      "offer": {
+        "CREATED1" : "The offer ",
+        "CREATED2" : " can now be applied to."
+      },
+      "cv": {
+        "UPDATED1" : "The CV ",
+        "UPDATED2" : " has had it's status updated."
+      },
+      "application": {
+        "UPDATED1" : "The application ",
+        "UPDATED2" : " has had it's status updated."
+      }
+    },
+    "manager": {
+      "offer": {
+        "CREATED1" : "The offer ",
+        "CREATED2" : " is waiting for your approval.",
+        "UPDATED1" : "The offer ",
+        "UPDATED2" : " has been updated."
+      },
+      "cv": {
+        "CREATED1" : "The CV ",
+        "CREATED2" : " is waiting for your approval.",
+        "UPDATED1" : "The CV ",
+        "UPDATED2" : " has been updated."
+      },
+      "application": {
+        
+      }
+    },
+    "employer": {
+      "offer": {
+        "UPDATED1" : "The offer ",
+        "UPDATED2" : " has had it's status updated."
+      },
+      "application": {
+        "CREATED1" : "The offer ",
+        "CREATED2" : " has a new application."
+      }
     }
   }
 }
