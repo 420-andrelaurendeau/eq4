@@ -49,9 +49,7 @@ public class StudentService extends GenericUserService<Student> {
     public StudentService(SaltRepository saltRepository, DepartmentRepository departmentRepository, OfferRepository offerRepository,
                           StudentRepository studentRepository, CvRepository cvRepository, ApplicationRepository applicationRepository,
                           StudentSessionRepository studentSessionRepository, SessionManipulator sessionManipulator,
-                          ContractRepository contractRepository) {
-                          StudentSessionRepository studentSessionRepository, SessionManipulator sessionManipulator,
-                          NotificationManipulator notificationManipulator) {
+                          ContractRepository contractRepository, NotificationManipulator notificationManipulator) {
         super(saltRepository);
         this.departmentRepository = departmentRepository;
         this.offerRepository = offerRepository;

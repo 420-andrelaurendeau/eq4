@@ -1,7 +1,6 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.ManagerDTO;
-import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.application.StudentsByInternshipFoundStatus;
 import com.equipe4.audace.dto.contract.ContractDTO;
@@ -14,7 +13,6 @@ import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
-import com.equipe4.audace.model.contract.Signature;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.notification.Notification;
@@ -68,8 +66,6 @@ public class ManagerServiceTest {
     private SessionManipulator sessionManipulator;
     @Mock
     private ApplicationRepository applicationRepository;
-    @Mock
-    private StudentRepository studentRepository;
     @Mock
     private NotificationManipulator notificationManipulator;
     @InjectMocks
@@ -449,7 +445,7 @@ public class ManagerServiceTest {
         Offer offer = new Offer(1L, "title", "description", LocalDate.now(), LocalDate.now(), LocalDate.now(), 1, department, employer);
         applications.add(new Application(1L, cv, offer));
 
-        when(applicationRepository.findApplicationsByApplicationStatusAndOfferDepartmentId(any(), anyLong())).thenReturn(applications);
+        when(applicationRepository.findAllByApplicationStatusAndAndOffer_Department(any(), any(Department.class))).thenReturn(applications);
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(new Manager(1L, "firstName", "lastName", "email", "password", "address", "phone", department)));
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(department));
 
