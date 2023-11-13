@@ -1,4 +1,5 @@
 import Application, { ApplicationStatus } from "../../../model/application";
+import { Contract } from "../../../model/contract";
 import { CV, CVStatus } from "../../../model/cv";
 import { Offer, OfferStatus } from "../../../model/offer";
 import { Employer, Manager, Student } from "../../../model/user";
@@ -81,3 +82,20 @@ export const manager: Manager = {
     name: "name",
   },
 };
+
+export const contract: Contract = {
+  id: 1,
+  startHour: "08:00",
+  endHour: "16:00",
+  totalHoursPerWeek: 40,
+  salary: 10,
+  supervisor: {
+    firstName: "firstName",
+    lastName: "lastName",
+    position: "position",
+    email: "email",
+    phone: "phone",
+    extension: "extension",
+  },
+  application: application,
+}
