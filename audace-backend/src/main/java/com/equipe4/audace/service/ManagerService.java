@@ -12,6 +12,7 @@ import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
+import com.equipe4.audace.model.contract.Signature;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.cv.Cv.CvStatus;
 import com.equipe4.audace.model.department.Department;
@@ -31,7 +32,8 @@ import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.util.NoSuchElementException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -47,7 +49,12 @@ public class ManagerService extends GenericUserService<Manager> {
     private final ContractRepository contractRepository;
     private final StudentRepository studentRepository;
     private final NotificationManipulator notificationManipulator;
+    private final StudentRepository studentRepository;
 
+    public ManagerService(SaltRepository saltRepository, ManagerRepository managerRepository, OfferRepository offerRepository,
+                          DepartmentRepository departmentRepository, CvRepository cvRepository, ContractRepository contractRepository,
+                          SessionManipulator sessionManipulator, ApplicationRepository applicationRepository,
+                          StudentRepository studentRepository) {
     public ManagerService(
             SaltRepository saltRepository,
             ManagerRepository managerRepository,
@@ -164,11 +171,7 @@ public class ManagerService extends GenericUserService<Manager> {
         Department managerDepartment = manager.getDepartment();
         if (!managerDepartment.getCode().equals(department.getCode())) throw new IllegalArgumentException("The manager isn't in the right department");
 
-        return applicationRepository
-                .findApplicationsByApplicationStatusAndOfferDepartmentId(Application.ApplicationStatus.ACCEPTED, department.getId())
-                .stream()
-                .map(Application::toDTO)
-                .toList();
+        return applicationRepository.findAllByApplicationStatusAndAndOffer_Department(Application.ApplicationStatus.ACCEPTED, department).stream().map(Application::toDTO).toList();
     }
 
     public Optional<ContractDTO> createContract(ContractDTO contractDTO){

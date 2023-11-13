@@ -2,12 +2,16 @@ package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.application.Application;
+import com.equipe4.audace.model.contract.Contract;
+import com.equipe4.audace.model.contract.Signature;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
@@ -15,6 +19,7 @@ import com.equipe4.audace.model.security.Salt;
 import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.StudentRepository;
+import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
@@ -32,10 +37,10 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -62,6 +67,8 @@ public class StudentServiceTest {
     private StudentSessionRepository studentSessionRepository;
     @Mock
     private NotificationManipulator notificationManipulator;
+    @Mock
+    private ContractRepository contractRepository;
     @InjectMocks
     private StudentService studentService;
 
@@ -335,6 +342,29 @@ public class StudentServiceTest {
                 .hasMessage("Student ID cannot be null");
     }
 
+    @Test
+    public void signContractForStudent_HappyPath(){
+        Contract contract = createContract();
+        Student student = createStudent();
+
+        contract.setStudentSignature(new Signature<Student>(student, LocalDate.now()));
+
+        when(contractRepository.findById(anyLong())).thenReturn(Optional.of(contract));
+        when(studentRepository.findByCv(any(Cv.class))).thenReturn(Optional.of(student));
+        when(contractRepository.save(any(Contract.class))).thenReturn(contract);
+
+        ContractDTO contractDTO = studentService.signContract(contract.getId()).orElseThrow();
+        assertThat(contractDTO.getStudentSignature()).isEqualTo(contract.getStudentSignature());
+    }
+    @Test
+    public void signContractForStudent_invalidId(){
+        when(contractRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> studentService.signContract(anyLong()))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Contract not found");
+    }
+
     private Department createDepartment(){
         return new Department(1L, "GLO", "Génie logiciel");
     }
@@ -354,5 +384,19 @@ public class StudentServiceTest {
     private Offer createOffer(Long id, Employer employer) {
         Department department = createDepartment();
         return new Offer(id,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
+    }
+
+    private Application createApplication() {
+        Offer offer = createOffer(1L, createEmployer());
+        return new Application(1L, createCv(), offer);
+    }
+
+    private Contract createContract() {
+        DateTimeFormatter dtf = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("H:mm").toFormatter(Locale.ENGLISH);
+        Application application = createApplication();
+        return new Contract(1L, LocalTime.parse("08:00", dtf), LocalTime.parse("17:00", dtf), 40, 18.35, createSupervisor(), application);
+    }
+    private Supervisor createSupervisor(){
+        return new Supervisor("super", "visor", "supervisor", "supervisor@email.com", "1234567890", "-123");
     }
 }

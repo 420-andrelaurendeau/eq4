@@ -21,11 +21,11 @@ const GenericTable = <T,>({
 
   return (
     <>
-      <h2 className="mb-3">{t(title)}</h2>
+      <h5 className="mb-3">{t(title)}</h5>
       {error !== "" ? (
         <Alert className="text-center">{error}</Alert>
       ) : list.length > 0 ? (
-        <Table striped bordered hover size="sm">
+        <Table striped bordered hover >
           {children}
         </Table>
       ) : (

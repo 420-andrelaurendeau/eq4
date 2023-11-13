@@ -4,7 +4,6 @@ import {Offer} from "../../model/offer";
 import {getUserId} from "../../services/authService";
 import {useNavigate} from "react-router-dom";
 import Application, {ApplicationStatus} from "../../model/application";
-import {Container} from "react-bootstrap";
 import {getAllApplicationsByEmployerIdAndOfferId} from "../../services/applicationService";
 import ApplicationsList from "../ApplicationsList";
 import {UserType} from "../../model/user";
@@ -46,10 +45,7 @@ const Applications = ({offer, userType, updateAvailablePlaces} : Props) => {
     };
 
     return (
-        <Container>
-            <h1 className="text-center my-3">{offer.title}</h1>
-            {<ApplicationsList applications={applications} error={error} userType={userType} updateApplicationsState={updateApplicationsState} />}
-        </Container>
+        <ApplicationsList offer={offer} applications={applications} error={error} userType={userType} updateApplicationsState={updateApplicationsState} />
     );
 };
 
