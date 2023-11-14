@@ -10,6 +10,7 @@ import { getUserId } from "../../../services/authService";
 import { useTranslation } from "react-i18next";
 import ManagerStudentByInternshipStatusList from "../../../components/ManagerStudentByInternshipStatusList";
 import { getContractsByDepartmentId } from "../../../services/contractService";
+import ManagerSignContract from "../../../components/ManagerSignContract";
 
 interface Props {
   isContractCreated?: boolean;
@@ -64,6 +65,7 @@ const ManagerView = ({ isContractCreated }: Props) => {
       <h1>{t("manager.title")}</h1>
       <ManagerApplicationsList applications={applications} />
       <ManagerStudentByInternshipStatusList />
+      <ManagerSignContract departmentId={1}></ManagerSignContract>
     </Container>
   );
 };
