@@ -365,6 +365,16 @@ public class StudentServiceTest {
                 .hasMessage("Contract not found");
     }
 
+//    @Test
+//    public void getContractByApplicationId_HappyPath(){
+//        Contract contract = createContract();
+//        System.out.println(contract.toString());
+//        when(contractRepository.findByApplication(any(Application.class))).thenReturn(Optional.of(contract));
+//
+//        ContractDTO contractDTO = studentService.getContractByApplicationId(1L).orElseThrow();
+//        assertThat(contractDTO).isEqualTo(contract.toDTO());
+//    }
+
     private Department createDepartment(){
         return new Department(1L, "GLO", "Génie logiciel");
     }

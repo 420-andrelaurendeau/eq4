@@ -247,6 +247,34 @@ public class StudentControllerTest {
 
     }
 
+    @Test
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
+    void getContractByApplicationId_ContractExists() throws Exception {
+        ApplicationDTO applicationDTO = createApplicationDTO(createOfferDTO(1L));
+
+        ContractDTO mockContractDTO = createContractDTO(applicationDTO);
+        when(managerService.getContractByApplicationId(applicationDTO.getId())).thenReturn(Optional.of(mockContractDTO));
+
+        ResultActions result = mockMvc.perform(get("/students/applications/{applicationId}/contract", applicationDTO.getId()));
+
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(mockContractDTO.getId()));
+    }
+
+    @Test
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
+    void getContractByApplicationId_ContractNotFound() throws Exception {
+        // given
+        Long applicationId = 1L;
+        when(managerService.getContractByApplicationId(applicationId)).thenReturn(Optional.empty());
+
+        // when
+        ResultActions result = mockMvc.perform(get("/students/applications/{applicationId}/contract", applicationId));
+
+        // then
+        result.andExpect(status().isNotFound());
+    }
+
     private DepartmentDTO createDepartmentDTO(){
         return new DepartmentDTO(1L, "GLO", "Génie logiciel");
     }

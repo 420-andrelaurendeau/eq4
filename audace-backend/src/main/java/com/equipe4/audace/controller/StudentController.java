@@ -3,9 +3,11 @@ package com.equipe4.audace.controller;
 import com.equipe4.audace.controller.abstracts.GenericUserController;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Student;
+import com.equipe4.audace.service.ManagerService;
 import com.equipe4.audace.service.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,8 @@ import java.util.NoSuchElementException;
 @RequestMapping("/students")
 @CrossOrigin(origins = "http://localhost:3000")
 public class StudentController extends GenericUserController<Student, StudentService> {
+    private ManagerService managerService;
+
     public StudentController(StudentService studentService) {
         super(studentService);
     }
@@ -101,5 +105,15 @@ public class StudentController extends GenericUserController<Student, StudentSer
         return service.signContract(contractId)
                 .map(contractDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    }
+
+    @GetMapping("/applications/{applicationId}/contract")
+    public ResponseEntity<ContractDTO> getContractByApplicationId(@PathVariable Long applicationId) {
+        logger.info("getContractByApplicationId");
+        try {
+            return ResponseEntity.ok(managerService.getContractByApplicationId(applicationId).orElseThrow());
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

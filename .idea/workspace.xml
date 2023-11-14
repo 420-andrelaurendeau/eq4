@@ -6,10 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/Applications/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/Applications/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/ApplicationsList/ApplicationRow/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/ApplicationsList/ApplicationRow/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/ApplicationsList/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/ApplicationsList/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/views/Student/StudentView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/views/Student/StudentView/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/StudentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/StudentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/repository/contract/ContractRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/repository/contract/ContractRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/controller/StudentControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/controller/StudentControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/ManagerServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/ManagerServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/StudentServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/StudentServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/model/application.ts" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/model/application.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,10 +21,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="TypeScript JSX File" />
         <option value="CSS File" />
         <option value="TypeScript File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -114,21 +116,8 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.AudaceApplication">
-    <configuration name="AudaceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.AudaceApplication" />
-      <module name="eq4" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.equipe4.audace.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="AuthControllerTest.testEmployerSignup_invalidEmployer" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.StudentServiceTest.getContractByApplicationId_HappyPath">
+    <configuration name="StudentControllerTest.getContractByApplicationId_ContractExists" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="audace" />
       <extension name="coverage">
         <pattern>
@@ -137,8 +126,39 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.equipe4.audace.controller" />
-      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.controller.AuthControllerTest" />
-      <option name="METHOD_NAME" value="testEmployerSignup_invalidEmployer" />
+      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.controller.StudentControllerTest" />
+      <option name="METHOD_NAME" value="getContractByApplicationId_ContractExists" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StudentServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="audace" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.equipe4.audace.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.equipe4.audace.service" />
+      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.service.StudentServiceTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StudentServiceTest.getContractByApplicationId_HappyPath" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="audace" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.equipe4.audace.service.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.equipe4.audace.service" />
+      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.service.StudentServiceTest" />
+      <option name="METHOD_NAME" value="getContractByApplicationId_HappyPath" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -148,19 +168,6 @@
       <module name="audace" />
       <option name="TEST_OBJECT" value="directory" />
       <dir value="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="AudaceApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="audace" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.equipe4.audace.AudaceApplication" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.equipe4.audace.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -182,11 +189,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.StudentServiceTest.getContractByApplicationId_HappyPath" />
+        <item itemvalue="JUnit.StudentServiceTest" />
+        <item itemvalue="JUnit.StudentControllerTest.getContractByApplicationId_ContractExists" />
         <item itemvalue="Spring Boot.AudaceApplication" />
         <item itemvalue="JUnit.audace in audace" />
-        <item itemvalue="Spring Boot.AudaceApplication (1)" />
-        <item itemvalue="Application.AudaceApplication" />
-        <item itemvalue="JUnit.AuthControllerTest.testEmployerSignup_invalidEmployer" />
       </list>
     </recent_temporary>
   </component>
@@ -244,7 +251,7 @@
       <workItem from="1698876159327" duration="54000" />
       <workItem from="1699909810731" duration="2889000" />
       <workItem from="1699976892427" duration="750000" />
-      <workItem from="1699977664713" duration="1375000" />
+      <workItem from="1699977664713" duration="8498000" />
     </task>
     <servers />
   </component>
