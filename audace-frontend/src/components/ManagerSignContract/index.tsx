@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Contract } from '../../model/contract';
 import { useTranslation } from 'react-i18next';
-import { Table, Form, Row, Col, Container } from 'react-bootstrap';
+import { Table, Form, Row, Col, Container, Button } from 'react-bootstrap';
 import { getContractsByDepartmentId } from '../../services/contractService';
-
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
     departmentId: number;
@@ -14,6 +14,7 @@ const ContractsList = ({ departmentId }: Props) => {
   const [filteredContracts, setFilteredContracts] = useState<Contract[]>([]);
   const { t } = useTranslation();
   const [searchText, setSearchText] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     getContractsByDepartmentId(departmentId)
@@ -26,18 +27,22 @@ const ContractsList = ({ departmentId }: Props) => {
       });
   }, [departmentId]);
 
-useEffect(() => {
+  useEffect(() => {
     if (searchText) {
-        const searchRegex = new RegExp(searchText, "i");
-        const filtered = contracts.filter((contract) =>
-            searchRegex.test(contract.supervisor.firstName) ||
-            searchRegex.test(contract.supervisor.lastName) // Add more fields to search by if needed
-        );
-        setFilteredContracts(filtered);
+      const searchRegex = new RegExp(searchText, "i");
+      const filtered = contracts.filter((contract) =>
+        searchRegex.test(contract.supervisor.firstName) ||
+        searchRegex.test(contract.supervisor.lastName) 
+      );
+      setFilteredContracts(filtered);
     } else {
-        setFilteredContracts(contracts);
+      setFilteredContracts(contracts);
     }
-}, [searchText, contracts]);
+  }, [searchText, contracts]);
+
+  const handleViewContract = (contractId: number) => {
+    navigate(`/contract/${contractId}`);
+  };
 
   return (
     <>
@@ -67,7 +72,7 @@ useEffect(() => {
                   <th>{t("contractsList.contractId")}</th>
                   <th>{t("contractsList.startHour")}</th>
                   <th>{t("contractsList.endHour")}</th>
-                  {/* Add other headers as needed */}
+                  <th>{t("contractsList.actions")}</th>
                 </tr>
               </thead>
               <tbody className="table-custom">
@@ -76,7 +81,11 @@ useEffect(() => {
                     <td>{contract.id}</td>
                     <td>{contract.startHour}</td>
                     <td>{contract.endHour}</td>
-                    {/* Render additional contract details here if needed */}
+                    <td>
+                      <Button variant="primary" size="sm" onClick={() => handleViewContract(contract.id!)}>
+                        {t("contractsList.viewDetails")}
+                      </Button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
