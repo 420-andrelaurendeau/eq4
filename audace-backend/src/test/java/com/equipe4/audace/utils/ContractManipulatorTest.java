@@ -4,6 +4,7 @@ import com.equipe4.audace.model.*;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
 import com.equipe4.audace.repository.ApplicationRepository;
+import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.contract.ContractRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +24,8 @@ public class ContractManipulatorTest {
     private ContractRepository contractRepository;
     @Mock
     private ApplicationRepository applicationRepository;
+    @Mock
+    private UserRepository userRepository;
     @InjectMocks
     private ContractManipulator contractManipulator;
     @Test
@@ -55,16 +58,18 @@ public class ContractManipulatorTest {
 
     @Test
     public void signContract_Student() {
+        Long studentId = 1L;
         Long contractId = 1L;
         Student mockStudent = mock(Student.class);
         Contract mockContract = mock(Contract.class);
         ContractDTO mockContractDTO = mock(ContractDTO.class);
 
+        when(userRepository.findById(studentId)).thenReturn(Optional.of(mockStudent));
         when(contractRepository.findById(contractId)).thenReturn(Optional.of(mockContract));
         when(contractRepository.save(any(Contract.class))).thenReturn(mockContract);
         when(mockContract.toDTO()).thenReturn(mockContractDTO);
 
-        Optional<ContractDTO> result = contractManipulator.signContract(mockStudent, contractId);
+        Optional<ContractDTO> result = contractManipulator.signContract(studentId, contractId);
 
         assertThat(result).isPresent();
         verify(contractRepository).save(any(Contract.class));
@@ -72,16 +77,18 @@ public class ContractManipulatorTest {
 
     @Test
     public void signContract_Employer() {
+        Long employerId = 1L;
         Long contractId = 1L;
         Employer mockEmployer = mock(Employer.class);
         Contract mockContract = mock(Contract.class);
         ContractDTO mockContractDTO = mock(ContractDTO.class);
 
+        when(userRepository.findById(employerId)).thenReturn(Optional.of(mockEmployer));
         when(contractRepository.findById(contractId)).thenReturn(Optional.of(mockContract));
         when(contractRepository.save(any(Contract.class))).thenReturn(mockContract);
         when(mockContract.toDTO()).thenReturn(mockContractDTO);
 
-        Optional<ContractDTO> result = contractManipulator.signContract(mockEmployer, contractId);
+        Optional<ContractDTO> result = contractManipulator.signContract(employerId, contractId);
 
         assertThat(result).isPresent();
         verify(contractRepository).save(any(Contract.class));
@@ -89,16 +96,18 @@ public class ContractManipulatorTest {
 
     @Test
     public void signContract_Manager() {
+        Long managerId = 1L;
         Long contractId = 1L;
         Manager mockManager = mock(Manager.class);
         Contract mockContract = mock(Contract.class);
         ContractDTO mockContractDTO = mock(ContractDTO.class);
 
+        when(userRepository.findById(managerId)).thenReturn(Optional.of(mockManager));
         when(contractRepository.findById(contractId)).thenReturn(Optional.of(mockContract));
         when(contractRepository.save(any(Contract.class))).thenReturn(mockContract);
         when(mockContract.toDTO()).thenReturn(mockContractDTO);
 
-        Optional<ContractDTO> result = contractManipulator.signContract(mockManager, contractId);
+        Optional<ContractDTO> result = contractManipulator.signContract(managerId, contractId);
 
         assertThat(result).isPresent();
         verify(contractRepository).save(any(Contract.class));
@@ -107,21 +116,23 @@ public class ContractManipulatorTest {
     @Test
     public void signContract_ContractNotFound() {
         Long contractId = 1L;
-        Student student = new Student();
+        Student student = mock(Student.class);
+
+        when(userRepository.findById(student.getId())).thenReturn(Optional.of(student));
         when(contractRepository.findById(contractId)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> contractManipulator.signContract(student, contractId))
+        assertThatThrownBy(() -> contractManipulator.signContract(student.getId(), contractId))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessageContaining("Contract not found");
     }
 
     @Test
-    public void signContract_NullUser() {
+    public void signContract_NullUserId() {
         Long contractId = 1L;
-        Contract mockContract = mock(Contract.class);
-        when(contractRepository.findById(contractId)).thenReturn(Optional.of(mockContract));
 
         assertThatThrownBy(() -> contractManipulator.signContract(null, contractId))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessageContaining("User not found");
     }
+
 }

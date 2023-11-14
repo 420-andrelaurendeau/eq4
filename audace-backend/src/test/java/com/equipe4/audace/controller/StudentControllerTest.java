@@ -237,25 +237,28 @@ public class StudentControllerTest {
 
         contractDTO.setStudentSignature(new Signature<Student>(student, LocalDate.now()));
 
-        when(studentService.signContract(contractDTO.getId())).thenReturn(Optional.of(contractDTO));
+        when(studentService.signContractForStudent(student.getId(), contractDTO.getId())).thenReturn(Optional.of(contractDTO));
 
         mockMvc.perform(put("/students/contract_signature")
+                .param("studentId", "1")
                 .param("contractId", "1")
                 .with(csrf())
                 .accept(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
-
     }
 
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT"})
     void getContractByApplicationId_ContractExists() throws Exception {
         ApplicationDTO applicationDTO = createApplicationDTO(createOfferDTO(1L));
-
         ContractDTO mockContractDTO = createContractDTO(applicationDTO);
-        when(managerService.getContractByApplicationId(applicationDTO.getId())).thenReturn(Optional.of(mockContractDTO));
 
-        ResultActions result = mockMvc.perform(get("/students/applications/{applicationId}/contract", applicationDTO.getId()));
+        when(studentService.getContractByApplicationId(applicationDTO.getId()))
+                .thenReturn(Optional.of(mockContractDTO));
+
+        ResultActions result = mockMvc.perform(
+                get("/students/applications/{applicationId}/contract", applicationDTO.getId())
+        );
 
         result.andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(mockContractDTO.getId()));
@@ -263,16 +266,36 @@ public class StudentControllerTest {
 
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT"})
-    void getContractByApplicationId_ContractNotFound() throws Exception {
-        // given
-        Long applicationId = 1L;
-        when(managerService.getContractByApplicationId(applicationId)).thenReturn(Optional.empty());
+    void signContractForStudent_ContractNotFound() throws Exception {
+        Long studentId = 1L;
+        Long contractId = 1L;
 
-        // when
-        ResultActions result = mockMvc.perform(get("/students/applications/{applicationId}/contract", applicationId));
+        when(studentService.signContractForStudent(studentId, contractId))
+                .thenReturn(Optional.empty());
 
-        // then
-        result.andExpect(status().isNotFound());
+        mockMvc.perform(put("/students/contract_signature")
+                        .param("studentId", studentId.toString())
+                        .param("contractId", contractId.toString())
+                        .with(csrf()))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
+    void signContractForStudent_ContractExists() throws Exception {
+        Long studentId = 1L;
+        Long contractId = 1L;
+        ContractDTO mockContractDTO = createContractDTO(createApplicationDTO(createOfferDTO(1L)));
+
+        when(studentService.signContractForStudent(studentId, contractId))
+                .thenReturn(Optional.of(mockContractDTO));
+
+        mockMvc.perform(put("/students/contract_signature")
+                        .param("studentId", studentId.toString())
+                        .param("contractId", contractId.toString())
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(mockContractDTO.getId()));
     }
 
     private DepartmentDTO createDepartmentDTO(){

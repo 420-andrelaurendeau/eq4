@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { MANAGER_PREFIX } from "../constants/apiPrefixes";
+import { MANAGER_PREFIX, STUDENT_PREFIX } from "../constants/apiPrefixes";
 import http from "../constants/http";
 import { Contract } from "../model/contract";
 
@@ -26,4 +26,10 @@ export const getContractsByDepartmentId = async (
   return http.get<Contract[]>(
     `${MANAGER_PREFIX}/contracts/department/${departmentId}`
   );
+};
+
+export const getContractByApplicationIdForStudent = async (applicationId: number): Promise<AxiosResponse<Contract>> => {
+    return http.get<Contract>(
+        `${STUDENT_PREFIX}/applications/${applicationId}/contract`
+    );
 };

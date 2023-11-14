@@ -24,6 +24,7 @@ import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.StudentSessionRepository;
+import com.equipe4.audace.utils.ContractManipulator;
 import com.equipe4.audace.utils.NotificationManipulator;
 import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.transaction.Transactional;
@@ -45,12 +46,13 @@ public class StudentService extends GenericUserService<Student> {
     private final SessionManipulator sessionManipulator;
     private final ContractRepository contractRepository;
     private final NotificationManipulator notificationManipulator;
+    private final ContractManipulator contractManipulator;
 
     public StudentService(SaltRepository saltRepository, DepartmentRepository departmentRepository, OfferRepository offerRepository,
                           StudentRepository studentRepository, CvRepository cvRepository, ApplicationRepository applicationRepository,
                           StudentSessionRepository studentSessionRepository, SessionManipulator sessionManipulator,
                           ContractRepository contractRepository,
-                          NotificationManipulator notificationManipulator) {
+                          NotificationManipulator notificationManipulator, ContractManipulator contractManipulator) {
         super(saltRepository);
         this.departmentRepository = departmentRepository;
         this.offerRepository = offerRepository;
@@ -61,6 +63,7 @@ public class StudentService extends GenericUserService<Student> {
         this.sessionManipulator = sessionManipulator;
         this.notificationManipulator = notificationManipulator;
         this.contractRepository = contractRepository;
+        this.contractManipulator = contractManipulator;
     }
 
     @Transactional
@@ -180,5 +183,13 @@ public class StudentService extends GenericUserService<Student> {
         contract.setStudentSignature(new Signature<Student>(student, LocalDate.now()));
 
         return Optional.of(contractRepository.save(contract).toDTO());
+    }
+
+    public Optional<ContractDTO> signContractForStudent(Long userId, Long contractId){
+        return contractManipulator.signContract(userId, contractId);
+    }
+
+    public Optional<ContractDTO> getContractByApplicationId(Long applicationId) {
+        return contractManipulator.getContractByApplicationId(applicationId);
     }
 }

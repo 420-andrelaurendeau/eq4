@@ -100,20 +100,26 @@ public class StudentController extends GenericUserController<Student, StudentSer
     }
 
     @PutMapping("/contract_signature")
-    public ResponseEntity<HttpStatus> signContractForStudent(@RequestParam("contractId") Long contractId){
+    public ResponseEntity<ContractDTO> signContract(@RequestParam("studentId") Long studentId, @RequestParam("contractId") Long contractId) {
         logger.info("signContractForStudent");
-        return service.signContract(contractId)
-                .map(contractDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+        try {
+            return service.signContractForStudent(studentId, contractId)
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        } catch (Exception e) {
+            logger.error("Error signing contract: " + e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/applications/{applicationId}/contract")
-    public ResponseEntity<ContractDTO> getContractByApplicationId(@PathVariable Long applicationId) {
-        logger.info("getContractByApplicationId");
+    public ResponseEntity<ContractDTO> getContractByApplication(@PathVariable Long applicationId) {
+        logger.info("getContractByApplication");
         try {
-            return ResponseEntity.ok(managerService.getContractByApplicationId(applicationId).orElseThrow());
+            return ResponseEntity.ok(service.getContractByApplicationId(applicationId).orElseThrow());
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }
+
 }

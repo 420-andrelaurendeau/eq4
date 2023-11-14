@@ -9,6 +9,7 @@ import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
 import com.equipe4.audace.model.contract.Signature;
 import com.equipe4.audace.repository.ApplicationRepository;
+import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.contract.ContractRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,7 @@ import java.util.Optional;
 public class ContractManipulator {
     private final ContractRepository contractRepository;
     private final ApplicationRepository applicationRepository;
+    private final UserRepository userRepository;
 
     public Optional<ContractDTO> getContractByApplicationId(Long applicationId) {
         Application application = applicationRepository.findById(applicationId).orElseThrow(() -> new NoSuchElementException("Application not found"));
@@ -29,10 +31,11 @@ public class ContractManipulator {
         return contractRepository.findByApplication(application).map(Contract::toDTO);
     }
 
-    public Optional<ContractDTO> signContract(User user, Long contractId) {
+    public Optional<ContractDTO> signContract(Long userId, Long contractId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
         Contract contract = contractRepository.findById(contractId)
                 .orElseThrow(() -> new NoSuchElementException("Contract not found"));
-        nullCheck(user);
 
         LocalDate signatureDate = LocalDate.now();
 
