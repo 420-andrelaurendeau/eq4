@@ -3,11 +3,16 @@ import { logout } from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-const LogoutButton = () => {
+interface Props {
+  setShowNotifications: (show: boolean) => void;
+}
+
+const LogoutButton = ({setShowNotifications} : Props) => {
   const navigate = useNavigate();
   const {t} = useTranslation();
 
   const onClick = () => {
+    setShowNotifications(false);
     logout();
     navigate("/login");
   };

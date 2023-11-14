@@ -2,13 +2,10 @@ package com.equipe4.audace;
 
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.StudentDTO;
-import com.equipe4.audace.dto.application.ApplicationDTO;
-import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.application.Application;
-import com.equipe4.audace.model.contract.Contract;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
@@ -25,7 +22,6 @@ import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.service.EmployerService;
-import com.equipe4.audace.service.ManagerService;
 import com.equipe4.audace.service.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
@@ -35,7 +31,6 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.time.LocalDate;
 import java.util.Optional;
-
 @SpringBootApplication
 @AllArgsConstructor
 public class AudaceApplication implements CommandLineRunner {
@@ -43,7 +38,6 @@ public class AudaceApplication implements CommandLineRunner {
 	private EmployerService employerService;
 	private SaltRepository saltRepository;
 	private ManagerRepository managerRepository;
-	private ManagerService managerService;
 	private StudentService studentService;
 	private SessionRepository sessionRepository;
 	private OfferRepository offerRepository;

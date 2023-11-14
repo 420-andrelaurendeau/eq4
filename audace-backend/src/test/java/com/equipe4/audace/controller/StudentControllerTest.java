@@ -24,6 +24,7 @@ import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
+import com.equipe4.audace.repository.notification.NotificationRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
@@ -60,6 +61,8 @@ public class StudentControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
+    @MockBean
+    private NotificationRepository notificationRepository;
     @MockBean
     private JwtManipulator jwtManipulator;
     @MockBean

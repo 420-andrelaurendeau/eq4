@@ -159,6 +159,7 @@
     "errors": {
       "employerNotFound": "Employeur non trouvé"
     },
+    "createOfferButton": "Créer une offre",
     "seeOffersButton": "Voir les offres",
     "seeApplicationsButton": "Voir les candidatures"
   },
@@ -233,12 +234,30 @@
   "logout": "Déconnexion",
   "pageNotFound": "Erreur 404 : Page non trouvée",
   "sessionSelector": {
-    "filterPlaceholder": "Filtrer par la date",
+    "filterPlaceholder": "Filtrer par date",
     "selectSession": "Choisir une session",
     "fall": "Automne",
     "winter": "Hiver",
     "summer": "Été",
     "spring": "Printemps"
+  },
+  "studentsByInternship": {
+    "title": "Étudiants par Statut de Stage",
+    "noStudents": "Aucun étudiant trouvé",
+    "searchBarPlaceholder": "Rechercher par Nom, Matricule ou Département...",
+    "row": {
+      "nameTh": "Nom",
+      "departmentTh": "Département",
+      "statusTh": "Statut",
+      "studentNumberTh": "Matricule",
+      "statusValues": {
+        "ACCEPTED": "Accepté",
+        "REFUSED": "Refusé",
+        "PENDING": "En Attente",
+        "NO_APPLICATIONS": "Aucune application",
+        "INTERN": "Stagiaire"
+      }
+    }
   },
   "infoCard": {
     "employer": {
@@ -254,6 +273,48 @@
       "email": "Courriel",
       "phone": "Téléphone",
       "address": "Adresse"
+    }
+  },
+  "notifications": {
+    "deleteAll": "Effacer tout",
+    "student": {
+      "offer": {
+        "CREATED1": "L'offre ",
+        "CREATED2": " peut maintenant recevoir des candidatures."
+      },
+      "cv": {
+        "UPDATED1": "Le CV ",
+        "UPDATED2": " a eu son statut mis à jour."
+      },
+      "application": {
+        "UPDATED1": "La candidature ",
+        "UPDATED2": " a eu son statut mis à jour."
+      }
+    },
+    "manager": {
+      "offer": {
+        "CREATED1": "L'offre ",
+        "CREATED2": " est en attente de votre approbation.",
+        "UPDATED1": "L'offre ",
+        "UPDATED2": " a été mis à jour."
+      },
+      "cv": {
+        "CREATED1": "Le CV ",
+        "CREATED2": " est en attente de votre approbation.",
+        "UPDATED1": "Le CV ",
+        "UPDATED2": " a été mis à jour."
+      },
+      "application": {}
+    },
+    "employer": {
+      "offer": {
+        "UPDATED1": "L'offre ",
+        "UPDATED2": " a eu son statut mis à jour."
+      },
+      "application": {
+        "CREATED1": "L'offre ",
+        "CREATED2": " a de nouvelles applications."
+      }
     }
   }
 }

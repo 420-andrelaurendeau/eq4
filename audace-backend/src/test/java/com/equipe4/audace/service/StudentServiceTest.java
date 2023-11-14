@@ -25,6 +25,7 @@ import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.StudentSessionRepository;
+import com.equipe4.audace.utils.NotificationManipulator;
 import com.equipe4.audace.utils.SessionManipulator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -64,6 +65,8 @@ public class StudentServiceTest {
     private SessionManipulator sessionManipulator;
     @Mock
     private StudentSessionRepository studentSessionRepository;
+    @Mock
+    private NotificationManipulator notificationManipulator;
     @Mock
     private ContractRepository contractRepository;
     @InjectMocks
@@ -210,6 +213,7 @@ public class StudentServiceTest {
 
         verify(cvRepository, times(1)).save(any());
         assertThat(result).isEqualTo(expected);
+        verify(notificationManipulator, times(1)).makeNotificationCvToAllManagersByDepartment(any(), any());
     }
 
     @Test
@@ -304,6 +308,7 @@ public class StudentServiceTest {
 
         assertThat(dto).isEqualTo(applicationDTO);
         verify(applicationRepository, times(1)).save(application);
+        verify(notificationManipulator, times(1)).makeNotificationApplicationToOfferEmployer(any(), any());
     }
 
     @Test
