@@ -1,7 +1,9 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.ManagerDTO;
+import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.application.StudentsByInternshipFoundStatus;
 import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
@@ -14,14 +16,17 @@ import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
+import com.equipe4.audace.model.notification.Notification;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
+import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.utils.NotificationManipulator;
 import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -60,12 +65,16 @@ public class ManagerServiceTest {
     private SessionManipulator sessionManipulator;
     @Mock
     private ApplicationRepository applicationRepository;
+    @Mock
+    private StudentRepository studentRepository;
+    @Mock
+    private NotificationManipulator notificationManipulator;
     @InjectMocks
     private ManagerService managerService;
 
     @Test
     public void acceptOffer() {
-        Employer employer = mock(Employer.class);
+        Employer employer = createEmployer();
         Department department = new Department(1L, "code", "name");
         Offer offer1 = new Offer(
                 1L,
@@ -94,6 +103,9 @@ public class ManagerServiceTest {
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
         managerService.acceptOffer(1L, 1L);
+
+        verify(notificationManipulator, times(1)).makeNotificationOfferToAllStudents(any(), any());
+        verify(notificationManipulator, times(1)).makeNotificationOfferToOfferEmployer(any(), any());
 
         assert(offer1.getOfferStatus() == Offer.OfferStatus.ACCEPTED);
     }
@@ -169,6 +181,8 @@ public class ManagerServiceTest {
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
         managerService.refuseOffer(1L, 1L);
+
+        verify(notificationManipulator, times(1)).makeNotificationOfferToOfferEmployer(offer1, Notification.NotificationCause.UPDATED);
 
         assert(offer1.getOfferStatus() == Offer.OfferStatus.REFUSED);
     }
@@ -354,6 +368,7 @@ public class ManagerServiceTest {
         else {
             assert(false);
         }
+        verify(notificationManipulator, times(1)).makeNotificationCvToCvStudent(any(), any());
     }
 
     @Test
@@ -393,6 +408,7 @@ public class ManagerServiceTest {
         else {
             assert(false);
         }
+        verify(notificationManipulator, times(1)).makeNotificationCvToCvStudent(any(), any());
     }
     @Test
     public void refuseCv_Invalid_Id() {
@@ -492,6 +508,74 @@ public class ManagerServiceTest {
         assertThatThrownBy(() -> managerService.createContract(null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Contract cannot be null");
+    }
+
+    @Test
+    void getStudentsByInternshipFoundStatus_allStudentsHaveInternships() {
+        Department mockedDepartment = mock(Department.class);
+        Contract mockedContract = mock(Contract.class);
+        Application mockedApplication = mock(Application.class);
+        Cv mockedCv = mock(Cv.class);
+        Student student = createStudent();
+
+        List<Student> students = List.of(
+                student
+        );
+
+        StudentsByInternshipFoundStatus expected = new StudentsByInternshipFoundStatus(
+                students.stream().map(Student::toDTO).toList(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>()
+        );
+
+        when(departmentRepository.findById(1L)).thenReturn(Optional.of(mockedDepartment));
+        when(contractRepository.findAllByApplicationCvStudentDepartmentId(1L)).thenReturn(List.of(mockedContract));
+        when(mockedContract.getApplication()).thenReturn(mockedApplication);
+        when(mockedApplication.getCv()).thenReturn(mockedCv);
+        when(mockedCv.getStudent()).thenReturn(student);
+
+        StudentsByInternshipFoundStatus result = managerService.getStudentsByInternshipFoundStatus(1L);
+
+        assertThat(result).isEqualTo(expected);
+    }
+
+    @Test
+    void getStudentsByInternshipFoundStatus_oneStudentHasInternshipAndAnAcceptedApplication() {
+        Department mockedDepartment = mock(Department.class);
+        Contract mockedContract = mock(Contract.class);
+        Application mockedApplication = mock(Application.class);
+        Cv mockedCv = mock(Cv.class);
+
+        Student student = createStudent();
+
+        List<Student> studentsWithInternship = List.of(
+                student
+        );
+
+        StudentsByInternshipFoundStatus expected = new StudentsByInternshipFoundStatus(
+                studentsWithInternship.stream().map(Student::toDTO).toList(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>()
+        );
+
+        when(departmentRepository.findById(1L)).thenReturn(Optional.of(mockedDepartment));
+        when(contractRepository.findAllByApplicationCvStudentDepartmentId(1L)).thenReturn(List.of(mockedContract));
+        when(mockedContract.getApplication()).thenReturn(mockedApplication);
+        when(mockedApplication.getCv()).thenReturn(mockedCv);
+        when(mockedCv.getStudent()).thenReturn(studentsWithInternship.get(0));
+
+        when(applicationRepository.findAllByCvStudentDepartmentId(1L)).thenReturn(List.of(mockedApplication));
+        when(mockedApplication.getApplicationStatus()).thenReturn(Application.ApplicationStatus.ACCEPTED);
+        when(mockedApplication.getCv()).thenReturn(mockedCv);
+        when(mockedCv.getStudent()).thenReturn(student);
+
+        StudentsByInternshipFoundStatus result = managerService.getStudentsByInternshipFoundStatus(1L);
+
+        assertThat(result).isEqualTo(expected);
     }
 
     private Department createDepartment(){

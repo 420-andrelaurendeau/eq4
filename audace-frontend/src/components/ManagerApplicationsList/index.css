@@ -50,3 +50,20 @@
 .table-custom tbody tr td:last-child {
     border-right: none;
 }
+
+.select-custom {
+    display: block;
+    width: 90%;
+    padding: 8px;
+    height: 100%;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    background-color: #fff;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.select-custom:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.4);
+}

@@ -1,7 +1,12 @@
 import { AxiosResponse } from "axios";
 import http from "../constants/http";
 import { Authority, DecodedJwt, LoginRequest, TimedJwt } from "../model/auth";
-import {JWT, JWT_EXPIRES_AT, SESSION_EXPIRED_AT, TIME_BEFORE_EXPIRE_ISNT_RECENT,} from "../constants/jwtConsts";
+import {
+  JWT,
+  JWT_EXPIRES_AT,
+  SESSION_EXPIRED_AT,
+  TIME_BEFORE_EXPIRE_ISNT_RECENT,
+} from "../constants/jwtConsts";
 import jwtDecode from "jwt-decode";
 import { AUTH_PREFIX } from "../constants/apiPrefixes";
 

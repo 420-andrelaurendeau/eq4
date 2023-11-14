@@ -3,7 +3,7 @@ import Application from "../model/application";
 import http from "../constants/http";
 import { MANAGER_PREFIX, STUDENT_PREFIX } from "../constants/apiPrefixes";
 import { CV } from "../model/cv";
-import { Student } from "../model/user";
+import {Student, StudentsByInternshipFoundStatus, mapStudentsWithStatus} from "../model/user";
 import { Department } from "../model/department";
 import { Contract } from "../model/contract";
 
@@ -24,3 +24,26 @@ export const getApplicationById = async (id: number): Promise<AxiosResponse<Appl
 }
 
 
+export const getContractById = async (id: number): Promise<AxiosResponse> => {
+  return http.get(`${MANAGER_PREFIX}/contracts/${id}`);
+};
+
+export const getStudentsByInternshipStatus = async (
+  departmentId: number
+): Promise<StudentsByInternshipFoundStatus> => {
+  try {
+    const response: AxiosResponse<StudentsByInternshipFoundStatus> =
+      await http.get(
+        `${MANAGER_PREFIX}/studentsWithInternshipFoundStatus/${departmentId}`
+      );
+
+    const statusKeys = Object.keys(response.data);
+
+    return statusKeys.reduce((result, statusKey) => {
+      result[statusKey] = mapStudentsWithStatus(statusKey, response.data);
+      return result;
+    }, {} as StudentsByInternshipFoundStatus);
+  } catch (error) {
+    throw error;
+  }
+};

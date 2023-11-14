@@ -6,6 +6,7 @@ import Application from "../../../model/application";
 import { getUserId } from "../../../services/authService";
 import { useTranslation } from "react-i18next";
 import { getContractsByDepartmentId } from "../../../services/contractService";
+import ManagerStudentByInternshipStatusList from "../../../components/ManagerStudentByInternshipStatusList";
 
 interface Props {
   isContractCreated?: boolean;
@@ -22,15 +23,15 @@ const ManagerView = ({ isContractCreated }: Props) => {
 
     const fetchData = async () => {
       try {
-        const departmentRes = await getDepartmentByManager(parseInt(managerId));
+        const department = await getDepartmentByManager(parseInt(managerId));
 
         const applicationsRes = await getAcceptedApplicationsByDepartment(
           parseInt(managerId),
-          departmentRes.data.id!
+          department.data.id!
         );
 
         const contractRes = await getContractsByDepartmentId(
-          departmentRes.data.id!
+          department.data.id!
         );
 
         const applications = applicationsRes.data;
@@ -41,7 +42,6 @@ const ManagerView = ({ isContractCreated }: Props) => {
             return contract.application.id === application.id;
           });
         });
-
         setApplications(filteredApplications);
       } catch (err: any) {
         console.log(
@@ -60,6 +60,7 @@ const ManagerView = ({ isContractCreated }: Props) => {
       </Alert>
       <h1>{t("manager.title")}</h1>
       <ManagerApplicationsList applications={applications} />
+      <ManagerStudentByInternshipStatusList />
     </Container>
   );
 };

@@ -1,8 +1,9 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.GenericUserController;
-import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.ManagerDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.application.StudentsByInternshipFoundStatus;
 import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/managers")
@@ -137,5 +139,36 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
         }
     }
 
+    @GetMapping("/applications/{applicationId}/contract")
+    public ResponseEntity<ContractDTO> getContractByApplicationId(@PathVariable Long applicationId) {
+        logger.info("getContractByApplicationId");
+        try {
+            return ResponseEntity.ok(
+                    service.getContractByApplicationId(applicationId).orElseThrow()
+            );
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
+    @GetMapping("/contracts/department/{departmentId}")
+    public ResponseEntity<List<ContractDTO>> getContractsByDepartment(@PathVariable Long departmentId) {
+        logger.info("getContractsByDepartment");
+        return ResponseEntity.ok(
+                service.getContractsByDepartment(departmentId)
+        );
+    }
+
+    @GetMapping("/studentsWithInternshipFoundStatus/{departmentId}")
+    public ResponseEntity<StudentsByInternshipFoundStatus> getStudentsWithInternshipStatus(@PathVariable Long departmentId) {
+        logger.info("getStudentsWithInternshipFoundStatus");
+
+        try {
+            return ResponseEntity.ok(
+                    service.getStudentsByInternshipFoundStatus(departmentId)
+            );
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

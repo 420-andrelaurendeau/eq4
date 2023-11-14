@@ -31,3 +31,25 @@ export enum UserType {
   Employer,
   Manager
 }
+
+export interface StudentsWithStatus {
+    students: Student[];
+    status: string;
+}
+
+export enum InternshipStatus {
+    studentsWithIntership = "INTERN",
+    studentsWithPendingResponse = "PENDING",
+    studentsWithRefusedResponse = "REFUSED",
+    studentsWithAcceptedResponse = "ACCEPTED",
+    studentsWithNoApplications = "NO_APPLICATION"
+}
+
+export interface StudentsByInternshipFoundStatus {
+    [key: string]: StudentsWithStatus;
+}
+
+export const mapStudentsWithStatus = (statusKey: string, response: any): StudentsWithStatus => ({
+    students: response[statusKey],
+    status: InternshipStatus[statusKey as keyof typeof InternshipStatus] || statusKey,
+});

@@ -3,10 +3,21 @@ import { Button, ButtonGroup, Nav, Navbar } from "react-bootstrap";
 import LanguageToggler from "../LanguageToggler";
 import { useTranslation } from "react-i18next";
 import LogoutButton from "../LogoutButton";
-import { getAuthorities, isConnected } from "../../services/authService";
-
-function AppHeader() {
+import {
+  getAuthorities,
+  getUserId,
+  isConnected,
+} from "../../services/authService";
+import { useEffect, useState } from "react";
+import { getHasNotificationByUserId } from "../../services/notificationService";
+import "./style.css";
+interface Props {
+  showNotifications: boolean;
+  setShowNotifications: (show: boolean) => void;
+}
+function AppHeader({ showNotifications, setShowNotifications }: Props) {
   const navigate = useNavigate();
+  const [newNotifications, setNewNotifications] = useState<boolean>(false);
   const { t } = useTranslation();
   const authority = getAuthorities()?.[0]?.toString().toLowerCase();
 
@@ -14,59 +25,89 @@ function AppHeader() {
     navigate(path);
   };
 
+  useEffect(() => {
+    if (!isConnected()) return;
+    getHasNotificationByUserId(parseInt(getUserId()!)).then((res) => {
+      setNewNotifications(res.data);
+    });
+  });
+
   return (
     <Navbar bg="light" sticky="top" className="px-3 shadow-sm" expand="md">
       <Navbar.Brand href="/">Audace</Navbar.Brand>
+      {isConnected() && (
+        <Nav>
+          <Button
+            onClick={() => setShowNotifications(!showNotifications)}
+            variant="light"
+            aria-controls="NotificationSidebarCollapse"
+            aria-expanded={showNotifications}
+          >
+            {showNotifications ? (
+              <div>
+                <i className="bi bi-bell-fill"></i>
+              </div>
+            ) : (
+              <div className="notification-bell">
+                <i className="bi bi-bell"></i>
+                {newNotifications ? (
+                  <div className="my-auto badge">!</div>
+                ) : null}
+              </div>
+            )}
+          </Button>
+        </Nav>
+      )}
 
       <Navbar.Collapse id="basic-navbar-nav">
-        {authority === "student" && (
-          <Nav>
-            <Button onClick={() => handleClick(authority + "/offers")} variant="light" className="me-2">
-              {t("student.seeOffersButton")}
-            </Button>
-            <Button onClick={() => handleClick(authority + "/upload")} variant="light" className="me-2">
-              {t("upload.CvFormTitle")}
-            </Button>
-          </Nav>
-        )}
-
         {authority === "employer" && (
           <Nav>
-            <Button onClick={() => handleClick(authority + "/offers/new")} variant="light" className="me-2">
-              Create Offer
-            </Button>
-            <Button onClick={() => handleClick(authority + "/offers")} variant="light" className="me-2">
-              View Offers
+            <Button
+              onClick={() => handleClick(authority + "/offers/new")}
+              variant="light"
+              className="me-2"
+            >
+              {t("employer.createOfferButton")}
             </Button>
           </Nav>
         )}
 
         {authority === "manager" && (
           <Nav>
-            <Button onClick={() => handleClick(authority + "/offers")} variant="light" className="me-2">
+            <Button
+              onClick={() => handleClick(authority + "/offers")}
+              variant="light"
+              className="me-2"
+            >
               {t("manager.seeOffersButton")}
             </Button>
           </Nav>
         )}
-
-
       </Navbar.Collapse>
 
       <Nav className="justify-content-end">
         {!isConnected() ? (
           <>
             <ButtonGroup>
-              <Button onClick={() => handleClick("/signup/employer")} variant="outline-success" className="me-2">
+              <Button
+                onClick={() => handleClick("/signup/employer")}
+                variant="outline-success"
+                className="me-2"
+              >
                 {t("signup.signup")}
               </Button>
-              <Button onClick={() => handleClick("/login")} variant="outline-primary" className="me-2">
+              <Button
+                onClick={() => handleClick("/login")}
+                variant="outline-primary"
+                className="me-2"
+              >
                 {t("signin")}
               </Button>
             </ButtonGroup>
           </>
         ) : (
           <Nav>
-            <LogoutButton />
+            <LogoutButton setShowNotifications={setShowNotifications} />
           </Nav>
         )}
       </Nav>

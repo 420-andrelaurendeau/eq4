@@ -4,6 +4,7 @@ import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.application.StudentsByInternshipFoundStatus;
 import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
@@ -16,8 +17,12 @@ import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.*;
 import com.equipe4.audace.repository.contract.ContractRepository;
+import com.equipe4.audace.repository.*;
+import com.equipe4.audace.repository.contract.ContractRepository;
+import com.equipe4.audace.repository.*;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
+import com.equipe4.audace.repository.notification.NotificationRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.OfferSessionRepository;
@@ -43,10 +48,14 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
@@ -66,6 +75,8 @@ public class ManagerControllerTest {
     private ObjectMapper objectMapper;
     @MockBean
     private JwtManipulator jwtManipulator;
+    @MockBean
+    private NotificationRepository notificationRepository;
     @MockBean
     private CvRepository cvRepository;
     @MockBean
@@ -366,6 +377,44 @@ public class ManagerControllerTest {
                 .andExpect(jsonPath("$.salary", is(contractDTO.getSalary())))
                 .andExpect(jsonPath("$.supervisor.email", is(contractDTO.getSupervisor().getEmail())))
                 .andExpect(jsonPath("$.application.id", is(contractDTO.getApplication().getId().intValue())));
+    }
+    @Test
+    @WithMockUser(username = "manager", authorities = {"Manager"})
+    void getStudentsWithInternshipStatus_happyPath() throws Exception {
+        DepartmentDTO departmentDTO = createDepartmentDTO();
+        StudentDTO student = createStudentDTO(departmentDTO);
+
+        StudentsByInternshipFoundStatus expected = new StudentsByInternshipFoundStatus(
+                List.of(student),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>(),
+                new ArrayList<>()
+        );
+
+        when(managerService.getStudentsByInternshipFoundStatus(1L)).thenReturn(expected);
+
+        mockMvc.perform(get("/managers/studentsWithInternshipFoundStatus/{departmentId}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.studentsWithInternship[0].id").value(student.getId()))
+                .andExpect(jsonPath("$.studentsWithInternship[0].firstName").value(student.getFirstName()))
+                .andExpect(jsonPath("$.studentsWithInternship[0].lastName").value(student.getLastName()))
+                .andExpect(jsonPath("$.studentsWithInternship[0].email").value(student.getEmail()))
+                .andExpect(jsonPath("$.studentsWithInternship[0].password").value(student.getPassword()))
+                .andExpect(jsonPath("$.studentsWithInternship[0].address").value(student.getAddress()))
+                .andExpect(jsonPath("$.studentsWithInternship[0].phone").value(student.getPhone()))
+                .andExpect(jsonPath("$.studentsWithInternship[0].studentNumber").value(student.getStudentNumber()));
+    }
+
+    @Test
+    @WithMockUser(username = "manager", authorities = {"Manager"})
+    void getStudentsWithInternshipStatus_invalidDepartmentId() throws Exception {
+        when(managerService.getStudentsByInternshipFoundStatus(-1L))
+                .thenThrow(new NoSuchElementException("Department not found"));
+
+        mockMvc.perform(get("/managers/studentsWithInternshipFoundStatus/{departmentId}", -1L))
+                .andExpect(status().isNotFound());
     }
 
 
