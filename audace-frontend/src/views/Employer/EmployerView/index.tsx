@@ -67,5 +67,4 @@ const EmployerView = () => {
       </Container>
   );
 };
-
 export default EmployerView;
