@@ -2,7 +2,6 @@ import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { CV, CVStatus } from "../../../../../model/cv";
 import { acceptCv, refuseCv } from "../../../../../services/cvService";
-import { getUserId } from "../../../../../services/authService";
 
 interface Props {
   disabled?: boolean;

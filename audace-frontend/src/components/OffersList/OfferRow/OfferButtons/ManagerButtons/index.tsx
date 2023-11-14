@@ -5,7 +5,7 @@ import { Offer, OfferStatus } from "../../../../../model/offer";
 import { getUserId } from "../../../../../services/authService";
 
 interface Props {
-  disabled: boolean;
+  disabled?: boolean;
   offer: Offer;
   updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
 }

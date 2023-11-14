@@ -11,7 +11,7 @@ import { useSessionContext } from "../../../../../contextsholders/providers/Sess
 import {getCvsByStudentId} from "../../../../../services/cvService";
 
 interface Props {
-  disabled: boolean;
+  disabled?: boolean;
   offer: Offer;
 }
 
