@@ -1,7 +1,6 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.ManagerDTO;
-import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.application.StudentsByInternshipFoundStatus;
@@ -10,7 +9,6 @@ import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Manager;
-import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
@@ -157,11 +155,8 @@ public class ManagerService extends GenericUserService<Manager> {
         Department managerDepartment = manager.getDepartment();
         if (!managerDepartment.getCode().equals(department.getCode())) throw new IllegalArgumentException("The manager isn't in the right department");
 
-        return applicationRepository
-                .findApplicationsByApplicationStatusAndOfferDepartmentId(Application.ApplicationStatus.ACCEPTED, department.getId())
-                .stream()
-                .map(Application::toDTO)
-                .toList();
+        return applicationRepository.findAllByApplicationStatusAndAndOffer_Department(Application.ApplicationStatus.ACCEPTED, department)
+                .stream().map(Application::toDTO).toList();
     }
 
     public Optional<ContractDTO> createContract(ContractDTO contractDTO){

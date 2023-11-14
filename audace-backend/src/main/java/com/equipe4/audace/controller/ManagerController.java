@@ -106,57 +106,29 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
     @GetMapping("/contracts/department/{departmentId}")
     public ResponseEntity<List<ContractDTO>> getContractsByDepartment(@PathVariable Long departmentId) {
         logger.info("getContractsByDepartment");
-        return ResponseEntity.ok(
-                service.getContractsByDepartment(departmentId)
-        );
+        return ResponseEntity.ok(service.getContractsByDepartment(departmentId));
     }
 
     @GetMapping("/{managerId}/acceptedApplications/{departmentId}")
     public ResponseEntity<List<ApplicationDTO>> getAcceptedApplicationsByDepartment(@PathVariable Long managerId, @PathVariable Long departmentId) {
         logger.info("getAcceptedApplicationsByDepartment");
-        return ResponseEntity.ok(
-                service.getAcceptedApplicationsByManagerIdAndDepartmentId(managerId, departmentId)
-        );
+        return ResponseEntity.ok(service.getAcceptedApplicationsByManagerIdAndDepartmentId(managerId, departmentId));
     }
 
     @GetMapping("/{managerId}/department")
     public ResponseEntity<DepartmentDTO> getDepartmentByManager(@PathVariable Long managerId) {
         logger.info("getDepartment");
-        return ResponseEntity.ok(
-                service.getDepartmentByManager(managerId)
-        );
+        return ResponseEntity.ok(service.getDepartmentByManager(managerId));
     }
 
     @GetMapping("/applications/{applicationId}")
     public ResponseEntity<ApplicationDTO> getApplicationsById(@PathVariable Long applicationId) {
         logger.info("getApplicationsById");
         try {
-            return ResponseEntity.ok(
-                    service.getApplicationById(applicationId).orElseThrow()
-            );
+            return ResponseEntity.ok(service.getApplicationById(applicationId).orElseThrow());
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
-    }
-
-    @GetMapping("/applications/{applicationId}/contract")
-    public ResponseEntity<ContractDTO> getContractByApplicationId(@PathVariable Long applicationId) {
-        logger.info("getContractByApplicationId");
-        try {
-            return ResponseEntity.ok(
-                    service.getContractByApplicationId(applicationId).orElseThrow()
-            );
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @GetMapping("/contracts/department/{departmentId}")
-    public ResponseEntity<List<ContractDTO>> getContractsByDepartment(@PathVariable Long departmentId) {
-        logger.info("getContractsByDepartment");
-        return ResponseEntity.ok(
-                service.getContractsByDepartment(departmentId)
-        );
     }
 
     @GetMapping("/studentsWithInternshipFoundStatus/{departmentId}")
@@ -164,9 +136,7 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
         logger.info("getStudentsWithInternshipFoundStatus");
 
         try {
-            return ResponseEntity.ok(
-                    service.getStudentsByInternshipFoundStatus(departmentId)
-            );
+            return ResponseEntity.ok(service.getStudentsByInternshipFoundStatus(departmentId));
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
