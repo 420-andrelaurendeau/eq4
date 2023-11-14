@@ -1,26 +1,19 @@
-import { Button } from "react-bootstrap";
+import { Button, useAccordionButton } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
 import { Offer } from "../../../../../model/offer";
-import { useNavigate } from "react-router-dom";
-import { employerDeleteOffer } from "../../../../../services/offerService";
-
+import { useNavigate } from 'react-router-dom';
+import {useState} from "react";
+import {employerDeleteOffer} from "../../../../../services/offerService";
 interface Props {
-  disabled: boolean;
-  seeApplications?: (offer: Offer) => void;
+  disabled?: boolean;
   offer: Offer;
   hideRow?: () => void;
 }
 
-const EmployerButtons = ({
-  disabled,
-  seeApplications,
-  offer,
-  hideRow,
-}: Props) => {
-  const { t } = useTranslation();
-  const [isDeleting, setIsDeleting] = useState(false);
-  const navigate = useNavigate();
+const EmployerButtons = ({ disabled,  offer, hideRow }: Props) => {
+  const {t} = useTranslation();
+    const [isDeleting, setIsDeleting] = useState(false);
+    const navigate = useNavigate();
 
   const editButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -44,52 +37,28 @@ const EmployerButtons = ({
 
     try {
       const response = await employerDeleteOffer(offer.id);
-
-      if (response.status !== 200) {
-        throw new Error(`Failed to delete offer. Status: ${response.status}`);
-      }
+      if (response.status !== 200) throw new Error(`Failed to delete offer. Status: ${response.status}`);
       console.log("Offer deleted successfully");
     } catch (error) {
-      console.error("Failed to delete offer:", error);
+        console.error("Failed to delete offer:", error);
     } finally {
-      setIsDeleting(false);
+        setIsDeleting(false);
     }
   };
-
-  const seeApplicationsButtonClick = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation();
-    seeApplications!(offer);
-  };
+  const seeApplicationsButtonClick = useAccordionButton(offer.id!.toString());
 
   return (
-    <>
-      <Button
-        disabled={disabled}
-        onClick={editButtonClick}
-        variant="outline-warning"
-        className="me-2 text-dark"
-      >
-        {t("employerOffersList.editButton")}
-      </Button>
-      <Button
-        disabled={disabled || isDeleting}
-        onClick={deleteButtonClick}
-        variant="outline-danger text-dark"
-      >
-        {isDeleting
-          ? t("employerOffersList.deletingButton")
-          : t("employerOffersList.deleteButton")}
-      </Button>
-      {seeApplications !== undefined ? (
-        <Button
-          onClick={seeApplicationsButtonClick}
-          variant="outline-success"
-          className="ms-2 text-dark"
-        >
-          {t("employerOffersList.applicationButton")}
-        </Button>
-      ) : null}
-    </>
+      <>
+          <Button disabled={disabled} onClick={editButtonClick} className="btn-light btn-outline-warning text-dark">
+              {t("employerOffersList.editButton")}
+          </Button>
+          <Button disabled={disabled || isDeleting} onClick={deleteButtonClick} className="btn-light btn-outline-danger text-dark ms-2">
+              {isDeleting ? t("employerOffersList.deletingButton") : t("employerOffersList.deleteButton")}
+          </Button>
+          <Button onClick={seeApplicationsButtonClick} className="ms-2 btn-light btn-outline-success text-dark">
+              {t("employerOffersList.applicationButton")}
+          </Button>
+      </>
   );
 };
 

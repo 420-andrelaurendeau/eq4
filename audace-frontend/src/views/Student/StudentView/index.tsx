@@ -110,11 +110,7 @@ const StudentView = ({
 
       {viewOffers && (
         <>
-          <OffersList
-            offers={offers}
-            error={offersError}
-            userType={UserType.Student}
-          />
+          <OffersList offers={offers} error={offersError} userType={UserType.Student}/>
         </>
       )}
       <CVsList cvs={cvs} error={cvsError} userType={UserType.Student} />

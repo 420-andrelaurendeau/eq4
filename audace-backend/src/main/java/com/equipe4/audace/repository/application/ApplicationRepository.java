@@ -1,4 +1,4 @@
-package com.equipe4.audace.repository;
+package com.equipe4.audace.repository.application;
 
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.application.Application;
