@@ -1,10 +1,13 @@
 import { useTranslation } from "react-i18next";
 import {Application, ApplicationStatus} from "../../../model/application";
 import { Col } from "react-bootstrap";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import CvModal from "../../CVsList/CvRow/CvModal";
 import {UserType} from "../../../model/user";
 import EmployerButtons from "./ApplicationButtons/EmployerButtons";
+import {Contract} from "../../../model/contract";
+import {getContractByApplicationId, getContractByApplicationIdForStudent} from "../../../services/contractService";
+import {getUserId} from "../../../services/authService";
 
 interface Props {
   application: Application;
@@ -15,8 +18,33 @@ interface Props {
 const ApplicationRow = ({ application, userType, updateApplicationsState }: Props) => {
   const { t } = useTranslation();
   const [show, setShow] = useState<boolean>(false);
+  const [contract, setContract] = useState<Contract>();
   const handleClick = () => setShow(true);
   const handleClose = () => setShow(false);
+
+  useEffect(() => {
+    fetchContract().then(r => console.log("Contract fetched"));
+  }, []);
+
+  const fetchContract = async () => {
+    if (UserType.Student !== userType) {
+      return;
+    }
+
+    getContractByApplicationIdForStudent(application.id!)
+        .then((res) => {
+          console.log("Hopefully a contract : " + res.data);
+          setContract(res.data);
+          console.log("Contract : " + contract?.id! + contract?.supervisor!.firstName!);
+        })
+        .catch((err) => {
+          if (err.response && err.response.status === 404) {
+            setContract(undefined);
+          } else {
+            console.error(err);
+          }
+        });
+  }
 
   return (
     <>
