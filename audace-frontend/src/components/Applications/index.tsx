@@ -38,14 +38,14 @@ const Applications = ({offer, userType, updateAvailablePlaces} : Props) => {
 
     const updateApplicationsState = (application: Application, applicationStatus: ApplicationStatus) => {
         let newApplications = applications.filter((a) => a.id !== application.id);
-        application.applicationStatus = applicationStatus
+        application.applicationStatus = applicationStatus;
         newApplications.push(application);
         setApplications(newApplications);
         if (applicationStatus === ApplicationStatus.ACCEPTED) updateAvailablePlaces!(offer);
     };
 
     return (
-        <ApplicationsList offer={offer} applications={applications} error={error} userType={userType} updateApplicationsState={updateApplicationsState} />
+        <ApplicationsList applications={applications} error={error} userType={userType} updateApplicationsState={updateApplicationsState} />
     );
 };
 

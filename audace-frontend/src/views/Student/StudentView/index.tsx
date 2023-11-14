@@ -119,7 +119,7 @@ const StudentView = ({
       )}
       <CVsList cvs={cvs} error={cvsError} userType={UserType.Student} />
       {viewUpload && <FileUploader student={student!} />}
-      {/*<ApplicationsList applications={applications} error={applicationsError} userType={UserType.Student}/>*/}
+      <ApplicationsList applications={applications} error={applicationsError} userType={UserType.Student}/>
     </Container>
   );
 };

@@ -5,16 +5,14 @@ import { useState } from "react";
 import CvModal from "../../CVsList/CvRow/CvModal";
 import {UserType} from "../../../model/user";
 import EmployerButtons from "./ApplicationButtons/EmployerButtons";
-import {Offer} from "../../../model/offer";
 
 interface Props {
-  offer: Offer;
   application: Application;
   userType: UserType;
   updateApplicationsState?: (application: Application, applicationStatus: ApplicationStatus) => void;
 }
 
-const ApplicationRow = ({offer, application, userType, updateApplicationsState }: Props) => {
+const ApplicationRow = ({ application, userType, updateApplicationsState }: Props) => {
   const { t } = useTranslation();
   const [show, setShow] = useState<boolean>(false);
   const handleClick = () => setShow(true);
@@ -31,7 +29,7 @@ const ApplicationRow = ({offer, application, userType, updateApplicationsState }
         </td>
         {userType != UserType.Employer && <td>{application.offer!.employer.organisation}</td>}
         <td>
-          {userType === UserType.Employer && offer.availablePlaces > 0 ?  (
+          {userType === UserType.Employer && application.offer!.availablePlaces > 0 ?  (
               <div className="d-flex justify-content-center">
                 <EmployerButtons application={application} updateApplicationsState={updateApplicationsState} />
               </div>

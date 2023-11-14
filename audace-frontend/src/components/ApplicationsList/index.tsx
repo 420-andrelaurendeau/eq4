@@ -3,17 +3,15 @@ import ApplicationRow from "./ApplicationRow";
 import { useTranslation } from "react-i18next";
 import GenericTable from "../GenericTable";
 import {UserType} from "../../model/user";
-import {Offer} from "../../model/offer";
 
 interface Props {
-  offer: Offer;
   applications: Application[];
   error: string;
   userType: UserType;
   updateApplicationsState?: (application: Application, applicationStatus: ApplicationStatus) => void;
 }
 
-const ApplicationsList = ({offer, applications, error, userType, updateApplicationsState}: Props) => {
+const ApplicationsList = ({ applications, error, userType, updateApplicationsState}: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -30,7 +28,7 @@ const ApplicationsList = ({offer, applications, error, userType, updateApplicati
         </thead>
         <tbody>
           {applications.map((application) => (
-            <ApplicationRow offer={offer} key={application.id} application={application} userType={userType} updateApplicationsState={updateApplicationsState} />
+            <ApplicationRow key={application.id} application={application} userType={userType} updateApplicationsState={updateApplicationsState} />
           ))}
         </tbody>
       </GenericTable>

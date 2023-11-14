@@ -6,6 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/Applications/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/Applications/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/ApplicationsList/ApplicationRow/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/ApplicationsList/ApplicationRow/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/ApplicationsList/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/ApplicationsList/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/views/Student/StudentView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/views/Student/StudentView/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -240,6 +244,7 @@
       <workItem from="1698876159327" duration="54000" />
       <workItem from="1699909810731" duration="2889000" />
       <workItem from="1699976892427" duration="750000" />
+      <workItem from="1699977664713" duration="1375000" />
     </task>
     <servers />
   </component>
