@@ -5,7 +5,6 @@ import { MANAGER_PREFIX, STUDENT_PREFIX } from "../constants/apiPrefixes";
 import { CV } from "../model/cv";
 import {Student, StudentsByInternshipFoundStatus, mapStudentsWithStatus} from "../model/user";
 import { Department } from "../model/department";
-import { Contract } from "../model/contract";
 
 export const getAcceptedApplicationsByDepartment = async (managerId: number, departmentId: number): Promise<AxiosResponse<Application[]>> => {
     return http.get<Application[]>(`${MANAGER_PREFIX}/${managerId}/acceptedApplications/${departmentId}`);
@@ -19,18 +18,7 @@ export const getDepartmentByManager = async (managerId: number): Promise<AxiosRe
     return http.get<Department>(`${MANAGER_PREFIX}/${managerId}/department`);
 }
 
-export const getApplicationById = async (id: number): Promise<AxiosResponse<Application>> => {
-    return http.get<Application>(`${MANAGER_PREFIX}/applications/${id}`);
-}
-
-
-export const getContractById = async (id: number): Promise<AxiosResponse> => {
-  return http.get(`${MANAGER_PREFIX}/contracts/${id}`);
-};
-
-export const getStudentsByInternshipStatus = async (
-  departmentId: number
-): Promise<StudentsByInternshipFoundStatus> => {
+export const getStudentsByInternshipStatus = async (departmentId: number): Promise<StudentsByInternshipFoundStatus> => {
   try {
     const response: AxiosResponse<StudentsByInternshipFoundStatus> =
       await http.get(

@@ -1,8 +1,11 @@
 import { AxiosResponse } from "axios";
 import http from "../constants/http";
 import Application from "../model/application";
-import { EMPLOYER_PREFIX, STUDENT_PREFIX } from "../constants/apiPrefixes";
+import {EMPLOYER_PREFIX, MANAGER_PREFIX, STUDENT_PREFIX} from "../constants/apiPrefixes";
 
+export const getApplicationById = async (id: number): Promise<AxiosResponse<Application>> => {
+    return http.get<Application>(`${MANAGER_PREFIX}/applications/${id}`);
+}
 export const getAllApplicationsByEmployerIdAndOfferId = async (employerId: number, offerId: number): Promise<AxiosResponse<Application[]>> => {
     return http.get<Application[]>(`${EMPLOYER_PREFIX}/applications/${offerId}`, {
         params: {
@@ -37,4 +40,5 @@ export const getApplicationsByStudentId = async (studentId: number, sessionId: n
         }
     });
 }
+
 

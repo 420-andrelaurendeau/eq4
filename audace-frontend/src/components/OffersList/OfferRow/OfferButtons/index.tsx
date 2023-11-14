@@ -12,14 +12,7 @@ interface Props {
   seeApplications?: (offer: Offer) => void;
   hideRow?: () => void;
 }
-const OfferButtons = ({
-  userType,
-  disabled,
-  offer,
-  updateOffersState,
-  seeApplications,
-  hideRow,
-}: Props) => {
+const OfferButtons = ({userType, disabled, offer, updateOffersState, seeApplications, hideRow,}: Props) => {
   const selectButtons = () => {
     switch (userType) {
       case UserType.Student:

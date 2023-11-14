@@ -5,10 +5,10 @@ import { useTranslation } from 'react-i18next';
 import { Form, Button, Container, Row, Col, Alert, Card, Accordion } from 'react-bootstrap';
 import { Contract } from '../../model/contract';
 import Application from '../../model/application';
-import { getApplicationById } from '../../services/managerService';
 import { Employer, Student } from '../../model/user';
 import InfoCard from '../InfoCard';
 import { createContract, getContractByApplicationId } from '../../services/contractService';
+import {getApplicationById} from "../../services/applicationService";
 
 const AddContract = () => {
   const navigate = useNavigate();
