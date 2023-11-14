@@ -1,11 +1,12 @@
-import {useEffect} from "react";
-import {Offer, OfferStatus} from "../../../../model/offer";
-import {Employer, UserType} from "../../../../model/user";
-import {Col, Modal, Row} from "react-bootstrap";
-import {getEmployerById} from "../../../../services/userService";
-import {useTranslation} from "react-i18next";
-import {formatDate} from "../../../../services/formatService";
+import { useEffect } from "react";
+import { Offer, OfferStatus } from "../../../../model/offer";
+import { Employer, UserType } from "../../../../model/user";
+import { Col, Modal, Row } from "react-bootstrap";
+import { getEmployerById } from "../../../../services/userService";
+import { useTranslation } from "react-i18next";
+import { formatDate } from "../../../../services/formatService";
 import OfferButtons from "../OfferButtons";
+import { useSessionContext } from "../../../../contextsholders/providers/SessionContextHolder";
 
 interface Props {
   offer: Offer;
@@ -16,11 +17,22 @@ interface Props {
   setEmployer?: (employer: Employer) => void;
   updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
   disabled: boolean;
-    hideRow?: () => void;
+  hideRow?: () => void;
 }
 
-const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, updateOffersState, disabled, hideRow}: Props) => {
-  const {t} = useTranslation();
+const OfferModal = ({
+  offer,
+  show,
+  handleClose,
+  userType,
+  employer,
+  setEmployer,
+  updateOffersState,
+  disabled,
+  hideRow,
+}: Props) => {
+  const { t } = useTranslation();
+  const { currentSession, chosenSession } = useSessionContext();
 
   useEffect(() => {
     if (employer !== undefined) return;
@@ -49,21 +61,24 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
             <Col>
               <div>
                 {t("offer.modal.org")}:{" "}
-                {createBoldText(employer !== undefined
+                {createBoldText(
+                  employer !== undefined
                     ? employer.organisation!
                     : t("offer.modal.orgNotFound")
                 )}
               </div>
               <div>
                 {t("offer.modal.address")}:&nbsp;
-                {createBoldText(employer !== undefined
+                {createBoldText(
+                  employer !== undefined
                     ? employer.address!
                     : t("offer.modal.orgNotFound")
                 )}
               </div>
               <div>
                 {t("offer.modal.phone")}:&nbsp;
-                {createBoldText(employer !== undefined
+                {createBoldText(
+                  employer !== undefined
                     ? employer.phone!
                     : t("offer.modal.orgNotFound")
                 )}
@@ -87,12 +102,17 @@ const OfferModal = ({offer, show, handleClose, userType, employer, setEmployer, 
           <hr />
           <div style={{ textAlign: "justify" }}>{offer.description}</div>
         </Modal.Body>
-        <Modal.Footer>
-          {employer === undefined && (
-            <div className="text-danger">{t("offer.modal.empNotFound")}</div>
-          )}
-          <OfferButtons userType={userType} disabled={disabled} offer={offer} updateOffersState={updateOffersState} hideRow={hideRow}/>
-        </Modal.Footer>
+        {chosenSession?.id === currentSession?.id && (
+          <Modal.Footer>
+            <OfferButtons
+              userType={userType}
+              disabled={disabled}
+              offer={offer}
+              updateOffersState={updateOffersState}
+              hideRow={hideRow}
+            />
+          </Modal.Footer>
+        )}
       </Modal>
     </>
   );

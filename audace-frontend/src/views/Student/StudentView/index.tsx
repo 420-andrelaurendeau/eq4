@@ -23,7 +23,10 @@ interface StudentViewProps {
   viewUpload?: boolean;
 }
 
-const StudentView = ({ viewOffers = true, viewUpload = true }: StudentViewProps) => {
+const StudentView = ({
+  viewOffers = true,
+  viewUpload = true,
+}: StudentViewProps) => {
   const [student, setStudent] = useState<Student>();
   const [offers, setOffers] = useState<Offer[]>([]);
   const [offersError, setOffersError] = useState<string>("");

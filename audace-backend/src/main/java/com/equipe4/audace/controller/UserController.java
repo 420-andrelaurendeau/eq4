@@ -2,9 +2,11 @@ package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.GenericUserController;
 import com.equipe4.audace.dto.UserDTO;
+import com.equipe4.audace.dto.notification.NotificationDTO;
 import com.equipe4.audace.dto.session.SessionDTO;
 import com.equipe4.audace.model.User;
 import com.equipe4.audace.service.UserService;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,9 +47,27 @@ public class UserController extends GenericUserController<User, UserService> {
     }
 
     @GetMapping("/sessions/{id}")
-    public ResponseEntity<SessionDTO> getSession(@PathVariable Long id) {
-        return service.getSession(id)
+    public ResponseEntity<SessionDTO> getSessionById(@PathVariable Long id) {
+        return service.getSessionById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+    @GetMapping("/notifications/{id}")
+    public ResponseEntity<List<NotificationDTO>> getAllNotificationByUserId(@PathVariable Long id) {
+        return ResponseEntity.ok(service.getAllNotificationByUserId(id));
+    }
+    @DeleteMapping("/deleteAllNotificationsByUserId/{id}")
+    public ResponseEntity<HttpStatus> deleteAllNotificationsByUserId(@PathVariable Long id) {
+        service.deleteAllNotificationsByUserId(id);
+        return ResponseEntity.ok().build();
+    }
+    @DeleteMapping("/deleteNotificationById/{id}")
+    public ResponseEntity<HttpStatus> deleteNotificationById(@PathVariable Long id) {
+        service.deleteNotificationById(id);
+        return ResponseEntity.ok().build();
+    }
+    @GetMapping("/hasNotificationByUserId/{userId}")
+    public ResponseEntity<Boolean> hasNotificationByUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok(service.hasNotificationByUserId(userId));
     }
 }

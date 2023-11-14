@@ -1,12 +1,19 @@
 import { Dropdown } from "react-bootstrap";
 import { useSessionContext } from "../../contextsholders/providers/SessionContextHolder";
 import SelectorOption from "./SelectorOption";
-import { formatSessionDate } from "../../services/formatService";
 import CustomMenu from "./CustomMenu";
 import CustomToggle from "./CustomToggle";
+import { Offer } from "../../model/offer";
+import { useTranslation } from "react-i18next";
+import { determineSessionSeason, getEndDateYear } from "../../services/formatService";
 
-const SessionSelector = () => {
+interface Props {
+  seeApplications?: (offer: Offer) => void;
+}
+
+const SessionSelector = ({ seeApplications }: Props) => {
   const { chosenSession, setChosenSession, sessions } = useSessionContext();
+  const { t } = useTranslation();
 
   const handleSelect = (e: string | null) => {
     if (e === null) return;
@@ -17,19 +24,16 @@ const SessionSelector = () => {
     if (session === undefined) return;
 
     setChosenSession(session);
-  };
-
-  const determineTitle = () => {
-    if (chosenSession === undefined) return "Select a session";
-
-    return formatSessionDate(chosenSession);
+    if (seeApplications !== undefined) seeApplications(undefined!);
   };
 
   return (
     <>
       <Dropdown className="text-end" onSelect={handleSelect}>
         <Dropdown.Toggle as={CustomToggle} id="session-dropdown">
-          {determineTitle()}
+          {chosenSession !== undefined
+            ? `${t(determineSessionSeason(chosenSession))} ${getEndDateYear(chosenSession)}`
+            : t("sessionSelector.selectSession")}
         </Dropdown.Toggle>
         <Dropdown.Menu as={CustomMenu}>
           {sessions.map((session, index) => (

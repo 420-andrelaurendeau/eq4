@@ -25,7 +25,6 @@ const OfferRow = ({offer, userType, updateOffersState}: Props) => {
   const [isVisible, setIsVisible] = useState(true);
 
   const handleClick = () => setShow(true);
-
   const handleClose = () => setShow(false);
   const hideRow = () => setIsVisible(false);
 
@@ -33,7 +32,7 @@ const OfferRow = ({offer, userType, updateOffersState}: Props) => {
 
   return (
     <>
-      <tr >
+      <tr>
         <td>
           <Col className="h5">{offer.title}</Col>
           <Col className="text-muted small mt-2"><u className="hovered" onClick={handleClick}>{t("offersList.viewMore")}</u></Col>

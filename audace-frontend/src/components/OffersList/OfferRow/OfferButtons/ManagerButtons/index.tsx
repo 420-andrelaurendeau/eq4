@@ -10,8 +10,8 @@ interface Props {
   updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
 }
 
-const ManagerButtons = ({disabled, offer, updateOffersState}: Props) => {
-    const {t} = useTranslation();
+const ManagerButtons = ({ disabled, offer, updateOffersState }: Props) => {
+  const { t } = useTranslation();
 
   const acceptButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -29,11 +29,22 @@ const ManagerButtons = ({disabled, offer, updateOffersState}: Props) => {
 
   return (
     <>
-      {offer.offerStatus === "PENDING" ? (<>
-          <Button disabled={disabled} onClick={acceptButtonClick} className="btn-success me-2">
+      {offer.offerStatus === "PENDING" ? (
+        <>
+          <Button
+            disabled={disabled}
+            onClick={acceptButtonClick}
+            variant="outline-success"
+            className="me-2 text-dark"
+          >
             {t("managerOffersList.acceptButton")}
           </Button>
-          <Button disabled={disabled} onClick={refuseButtonClick} className="btn-danger">
+          <Button
+            disabled={disabled}
+            onClick={refuseButtonClick}
+            variant="outline-danger"
+            className="text-dark"
+          >
             {t("managerOffersList.refuseButton")}
           </Button>
         </>) :

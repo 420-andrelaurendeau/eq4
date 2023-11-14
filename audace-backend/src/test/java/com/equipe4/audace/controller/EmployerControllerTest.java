@@ -6,31 +6,27 @@ import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
-import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
-import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.session.Session;
-import com.equipe4.audace.repository.EmployerRepository;
-import com.equipe4.audace.repository.ManagerRepository;
-import com.equipe4.audace.repository.StudentRepository;
-import com.equipe4.audace.repository.UserRepository;
-import com.equipe4.audace.repository.application.ApplicationRepository;
+import com.equipe4.audace.repository.*;
+import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
+import com.equipe4.audace.repository.notification.NotificationRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
-import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.service.EmployerService;
-import com.equipe4.audace.utils.SessionManipulator;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.equipe4.audace.service.ManagerService;
 import com.equipe4.audace.service.StudentService;
 import com.equipe4.audace.utils.JwtManipulator;
+import com.equipe4.audace.utils.SessionManipulator;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -41,7 +37,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.BDDMockito.given;
@@ -60,9 +58,10 @@ public class EmployerControllerTest {
     private ObjectMapper objectMapper;
     @MockBean
     private JwtManipulator jwtManipulator;
-    @Mock
+    @MockBean
     private SessionManipulator sessionManipulator;
-
+    @MockBean
+    private NotificationRepository notificationRepository;
     @MockBean
     private CvRepository cvRepository;
     @MockBean
@@ -86,9 +85,13 @@ public class EmployerControllerTest {
     @MockBean
     private OfferSessionRepository offerSessionRepository;
     @MockBean
+    private ContractRepository contractRepository;
+    @MockBean
     private StudentService studentService;
     @MockBean
     private EmployerService employerService;
+    @MockBean
+    private ManagerService managerService;
 
     @Test
     @WithMockUser(username = "employer", authorities = {"EMPLOYER", "USER"})
@@ -312,8 +315,8 @@ public class EmployerControllerTest {
         return new StudentDTO(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", departmentDTO);
     }
 
-    private CvDTO createCvDTO() {
-        return new CvDTO(1L,"fileName", "content".getBytes(), Cv.CvStatus.PENDING, createStudentDTO());
+    private CvDTO createCvDTO(StudentDTO studentDTO) {
+        return new CvDTO(1L,"fileName", "content".getBytes(), Cv.CvStatus.PENDING, studentDTO);
     }
 
     private OfferDTO createOfferDTO(Long id) {
@@ -323,9 +326,7 @@ public class EmployerControllerTest {
     }
 
     private ApplicationDTO createApplicationDTO(OfferDTO offerDTO) {
-        StudentDTO studentDTO = createStudentDTO();
-        CvDTO cvDTO = createCvDTO();
-
+        CvDTO cvDTO = createCvDTO(createStudentDTO());
         return new ApplicationDTO(1L, cvDTO, offerDTO, Application.ApplicationStatus.PENDING);
     }
     private Session createSession(){

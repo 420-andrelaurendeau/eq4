@@ -13,14 +13,17 @@ import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.UserRepository;
-import com.equipe4.audace.repository.application.ApplicationRepository;
+import com.equipe4.audace.repository.ApplicationRepository;
+import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
+import com.equipe4.audace.repository.notification.NotificationRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.service.EmployerService;
+import com.equipe4.audace.service.ManagerService;
 import com.equipe4.audace.service.StudentService;
 import com.equipe4.audace.utils.JwtManipulator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -52,6 +55,8 @@ public class StudentControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
     @MockBean
+    private NotificationRepository notificationRepository;
+    @MockBean
     private JwtManipulator jwtManipulator;
     @MockBean
     private CvRepository cvRepository;
@@ -76,9 +81,13 @@ public class StudentControllerTest {
     @MockBean
     private OfferSessionRepository offerSessionRepository;
     @MockBean
+    private ContractRepository contractRepository;
+    @MockBean
     private StudentService studentService;
     @MockBean
     private EmployerService employerService;
+    @MockBean
+    private ManagerService managerService;
 
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT"})
@@ -167,6 +176,8 @@ public class StudentControllerTest {
         // given - precondition or setup
         Department department = new Department(1L, "GLO", "Génie logiciel");
         Employer employer = new Employer(1L, "Employer1", "Employer1", "asd@email.com", "password", "Organisation1", "Position1", "123-456-7890", "12345", "Class Service, Javatown, Qc H8N1C1");
+
+        Student student = new Student(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", department);
 
         Cv cv = mock(Cv.class);
 

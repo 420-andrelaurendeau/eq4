@@ -3,8 +3,10 @@ package com.equipe4.audace.controller;
 import com.equipe4.audace.controller.abstracts.GenericUserController;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
+import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.service.EmployerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +23,18 @@ public class EmployerController extends GenericUserController<Employer, Employer
         super(employerService);
     }
 
-    @GetMapping("/{employerId}")
-    public ResponseEntity<EmployerDTO> getEmployerById(@PathVariable Long employerId){
+    @GetMapping("/{id}")
+    public ResponseEntity<EmployerDTO> getEmployerById(@PathVariable Long id){
         logger.info("getEmployerById");
-        return service.findEmployerById(employerId)
+        return service.findEmployerById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/offers")
+    public ResponseEntity<OfferDTO> getOfferById(@RequestParam("offerId") Long offerId){
+        logger.info("getOfferById");
+        return service.getOfferById(offerId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -40,19 +50,25 @@ public class EmployerController extends GenericUserController<Employer, Employer
         logger.info("createOffer");
         return service.createOffer(offerDTO)
                 .map(offer -> new ResponseEntity<HttpStatus>(HttpStatus.CREATED))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
+
     @PutMapping("/offers")
     public ResponseEntity<OfferDTO> updateOffer(@RequestBody OfferDTO offerDTO){
         logger.info("updateOffer");
-        OfferDTO updatedOffer = service.updateOffer(offerDTO).orElseThrow();
+        logger.info("Received offer for update: " + offerDTO.toString());
+
+        OfferDTO updatedOffer = service.updateOffer(offerDTO).get();
+        logger.info("Updated offer: " + updatedOffer.toString());
         return ResponseEntity.ok(updatedOffer);
     }
+
     @DeleteMapping("/offers")
     public ResponseEntity<HttpStatus> deleteOffer(@RequestParam("offerId") Long offerId){
         logger.info("deleteOffer");
         service.deleteOffer(offerId);
         return ResponseEntity.ok().build();
+
     }
 
     @GetMapping("/applications/{offerId}")
@@ -73,5 +89,11 @@ public class EmployerController extends GenericUserController<Employer, Employer
         return service.refuseApplication(employerId, applicationId)
                 .map(applicationDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    }
+
+    @GetMapping("/departments")
+    public ResponseEntity<List<DepartmentDTO>> getAllDepartments() {
+        logger.info("getAllDepartments");
+        return ResponseEntity.ok(service.getAllDepartments());
     }
 }

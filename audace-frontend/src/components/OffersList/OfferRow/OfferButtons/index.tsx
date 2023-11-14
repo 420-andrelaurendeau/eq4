@@ -27,7 +27,7 @@ const OfferButtons = ({userType, offer, updateOffersState, hideRow}: Props) => {
     }
   };
 
-  return(<>{selectButtons()}</>);
+  return <>{selectButtons()}</>;
 };
 
 export default OfferButtons;

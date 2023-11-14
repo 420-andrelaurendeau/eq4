@@ -8,15 +8,18 @@ import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
+import com.equipe4.audace.model.notification.Notification;
 import com.equipe4.audace.model.offer.Offer;
-import com.equipe4.audace.model.session.OfferSession;
 import com.equipe4.audace.model.security.Salt;
+import com.equipe4.audace.model.session.OfferSession;
 import com.equipe4.audace.model.session.Session;
+import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.EmployerRepository;
-import com.equipe4.audace.repository.application.ApplicationRepository;
+import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
-import com.equipe4.audace.repository.session.OfferSessionRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
+import com.equipe4.audace.repository.session.OfferSessionRepository;
+import com.equipe4.audace.utils.NotificationManipulator;
 import com.equipe4.audace.utils.SessionManipulator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,6 +51,10 @@ public class EmployerServiceTest {
     private OfferSessionRepository offerSessionRepository;
     @Mock
     private ApplicationRepository applicationRepository;
+    @Mock
+    private DepartmentRepository departmentRepository;
+    @Mock
+    private NotificationManipulator notificationManipulator;
     @InjectMocks
     private EmployerService employerService;
 
@@ -66,12 +73,14 @@ public class EmployerServiceTest {
         assertThat(dto.equals(employer.toDTO()));
         verify(employerRepository, times(1)).save(any(Employer.class));
     }
+
     @Test
     public void createEmployer_NullEmployer(){
         assertThatThrownBy(() -> employerService.createEmployer(null))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Employer cannot be null");
     }
+
     @Test
     void createEmployer_EmailAlreadyInUse() {
         // Arrange
@@ -118,6 +127,7 @@ public class EmployerServiceTest {
         assertThat(employerDTO.getLastName()).isEqualTo("Employer1");
         assertThat(employerDTO.getEmail()).isEqualTo("employer1@gmail.com");
     }
+
     @Test
     public void findEmployerById_notFoundTest() {
         // Arrange
@@ -142,7 +152,9 @@ public class EmployerServiceTest {
 
         assertThat(dto.equals(offer.toDTO()));
         verify(offerRepository, times(1)).save(any(Offer.class));
+        verify(notificationManipulator, times(1)).makeNotificationOfferToAllManagers(any(Offer.class), any(Notification.NotificationCause.class));
     }
+
     @Test
     public void createOffer_NullOffer(){
         assertThatThrownBy(() -> employerService.createOffer(null))
@@ -198,6 +210,7 @@ public class EmployerServiceTest {
 
         when(offerRepository.findById(offer.getId())).thenReturn(Optional.of(offer));
         when(sessionManipulator.isOfferInCurrentSession(offer)).thenReturn(true);
+        when(offerSessionRepository.findByOffer(offer)).thenReturn(Optional.of(new OfferSession()));
 
         employerService.deleteOffer(offer.getId());
 
@@ -231,6 +244,7 @@ public class EmployerServiceTest {
         verify(offerRepository).findById(offer.getId());
         assertThat(originalOffer.getAvailablePlaces()).isEqualTo(3);
         assertThat(updatedOffer.getAvailablePlaces()).isEqualTo(2);
+        verify(notificationManipulator, times(2)).makeNotificationOfferToAllManagers(any(Offer.class), any(Notification.NotificationCause.class));
     }
 
     @Test
@@ -274,7 +288,9 @@ public class EmployerServiceTest {
 
         ApplicationDTO applicationDTO = employerService.acceptApplication(1L, 1L).orElseThrow();
         assertThat(applicationDTO.getApplicationStatus()).isEqualTo(Application.ApplicationStatus.ACCEPTED);
+        verify(notificationManipulator, times(1)).makeNotificationApplicationToStudent(any(Application.class), any(Notification.NotificationCause.class));
     }
+
     @Test
     public void acceptApplication_invalidId() {
         when(applicationRepository.findById(anyLong())).thenReturn(Optional.empty());
@@ -317,6 +333,7 @@ public class EmployerServiceTest {
 
         ApplicationDTO applicationDTO = employerService.refuseApplication(1L, 1L).orElseThrow();
         assertThat(applicationDTO.getApplicationStatus()).isEqualTo(Application.ApplicationStatus.REFUSED);
+        verify(notificationManipulator, times(1)).makeNotificationApplicationToStudent(any(Application.class), any(Notification.NotificationCause.class));
     }
     @Test
     public void refuseApplication_invalidId() {

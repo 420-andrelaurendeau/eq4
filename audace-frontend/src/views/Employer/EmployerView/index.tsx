@@ -56,10 +56,9 @@ const EmployerView = () => {
     let updatedOffers = offers.map(o => {
       if(o.id === offer.id) return {...o, availablePlaces: --o.availablePlaces};
       return o;
-    })
+    });
     setOffers(updatedOffers);
-  }
-
+  };
 
   return (
       <Container className="mt-3">

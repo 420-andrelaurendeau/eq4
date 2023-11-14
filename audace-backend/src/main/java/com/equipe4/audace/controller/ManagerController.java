@@ -2,7 +2,11 @@ package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.GenericUserController;
 import com.equipe4.audace.dto.ManagerDTO;
+import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.application.StudentsByInternshipFoundStatus;
+import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
+import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Manager;
 import com.equipe4.audace.service.ManagerService;
@@ -11,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/managers")
@@ -46,7 +51,7 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
 
     @GetMapping("/offers/{departmentId}/{sessionId}")
     public ResponseEntity<List<OfferDTO>> getOffersByDepartment(@PathVariable Long departmentId, @PathVariable Long sessionId) {
-        return ResponseEntity.ok(service.getOffersByDepartment(departmentId, sessionId));
+        return ResponseEntity.ok(service.getOffersByDepartmentIdAndSessionId(departmentId, sessionId));
     }
 
     @GetMapping("/cvs/{departmentId}/{sessionId}")
@@ -69,5 +74,81 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
         return service.refuseCv(managerId, cvId)
                 .map(offerDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    }
+
+    @PostMapping("/contracts")
+    public ResponseEntity<HttpStatus> createContract(@RequestBody ContractDTO contractDTO){
+        logger.info("createContract");
+        System.out.println(contractDTO.toString());
+        return service.createContract(contractDTO)
+                .map(contract -> new ResponseEntity<HttpStatus>(HttpStatus.CREATED))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    }
+
+    @GetMapping("/contracts/{contractId}")
+    public ResponseEntity<ContractDTO> getContractById(@PathVariable Long contractId){
+        logger.info("getContractById");
+        return service.findContractById(contractId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/applications/{applicationId}/contract")
+    public ResponseEntity<ContractDTO> getContractByApplicationId(@PathVariable Long applicationId) {
+        logger.info("getContractByApplicationId");
+        try {
+            return ResponseEntity.ok(service.getContractByApplicationId(applicationId).orElseThrow());
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/contracts/department/{departmentId}")
+    public ResponseEntity<List<ContractDTO>> getContractsByDepartment(@PathVariable Long departmentId) {
+        logger.info("getContractsByDepartment");
+        return ResponseEntity.ok(
+                service.getContractsByDepartment(departmentId)
+        );
+    }
+
+    @GetMapping("/{managerId}/acceptedApplications/{departmentId}")
+    public ResponseEntity<List<ApplicationDTO>> getAcceptedApplicationsByDepartment(@PathVariable Long managerId, @PathVariable Long departmentId) {
+        logger.info("getAcceptedApplicationsByDepartment");
+        return ResponseEntity.ok(
+                service.getAcceptedApplicationsByManagerIdAndDepartmentId(managerId, departmentId)
+        );
+    }
+
+    @GetMapping("/{managerId}/department")
+    public ResponseEntity<DepartmentDTO> getDepartmentByManager(@PathVariable Long managerId) {
+        logger.info("getDepartment");
+        return ResponseEntity.ok(
+                service.getDepartmentByManager(managerId)
+        );
+    }
+
+    @GetMapping("/applications/{applicationId}")
+    public ResponseEntity<ApplicationDTO> getApplicationsById(@PathVariable Long applicationId) {
+        logger.info("getApplicationsById");
+        try {
+            return ResponseEntity.ok(
+                    service.getApplicationById(applicationId).orElseThrow()
+            );
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/studentsWithInternshipFoundStatus/{departmentId}")
+    public ResponseEntity<StudentsByInternshipFoundStatus> getStudentsWithInternshipStatus(@PathVariable Long departmentId) {
+        logger.info("getStudentsWithInternshipFoundStatus");
+
+        try {
+            return ResponseEntity.ok(
+                    service.getStudentsByInternshipFoundStatus(departmentId)
+            );
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
