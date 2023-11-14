@@ -25,13 +25,11 @@ interface Props {
 const SidebarRoutes = ({ showNotifications }: Props) => {
   return (
     <div className="col d-md-flex">
-      {isConnected() ? (
-        <Collapse in={showNotifications}>
-          <div id="NotificationSidebarCollapse" className="col-md-3 col-12">
-            <NotificationSidebar />
-          </div>
-        </Collapse>
-      ) : null}
+      <Collapse in={showNotifications}>
+        <div id="NotificationSidebarCollapse" className="col-md-3 col-12">
+          {isConnected() ? <NotificationSidebar /> : null}
+        </div>
+      </Collapse>
       <div className="col">
         <Routes>
           <Route
