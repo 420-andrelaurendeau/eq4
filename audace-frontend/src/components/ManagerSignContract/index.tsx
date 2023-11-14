@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Table, Form, Row, Col, Container, Button } from 'react-bootstrap';
 import { getContractsByDepartmentId } from '../../services/contractService';
 import { useNavigate } from 'react-router-dom';
+import { format } from 'date-fns'; 
 
 interface Props {
     departmentId: number;
@@ -33,6 +34,7 @@ const ContractsList = ({ departmentId }: Props) => {
       const filtered = contracts.filter((contract) =>
         searchRegex.test(contract.supervisor.firstName) ||
         searchRegex.test(contract.supervisor.lastName) 
+        // Add more fields to search by if needed
       );
       setFilteredContracts(filtered);
     } else {
@@ -49,19 +51,6 @@ const ContractsList = ({ departmentId }: Props) => {
       <Container fluid>
         <Row style={{ padding: "16px 0", display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
           <Col><h3>{t("contractsList.title")}</h3></Col>
-          <Col>
-            <Form>
-              <Form.Group controlId="searchText" style={{ margin: 0 }}>
-                <Form.Control
-                  type="text"
-                  placeholder={t("contractsList.searchPlaceholder")}
-                  value={searchText}
-                  onChange={(e) => setSearchText(e.target.value)}
-                  className="custom-search-input"
-                />
-              </Form.Group>
-            </Form>
-          </Col>
         </Row>
 
         {filteredContracts.length > 0 ? (
@@ -69,20 +58,23 @@ const ContractsList = ({ departmentId }: Props) => {
             <Table className="table-custom" striped bordered hover size="sm">
               <thead className="table-custom">
                 <tr>
-                  <th>{t("contractsList.contractId")}</th>
-                  <th>{t("contractsList.startHour")}</th>
-                  <th>{t("contractsList.endHour")}</th>
+                  <th>{t("contractsList.studentName")}</th>
+                  <th>{t("contractsList.employerName")}</th>
+                  <th>{t("contractsList.offerTitle")}</th>
+                  <th>{t("contractsList.Dates")}</th>
                   <th>{t("contractsList.actions")}</th>
                 </tr>
               </thead>
               <tbody className="table-custom">
                 {filteredContracts.map((contract) => (
                   <tr key={contract.id}>
-                    <td>{contract.id}</td>
-                    <td>{contract.startHour}</td>
-                    <td>{contract.endHour}</td>
+
+                    <td>{contract.application.cv!.student.firstName} {contract.application.cv!.student.lastName}</td>
+                    <td>{`${contract.application.offer!.employer.firstName} ${contract.application.offer!.employer.lastName}`}</td>
+                    <td>{contract.application.offer!.title}</td>
+                    <td>{format(new Date(contract.application.offer!.internshipStartDate), 'dd/MM/yyyy')}, {format(new Date(contract.application.offer!.internshipEndDate), 'dd/MM/yyyy')}</td>
                     <td>
-                      <Button variant="primary" size="sm" onClick={() => handleViewContract(contract.id!)}>
+                        <Button variant="primary" size="sm" onClick={() => handleViewContract(contract.id!)}>
                         {t("contractsList.viewDetails")}
                       </Button>
                     </td>
