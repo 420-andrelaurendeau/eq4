@@ -34,7 +34,6 @@ const ContractsList = ({ departmentId }: Props) => {
       const filtered = contracts.filter((contract) =>
         searchRegex.test(contract.supervisor.firstName) ||
         searchRegex.test(contract.supervisor.lastName) 
-        // Add more fields to search by if needed
       );
       setFilteredContracts(filtered);
     } else {

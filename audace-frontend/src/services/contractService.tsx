@@ -27,3 +27,13 @@ export const getContractsByDepartmentId = async (
     `${MANAGER_PREFIX}/contracts/department/${departmentId}`
   );
 };
+
+export const ManagerSignContract = async (
+  managerId: number,
+  contractId: number
+): Promise<AxiosResponse<Contract>> => {
+  return http.post<Contract>(
+    `${MANAGER_PREFIX}/${managerId}/sign_contract/${contractId}`,
+  );
+}
+

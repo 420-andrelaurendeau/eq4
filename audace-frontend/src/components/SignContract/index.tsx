@@ -6,6 +6,7 @@ import { getContractById } from '../../services/contractService';
 import { UserType } from "../../model/user";
 import { getUserId } from '../../services/authService';
 import { getUserById } from '../../services/userService';
+import { ManagerSignContract } from '../../services/contractService';
 
 const SignContract = () => {
   const { id } = useParams();
@@ -37,14 +38,20 @@ const SignContract = () => {
 
 
 
-  const { supervisor, application, startHour, endHour, totalHoursPerWeek, salary } = contract;
-  const { offer } = application || {};
-  const { employer } = offer || {};
-  const { student } = application.cv || {};
+const { supervisor, application, startHour, endHour, totalHoursPerWeek, salary } = contract;
+const { offer } = application || {};
+const { employer } = offer || {};
+const { student } = application.cv || {};
 
-    function handleSign(arg0: string) {
-        throw new Error('Function not implemented.');
+function handleSign(arg0: string) {
+    if (arg0 === 'manager') {
+        ManagerSignContract(parseInt(getUserId() || '0') || 0, contract?.id!);
+    } else if (arg0 === 'employer') {
+        console.log('employer');
+    } else if (arg0 === 'student') {
+        console.log('student');
     }
+}
 
   return (
     <Container className="mt-4">
