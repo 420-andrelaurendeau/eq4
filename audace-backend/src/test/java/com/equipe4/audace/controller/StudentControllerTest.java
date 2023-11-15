@@ -235,7 +235,7 @@ public class StudentControllerTest {
         ContractDTO contractDTO = createContractDTO(applicationDTO);
         Student student = createStudentDTO(createDepartmentDTO()).fromDTO();
 
-        contractDTO.setStudentSignature(new Signature(1L, student, LocalDate.now()));
+//        contractDTO.setStudentSignature(new Signature(1L, student, LocalDate.now()));
 
         when(studentService.signContract(contractDTO.getId())).thenReturn(Optional.of(contractDTO));
 

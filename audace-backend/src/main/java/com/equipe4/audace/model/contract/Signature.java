@@ -13,15 +13,15 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Signature {
-
+public class Signature <T extends User> {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "signature_gen")
     private Long id;
 
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne
-    private User signatory;
+    @ManyToOne(targetEntity = User.class)
+    private T signatory;
     private LocalDate signatureDate;
 
+    @ManyToOne
+    private Contract contract;
 }

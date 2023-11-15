@@ -24,6 +24,7 @@ import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.StudentSessionRepository;
+import com.equipe4.audace.repository.signature.SignatureRepository;
 import com.equipe4.audace.utils.ContractManipulator;
 import com.equipe4.audace.utils.NotificationManipulator;
 import com.equipe4.audace.utils.SessionManipulator;
@@ -47,12 +48,13 @@ public class StudentService extends GenericUserService<Student> {
     private final ContractRepository contractRepository;
     private final NotificationManipulator notificationManipulator;
     private final ContractManipulator contractManipulator;
+    private final SignatureRepository signatureRepository;
 
     public StudentService(SaltRepository saltRepository, DepartmentRepository departmentRepository, OfferRepository offerRepository,
                           StudentRepository studentRepository, CvRepository cvRepository, ApplicationRepository applicationRepository,
                           StudentSessionRepository studentSessionRepository, SessionManipulator sessionManipulator,
                           ContractRepository contractRepository,
-                          NotificationManipulator notificationManipulator, ContractManipulator contractManipulator) {
+                          NotificationManipulator notificationManipulator, ContractManipulator contractManipulator, SignatureRepository signatureRepository) {
         super(saltRepository);
         this.departmentRepository = departmentRepository;
         this.offerRepository = offerRepository;
@@ -64,6 +66,7 @@ public class StudentService extends GenericUserService<Student> {
         this.notificationManipulator = notificationManipulator;
         this.contractRepository = contractRepository;
         this.contractManipulator = contractManipulator;
+        this.signatureRepository = signatureRepository;
     }
 
     @Transactional
@@ -180,7 +183,7 @@ public class StudentService extends GenericUserService<Student> {
 
         Student student = studentRepository.findByCv(contract.getApplication().getCv()).orElseThrow(() -> new NoSuchElementException("Student not found"));
 
-        contract.setStudentSignature(new Signature(null, student, LocalDate.now()));
+        signatureRepository.save(new Signature<Student>(null, student, LocalDate.now(), contract));
 
         return Optional.of(contractRepository.save(contract).toDTO());
     }

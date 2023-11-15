@@ -1,19 +1,14 @@
 package com.equipe4.audace.dto.contract;
 
-import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
-import com.equipe4.audace.model.Employer;
-import com.equipe4.audace.model.Manager;
-import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.contract.Contract;
-import com.equipe4.audace.model.contract.Signature;
-import jakarta.persistence.Embedded;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.Locale;
 
 @Data
@@ -29,20 +24,6 @@ public class ContractDTO {
     private Supervisor supervisor;
     private ApplicationDTO application;
 
-    private Signature studentSignature;
-    private Signature employerSignature;
-    private Signature managerSignature;
-
-    public ContractDTO(Long id, String startHour, String endHour, int totalHoursPerWeek, double salary, Supervisor supervisor, ApplicationDTO application) {
-        this.id = id;
-        this.startHour = startHour;
-        this.endHour = endHour;
-        this.totalHoursPerWeek = totalHoursPerWeek;
-        this.salary = salary;
-        this.supervisor = supervisor;
-        this.application = application;
-    }
-
     public Contract fromDTO(){
         return new Contract(
                 id,
@@ -51,10 +32,7 @@ public class ContractDTO {
                 totalHoursPerWeek,
                 salary,
                 supervisor,
-                application.fromDTO(),
-                studentSignature,
-                employerSignature,
-                managerSignature
+                application.fromDTO()
         );
     }
 

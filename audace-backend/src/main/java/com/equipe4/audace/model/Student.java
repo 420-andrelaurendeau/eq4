@@ -1,22 +1,26 @@
 package com.equipe4.audace.model;
 
 import com.equipe4.audace.dto.StudentDTO;
-import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
-import jakarta.persistence.*;
-import lombok.*;
-import java.util.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ToString(callSuper = true)
 @Entity
 @Data
 @NoArgsConstructor
-public class Student extends User {
+public class Student extends UserWithDepartment {
     @Column(unique = true)
     private String studentNumber;
-    @ManyToOne
-    private Department department;
     @ToString.Exclude
     @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
     private List<Cv> cv = new ArrayList<>();
@@ -32,9 +36,8 @@ public class Student extends User {
             String studentNumber,
             Department department
     ) {
-        super(id, firstname, lastname, email, password, address, phone);
+        super(id, firstname, lastname, email, password, address, phone, department);
         this.studentNumber = studentNumber;
-        this.department = department;
     }
 
     @Override
