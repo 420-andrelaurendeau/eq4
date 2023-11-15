@@ -231,6 +231,15 @@
       "studentNotFound": "Étudiant introuvable"
     }
   },
+  "contractsList": {
+    "title": "Contrats",
+    "studentName": "Étudiant",
+    "employerName": "Employeur",
+    "offerTitle": "Titre de l'offre",
+    "Dates": "Date de début et de fin",
+    "actions": "Informations",
+    "viewDetails": "Voir les détails"
+  },
   "logout": "Déconnexion",
   "pageNotFound": "Erreur 404 : Page non trouvée",
   "sessionSelector": {

@@ -231,6 +231,15 @@
       "studentNotFound": "Student wasn't found"
     }
   },
+  "contractsList": {
+    "title": "Contracts",
+    "studentName": "Student",
+    "employerName": "Employer",
+    "offerTitle": "Offer Title",
+    "Dates": "Start Date and End Date",
+    "actions": "Contract Information",
+    "viewDetails": "View Details"
+  },
   "logout": "Log out",
   "pageNotFound": "Error 404: Page Not Found",
   "sessionSelector": {
