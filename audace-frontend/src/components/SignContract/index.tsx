@@ -3,29 +3,35 @@ import { useParams } from 'react-router-dom';
 import { Card, ListGroup, ListGroupItem, Container, Row, Col, Button } from 'react-bootstrap';
 import { Contract } from '../../model/contract';
 import { getContractById } from '../../services/contractService';
+import { UserType } from "../../model/user";
+import { getUserId } from '../../services/authService';
+import { getUserById } from '../../services/userService';
 
 const SignContract = () => {
   const { id } = useParams();
   const [contract, setContract] = useState<Contract | null>(null);
+  const [UserType, setUserType] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log("Fetching contract...");
+
+    getUserById(parseInt(getUserId() || '0') || 0).then((res) => setUserType(res.data.type || null)).catch((error) => {
+        console.error("Error fetching user:", error);
+    });
+
     if (id) {
-      getContractById(parseInt(id))
-        .then((response) => {
-          console.log("Fetched contract:", response.data); 
-          setContract(response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching contract:", error);
-        });
+        getContractById(parseInt(id))
+            .then((response) => {
+                console.log("Fetched contract:", response.data); 
+                setContract(response.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching contract:", error);
+            });
     }
+
   }, [id]);
-  
-  console.log("Contract:", contract);
 
   if (!contract) {
-    
     return <p>Loading contract...</p>;
   }
 
@@ -44,7 +50,6 @@ const SignContract = () => {
     <Container className="mt-4">
       <Row className="justify-content-center">
         <Col md={8}>
-          {/* Contract Details */}
           <Card className="mb-3">
             <Card.Header as="h5">Contract Details</Card.Header>
             <Card.Body>
@@ -57,7 +62,6 @@ const SignContract = () => {
             </Card.Body>
           </Card>
 
-          {/* Supervisor Details */}
           <Card className="mb-3">
             <Card.Header as="h5">Supervisor Details</Card.Header>
             <Card.Body>
@@ -70,7 +74,6 @@ const SignContract = () => {
             </Card.Body>
           </Card>
 
-          {/* Student Details */}
           {student && (
             <Card className="mb-3">
               <Card.Header as="h5">Student Details</Card.Header>
@@ -83,7 +86,6 @@ const SignContract = () => {
             </Card>
           )}
 
-          {/* Employer Details */}
           {employer && (
             <Card className="mb-3">
               <Card.Header as="h5">Employer Details</Card.Header>
@@ -96,7 +98,6 @@ const SignContract = () => {
             </Card>
           )}
 
-          {/* Offer Details */}
           {offer && (
             <Card>
               <Card.Header as="h5">Offer Details</Card.Header>
@@ -114,39 +115,39 @@ const SignContract = () => {
           )}
 
 <Card className="mt-3">
-  <Card.Header as="h5">Signature</Card.Header>
-  <Card.Body>
-    <ListGroup>
-      <ListGroupItem className="d-flex justify-content-between align-items-center">
-        Manager's Signature
-        <div>
-          <Button variant="secondary" onClick={() => handleSign('manager')}>
-            Sign
-          </Button>
-          <span className="ms-2">Signed on: {/* Display manager's sign date */}</span>
-        </div>
-      </ListGroupItem>
-      <ListGroupItem className="d-flex justify-content-between align-items-center">
-        Employer's Signature
-        <div>
-          <Button variant="secondary" onClick={() => handleSign('employer')}>
-            Sign
-          </Button>
-          <span className="ms-2">Signed on: {/* Display employer's sign date */}</span>
-        </div>
-      </ListGroupItem>
-      <ListGroupItem className="d-flex justify-content-between align-items-center">
-        Student's Signature
-        <div>
-          <Button variant="secondary" onClick={() => handleSign('student')}>
-            Sign
-          </Button>
-          <span className="ms-2">Signed on: {/* Display student's sign date */}</span>
-        </div>
-      </ListGroupItem>
-    </ListGroup>
-  </Card.Body>
-</Card>
+        <Card.Header as="h5">Signature</Card.Header>
+        <Card.Body>
+          <ListGroup>
+            <ListGroupItem className="d-flex justify-content-between align-items-center">
+              Manager's Signature
+              <div>
+                <Button variant="secondary" onClick={() => handleSign('manager')} disabled={UserType !== 'manager'}>
+                  Sign
+                </Button>
+                <span className="ms-2">Signed on: {/* Display manager's sign date */}</span>
+              </div>
+            </ListGroupItem>
+            <ListGroupItem className="d-flex justify-content-between align-items-center">
+              Employer's Signature
+              <div>
+                <Button variant="secondary" onClick={() => handleSign('employer')} disabled={UserType !== 'employer'}>
+                  Sign
+                </Button>
+                <span className="ms-2">Signed on: {/* Display employer's sign date */}</span>
+              </div>
+            </ListGroupItem>
+            <ListGroupItem className="d-flex justify-content-between align-items-center">
+              Student's Signature
+              <div>
+                <Button variant="secondary" onClick={() => handleSign('student')} disabled={UserType !== 'student'}>
+                  Sign
+                </Button>
+                <span className="ms-2">Signed on: {/* Display student's sign date */}</span>
+              </div>
+            </ListGroupItem>
+          </ListGroup>
+        </Card.Body>
+      </Card>
 
 
         </Col>
