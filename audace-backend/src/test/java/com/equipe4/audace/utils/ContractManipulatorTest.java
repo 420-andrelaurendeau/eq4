@@ -3,6 +3,7 @@ import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.model.*;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
+import com.equipe4.audace.model.contract.Signature;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.contract.ContractRepository;
@@ -11,6 +12,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.LocalDate;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -64,6 +67,9 @@ public class ContractManipulatorTest {
         Contract mockContract = mock(Contract.class);
         ContractDTO mockContractDTO = mock(ContractDTO.class);
 
+        LocalDate signatureDate = LocalDate.now();
+        Signature<Student> expectedSignature = new Signature<Student>(mockStudent, signatureDate);
+
         when(userRepository.findById(studentId)).thenReturn(Optional.of(mockStudent));
         when(contractRepository.findById(contractId)).thenReturn(Optional.of(mockContract));
         when(contractRepository.save(any(Contract.class))).thenReturn(mockContract);
@@ -72,8 +78,10 @@ public class ContractManipulatorTest {
         Optional<ContractDTO> result = contractManipulator.signContract(studentId, contractId);
 
         assertThat(result).isPresent();
-        verify(contractRepository).save(any(Contract.class));
+        verify(mockContract).setStudentSignature(expectedSignature);
+        verify(contractRepository).save(mockContract);
     }
+
 
     @Test
     public void signContract_Employer() {
@@ -83,6 +91,9 @@ public class ContractManipulatorTest {
         Contract mockContract = mock(Contract.class);
         ContractDTO mockContractDTO = mock(ContractDTO.class);
 
+        LocalDate signatureDate = LocalDate.now();
+        Signature<Employer> expectedSignature = new Signature<>(mockEmployer, signatureDate);
+
         when(userRepository.findById(employerId)).thenReturn(Optional.of(mockEmployer));
         when(contractRepository.findById(contractId)).thenReturn(Optional.of(mockContract));
         when(contractRepository.save(any(Contract.class))).thenReturn(mockContract);
@@ -91,7 +102,8 @@ public class ContractManipulatorTest {
         Optional<ContractDTO> result = contractManipulator.signContract(employerId, contractId);
 
         assertThat(result).isPresent();
-        verify(contractRepository).save(any(Contract.class));
+        verify(mockContract).setEmployerSignature(expectedSignature);
+        verify(contractRepository).save(mockContract);
     }
 
     @Test
@@ -102,6 +114,9 @@ public class ContractManipulatorTest {
         Contract mockContract = mock(Contract.class);
         ContractDTO mockContractDTO = mock(ContractDTO.class);
 
+        LocalDate signatureDate = LocalDate.now();
+        Signature<Manager> expectedSignature = new Signature<>(mockManager, signatureDate);
+
         when(userRepository.findById(managerId)).thenReturn(Optional.of(mockManager));
         when(contractRepository.findById(contractId)).thenReturn(Optional.of(mockContract));
         when(contractRepository.save(any(Contract.class))).thenReturn(mockContract);
@@ -110,8 +125,10 @@ public class ContractManipulatorTest {
         Optional<ContractDTO> result = contractManipulator.signContract(managerId, contractId);
 
         assertThat(result).isPresent();
-        verify(contractRepository).save(any(Contract.class));
+        verify(mockContract).setManagerSignature(expectedSignature);
+        verify(contractRepository).save(mockContract);
     }
+
 
     @Test
     public void signContract_ContractNotFound() {

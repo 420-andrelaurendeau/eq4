@@ -6,7 +6,11 @@ import CvModal from "../../CVsList/CvRow/CvModal";
 import {UserType} from "../../../model/user";
 import EmployerButtons from "./ApplicationButtons/EmployerButtons";
 import {Contract} from "../../../model/contract";
-import {getContractByApplicationId, getContractByApplicationIdForStudent} from "../../../services/contractService";
+import {
+  getContractByApplicationId,
+  getContractByApplicationIdForStudent,
+  signContractByStudent
+} from "../../../services/contractService";
 import {getUserId} from "../../../services/authService";
 
 interface Props {
@@ -19,6 +23,7 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
   const { t } = useTranslation();
   const [show, setShow] = useState<boolean>(false);
   const [contract, setContract] = useState<Contract>();
+  const userId = parseInt(getUserId()!);
   const handleClick = () => setShow(true);
   const handleClose = () => setShow(false);
 
@@ -34,7 +39,7 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
     getContractByApplicationIdForStudent(application.id!)
         .then((res) => {
           setContract(res.data);
-          console.log("Contract : " + contract?.id! + contract?.supervisor!.firstName!);
+          console.log("Contract : " + res.data.id, res.data.supervisor.firstName);
         })
         .catch((err) => {
           if (err.response && err.response.status === 404) {
@@ -43,6 +48,24 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
             console.error(err);
           }
         });
+  }
+
+  const handleApply = async (event: { stopPropagation: () => void }) => {
+    event.stopPropagation();
+
+    if (!contract || !userId) {
+      console.error("Contract or user ID is null");
+      return; // or handle this situation appropriately
+    }
+
+    try {
+      const response = await signContractByStudent(userId, contract.id!);
+      console.log("Contract signed successfully:", response.data);
+      // Further processing based on the response
+    } catch (err) {
+      console.error("Error signing contract:", err);
+      // Handle the error appropriately
+    }
   }
 
   return (
@@ -73,7 +96,7 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
                     >
                       <Button
                           // disabled={isButtonDisabled()}
-                          // onClick={handleApply}
+                          onClick={handleApply}
                           variant="outline-primary"
                           className="text-dark"
                       >

@@ -40,7 +40,7 @@ public class ContractManipulator {
         LocalDate signatureDate = LocalDate.now();
 
         if (user instanceof Student) {
-            Signature<Student> studentSignature = new Signature<>((Student) user, signatureDate);
+            Signature<Student> studentSignature = new Signature<Student>((Student) user, signatureDate);
             contract.setStudentSignature(studentSignature);
         } else if (user instanceof Employer) {
             Signature<Employer> employerSignature = new Signature<>((Employer) user, signatureDate);

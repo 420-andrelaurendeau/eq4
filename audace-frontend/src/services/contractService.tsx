@@ -1,7 +1,7 @@
-import { AxiosResponse } from "axios";
-import { MANAGER_PREFIX, STUDENT_PREFIX } from "../constants/apiPrefixes";
+import {AxiosError, AxiosResponse} from "axios";
+import {MANAGER_PREFIX, STUDENT_PREFIX} from "../constants/apiPrefixes";
 import http from "../constants/http";
-import { Contract } from "../model/contract";
+import {Contract} from "../model/contract";
 
 export const createContract = async (
   contract: Contract
@@ -33,3 +33,26 @@ export const getContractByApplicationIdForStudent = async (applicationId: number
         `${STUDENT_PREFIX}/applications/${applicationId}/contract`
     );
 };
+
+export const signContractByStudent = async (
+    studentId: number,
+    contractId: number
+): Promise<AxiosResponse<Contract>> => {
+    try {
+        return await http.put<Contract>(
+            `${STUDENT_PREFIX}/contract_signature`, null, {
+                params: {studentId, contractId}
+            }
+        );
+    } catch (error) {
+        const axiosError = error as AxiosError;
+        console.error('Error in signContractByStudent:', axiosError.message);
+        if (axiosError.response) {
+            console.error('Server responded with:', axiosError.response);
+        }
+        throw axiosError;
+    }
+};
+
+
+

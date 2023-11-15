@@ -101,13 +101,13 @@ public class StudentController extends GenericUserController<Student, StudentSer
 
     @PutMapping("/contract_signature")
     public ResponseEntity<ContractDTO> signContract(@RequestParam("studentId") Long studentId, @RequestParam("contractId") Long contractId) {
-        logger.info("signContractForStudent");
+        logger.info("signContractForStudent with studentId: {} and contractId: {}", studentId, contractId);
         try {
             return service.signContractForStudent(studentId, contractId)
                     .map(ResponseEntity::ok)
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
         } catch (Exception e) {
-            logger.error("Error signing contract: " + e.getMessage());
+            logger.error("Error signing contract: " + e);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
