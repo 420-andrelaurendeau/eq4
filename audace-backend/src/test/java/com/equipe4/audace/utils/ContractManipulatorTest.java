@@ -59,97 +59,97 @@ public class ContractManipulatorTest {
                 .hasMessageContaining("Application not found");
     }
 
-    @Test
-    public void signContract_Student() {
-        Long studentId = 1L;
-        Long contractId = 1L;
-        Student mockStudent = mock(Student.class);
-        Contract mockContract = mock(Contract.class);
-        ContractDTO mockContractDTO = mock(ContractDTO.class);
-
-        LocalDate signatureDate = LocalDate.now();
-        Signature<Student> expectedSignature = new Signature<Student>(mockStudent, signatureDate);
-
-        when(userRepository.findById(studentId)).thenReturn(Optional.of(mockStudent));
-        when(contractRepository.findById(contractId)).thenReturn(Optional.of(mockContract));
-        when(contractRepository.save(any(Contract.class))).thenReturn(mockContract);
-        when(mockContract.toDTO()).thenReturn(mockContractDTO);
-
-        Optional<ContractDTO> result = contractManipulator.signContract(studentId, contractId);
-
-        assertThat(result).isPresent();
-        verify(mockContract).setStudentSignature(expectedSignature);
-        verify(contractRepository).save(mockContract);
-    }
-
-
-    @Test
-    public void signContract_Employer() {
-        Long employerId = 1L;
-        Long contractId = 1L;
-        Employer mockEmployer = mock(Employer.class);
-        Contract mockContract = mock(Contract.class);
-        ContractDTO mockContractDTO = mock(ContractDTO.class);
-
-        LocalDate signatureDate = LocalDate.now();
-        Signature<Employer> expectedSignature = new Signature<>(mockEmployer, signatureDate);
-
-        when(userRepository.findById(employerId)).thenReturn(Optional.of(mockEmployer));
-        when(contractRepository.findById(contractId)).thenReturn(Optional.of(mockContract));
-        when(contractRepository.save(any(Contract.class))).thenReturn(mockContract);
-        when(mockContract.toDTO()).thenReturn(mockContractDTO);
-
-        Optional<ContractDTO> result = contractManipulator.signContract(employerId, contractId);
-
-        assertThat(result).isPresent();
-        verify(mockContract).setEmployerSignature(expectedSignature);
-        verify(contractRepository).save(mockContract);
-    }
-
-    @Test
-    public void signContract_Manager() {
-        Long managerId = 1L;
-        Long contractId = 1L;
-        Manager mockManager = mock(Manager.class);
-        Contract mockContract = mock(Contract.class);
-        ContractDTO mockContractDTO = mock(ContractDTO.class);
-
-        LocalDate signatureDate = LocalDate.now();
-        Signature<Manager> expectedSignature = new Signature<>(mockManager, signatureDate);
-
-        when(userRepository.findById(managerId)).thenReturn(Optional.of(mockManager));
-        when(contractRepository.findById(contractId)).thenReturn(Optional.of(mockContract));
-        when(contractRepository.save(any(Contract.class))).thenReturn(mockContract);
-        when(mockContract.toDTO()).thenReturn(mockContractDTO);
-
-        Optional<ContractDTO> result = contractManipulator.signContract(managerId, contractId);
-
-        assertThat(result).isPresent();
-        verify(mockContract).setManagerSignature(expectedSignature);
-        verify(contractRepository).save(mockContract);
-    }
+//    @Test
+//    public void signContract_Student() {
+//        Long studentId = 1L;
+//        Long contractId = 1L;
+//        Student mockStudent = mock(Student.class);
+//        Contract mockContract = mock(Contract.class);
+//        ContractDTO mockContractDTO = mock(ContractDTO.class);
+//
+//        LocalDate signatureDate = LocalDate.now();
+//        Signature<Student> expectedSignature = new Signature<Student>(mockStudent, signatureDate);
+//
+//        when(userRepository.findById(studentId)).thenReturn(Optional.of(mockStudent));
+//        when(contractRepository.findById(contractId)).thenReturn(Optional.of(mockContract));
+//        when(contractRepository.save(any(Contract.class))).thenReturn(mockContract);
+//        when(mockContract.toDTO()).thenReturn(mockContractDTO);
+//
+//        Optional<ContractDTO> result = contractManipulator.signContract(studentId, contractId);
+//
+//        assertThat(result).isPresent();
+//        verify(mockContract).setStudentSignature(expectedSignature);
+//        verify(contractRepository).save(mockContract);
+//    }
 
 
-    @Test
-    public void signContract_ContractNotFound() {
-        Long contractId = 1L;
-        Student student = mock(Student.class);
+//    @Test
+//    public void signContract_Employer() {
+//        Long employerId = 1L;
+//        Long contractId = 1L;
+//        Employer mockEmployer = mock(Employer.class);
+//        Contract mockContract = mock(Contract.class);
+//        ContractDTO mockContractDTO = mock(ContractDTO.class);
+//
+//        LocalDate signatureDate = LocalDate.now();
+//        Signature<Employer> expectedSignature = new Signature<>(mockEmployer, signatureDate);
+//
+//        when(userRepository.findById(employerId)).thenReturn(Optional.of(mockEmployer));
+//        when(contractRepository.findById(contractId)).thenReturn(Optional.of(mockContract));
+//        when(contractRepository.save(any(Contract.class))).thenReturn(mockContract);
+//        when(mockContract.toDTO()).thenReturn(mockContractDTO);
+//
+//        Optional<ContractDTO> result = contractManipulator.signContract(employerId, contractId);
+//
+//        assertThat(result).isPresent();
+//        verify(mockContract).setEmployerSignature(expectedSignature);
+//        verify(contractRepository).save(mockContract);
+//    }
 
-        when(userRepository.findById(student.getId())).thenReturn(Optional.of(student));
-        when(contractRepository.findById(contractId)).thenReturn(Optional.empty());
+//    @Test
+//    public void signContract_Manager() {
+//        Long managerId = 1L;
+//        Long contractId = 1L;
+//        Manager mockManager = mock(Manager.class);
+//        Contract mockContract = mock(Contract.class);
+//        ContractDTO mockContractDTO = mock(ContractDTO.class);
+//
+//        LocalDate signatureDate = LocalDate.now();
+//        Signature<Manager> expectedSignature = new Signature<>(mockManager, signatureDate);
+//
+//        when(userRepository.findById(managerId)).thenReturn(Optional.of(mockManager));
+//        when(contractRepository.findById(contractId)).thenReturn(Optional.of(mockContract));
+//        when(contractRepository.save(any(Contract.class))).thenReturn(mockContract);
+//        when(mockContract.toDTO()).thenReturn(mockContractDTO);
+//
+//        Optional<ContractDTO> result = contractManipulator.signContract(managerId, contractId);
+//
+//        assertThat(result).isPresent();
+//        verify(mockContract).setManagerSignature(expectedSignature);
+//        verify(contractRepository).save(mockContract);
+//    }
 
-        assertThatThrownBy(() -> contractManipulator.signContract(student.getId(), contractId))
-                .isInstanceOf(NoSuchElementException.class)
-                .hasMessageContaining("Contract not found");
-    }
 
-    @Test
-    public void signContract_NullUserId() {
-        Long contractId = 1L;
+//    @Test
+//    public void signContract_ContractNotFound() {
+//        Long contractId = 1L;
+//        Student student = mock(Student.class);
+//
+//        when(userRepository.findById(student.getId())).thenReturn(Optional.of(student));
+//        when(contractRepository.findById(contractId)).thenReturn(Optional.empty());
+//
+//        assertThatThrownBy(() -> contractManipulator.signContract(student.getId(), contractId))
+//                .isInstanceOf(NoSuchElementException.class)
+//                .hasMessageContaining("Contract not found");
+//    }
 
-        assertThatThrownBy(() -> contractManipulator.signContract(null, contractId))
-                .isInstanceOf(NoSuchElementException.class)
-                .hasMessageContaining("User not found");
-    }
+//    @Test
+//    public void signContract_NullUserId() {
+//        Long contractId = 1L;
+//
+//        assertThatThrownBy(() -> contractManipulator.signContract(null, contractId))
+//                .isInstanceOf(NoSuchElementException.class)
+//                .hasMessageContaining("User not found");
+//    }
 
 }

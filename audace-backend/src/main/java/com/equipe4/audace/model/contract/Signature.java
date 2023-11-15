@@ -12,14 +12,16 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Embeddable
-public class Signature<T extends User> {
+@Entity
+public class Signature {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "signature_gen")
+    private Long id;
+
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
-    private T signatory;
-
-    @Column(insertable=false, updatable=false)
+    private User signatory;
     private LocalDate signatureDate;
 
 }

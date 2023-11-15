@@ -235,9 +235,9 @@ public class StudentControllerTest {
         ContractDTO contractDTO = createContractDTO(applicationDTO);
         Student student = createStudentDTO(createDepartmentDTO()).fromDTO();
 
-        contractDTO.setStudentSignature(new Signature<Student>(student, LocalDate.now()));
+        contractDTO.setStudentSignature(new Signature(1L, student, LocalDate.now()));
 
-        when(studentService.signContractForStudent(student.getId(), contractDTO.getId())).thenReturn(Optional.of(contractDTO));
+        when(studentService.signContract(contractDTO.getId())).thenReturn(Optional.of(contractDTO));
 
         mockMvc.perform(put("/students/contract_signature")
                 .param("studentId", "1")
@@ -267,14 +267,12 @@ public class StudentControllerTest {
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT"})
     void signContractForStudent_ContractNotFound() throws Exception {
-        Long studentId = 1L;
         Long contractId = 1L;
 
-        when(studentService.signContractForStudent(studentId, contractId))
+        when(studentService.signContract(contractId))
                 .thenReturn(Optional.empty());
 
         mockMvc.perform(put("/students/contract_signature")
-                        .param("studentId", studentId.toString())
                         .param("contractId", contractId.toString())
                         .with(csrf()))
                 .andExpect(status().isNotFound());
@@ -283,15 +281,13 @@ public class StudentControllerTest {
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT"})
     void signContractForStudent_ContractExists() throws Exception {
-        Long studentId = 1L;
         Long contractId = 1L;
         ContractDTO mockContractDTO = createContractDTO(createApplicationDTO(createOfferDTO(1L)));
 
-        when(studentService.signContractForStudent(studentId, contractId))
+        when(studentService.signContract(contractId))
                 .thenReturn(Optional.of(mockContractDTO));
 
         mockMvc.perform(put("/students/contract_signature")
-                        .param("studentId", studentId.toString())
                         .param("contractId", contractId.toString())
                         .with(csrf()))
                 .andExpect(status().isOk())

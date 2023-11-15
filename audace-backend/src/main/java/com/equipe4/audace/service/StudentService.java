@@ -180,14 +180,14 @@ public class StudentService extends GenericUserService<Student> {
 
         Student student = studentRepository.findByCv(contract.getApplication().getCv()).orElseThrow(() -> new NoSuchElementException("Student not found"));
 
-        contract.setStudentSignature(new Signature<Student>(student, LocalDate.now()));
+        contract.setStudentSignature(new Signature(null, student, LocalDate.now()));
 
         return Optional.of(contractRepository.save(contract).toDTO());
     }
 
-    public Optional<ContractDTO> signContractForStudent(Long userId, Long contractId){
-        return contractManipulator.signContract(userId, contractId);
-    }
+//    public Optional<ContractDTO> signContractForStudent(Long userId, Long contractId){
+//        return contractManipulator.signContract(userId, contractId);
+//    }
 
     public Optional<ContractDTO> getContractByApplicationId(Long applicationId) {
         return contractManipulator.getContractByApplicationId(applicationId);

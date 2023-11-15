@@ -29,9 +29,9 @@ public class ContractDTO {
     private Supervisor supervisor;
     private ApplicationDTO application;
 
-    private Signature<Student> studentSignature;
-    private Signature<Employer> employerSignature;
-    private Signature<Manager> managerSignature;
+    private Signature studentSignature;
+    private Signature employerSignature;
+    private Signature managerSignature;
 
     public ContractDTO(Long id, String startHour, String endHour, int totalHoursPerWeek, double salary, Supervisor supervisor, ApplicationDTO application) {
         this.id = id;

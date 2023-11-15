@@ -1,5 +1,9 @@
 package com.equipe4.audace.utils;
 
+import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.ManagerDTO;
+import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.UserDTO;
 import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Manager;
@@ -8,6 +12,7 @@ import com.equipe4.audace.model.User;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
 import com.equipe4.audace.model.contract.Signature;
+import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.contract.ContractRepository;
@@ -31,29 +36,37 @@ public class ContractManipulator {
         return contractRepository.findByApplication(application).map(Contract::toDTO);
     }
 
-    public Optional<ContractDTO> signContract(Long userId, Long contractId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
-        Contract contract = contractRepository.findById(contractId)
-                .orElseThrow(() -> new NoSuchElementException("Contract not found"));
-
-        LocalDate signatureDate = LocalDate.now();
-
-        if (user instanceof Student) {
-            Signature<Student> studentSignature = new Signature<Student>((Student) user, signatureDate);
-            contract.setStudentSignature(studentSignature);
-        } else if (user instanceof Employer) {
-            Signature<Employer> employerSignature = new Signature<>((Employer) user, signatureDate);
-            contract.setEmployerSignature(employerSignature);
-        } else if (user instanceof Manager) {
-            Signature<Manager> managerSignature = new Signature<>((Manager) user, signatureDate);
-            contract.setManagerSignature(managerSignature);
-        } else {
-            throw new IllegalArgumentException("Unsupported user type for signing");
-        }
-
-        return Optional.of(contractRepository.save(contract).toDTO());
-    }
+//    public Optional<ContractDTO> signContract(Long userId, Long contractId) {
+////        User user = userRepository.findById(userId)
+////                .orElseThrow(() -> new NoSuchElementException("User not found"));
+//        UserDTO user = userRepository.findUserDTOById(userId)
+//                .orElseThrow(() -> new NoSuchElementException("User not found"));
+//        Contract contract = contractRepository.findById(contractId)
+//                .orElseThrow(() -> new NoSuchElementException("Contract not found"));
+//
+//        LocalDate signatureDate = LocalDate.now();
+//
+//        if (user instanceof StudentDTO) {
+//
+//            Signature studentSignature = new Signature(null, user.fromDTO(), signatureDate);
+//            contract.setStudentSignature(studentSignature);
+//
+//        } else if (user instanceof EmployerDTO) {
+//
+//            Signature employerSignature = new Signature(null, user.fromDTO(), signatureDate);
+//            contract.setEmployerSignature(employerSignature);
+//
+//        } else if (user instanceof ManagerDTO) {
+//
+//            Signature managerSignature = new Signature(null, user.fromDTO(), signatureDate);
+//            contract.setManagerSignature(managerSignature);
+//
+//        } else {
+//            throw new IllegalArgumentException("Unsupported user type for signing");
+//        }
+//
+//        return Optional.of(contractRepository.save(contract).toDTO());
+//    }
 
     private <T> void nullCheck(T object) {
         if (object == null) {

@@ -38,12 +38,12 @@ public class Contract {
     @ToString.Exclude
     private Application application;
 
-    @Embedded
-    private Signature<Student> studentSignature;
-    @Embedded
-    private Signature<Employer> employerSignature;
-    @Embedded
-    private Signature<Manager> managerSignature;
+    @OneToOne
+    private Signature studentSignature;
+    @OneToOne
+    private Signature employerSignature;
+    @OneToOne
+    private Signature managerSignature;
 
     public Contract(Long id, LocalTime startHour, LocalTime endHour, int totalHoursPerWeek, double salary, Supervisor supervisor, Application application) {
         this.id = id;

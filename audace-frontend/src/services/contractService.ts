@@ -35,13 +35,12 @@ export const getContractByApplicationIdForStudent = async (applicationId: number
 };
 
 export const signContractByStudent = async (
-    studentId: number,
     contractId: number
 ): Promise<AxiosResponse<Contract>> => {
     try {
         return await http.put<Contract>(
             `${STUDENT_PREFIX}/contract_signature`, null, {
-                params: {studentId, contractId}
+                params: {contractId}
             }
         );
     } catch (error) {

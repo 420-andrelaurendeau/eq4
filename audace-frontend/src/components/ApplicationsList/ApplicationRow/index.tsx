@@ -51,7 +51,7 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
     }
 
     try {
-      const response = await signContractByStudent(studentId, contract.id!);
+      const response = await signContractByStudent(contract.id!);
       console.log("Contract signed successfully:", response.data);
 
     } catch (err) {
@@ -65,13 +65,13 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
   return (
     <>
       <tr>
-        {userType != UserType.Employer && <td>{application.offer!.title}</td>}
-        {userType != UserType.Student && <th>{application.cv!.student.firstName} {application.cv!.student.lastName}</th>}
+        {userType !== UserType.Employer && <td>{application.offer!.title}</td>}
+        {userType !== UserType.Student && <th>{application.cv!.student.firstName} {application.cv!.student.lastName}</th>}
         <td>
           <Col>{application.cv!.fileName}</Col>
           <Col className="text-muted small"><u className="hovered" onClick={handleClick}>{t("cvsList.viewMore")}</u></Col>
         </td>
-        {userType != UserType.Employer && <td>{application.offer!.employer.organisation}</td>}
+        {userType !== UserType.Employer && <td>{application.offer!.employer.organisation}</td>}
         <td>
           {
             userType === UserType.Employer && application.offer!.availablePlaces > 0 ? (
