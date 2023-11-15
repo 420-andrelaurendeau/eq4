@@ -21,8 +21,6 @@ import java.util.NoSuchElementException;
 @RequestMapping("/students")
 @CrossOrigin(origins = "http://localhost:3000")
 public class StudentController extends GenericUserController<Student, StudentService> {
-    private ManagerService managerService;
-
     public StudentController(StudentService studentService) {
         super(studentService);
     }
@@ -107,7 +105,7 @@ public class StudentController extends GenericUserController<Student, StudentSer
                     .map(ResponseEntity::ok)
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
         } catch (Exception e) {
-            logger.error("Error signing contract: " + e);
+            logger.error("Error signing contract: " + e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

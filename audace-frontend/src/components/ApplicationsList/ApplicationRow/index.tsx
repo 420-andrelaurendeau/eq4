@@ -1,17 +1,13 @@
 import { useTranslation } from "react-i18next";
-import {Application, ApplicationStatus} from "../../../model/application";
-import {Button, Col, Container} from "react-bootstrap";
-import {useEffect, useState} from "react";
+import { Application, ApplicationStatus } from "../../../model/application";
+import { Button, Col } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
 import CvModal from "../../CVsList/CvRow/CvModal";
-import {UserType} from "../../../model/user";
+import { UserType } from "../../../model/user";
 import EmployerButtons from "./ApplicationButtons/EmployerButtons";
-import {Contract} from "../../../model/contract";
-import {
-  getContractByApplicationId,
-  getContractByApplicationIdForStudent,
-  signContractByStudent
-} from "../../../services/contractService";
-import {getUserId} from "../../../services/authService";
+import { Contract } from "../../../model/contract";
+import { getContractByApplicationIdForStudent, signContractByStudent } from "../../../services/contractService";
+import { getUserId } from "../../../services/authService";
 
 interface Props {
   application: Application;
@@ -22,51 +18,49 @@ interface Props {
 const ApplicationRow = ({ application, userType, updateApplicationsState }: Props) => {
   const { t } = useTranslation();
   const [show, setShow] = useState<boolean>(false);
-  const [contract, setContract] = useState<Contract>();
-  const userId = parseInt(getUserId()!);
-  const handleClick = () => setShow(true);
-  const handleClose = () => setShow(false);
+  const [contract, setContract] = useState<Contract | null>(null);
+  const studentId = parseInt(getUserId()!);
 
   useEffect(() => {
-    fetchContract().then(r => console.log("Contract fetched"));
-  }, []);
+    if (userType === UserType.Student) {
 
-  const fetchContract = async () => {
-    if (UserType.Student !== userType) {
+      const fetchContract = async () => {
+        try {
+          const res = await getContractByApplicationIdForStudent(application.id!);
+          setContract(res.data);
+          console.log("Contract : " + res.data.id, res.data.supervisor.firstName);
+        } catch (err : any) {
+          if (err.response?.status === 404) {
+            setContract(null);
+          } else {
+            console.error("Error fetching contract:", err);
+          }
+        }
+      };
+
+      fetchContract();
+    }
+  }, [userType, application.id]);
+
+  const handleApply = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+
+    if (!contract || !studentId) {
+      console.error("Contract or user ID is null");
       return;
     }
 
-    getContractByApplicationIdForStudent(application.id!)
-        .then((res) => {
-          setContract(res.data);
-          console.log("Contract : " + res.data.id, res.data.supervisor.firstName);
-        })
-        .catch((err) => {
-          if (err.response && err.response.status === 404) {
-            setContract(undefined);
-          } else {
-            console.error(err);
-          }
-        });
-  }
-
-  const handleApply = async (event: { stopPropagation: () => void }) => {
-    event.stopPropagation();
-
-    if (!contract || !userId) {
-      console.error("Contract or user ID is null");
-      return; // or handle this situation appropriately
-    }
-
     try {
-      const response = await signContractByStudent(userId, contract.id!);
+      const response = await signContractByStudent(studentId, contract.id!);
       console.log("Contract signed successfully:", response.data);
-      // Further processing based on the response
+
     } catch (err) {
       console.error("Error signing contract:", err);
-      // Handle the error appropriately
     }
-  }
+  };
+
+  const handleClick = () => setShow(true);
+  const handleClose = () => setShow(false);
 
   return (
     <>
