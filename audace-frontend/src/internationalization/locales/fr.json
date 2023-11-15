@@ -122,7 +122,8 @@
     "applicationButton": "Voir les applications"
   },
   "student": {
-    "seeOffersButton": "Voir les offres"
+    "seeOffersButton": "Voir les offres",
+    "signContractButton": "Signer le contrat"
   },
   "manager": {
     "seeOffersButton": "Voir les offres",

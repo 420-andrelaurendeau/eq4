@@ -50,7 +50,6 @@ const OffersList = ({ offers, error, userType, updateOffersState, seeApplication
                                         </td>
                                     </tr>
                                 }
-
                             </>
                             )
                         })

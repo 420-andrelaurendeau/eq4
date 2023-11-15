@@ -122,7 +122,8 @@
     "applicationButton": "See applications"
   },
   "student": {
-    "seeOffersButton": "See Offers"
+    "seeOffersButton": "See Offers",
+    "signContractButton": "Sign Contract"
   },
   "manager": {
     "seeOffersButton": "See Offers",

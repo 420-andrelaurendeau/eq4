@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import {Application, ApplicationStatus} from "../../../model/application";
-import { Col } from "react-bootstrap";
+import {Button, Col, Container} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import CvModal from "../../CVsList/CvRow/CvModal";
 import {UserType} from "../../../model/user";
@@ -33,7 +33,6 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
 
     getContractByApplicationIdForStudent(application.id!)
         .then((res) => {
-          console.log("Hopefully a contract : " + res.data);
           setContract(res.data);
           console.log("Contract : " + contract?.id! + contract?.supervisor!.firstName!);
         })
@@ -57,12 +56,34 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
         </td>
         {userType != UserType.Employer && <td>{application.offer!.employer.organisation}</td>}
         <td>
-          {userType === UserType.Employer && application.offer!.availablePlaces > 0 ?  (
-              <div className="d-flex justify-content-center">
-                <EmployerButtons application={application} updateApplicationsState={updateApplicationsState} />
-              </div>
-          ):
-              t(`applicationsList.row.status.${application.applicationStatus}`)
+          {
+            userType === UserType.Employer && application.offer!.availablePlaces > 0 ? (
+                <div className="d-flex justify-content-center">
+                  <EmployerButtons application={application} updateApplicationsState={updateApplicationsState} />
+                </div>
+            ) : (
+                userType === UserType.Student && contract !== undefined ? (
+                    <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                    >
+                      <Button
+                          // disabled={isButtonDisabled()}
+                          // onClick={handleApply}
+                          variant="outline-primary"
+                          className="text-dark"
+                      >
+                        {t("student.signContractButton")}
+                      </Button>
+                    </div>
+                ) : (
+                    t(`applicationsList.row.status.${application.applicationStatus}`)
+                )
+            )
           }
         </td>
       </tr>
