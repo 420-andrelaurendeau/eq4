@@ -15,9 +15,20 @@ const SignContract = () => {
 
   useEffect(() => {
 
-    getUserById(parseInt(getUserId() || '0') || 0).then((res) => setUserType(res.data.type || null)).catch((error) => {
-        console.error("Error fetching user:", error);
-    });
+    (async () => {
+        try {
+            const userId = parseInt(getUserId() || '0');
+            if (!userId) {
+                console.error("Invalid user ID");
+                return;
+            }
+
+            const response = await getUserById(userId);
+            setUserType(response.data.type || null);
+        } catch (error) {
+            console.error("Error fetching user:", error);
+        }
+    })();
 
     if (id) {
         getContractById(parseInt(id))
