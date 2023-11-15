@@ -46,6 +46,7 @@ const { student } = application.cv || {};
 function handleSign(arg0: string) {
     if (arg0 === 'manager') {
         ManagerSignContract(parseInt(getUserId() || '0') || 0, contract?.id!);
+        console.log(contract);
     } else if (arg0 === 'employer') {
         console.log('employer');
     } else if (arg0 === 'student') {

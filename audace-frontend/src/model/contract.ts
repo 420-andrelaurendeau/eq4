@@ -1,4 +1,5 @@
 import Application from "./application";
+import { User } from "./user";
 
 export interface Contract {
   id?: number;
@@ -8,6 +9,9 @@ export interface Contract {
   salary: number;
   supervisor: Supervisor;
   application: Application;
+  studentSignature?: Signature;
+  employerSignature?: Signature;
+  managerSignature?: Signature;
 }
 
 export interface Supervisor{
@@ -17,4 +21,9 @@ export interface Supervisor{
   email: string;
   phone:string;
   extension: string;
+}
+
+export interface Signature{
+  signatory: User;
+  signatureDate: Date;
 }
