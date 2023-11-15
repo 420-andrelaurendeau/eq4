@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/managers")
@@ -142,18 +141,10 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
 
     @PostMapping("/{managerId}/sign_contract/{contractId}")
     public ResponseEntity<HttpStatus> signContract(@PathVariable Long managerId, @PathVariable Long contractId) {
-        logger.info("Attempting to sign contract with ID: " + contractId + " by manager with ID: " + managerId);
-
-        Optional<ContractDTO> contractDtoOptional = service.signContract(managerId, contractId);
-
-        if (contractDtoOptional.isPresent()) {
-            ContractDTO contractDTO = contractDtoOptional.get();
-            logger.info("Contract signed successfully. ContractDTO: " + contractDTO.toString());
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            logger.info("Failed to sign contract with ID: " + contractId);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        logger.info("signContract");
+        return service.signContract(managerId, contractId)
+                .map(contractDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @GetMapping("/studentsWithInternshipFoundStatus/{departmentId}")
