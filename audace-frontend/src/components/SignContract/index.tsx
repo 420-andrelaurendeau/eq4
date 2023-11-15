@@ -4,14 +4,16 @@ import { Card, ListGroup, ListGroupItem, Container, Row, Col, Button } from 'rea
 import { Contract } from '../../model/contract';
 import { getContractById } from '../../services/contractService';
 
-const ContractDetails = () => {
+const SignContract = () => {
   const { id } = useParams();
   const [contract, setContract] = useState<Contract | null>(null);
 
   useEffect(() => {
+    console.log("Fetching contract...");
     if (id) {
       getContractById(parseInt(id))
         .then((response) => {
+          console.log("Fetched contract:", response.data); 
           setContract(response.data);
         })
         .catch((error) => {
@@ -19,10 +21,15 @@ const ContractDetails = () => {
         });
     }
   }, [id]);
+  
+  console.log("Contract:", contract);
 
   if (!contract) {
+    
     return <p>Loading contract...</p>;
   }
+
+
 
   const { supervisor, application, startHour, endHour, totalHoursPerWeek, salary } = contract;
   const { offer } = application || {};
@@ -148,4 +155,4 @@ const ContractDetails = () => {
   );
 };
 
-export default ContractDetails;
+export default SignContract;

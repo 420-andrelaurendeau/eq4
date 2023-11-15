@@ -116,7 +116,7 @@ const SidebarRoutes = ({ showNotifications }: Props) => {
               </AuthorizedRoute>
             }
           />
-          <Route path="/contract/*" element={<SignContract />} />
+          <Route path="/contract/:id" element={<SignContract />} />
           <Route path="*" element={<PageNotFoundView />} />
           <Route
             path="/"
