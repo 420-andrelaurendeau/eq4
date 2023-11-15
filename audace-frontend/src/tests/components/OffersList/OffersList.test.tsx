@@ -3,6 +3,10 @@ import OffersList from "../../../components/OffersList";
 import "@testing-library/jest-dom/extend-expect";
 import { offer } from "../testUtils/testUtils";
 
+jest.mock("../../../components/Applications", () => () => (
+  <div>We are here</div>
+));
+
 it("should display basic table head values when offers not empty", () => {
   render(<OffersList offers={[offer]} error="" />);
 
