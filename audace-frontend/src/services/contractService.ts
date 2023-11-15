@@ -38,7 +38,7 @@ export const signContractByStudent = async (
     contractId: number
 ): Promise<AxiosResponse<Contract>> => {
     try {
-        return await http.put<Contract>(
+        return await http.post<Contract>(
             `${STUDENT_PREFIX}/contract_signature`, null, {
                 params: {contractId}
             }
