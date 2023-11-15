@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import { Button, useAccordionButton } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { Offer } from "../../../../../model/offer";
 import { useNavigate } from "react-router-dom";
@@ -11,16 +11,14 @@ import { getUserId } from "../../../../../services/authService";
 import { useSessionContext } from "../../../../../contextsholders/providers/SessionContextHolder";
 
 interface Props {
-  disabled: boolean;
-  seeApplications?: (offer: Offer) => void;
   offer: Offer;
 }
 
-const EmployerButtons = ({ disabled, seeApplications, offer }: Props) => {
+const EmployerButtons = ({ offer }: Props) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const { setOffers } = useOfferContext();
   const { chosenSession } = useSessionContext();
+  const navigate = useNavigate();
 
   const editButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -53,38 +51,27 @@ const EmployerButtons = ({ disabled, seeApplications, offer }: Props) => {
       console.error("Failed to delete offer:", error);
     }
   };
-
-  const seeApplicationsButtonClick = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation();
-    seeApplications!(offer);
-  };
+  const seeApplicationsButtonClick = useAccordionButton(offer.id!.toString());
 
   return (
     <>
       <Button
-        disabled={disabled}
         onClick={editButtonClick}
         variant="outline-warning"
         className="me-2 text-dark"
       >
         {t("employerOffersList.editButton")}
       </Button>
-      <Button
-        disabled={disabled}
-        onClick={deleteButtonClick}
-        variant="outline-danger text-dark"
-      >
+      <Button onClick={deleteButtonClick} variant="outline-danger text-dark">
         {t("employerOffersList.deleteButton")}
       </Button>
-      {seeApplications !== undefined ? (
-        <Button
-          onClick={seeApplicationsButtonClick}
-          variant="outline-success"
-          className="ms-2 text-dark"
-        >
-          {t("employerOffersList.applicationButton")}
-        </Button>
-      ) : null}
+      <Button
+        onClick={seeApplicationsButtonClick}
+        variant="outline-success"
+        className="ms-2 text-dark"
+      >
+        {t("employerOffersList.applicationButton")}
+      </Button>
     </>
   );
 };

@@ -9,7 +9,6 @@ it("is visible when props is true", () => {
       show={true}
       offer={offer}
       handleClose={() => {}}
-      disabled={false}
       employer={employer}
     />
   );

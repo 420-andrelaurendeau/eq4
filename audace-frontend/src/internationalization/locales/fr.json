@@ -157,9 +157,9 @@
   },
   "employer": {
     "errors": {
-      "employerNotFound": "Employeur non trouvé",
-      "createOfferButton": "Créer une offre"
+      "employerNotFound": "Employeur non trouvé"
     },
+    "createOfferButton": "Créer une offre",
     "seeOffersButton": "Voir les offres",
     "seeApplicationsButton": "Voir les candidatures",
     "addOfferButton": "Créer une offre"
@@ -220,6 +220,7 @@
     "noAcceptedApplications": "Aucun résultat trouvé...",
     "organization": "Organisation",
     "status": "Statut",
+    "studentName": "Nom de l'etudiant",
     "cv": "CV",
     "noApplications": "Aucune candidature soumise",
     "row": {
@@ -278,46 +279,44 @@
     }
   },
   "notifications": {
-    "deleteAll" : "Effacer tout",
+    "deleteAll": "Effacer tout",
     "student": {
       "offer": {
-        "CREATED1" : "L'offre ",
-        "CREATED2" : " peut maintenant recevoir des candidatures."
+        "CREATED1": "L'offre ",
+        "CREATED2": " peut maintenant recevoir des candidatures."
       },
       "cv": {
-        "UPDATED1" : "Le CV ",
-        "UPDATED2" : " a eu son statut mis à jour."
+        "UPDATED1": "Le CV ",
+        "UPDATED2": " a eu son statut mis à jour."
       },
       "application": {
-        "UPDATED1" : "La candidature ",
-        "UPDATED2" : " a eu son statut mis à jour."
+        "UPDATED1": "La candidature ",
+        "UPDATED2": " a eu son statut mis à jour."
       }
     },
     "manager": {
       "offer": {
-        "CREATED1" : "L'offre ",
-        "CREATED2" : " est en attente de votre approbation.",
-        "UPDATED1" : "L'offre ",
-        "UPDATED2" : " a été mis à jour."
+        "CREATED1": "L'offre ",
+        "CREATED2": " est en attente de votre approbation.",
+        "UPDATED1": "L'offre ",
+        "UPDATED2": " a été mis à jour."
       },
       "cv": {
-        "CREATED1" : "Le CV ",
-        "CREATED2" : " est en attente de votre approbation.",
-        "UPDATED1" : "Le CV ",
-        "UPDATED2" : " a été mis à jour."
+        "CREATED1": "Le CV ",
+        "CREATED2": " est en attente de votre approbation.",
+        "UPDATED1": "Le CV ",
+        "UPDATED2": " a été mis à jour."
       },
-      "application": {
-        
-      }
+      "application": {}
     },
     "employer": {
       "offer": {
-        "UPDATED1" : "L'offre ",
-        "UPDATED2" : " a eu son statut mis à jour."
+        "UPDATED1": "L'offre ",
+        "UPDATED2": " a eu son statut mis à jour."
       },
       "application": {
-        "CREATED1" : "L'offre ",
-        "CREATED2" : " a de nouvelles applications."
+        "CREATED1": "L'offre ",
+        "CREATED2": " a de nouvelles applications."
       }
     }
   }

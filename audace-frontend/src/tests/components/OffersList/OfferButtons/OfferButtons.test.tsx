@@ -9,7 +9,7 @@ it("should render employer buttons when employer user type", () => {
     .spyOn(require("../../../../services/authService"), "getUserType")
     .mockImplementation(() => UserType.Employer);
 
-  render(<OfferButtons disabled={false} offer={offer} />);
+  render(<OfferButtons offer={offer} />);
 
   const editButton = screen.getByText(/offersList.editButton/i);
   expect(editButton).toBeInTheDocument();
@@ -20,7 +20,7 @@ it("should render student buttons when student user type", () => {
     .spyOn(require("../../../../services/authService"), "getUserType")
     .mockImplementation(() => UserType.Student);
 
-  render(<OfferButtons disabled={false} offer={offer} />);
+  render(<OfferButtons offer={offer} />);
 
   const applyButton = screen.getByText(/offersList.applyButton/i);
   expect(applyButton).toBeInTheDocument();
@@ -31,7 +31,7 @@ it("should render manager buttons when manager user type", () => {
     .spyOn(require("../../../../services/authService"), "getUserType")
     .mockImplementation(() => UserType.Manager);
 
-  render(<OfferButtons disabled={false} offer={offer} />);
+  render(<OfferButtons offer={offer} />);
 
   const acceptButton = screen.getByText(/offersList.acceptButton/i);
   expect(acceptButton).toBeInTheDocument();

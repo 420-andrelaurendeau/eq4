@@ -4,7 +4,7 @@ import "@testing-library/jest-dom/extend-expect";
 import { offer } from "../../testUtils/testUtils";
 
 it("should display default values", () => {
-  render(<EmployerButtons disabled={false} offer={offer} />);
+  render(<EmployerButtons offer={offer} />);
 
   const editButton = screen.getByText(/offersList.editButton/i);
   expect(editButton).toBeInTheDocument();
@@ -14,48 +14,12 @@ it("should display default values", () => {
 });
 
 it("should display seeApplications button", () => {
-  render(
-    <EmployerButtons
-      disabled={false}
-      offer={offer}
-      seeApplications={() => {}}
-    />
-  );
+  render(<EmployerButtons offer={offer} />);
 
   const seeApplicationsButton = screen.getByText(
     /employerOffersList.applicationButton/i
   );
   expect(seeApplicationsButton).toBeInTheDocument();
-});
-
-it("should disable buttons when disabled is true", () => {
-  render(<EmployerButtons disabled={true} offer={offer} />);
-
-  const editButton = screen.getByText(/offersList.editButton/i);
-  expect(editButton).toBeDisabled();
-
-  const deleteButton = screen.getByText(/offersList.deleteButton/i);
-  expect(deleteButton).toBeDisabled();
-});
-
-it("should call seeApplications when seeApplications button is clicked", () => {
-  const seeApplications = jest.fn();
-  render(
-    <EmployerButtons
-      disabled={false}
-      offer={offer}
-      seeApplications={seeApplications}
-    />
-  );
-
-  const seeApplicationsButton = screen.getByText(
-    /employerOffersList.applicationButton/i
-  );
-  expect(seeApplicationsButton).toBeInTheDocument();
-
-  fireEvent.click(seeApplicationsButton);
-
-  expect(seeApplications).toHaveBeenCalledTimes(1);
 });
 
 it("should call useNavigate when edit button is clicked", () => {
@@ -64,7 +28,7 @@ it("should call useNavigate when edit button is clicked", () => {
     .spyOn(require("react-router-dom"), "useNavigate")
     .mockImplementation(() => navigate);
 
-  render(<EmployerButtons disabled={false} offer={offer} />);
+  render(<EmployerButtons offer={offer} />);
 
   const editButton = screen.getByText(/offersList.editButton/i);
   expect(editButton).toBeInTheDocument();
@@ -101,7 +65,7 @@ it("should call employerDeleteOffer when delete button is clicked", async () => 
       setChosenSession: () => {},
     }));
 
-  render(<EmployerButtons disabled={false} offer={offer} />);
+  render(<EmployerButtons offer={offer} />);
 
   const deleteButton = screen.getByText(/offersList.deleteButton/i);
   expect(deleteButton).toBeInTheDocument();
@@ -138,7 +102,7 @@ it("should show error message when delete is unsuccessful", async () => {
 
   jest.spyOn(console, "error").mockImplementation(() => {});
 
-  render(<EmployerButtons disabled={false} offer={offer} />);
+  render(<EmployerButtons offer={offer} />);
 
   const deleteButton = screen.getByText(/offersList.deleteButton/i);
   expect(deleteButton).toBeInTheDocument();

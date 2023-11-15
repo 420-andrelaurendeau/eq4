@@ -10,13 +10,12 @@ import { getAllOffersByEmployerIdAndSessionId } from "../../../services/offerSer
 import OffersList from "../../../components/OffersList";
 import { useSessionContext } from "../../../contextsholders/providers/SessionContextHolder";
 import SessionSelector from "../../../components/SessionSelector";
-import Applications from "../../../components/Applications";
 import { useOfferContext } from "../../../contextsholders/providers/OfferContextHolder";
 
 const EmployerView = () => {
   const [employer, setEmployer] = useState<Employer>();
   const [error, setError] = useState<string>("");
-  const [offerApplication, setOfferApplication] = useState<Offer>();
+
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { chosenSession } = useSessionContext();
@@ -54,10 +53,6 @@ const EmployerView = () => {
       });
   }, [employer, chosenSession, setOffers]);
 
-  const seeApplications = (offer: Offer) => {
-    setOfferApplication(offer);
-  };
-
   const updateAvailablePlaces = (offer: Offer) => {
     let updatedOffers = offers.map((o) => {
       if (o.id === offer.id)
@@ -69,18 +64,12 @@ const EmployerView = () => {
 
   return (
     <Container className="mt-3">
-      <SessionSelector seeApplications={seeApplications} />
+      <SessionSelector />
       <OffersList
         offers={offers}
         error={error}
-        seeApplications={seeApplications}
+        updateAvailablePlaces={updateAvailablePlaces}
       />
-      {offerApplication !== undefined && (
-        <Applications
-          offer={offerApplication}
-          updateAvailablePlaces={updateAvailablePlaces}
-        />
-      )}
     </Container>
   );
 };

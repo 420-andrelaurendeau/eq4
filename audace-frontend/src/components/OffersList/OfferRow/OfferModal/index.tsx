@@ -12,7 +12,6 @@ interface Props {
   handleClose: () => void;
   employer: Employer;
   updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
-  disabled: boolean;
 }
 
 const OfferModal = ({
@@ -21,7 +20,6 @@ const OfferModal = ({
   handleClose,
   employer,
   updateOffersState,
-  disabled,
 }: Props) => {
   const { t } = useTranslation();
   const { currentSession, chosenSession } = useSessionContext();
@@ -71,11 +69,7 @@ const OfferModal = ({
         </Modal.Body>
         {chosenSession?.id === currentSession?.id && (
           <Modal.Footer>
-            <OfferButtons
-              disabled={disabled}
-              offer={offer}
-              updateOffersState={updateOffersState}
-            />
+            <OfferButtons offer={offer} updateOffersState={updateOffersState} />
           </Modal.Footer>
         )}
       </Modal>

@@ -12,24 +12,14 @@ import { useSessionContext } from "../../../contextsholders/providers/SessionCon
 interface Props {
   offer: Offer;
   updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
-  seeApplications?: (offer: Offer) => void;
 }
 
-const OfferRow = ({
-  offer,
-  updateOffersState,
-  seeApplications,
-}: Props) => {
+const OfferRow = ({ offer, updateOffersState }: Props) => {
   const [show, setShow] = useState<boolean>(false);
   const { t } = useTranslation();
   const { currentSession, chosenSession } = useSessionContext();
-  const [disabled, setDisabled] = useState<boolean>(true);
 
-  const handleClick = () => {
-    setShow(true);
-    setDisabled(false);
-  };
-
+  const handleClick = () => setShow(true);
   const handleClose = () => setShow(false);
 
   return (
@@ -50,10 +40,8 @@ const OfferRow = ({
           <td>
             <div className="d-flex justify-content-center">
               <OfferButtons
-                disabled={disabled}
                 offer={offer}
                 updateOffersState={updateOffersState}
-                seeApplications={seeApplications}
               />
             </div>
           </td>
@@ -66,7 +54,6 @@ const OfferRow = ({
           handleClose={handleClose}
           employer={offer.employer}
           updateOffersState={updateOffersState}
-          disabled={disabled}
         />
       )}
     </>
