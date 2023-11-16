@@ -2,11 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, ListGroup, ListGroupItem, Container, Row, Col, Button, Placeholder } from 'react-bootstrap';
 import { Contract } from '../../model/contract';
-import {
-  getContractByIdAsManager,
-  getContractByIdAsStudent,
-  signContractByStudent
-} from '../../services/contractService';
+import { getContractById, signContractByStudent } from '../../services/contractService';
 import { getUserId } from '../../services/authService';
 import { getUserById } from '../../services/userService';
 import { ManagerSignContract } from '../../services/contractService';
@@ -36,31 +32,20 @@ const SignContract = () => {
     })();
 
     if (id) {
-      if (UserType === 'manager') {
-        getContractByIdAsManager(parseInt(id))
-          .then((response) => {
-            setContract(response.data);
-          })
-          .catch((error) => {
-            console.error("Error fetching contract as manager:", error);
-          });
-      }
-      if (UserType === 'student') {
-        getContractByIdAsStudent(parseInt(id))
-          .then((response) => {
-            console.log("Fetched contract:", response.data);
-            setContract(response.data);
-          })
-          .catch((error) => {
-            console.error("Error fetching contract as student:", error);
-          });
-      }
+      const usertype = UserType === 'manager' ? 'manager' : UserType === 'student' ? 'student' : UserType === 'employer' ? 'employer' : 'unknown';
+      getContractById(parseInt(id), usertype)
+        .then((response) => {
+          setContract(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching contract as manager:", error);
+        });
     }
 
   }, [UserType, id]);
 
 
-  function handleSign(role : string) {
+  function handleSign(role: string) {
     const userId = parseInt(getUserId() || '0');
 
     if (!userId) {
@@ -71,24 +56,24 @@ const SignContract = () => {
     switch (role) {
       case 'manager':
         ManagerSignContract(userId, contract?.id!)
-            .then(() => {
-              console.log('Manager signed the contract');
-            })
-            .catch((error: any) => {
-              console.error('Error signing contract as manager:', error);
-            });
+          .then(() => {
+            console.log('Manager signed the contract');
+          })
+          .catch((error: any) => {
+            console.error('Error signing contract as manager:', error);
+          });
         break;
       case 'employer':
         console.log('Signing as employer');
         break;
       case 'student':
         signContractByStudent(contract?.id!)
-            .then(() => {
-              console.log('Student signed the contract');
-            })
-            .catch((error: any) => {
-              console.error('Error signing contract as student:', error);
-            });
+          .then(() => {
+            console.log('Student signed the contract');
+          })
+          .catch((error: any) => {
+            console.error('Error signing contract as student:', error);
+          });
         break;
       default:
         console.log('Invalid role');

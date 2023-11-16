@@ -1,5 +1,5 @@
 import { AxiosError, AxiosResponse } from "axios";
-import { MANAGER_PREFIX, STUDENT_PREFIX } from "../constants/apiPrefixes";
+import { EMPLOYER_PREFIX, MANAGER_PREFIX, STUDENT_PREFIX } from "../constants/apiPrefixes";
 import http from "../constants/http";
 import { Contract } from "../model/contract";
 
@@ -9,12 +9,9 @@ export const createContract = async (
   return http.post(`${MANAGER_PREFIX}/contracts`, contract);
 };
 
-export const getContractByIdAsManager = async (id: number): Promise<AxiosResponse> => {
-  return http.get(`${MANAGER_PREFIX}/contracts/${id}`);
-};
-
-export const getContractByIdAsStudent = async (id: number): Promise<AxiosResponse<Contract>> => {
-  return http.get(`${STUDENT_PREFIX}/contracts/${id}`);
+export const getContractById = async (id: number, user: string): Promise<AxiosResponse> => {
+  const prefix = user === 'manager' ? MANAGER_PREFIX : user === 'student' ? STUDENT_PREFIX : user === 'employer' ? EMPLOYER_PREFIX : null;
+  return http.get(`${prefix}/contracts/${id}`);
 };
 
 export const getContractByApplicationId = async (

@@ -6,9 +6,9 @@ import CvModal from "../../CVsList/CvRow/CvModal";
 import { UserType } from "../../../model/user";
 import EmployerButtons from "./ApplicationButtons/EmployerButtons";
 import { Contract } from "../../../model/contract";
-import { getContractByApplicationIdForStudent, signContractByStudent } from "../../../services/contractService";
+import { getContractByApplicationId, signContractByStudent } from "../../../services/contractService";
 import { getUserId } from "../../../services/authService";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   application: Application;
@@ -28,10 +28,10 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
 
       const fetchContract = async () => {
         try {
-          const res = await getContractByApplicationIdForStudent(application.id!);
+          const res = await getContractByApplicationId(application.id!, "student");
           setContract(res.data);
           console.log("Contract : " + res.data.id, res.data.supervisor.firstName);
-        } catch (err : any) {
+        } catch (err: any) {
           if (err.response?.status === 404) {
             setContract(null);
           } else {
@@ -85,31 +85,31 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
         <td>
           {
             userType === UserType.Employer && application.offer!.availablePlaces > 0 ? (
-                <div className="d-flex justify-content-center">
-                  <EmployerButtons application={application} updateApplicationsState={updateApplicationsState} />
-                </div>
+              <div className="d-flex justify-content-center">
+                <EmployerButtons application={application} updateApplicationsState={updateApplicationsState} />
+              </div>
             ) : (
-                userType === UserType.Student && contract !== null ? (
-                    <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                    >
-                      <Button
-                          // disabled={isButtonDisabled()}
-                          onClick={() => handleViewContract(contract!.id!)}
-                          variant="outline-primary"
-                          className="text-dark"
-                      >
-                        {t("student.signContractButton")}
-                      </Button>
-                    </div>
-                ) : (
-                    t(`applicationsList.row.status.${application.applicationStatus}`)
-                )
+              userType === UserType.Student && contract !== null ? (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Button
+                    // disabled={isButtonDisabled()}
+                    onClick={() => handleViewContract(contract!.id!)}
+                    variant="outline-primary"
+                    className="text-dark"
+                  >
+                    {t("student.signContractButton")}
+                  </Button>
+                </div>
+              ) : (
+                t(`applicationsList.row.status.${application.applicationStatus}`)
+              )
             )
           }
         </td>
