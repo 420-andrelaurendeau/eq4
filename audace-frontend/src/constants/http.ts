@@ -7,7 +7,6 @@ const http = axios.create({
     "Content-Type": "application/json",
   },
 });
-
 http.interceptors.request.use((config) => {
   if (config?.headers && isConnected())
     config.headers.Authorization = `Bearer ${getJwt()}`;

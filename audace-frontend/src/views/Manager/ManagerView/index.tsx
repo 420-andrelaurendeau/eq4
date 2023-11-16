@@ -1,9 +1,6 @@
 import { Alert, Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import {
-  getAcceptedApplicationsByDepartment,
-  getDepartmentByManager,
-} from "../../../services/managerService";
+import {getAcceptedApplicationsByDepartment, getDepartmentByManager,} from "../../../services/managerService";
 import ManagerApplicationsList from "../../../components/ManagerApplicationsList";
 import Application from "../../../model/application";
 import { getUserId } from "../../../services/authService";

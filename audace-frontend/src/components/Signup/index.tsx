@@ -70,7 +70,6 @@ const Signup = ({
       })
       .catch((err) => {
         setIsDisabled(false);
-        console.log(err.code);
         if (err.code === "ERR_NETWORK") {
           setUnexpectedError(errorStringValue);
         } else {

@@ -14,6 +14,7 @@ const FileUploader = ({ student }: Props) => {
   const { t } = useTranslation();
   const [file, setFile] = useState<File>();
   const [successMessage, setSuccessMessage] = useState<string>("");
+  const [hasErrorOccurred, setHasErrorOccurred] = useState<boolean>(false);
   const { setCvs } = useCVContext();
 
   const validateForm = () => {
@@ -27,9 +28,10 @@ const FileUploader = ({ student }: Props) => {
       .then((_) => {
         setSuccessMessage("upload.success");
         handleUploadSuccess();
+        setHasErrorOccurred(false);
       })
       .catch((err) => {
-        console.log(err);
+        setHasErrorOccurred(true);
       });
   };
 
@@ -39,7 +41,7 @@ const FileUploader = ({ student }: Props) => {
         setCvs(res.data);
       })
       .catch((err) => {
-        console.error(err);
+        setHasErrorOccurred(true);
       });
   };
 
@@ -57,13 +59,18 @@ const FileUploader = ({ student }: Props) => {
           />
         </Form.Group>
 
-        <Button variant="outline-primary" className="mt-3 text-dark" onClick={submitForm}>
+        <Button
+          variant="outline-primary"
+          className="mt-3 text-dark"
+          onClick={submitForm}
+        >
           {t("upload.submit")}
         </Button>
       </Form>
       {successMessage !== "" && (
         <Alert variant="success">{t(successMessage)}</Alert>
       )}
+      {hasErrorOccurred && <Alert variant="danger">{t("upload.error")}</Alert>}
     </>
   );
 };

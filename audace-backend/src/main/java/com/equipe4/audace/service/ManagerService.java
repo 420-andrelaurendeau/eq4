@@ -130,6 +130,7 @@ public class ManagerService extends GenericUserService<Manager> {
         notificationManipulator.makeNotificationOfferToOfferEmployer(offer, Notification.NotificationCause.UPDATED);
         return Optional.of(offerRepository.save(offer).toDTO());
     }
+
     @Transactional
     public Optional<OfferDTO> acceptOffer(Long managerId, Long offerId) {
         notificationManipulator.makeNotificationOfferToAllStudents(
@@ -178,6 +179,7 @@ public class ManagerService extends GenericUserService<Manager> {
 
         return Optional.of(contractRepository.save(contract).toDTO());
     }
+
     public Optional<ContractDTO> findContractById(Long contractId){
         Contract contract = contractRepository.findById(contractId).orElseThrow(() -> new NoSuchElementException("Contract not found"));
         return Optional.of(contract.toDTO());

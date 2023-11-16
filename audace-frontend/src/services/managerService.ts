@@ -9,7 +9,6 @@ import {
   mapStudentsWithStatus,
 } from "../model/user";
 import { Department } from "../model/department";
-import { Contract } from "../model/contract";
 
 export const getAcceptedApplicationsByDepartment = async (
   managerId: number,
@@ -36,16 +35,6 @@ export const getApplicationById = async (
   id: number
 ): Promise<AxiosResponse<Application>> => {
   return http.get<Application>(`${MANAGER_PREFIX}/applications/${id}`);
-};
-
-export const createContract = async (
-  contract: Contract
-): Promise<AxiosResponse> => {
-  return http.post(`${MANAGER_PREFIX}/contracts`, contract);
-};
-
-export const getContractById = async (id: number): Promise<AxiosResponse> => {
-  return http.get(`${MANAGER_PREFIX}/contracts/${id}`);
 };
 
 export const getStudentsByInternshipStatus = async (

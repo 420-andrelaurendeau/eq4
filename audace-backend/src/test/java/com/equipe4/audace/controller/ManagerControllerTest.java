@@ -50,7 +50,6 @@ import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -349,7 +348,6 @@ public class ManagerControllerTest {
         // then - verify the result or output using assert statements
         response.andDo(print()).
                 andExpect(status().isCreated());
-
     }
 
     @Test
@@ -374,6 +372,15 @@ public class ManagerControllerTest {
                 .andExpect(jsonPath("$.salary", is(contractDTO.getSalary())))
                 .andExpect(jsonPath("$.supervisor.email", is(contractDTO.getSupervisor().getEmail())))
                 .andExpect(jsonPath("$.application.id", is(contractDTO.getApplication().getId().intValue())));
+    }
+
+
+    private DepartmentDTO createDepartmentDTO(){
+        return new DepartmentDTO(1L, "GLO", "Génie logiciel");
+    }
+
+    private ManagerDTO createManagerDTO(DepartmentDTO departmentDTO) {
+        return new ManagerDTO(1L, "manager", "managerman", "asd", "ads", "das", "sda", departmentDTO);
     }
 
     @Test
@@ -415,10 +422,6 @@ public class ManagerControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    private DepartmentDTO createDepartmentDTO(){
-        return new DepartmentDTO(1L, "GLO", "Génie logiciel");
-    }
-
     private EmployerDTO createEmployerDTO() {
         return new EmployerDTO(1L, "Employer1", "Employer1", "employer1@gmail.com", "123456eE", "Organisation1", "Position1", "Class Service, Javatown, Qc H8N1C1", "123-456-7890", "12345");
     }
@@ -436,7 +439,6 @@ public class ManagerControllerTest {
         DepartmentDTO departmentDTO = createDepartmentDTO();
         return new OfferDTO(id,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, Offer.OfferStatus.PENDING, departmentDTO, employerDTO);
     }
-
     private ApplicationDTO createApplicationDTO(OfferDTO offerDTO) {
         CvDTO cvDTO = createCvDTO(createStudentDTO(createDepartmentDTO()));
         return new ApplicationDTO(1L, cvDTO, offerDTO, Application.ApplicationStatus.PENDING);

@@ -23,8 +23,10 @@ const LoginForm = () => {
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const [showExpiredSessionNotif, setShowExpiredSessionNotif] = useState<boolean>(false);
-  const [showUserCreatedNotif, setShowUserCreatedNotif] = useState<boolean>(false);
+  const [showExpiredSessionNotif, setShowExpiredSessionNotif] =
+    useState<boolean>(false);
+  const [showUserCreatedNotif, setShowUserCreatedNotif] =
+    useState<boolean>(false);
 
   const isSessionProperlyExpired = useCallback(() => {
     return (
@@ -73,14 +75,13 @@ const LoginForm = () => {
             navigateToUserTypeHomePage(res.data.type!);
           })
           .catch((err) => {
-            console.log(err);
             logout();
             navigate("/pageNotFound");
           });
       })
       .catch((error) => {
-        console.log(error);
-        if (error.response.status === 401 || error.response.status === 403) setAreCredentialsValid(false);
+        if (error.response.status === 401 || error.response.status === 403)
+          setAreCredentialsValid(false);
 
         setIsDisabled(false);
       });
@@ -156,9 +157,13 @@ const LoginForm = () => {
           formError={"login.errors.emptyPassword"}
           type="password"
         />
-        <Button onClick={submitForm} disabled={isDisabled}>{t("signin")}</Button>
+        <Button onClick={submitForm} disabled={isDisabled}>
+          {t("signin")}
+        </Button>
         {!areCredentialsValid && (
-          <p className="invalid-credentials">{t("login.errors.invalidCredentials")}</p>
+          <p className="invalid-credentials">
+            {t("login.errors.invalidCredentials")}
+          </p>
         )}
       </Form>
       {showExpiredSessionNotif && (

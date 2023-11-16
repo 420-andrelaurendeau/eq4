@@ -160,7 +160,8 @@
     },
     "createOfferButton": "Create Offer",
     "seeOffersButton": "See Offers",
-    "seeApplicationsButton": "See Applications"
+    "seeApplicationsButton": "See Applications",
+    "addOfferButton": "Create Offer"
   },
   "addOffer": {
     "pageTitle": "Create Offer",
@@ -196,7 +197,8 @@
     "CvFormTitle": "Upload CV",
     "file": "Upload File",
     "submit": "Submit",
-    "success": "Your CV has been uploaded successfully"
+    "success": "Your CV has been uploaded successfully",
+    "error": "There was an error uploading your CV"
   },
   "login": {
     "identification": "Email or Student Number",

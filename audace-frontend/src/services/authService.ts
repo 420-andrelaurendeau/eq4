@@ -9,6 +9,7 @@ import {
 } from "../constants/jwtConsts";
 import jwtDecode from "jwt-decode";
 import { AUTH_PREFIX } from "../constants/apiPrefixes";
+import { UserType } from "../model/user";
 
 export const login = async (
   loginRequest: LoginRequest
@@ -68,4 +69,21 @@ export const hasSessionExpiredRecently = (): boolean => {
     Date.now() - parseInt(localStorage.getItem(SESSION_EXPIRED_AT) || "0") <
     TIME_BEFORE_EXPIRE_ISNT_RECENT
   );
+};
+
+export const getUserType = (): UserType | null => {
+  const authority = getAuthorities()?.[0];
+
+  if (!authority) return null;
+
+  switch (authority) {
+    case Authority.EMPLOYER:
+      return UserType.Employer;
+    case Authority.STUDENT:
+      return UserType.Student;
+    case Authority.MANAGER:
+      return UserType.Manager;
+    default:
+      return null;
+  }
 };
