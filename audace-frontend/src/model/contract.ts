@@ -9,9 +9,9 @@ export interface Contract {
   salary: number;
   supervisor: Supervisor;
   application: Application;
-  studentSignature?: Signature<Manager>;
+  studentSignature?: Signature<Student>;
   employerSignature?: Signature<Employer>;
-  managerSignature?: Signature<Student>;
+  managerSignature?: Signature<Manager>;
 }
 
 export interface Supervisor{

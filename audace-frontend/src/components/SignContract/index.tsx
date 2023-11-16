@@ -56,16 +56,37 @@ const SignContract = () => {
     const { employer } = offer || {};
     const { student } = application.cv || {};
 
-    function handleSign(arg0: string) {
-        if (arg0 === 'manager') {
-            ManagerSignContract(parseInt(getUserId() || '0') || 0, contract?.id!);
-            console.log(contract);
-        } else if (arg0 === 'employer') {
-            console.log('employer');
-        } else if (arg0 === 'student') {
-            console.log('student');
+    function handleSign(role: string) {
+        switch (role) {
+            case 'manager':
+                signAsManager();
+                break;
+            case 'employer':
+                console.log('Signing as employer');
+                break;
+            case 'student':
+                console.log('Signing as student');
+                break;
+            default:
+                console.log('Invalid role');
         }
     }
+    
+    function signAsManager() {
+        const userId = parseInt(getUserId() || '0');
+        if (!userId) {
+            console.error("Invalid user ID");
+            return;
+        }
+        ManagerSignContract(userId, contract?.id!)
+            .then(() => {
+                console.log('Manager signed the contract');
+            })
+            .catch(error => {
+                console.error('Error signing contract as manager:', error);
+            });
+    }
+    
 
     return (
         <Container className="mt-4">
