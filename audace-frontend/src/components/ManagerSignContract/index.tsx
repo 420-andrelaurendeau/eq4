@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Contract } from '../../model/contract';
 import { useTranslation } from 'react-i18next';
-import { Table, Form, Row, Col, Container, Button } from 'react-bootstrap';
+import { Table, Row, Col, Container, Button } from 'react-bootstrap';
 import { getContractsByDepartmentId } from '../../services/contractService';
 import { useNavigate } from 'react-router-dom';
-import { format } from 'date-fns'; 
+import { format } from 'date-fns';
 
 interface Props {
-    departmentId: number;
+  departmentId: number;
 }
 
 const ContractsList = ({ departmentId }: Props) => {
   const [contracts, setContracts] = useState<Contract[]>([]);
   const [filteredContracts, setFilteredContracts] = useState<Contract[]>([]);
   const { t } = useTranslation();
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState<string>("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const ContractsList = ({ departmentId }: Props) => {
       const searchRegex = new RegExp(searchText, "i");
       const filtered = contracts.filter((contract) =>
         searchRegex.test(contract.supervisor.firstName) ||
-        searchRegex.test(contract.supervisor.lastName) 
+        searchRegex.test(contract.supervisor.lastName)
       );
       setFilteredContracts(filtered);
     } else {
@@ -73,7 +73,7 @@ const ContractsList = ({ departmentId }: Props) => {
                     <td>{contract.application.offer!.title}</td>
                     <td>{format(new Date(contract.application.offer!.internshipStartDate), 'dd/MM/yyyy')}, {format(new Date(contract.application.offer!.internshipEndDate), 'dd/MM/yyyy')}</td>
                     <td>
-                        <Button variant="primary" size="sm" onClick={() => handleViewContract(contract.id!)}>
+                      <Button variant="primary" size="sm" onClick={() => handleViewContract(contract.id!)}>
                         {t("contractsList.viewDetails")}
                       </Button>
                     </td>

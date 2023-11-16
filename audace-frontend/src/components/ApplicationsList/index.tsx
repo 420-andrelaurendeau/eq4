@@ -1,8 +1,8 @@
-import Application, {ApplicationStatus} from "../../model/application";
+import Application, { ApplicationStatus } from "../../model/application";
 import ApplicationRow from "./ApplicationRow";
 import { useTranslation } from "react-i18next";
 import GenericTable from "../GenericTable";
-import {UserType} from "../../model/user";
+import { UserType } from "../../model/user";
 
 interface Props {
   applications: Application[];
@@ -11,7 +11,7 @@ interface Props {
   updateApplicationsState?: (application: Application, applicationStatus: ApplicationStatus) => void;
 }
 
-const ApplicationsList = ({ applications, error, userType, updateApplicationsState}: Props) => {
+const ApplicationsList = ({ applications, error, userType, updateApplicationsState }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -19,10 +19,10 @@ const ApplicationsList = ({ applications, error, userType, updateApplicationsSta
       <GenericTable list={applications} error={error} emptyListMessage="applicationsList.noApplications" title="applicationsList.title">
         <thead>
           <tr>
-            {userType != UserType.Employer && <th>{t("applicationsList.offerTitle")}</th>}
-            {userType != UserType.Student && <th>{t("applicationsList.studentName")}</th>}
+            {userType !== UserType.Employer && <th>{t("applicationsList.offerTitle")}</th>}
+            {userType !== UserType.Student && <th>{t("applicationsList.studentName")}</th>}
             <th>{t("applicationsList.cv")}</th>
-            {userType != UserType.Employer && <th>{t("applicationsList.organization")}</th>}
+            {userType !== UserType.Employer && <th>{t("applicationsList.organization")}</th>}
             <th>{t("applicationsList.status")}</th>
           </tr>
         </thead>
