@@ -2,6 +2,7 @@ package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.dto.contract.SignatureDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
@@ -56,7 +57,7 @@ public class StudentService extends GenericUserService<Student> {
                           StudentSessionRepository studentSessionRepository, SessionManipulator sessionManipulator,
                           ContractRepository contractRepository,
                           NotificationManipulator notificationManipulator, SignatureRepository signatureRepository) {
-        super(applicationRepository, contractRepository, saltRepository);
+        super(saltRepository);
         this.departmentRepository = departmentRepository;
         this.offerRepository = offerRepository;
         this.studentRepository = studentRepository;
@@ -186,6 +187,12 @@ public class StudentService extends GenericUserService<Student> {
         signatureRepository.save(signature);
 
         return Optional.of(signature.toDTO());
+    }
+
+    public Optional<ContractDTO> getContractByApplicationId(Long applicationId) {
+        Application application = applicationRepository.findById(applicationId).orElseThrow(() -> new NoSuchElementException("Application not found"));
+
+        return contractRepository.findByApplication(application).map(Contract::toDTO);
     }
 
 }
