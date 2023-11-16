@@ -140,47 +140,47 @@ const SignContract = () => {
                         <Card.Body>
                             <ListGroup>
                                 <ListGroupItem className="d-flex justify-content-between align-items-center">
-                                    Manager's Signature
+                                   {t('signature.manager')}
                                     <div>
                                         {UserType === 'manager' && !contract.managerSignature && (
                                             <Button variant="secondary" onClick={() => handleSign('manager')}>
-                                                Sign
+                                                {t('signature.sign')}
                                             </Button>
                                         )}
                                         <span className="ms-2">
                                             {contract.managerSignature
-                                                ? `Signed on: ${contract.managerSignature.signatureDate}`
-                                                : 'Not signed yet'}
+                                                ? `${t('signature.signedOn')}: ${contract.managerSignature.signatureDate}`
+                                                : `${t('signature.notSigned')}`}
                                         </span>
                                     </div>
                                 </ListGroupItem>
                                 <ListGroupItem className="d-flex justify-content-between align-items-center">
-                                    Employer's Signature
+                                {t('signature.employer')}
                                     <div>
                                         {UserType === 'employer' && !contract.employerSignature && (
                                             <Button variant="secondary" onClick={() => handleSign('employer')}>
-                                                Sign
+                                               {t('signature.sign')}
                                             </Button>
                                         )}
                                         <span className="ms-2">
                                             {contract.employerSignature
-                                                ? `Signed on: ${contract.employerSignature.signatureDate}`
-                                                : 'Not signed yet'}
+                                                ? `${t('signature.signedOn')}: ${contract.employerSignature.signatureDate}`
+                                                : `${t('signature.notSigned')}`}
                                         </span>
                                     </div>
                                 </ListGroupItem>
                                 <ListGroupItem className="d-flex justify-content-between align-items-center">
-                                    Student's Signature
+                                {t('signature.student')}
                                     <div>
                                         {UserType === 'student' && !contract.studentSignature && (
                                             <Button variant="secondary" onClick={() => handleSign('student')}>
-                                                Sign
+                                                {t('signature.sign')}
                                             </Button>
                                         )}
                                         <span className="ms-2">
                                             {contract.studentSignature
-                                                ? `Signed on: ${contract.studentSignature.signatureDate}`
-                                                : 'Not signed yet'}
+                                                ? `${t('signature.signedOn')}: ${contract.studentSignature.signatureDate}`
+                                                : `${t('signature.notSigned')}`}
                                         </span>
                                     </div>
                                 </ListGroupItem>

@@ -337,5 +337,13 @@
         "CREATED2" : " has a new application."
       }
     }
+  },
+  "signature": {
+    "manager": "Manager's Signature",
+    "student": "Student's Signature",
+    "employer": "Employer's Signature",
+    "signedOn": "Signed on",
+    "notSigned": "Not signed",
+    "sign": "Sign"
   }
 }
