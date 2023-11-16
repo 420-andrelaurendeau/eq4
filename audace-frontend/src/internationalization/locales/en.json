@@ -239,7 +239,8 @@
     "offerTitle": "Offer Title",
     "Dates": "Start Date and End Date",
     "actions": "Contract Information",
-    "viewDetails": "View Details"
+    "viewDetails": "View Details",
+    "noContractsFound": "No contracts found"
   },
   "logout": "Log out",
   "pageNotFound": "Error 404: Page Not Found",
