@@ -233,7 +233,7 @@ public class StudentControllerTest {
     void signContract_Success() throws Exception {
         ContractDTO contractDTO = createContractDTO(createApplicationDTO(createOfferDTO(1L)));
 
-        mockMvc.perform(post("/sign_contract")
+        mockMvc.perform(post("/students/sign_contract")
                         .param("contractId", contractDTO.getId().toString())
                         .with(csrf()))
                 .andExpect(status().isOk());
@@ -264,7 +264,7 @@ public class StudentControllerTest {
         when(studentService.signContract(contractId))
                 .thenThrow(new NoSuchElementException("Contract not found"));
 
-        mockMvc.perform(post("/sign_contract")
+        mockMvc.perform(post("/students/sign_contract")
                         .param("contractId", contractId.toString())
                         .with(csrf()))
                 .andExpect(status().isNotFound());
