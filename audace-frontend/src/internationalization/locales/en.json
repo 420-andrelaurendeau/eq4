@@ -123,7 +123,7 @@
   },
   "student": {
     "seeOffersButton": "See Offers",
-    "signContractButton": "Sign Contract"
+    "viewContractDetails": "Consult the Contract"
   },
   "manager": {
     "seeOffersButton": "See Offers",
@@ -340,6 +340,7 @@
     }
   },
   "signature": {
+    "title": "Sign the contract",
     "manager": "Manager's Signature",
     "student": "Student's Signature",
     "employer": "Employer's Signature",

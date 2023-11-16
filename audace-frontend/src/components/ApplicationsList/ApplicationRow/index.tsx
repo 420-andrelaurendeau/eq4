@@ -80,12 +80,11 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
                   }}
                 >
                   <Button
-                    // disabled={isButtonDisabled()}
                     onClick={() => handleViewContract(contract!.id!)}
                     variant="outline-primary"
                     className="text-dark"
                   >
-                    {t("student.signContractButton")}
+                    {t("student.viewContractDetails")}
                   </Button>
                 </div>
               ) : (

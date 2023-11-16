@@ -1,14 +1,16 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { Card, ListGroup, ListGroupItem, Container, Row, Col, Button, Placeholder } from 'react-bootstrap';
-import { Contract, Signature } from '../../model/contract';
+import {useEffect, useState} from 'react';
+import {useParams} from 'react-router-dom';
+import {Button, Card, Col, Container, ListGroup, ListGroupItem, Placeholder, Row} from 'react-bootstrap';
+import {Contract, Signature} from '../../model/contract';
 import {
-  signContractByManager,
-  getContractById, signContract, getSignaturesByContractId
+  getContractById,
+  getSignaturesByContractId,
+  signContract,
+  signContractByManager
 } from '../../services/contractService';
-import { getUserId } from '../../services/authService';
-import { getUserById } from '../../services/userService';
-import { useTranslation } from 'react-i18next';
+import {getUserId} from '../../services/authService';
+import {getUserById} from '../../services/userService';
+import {useTranslation} from 'react-i18next';
 import './index.css';
 
 const SignContract = () => {
@@ -16,6 +18,7 @@ const SignContract = () => {
   const [contract, setContract] = useState<Contract | null>(null);
   const [userType, setUserType] = useState<string | null>(null);
   const [signatures, setSignatures] = useState<Signature[]>([]);
+  const [userSignature, setUserSignature] = useState<Signature | null>();
   const { t } = useTranslation();
   const userId = parseInt(getUserId() || '0');
 
@@ -115,40 +118,39 @@ const SignContract = () => {
     };
   }, [id]);
 
-  function handleSign(role : string) {
+  const handleSign = async (role: string) => {
     if (!userId) {
       console.error("Invalid user ID");
       return;
     }
 
-    switch (role) {
-      case 'manager':
-        signContractByManager(userId, contract?.id!)
-            .then(() => {
-              console.log('Manager signed the contract');
-              hasUserSigned(userId);
-            })
-            .catch((error: any) => {
-              console.error('Error signing contract as manager:', error);
-            });
-        break;
-      case 'employer':
-        console.log('Signing as employer');
-        break;
-      case 'student':
-        signContract(contract?.id!, "student")
-          .then(() => {
-            hasUserSigned(userId);
-            console.log('Student signed the contract');
-          })
-          .catch((error: any) => {
-            console.error('Error signing contract as student:', error);
-          });
-        break;
-      default:
-        console.log('Invalid role');
+    try {
+      switch (role) {
+        case 'manager':
+          await signContractByManager(userId, contract?.id!);
+          console.log('Manager signed the contract');
+          break;
+        case 'student':
+          await signContract(contract?.id!, "student");
+          console.log('Student signed the contract');
+          break;
+        default:
+          console.log('Invalid role');
+          return;
+      }
+
+      const updatedSignaturesResponse = await getSignaturesByContractId(contract?.id!, role);
+      setSignatures(updatedSignaturesResponse.data);
+
+      const userSignedSignature = updatedSignaturesResponse.data.find(sig => sig?.signatoryId === userId);
+      if (userSignedSignature) {
+        setUserSignature(userSignedSignature);
+      }
+    } catch (error) {
+      console.error(`Error signing contract as ${role}:`, error);
     }
-  }
+  };
+
 
   const hasUserSigned = (userId: number) => {
     return signatures.length > 0 && signatures.some(signature => signature?.signatoryId === userId);
@@ -281,7 +283,9 @@ const SignContract = () => {
                     <Button
                         variant="secondary"
                         onClick={() => handleSign('manager')}
-                        disabled={userType !== 'manager' || hasUserSigned(userId)}>
+                        hidden={userType !== 'manager' || hasUserSigned(userId)}
+                        disabled={hasUserSigned(userId)}
+                    >
                       {hasUserSigned(userId) && userType === 'manager' ? t('signature.signed') : t('signature.sign')}
                     </Button>
                   </div>
@@ -289,7 +293,7 @@ const SignContract = () => {
                 <ListGroupItem className="d-flex justify-content-between align-items-center">
                   {t('signature.employer')}
                   <div>
-                    <Button variant="secondary" onClick={() => handleSign('employer')} disabled={userType !== 'employer'}>
+                    <Button variant="secondary" onClick={() => handleSign('employer')} hidden={userType !== 'employer'}>
                       {t('signature.sign')}
                     </Button>
                   </div>
@@ -300,10 +304,11 @@ const SignContract = () => {
                     <Button
                         variant={hasUserSigned(userId) && userType === 'student' ? "light" : "secondary"}
                         onClick={() => handleSign('student')}
-                        disabled={userType !== 'student' || hasUserSigned(userId)}
+                        hidden={userType !== 'student'}
+                        disabled={hasUserSigned(userId)}
                         className={hasUserSigned(userId) && userType === 'student' ? "signed-button" : ""}
                     >
-                      {hasUserSigned(userId) && userType === 'student' ? t('signature.signed') : t('signature.sign')}
+                      {hasUserSigned(userId) && userType === 'student' ?  `${t('signature.signedOn')} ${signatures.find(signature => signature?.signatoryId === userId)?.signatureDate}` : t('signature.sign')}
                     </Button>
                   </div>
                 </ListGroupItem>
