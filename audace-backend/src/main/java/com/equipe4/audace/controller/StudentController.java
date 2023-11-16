@@ -112,7 +112,6 @@ public class StudentController extends GenericUserController<Student, StudentSer
         }
     }
 
-
     @GetMapping("/applications/{applicationId}/contract")
     public ResponseEntity<ContractDTO> getContractByApplication(@PathVariable Long applicationId) {
         logger.info("getContractByApplication");
@@ -121,6 +120,14 @@ public class StudentController extends GenericUserController<Student, StudentSer
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/contracts/{contractId}")
+    public ResponseEntity<ContractDTO> getContractById(@PathVariable Long contractId){
+        logger.info("getContractById");
+        return service.findContractById(contractId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 }

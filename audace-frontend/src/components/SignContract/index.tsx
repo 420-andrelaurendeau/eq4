@@ -42,8 +42,6 @@ const SignContract = () => {
           });
       }
       if (UserType === 'student') {
-        console.log("bababa");
-
         getContractByIdAsStudent(parseInt(id))
           .then((response) => {
             console.log("Fetched contract:", response.data);
