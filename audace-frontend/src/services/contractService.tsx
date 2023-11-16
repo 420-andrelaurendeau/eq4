@@ -36,4 +36,3 @@ export const ManagerSignContract = async (
     `${MANAGER_PREFIX}/${managerId}/sign_contract/${contractId}`,
   );
 }
-

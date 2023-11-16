@@ -142,10 +142,15 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
 
     @PostMapping("/{managerId}/sign_contract/{contractId}")
     public ResponseEntity<HttpStatus> signContract(@PathVariable Long managerId, @PathVariable Long contractId) {
-        logger.info("signContract");
-        return service.signContract(managerId, contractId)
-                .map(contractDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+        logger.info("managerSignContract");
+        try {
+            service.signContract(managerId, contractId);
+            return ResponseEntity.ok().build();
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("/studentsWithInternshipFoundStatus/{departmentId}")

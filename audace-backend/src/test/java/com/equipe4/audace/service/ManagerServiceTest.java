@@ -5,6 +5,7 @@ import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.application.StudentsByInternshipFoundStatus;
 import com.equipe4.audace.dto.contract.ContractDTO;
+import com.equipe4.audace.dto.contract.SignatureDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
@@ -27,6 +28,7 @@ import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.repository.signature.SignatureRepository;
 import com.equipe4.audace.utils.NotificationManipulator;
 import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.persistence.EntityNotFoundException;
@@ -44,8 +46,7 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -70,6 +71,8 @@ public class ManagerServiceTest {
     private ApplicationRepository applicationRepository;
     @Mock
     private NotificationManipulator notificationManipulator;
+    @Mock
+    private SignatureRepository signatureRepository;
     @InjectMocks
     private ManagerService managerService;
 
@@ -583,14 +586,15 @@ public class ManagerServiceTest {
     public void signContract_HappyPath(){
         Manager manager = createManager();
         Contract contract = createContract();
-        contract.setManagerSignature(new Signature<>(manager, LocalDate.now()));
+        Signature<Manager> signature = new Signature<>(null, manager, LocalDate.now(), contract);
 
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
         when(contractRepository.findById(anyLong())).thenReturn(Optional.of(contract));
-        when(contractRepository.save(any(Contract.class))).thenReturn(contract);
+        when(signatureRepository.save(any(Signature.class))).thenReturn(signature);
 
-        ContractDTO contractDTO = managerService.signContract(1L, 1L).get();
-        assertEquals(contractDTO.fromDTO().getManagerSignature(), contract.getManagerSignature());
+        Optional<SignatureDTO> result = managerService.signContract(manager.getId(), contract.getId());
+
+        assertTrue(result.isPresent());
     }
 
     @Test

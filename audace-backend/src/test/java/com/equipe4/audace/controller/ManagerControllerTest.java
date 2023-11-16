@@ -6,6 +6,7 @@ import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.application.StudentsByInternshipFoundStatus;
 import com.equipe4.audace.dto.contract.ContractDTO;
+import com.equipe4.audace.dto.contract.SignatureDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
@@ -423,16 +424,15 @@ public class ManagerControllerTest {
     @WithMockUser(username = "manager", authorities = {"Manager"})
     public void givenManagerContractId_whenSignContract_thenReturnIsOk() throws Exception {
         // given - precondition or setup
-        ApplicationDTO applicationDTO = createApplicationDTO(createOfferDTO(1L));
-        ContractDTO contractDTO = createContractDTO(applicationDTO);
+        SignatureDTO signatureDTO = new SignatureDTO(1L, LocalDate.now());
 
-        when(managerService.signContract(anyLong(), anyLong())).thenReturn(Optional.of(contractDTO));
+        when(managerService.signContract(anyLong(), anyLong())).thenReturn(Optional.of(signatureDTO));
 
         // when - action or behaviour that we are going test
         ResultActions response = mockMvc.perform(post("/managers/1/sign_contract/1")
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(Optional.of(contractDTO))));
+                .content(objectMapper.writeValueAsString(Optional.of(signatureDTO))));
 
         // then - verify the result or output using assert statements
         response.andDo(print()).
@@ -444,19 +444,19 @@ public class ManagerControllerTest {
     public void givenInvalidContractId_whenSignContract_thenReturnIsBadRequest() throws Exception {
         // given - precondition or setup
         ApplicationDTO applicationDTO = createApplicationDTO(createOfferDTO(1L));
-        ContractDTO contractDTO = createContractDTO(applicationDTO);
+        SignatureDTO signatureDTO = new SignatureDTO(1L, LocalDate.now());
 
-        when(managerService.signContract(anyLong(), anyLong())).thenReturn(Optional.empty());
+        when(managerService.signContract(anyLong(), anyLong())).thenThrow(new NoSuchElementException("Contract not found"));
 
         // when - action or behaviour that we are going test
         ResultActions response = mockMvc.perform(post("/managers/-1/sign_contract/-1")
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(Optional.of(contractDTO))));
+                .content(objectMapper.writeValueAsString(Optional.of(signatureDTO))));
 
         // then - verify the result or output using assert statements
         response.andDo(print()).
-                andExpect(status().isBadRequest());
+                andExpect(status().isNotFound());
     }
 
     private DepartmentDTO createDepartmentDTO(){
