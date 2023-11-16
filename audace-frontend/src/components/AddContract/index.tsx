@@ -45,7 +45,7 @@ const AddContract = () => {
     if (!isContractCreated) return;
     if (application === undefined) return;
 
-    getContractByApplicationId(application.id!)
+    getContractByApplicationId(application.id!, "manager")
       .then((res) => {
         if (res.data !== null) {
           navigate('/manager');
@@ -78,8 +78,6 @@ const AddContract = () => {
       },
       application: application!
     };
-
-
 
     try {
       await createContract(formData);

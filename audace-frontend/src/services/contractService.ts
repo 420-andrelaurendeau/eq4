@@ -1,7 +1,7 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { MANAGER_PREFIX, STUDENT_PREFIX } from "../constants/apiPrefixes";
 import http from "../constants/http";
-import { Contract } from "../model/contract";
+import {Contract, Signature} from "../model/contract";
 
 export const createContract = async (
   contract: Contract
@@ -17,10 +17,7 @@ export const getContractByIdAsStudent = async (id: number): Promise<AxiosRespons
   return http.get(`${STUDENT_PREFIX}/contracts/${id}`);
 };
 
-export const getContractByApplicationId = async (
-  applicationId: number,
-  user: string
-): Promise<AxiosResponse<Contract>> => {
+export const getContractByApplicationId = async (applicationId: number, user: string): Promise<AxiosResponse<Contract>> => {
   const prefix = user === "student" ? STUDENT_PREFIX : MANAGER_PREFIX;
   return http.get<Contract>(
     `${prefix}/applications/${applicationId}/contract`
@@ -53,12 +50,21 @@ export const signContractByStudent = async (contractId: number): Promise<AxiosRe
 
 };
 
-export const ManagerSignContract = async (
-  managerId: number,
-  contractId: number
-): Promise<AxiosResponse<Contract>> => {
+export const signContractByManager = async (managerId: number, contractId: number): Promise<AxiosResponse<Contract>> => {
   return http.post<Contract>(
     `${MANAGER_PREFIX}/${managerId}/sign_contract/${contractId}`,
+  );
+}
+
+export const getSignaturesByContractIdAsManager = async (contractId: number): Promise<AxiosResponse<Signature<any>[]>> => {
+  return http.get<Signature<any>[]>(
+    `${MANAGER_PREFIX}/contracts/${contractId}/signatures`,
+  );
+}
+
+export const getSignaturesByContractIdAsStudent = async (contractId: number): Promise<AxiosResponse<Signature<any>[]>> => {
+  return http.get<Signature<any>[]>(
+    `${STUDENT_PREFIX}/contracts/${contractId}/signatures`,
   );
 }
 

@@ -6,7 +6,10 @@ import CvModal from "../../CVsList/CvRow/CvModal";
 import { UserType } from "../../../model/user";
 import EmployerButtons from "./ApplicationButtons/EmployerButtons";
 import { Contract } from "../../../model/contract";
-import { getContractByApplicationIdForStudent, signContractByStudent } from "../../../services/contractService";
+import {
+  getContractByApplicationId,
+  signContractByStudent
+} from "../../../services/contractService";
 import { getUserId } from "../../../services/authService";
 import {useNavigate} from "react-router-dom";
 
@@ -28,7 +31,7 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
 
       const fetchContract = async () => {
         try {
-          const res = await getContractByApplicationIdForStudent(application.id!);
+          const res = await getContractByApplicationId(application.id!, "student");
           setContract(res.data);
           console.log("Contract : " + res.data.id, res.data.supervisor.firstName);
         } catch (err : any) {

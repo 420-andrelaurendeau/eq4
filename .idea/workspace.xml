@@ -6,9 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/controller/StudentControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/controller/StudentControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/StudentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/StudentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/AddContract/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/AddContract/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/ApplicationsList/ApplicationRow/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/ApplicationsList/ApplicationRow/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/SignContract/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/SignContract/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/services/contractService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/services/contractService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -265,7 +267,8 @@
       <workItem from="1700098763825" duration="6159000" />
       <workItem from="1700108694579" duration="8077000" />
       <workItem from="1700117653356" duration="518000" />
-      <workItem from="1700118183598" duration="1894000" />
+      <workItem from="1700118183598" duration="2981000" />
+      <workItem from="1700123286011" duration="4259000" />
     </task>
     <servers />
   </component>

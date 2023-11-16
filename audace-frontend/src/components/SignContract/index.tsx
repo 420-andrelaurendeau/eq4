@@ -1,68 +1,28 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, ListGroup, ListGroupItem, Container, Row, Col, Button, Placeholder } from 'react-bootstrap';
-import { Contract } from '../../model/contract';
+import { Contract, Signature } from '../../model/contract';
 import {
   getContractByIdAsManager,
   getContractByIdAsStudent,
-  signContractByStudent
+  getSignaturesByContractIdAsManager,
+  getSignaturesByContractIdAsStudent,
+  signContractByStudent,
+  signContractByManager
 } from '../../services/contractService';
 import { getUserId } from '../../services/authService';
 import { getUserById } from '../../services/userService';
-import { ManagerSignContract } from '../../services/contractService';
 import { useTranslation } from 'react-i18next';
 
 const SignContract = () => {
   const { id } = useParams();
   const [contract, setContract] = useState<Contract | null>(null);
-  const [UserType, setUserType] = useState<string | null>(null);
+  const [userType, setUserType] = useState<string | null>(null);
+  const [signatures, setSignatures] = useState<Signature<any>[]>([]);
   const { t } = useTranslation();
+  const userId = parseInt(getUserId() || '0');
 
-  useEffect(() => {
-
-    (async () => {
-      try {
-        const userId = parseInt(getUserId() || '0');
-        if (!userId) {
-          console.error("Invalid user ID");
-          return;
-        }
-
-        const response = await getUserById(userId);
-        setUserType(response.data.type || null);
-      } catch (error) {
-        console.error("Error fetching user:", error);
-      }
-    })();
-
-    if (id) {
-      if (UserType === 'manager') {
-        getContractByIdAsManager(parseInt(id))
-          .then((response) => {
-            setContract(response.data);
-          })
-          .catch((error) => {
-            console.error("Error fetching contract as manager:", error);
-          });
-      }
-      if (UserType === 'student') {
-        getContractByIdAsStudent(parseInt(id))
-          .then((response) => {
-            console.log("Fetched contract:", response.data);
-            setContract(response.data);
-          })
-          .catch((error) => {
-            console.error("Error fetching contract as student:", error);
-          });
-      }
-    }
-
-  }, [UserType, id]);
-
-
-  function handleSign(role : string) {
-    const userId = parseInt(getUserId() || '0');
-
+  const fetchContract = async (role: string, contractId: number) => {
     if (!userId) {
       console.error("Invalid user ID");
       return;
@@ -70,7 +30,102 @@ const SignContract = () => {
 
     switch (role) {
       case 'manager':
-        ManagerSignContract(userId, contract?.id!)
+        getContractByIdAsManager(contractId)
+            .then((response) => {
+              setContract(response.data);
+            })
+            .catch((error) => {
+              console.error("Error fetching contract as manager:", error);
+            });
+        break;
+      case 'employer':
+        console.log('Fetching contract as employer');
+        break;
+      case 'student':
+        getContractByIdAsStudent(contractId)
+            .then((response) => {
+              setContract(response.data);
+            })
+            .catch((error) => {
+              console.error("Error fetching contract as student:", error);
+            });
+        break;
+    }
+  };
+
+  const fetchSignatures = async (role: string, contractId: number) => {
+    if (!userId) {
+      console.error("Invalid user ID");
+      return;
+    }
+
+    switch (role) {
+      case 'manager':
+        getSignaturesByContractIdAsManager(contractId)
+            .then((response) => {
+              setSignatures(response.data);
+            })
+            .catch((error) => {
+              console.error("Error fetching signatures as manager:", error);
+            });
+        break;
+      case 'employer':
+        console.log('Fetching signatures as employer');
+        break;
+      case 'student':
+        getSignaturesByContractIdAsStudent(contractId)
+            .then((response) => {
+              setSignatures(response.data);
+            })
+            .catch((error) => {
+              console.error("Error fetching signatures as student:", error);
+            });
+        break;
+    }
+  };
+
+  useEffect(() => {
+    let mounted = true;
+
+    const fetchUserAndContract = async () => {
+      try {
+        if (!userId) {
+          console.error("Invalid user ID");
+          return;
+        }
+
+        const response = await getUserById(userId);
+        if (mounted) {
+          const userType = response.data.type || null;
+          setUserType(userType);
+
+          if (id && userType) {
+            const contractId = parseInt(id);
+            await fetchContract(userType, contractId);
+            await fetchSignatures(userType, contractId);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+
+    fetchUserAndContract();
+
+    return () => {
+      mounted = false;
+    };
+  }, [id]);
+
+  function handleSign(role : string) {
+    if (!userId) {
+      console.error("Invalid user ID");
+      return;
+    }
+
+    switch (role) {
+      case 'manager':
+        signContractByManager(userId, contract?.id!)
             .then(() => {
               console.log('Manager signed the contract');
             })
@@ -220,7 +275,7 @@ const SignContract = () => {
                 <ListGroupItem className="d-flex justify-content-between align-items-center">
                   {t('signature.manager')}
                   <div>
-                    <Button variant="secondary" onClick={() => handleSign('manager')} disabled={UserType !== 'manager'}>
+                    <Button variant="secondary" onClick={() => handleSign('manager')} disabled={userType !== 'manager'}>
                       {t('signature.sign')}
                     </Button>
                   </div>
@@ -228,7 +283,7 @@ const SignContract = () => {
                 <ListGroupItem className="d-flex justify-content-between align-items-center">
                   {t('signature.employer')}
                   <div>
-                    <Button variant="secondary" onClick={() => handleSign('employer')} disabled={UserType !== 'employer'}>
+                    <Button variant="secondary" onClick={() => handleSign('employer')} disabled={userType !== 'employer'}>
                       {t('signature.sign')}
                     </Button>
                   </div>
@@ -236,7 +291,7 @@ const SignContract = () => {
                 <ListGroupItem className="d-flex justify-content-between align-items-center">
                   {t('signature.student')}
                   <div>
-                    <Button variant="secondary" onClick={() => handleSign('student')} disabled={UserType !== 'student'}>
+                    <Button variant="secondary" onClick={() => handleSign('student')} disabled={userType !== 'student'}>
                       {t('signature.sign')}
                     </Button>
                   </div>
