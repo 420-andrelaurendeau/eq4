@@ -208,6 +208,12 @@ public class ManagerService extends GenericUserService<Manager> {
 
         return Optional.of(signature.toDTO());
     }
+
+    public List<SignatureDTO> getSignaturesByContractId(Long contractId) {
+        Contract contract = findContractById(contractId).orElseThrow(() -> new NoSuchElementException("Contract not found")).fromDTO();
+        List<Signature<?>> signature = signatureRepository.findAllByContract(contract);
+        return signature.stream().map(Signature::toDTO).toList();
+    }
     
     public StudentsByInternshipFoundStatus getStudentsByInternshipFoundStatus(Long departmentId) {
         departmentRepository.findById(departmentId)

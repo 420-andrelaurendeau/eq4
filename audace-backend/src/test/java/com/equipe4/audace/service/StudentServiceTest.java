@@ -361,6 +361,28 @@ public class StudentServiceTest {
     }
 
     @Test
+    void getSignaturesByContractId_HappyPath() {
+        Contract contract = createContract();
+        Signature<Student> signature = new Signature<>(1L, createStudent(), LocalDate.now(), contract);
+
+        when(contractRepository.findById(contract.getId())).thenReturn(Optional.of(contract));
+        when(signatureRepository.findAllByContract(contract)).thenReturn(List.of(signature));
+
+        List<SignatureDTO> result = studentService.getSignaturesByContractId(contract.getId());
+
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result.get(0).getId()).isEqualTo(signature.getId());
+        assertThat(result.get(0).getSignatureDate()).isEqualTo(signature.getSignatureDate());
+    }
+
+    @Test
+    void getSignaturesByContractId_ContractNotFound() {
+        assertThatThrownBy(() -> studentService.getSignaturesByContractId(1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Contract not found");
+    }
+
+    @Test
     void getContractByApplicationId_Success() {
         Long applicationId = 1L;
         Application application = mock(Application.class);

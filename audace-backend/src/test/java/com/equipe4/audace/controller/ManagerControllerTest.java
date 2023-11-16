@@ -459,6 +459,22 @@ public class ManagerControllerTest {
                 andExpect(status().isNotFound());
     }
 
+    @Test
+    @WithMockUser(username = "manager", authorities = {"Manager"})
+    public void givenContractId_whenGetSignatureByContractId_thenReturnSignatureList() throws Exception{
+        // given - precondition or setup
+        SignatureDTO signatureDTO = createSignatureDTO();
+        List<SignatureDTO> signatureDTOList = List.of(signatureDTO);
+
+        given(managerService.getSignaturesByContractId(anyLong())).willReturn(signatureDTOList);
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/managers/contracts/{contractId}/signatures", 1L));
+
+        // then - verify the output
+        response.andExpect(status().isOk());
+    }
+
     private DepartmentDTO createDepartmentDTO(){
         return new DepartmentDTO(1L, "GLO", "Génie logiciel");
     }
@@ -488,6 +504,10 @@ public class ManagerControllerTest {
 
     private ContractDTO createContractDTO(ApplicationDTO applicationDTO){
         return new ContractDTO(1L, "08:00", "17:00", 40, 18.35, createSupervisor(), applicationDTO);
+    }
+
+    private SignatureDTO createSignatureDTO(){
+        return new SignatureDTO(1L, LocalDate.now());
     }
 
     private Supervisor createSupervisor(){

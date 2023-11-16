@@ -29,9 +29,6 @@ import com.equipe4.audace.repository.signature.SignatureRepository;
 import com.equipe4.audace.utils.NotificationManipulator;
 import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -187,6 +184,12 @@ public class StudentService extends GenericUserService<Student> {
         signatureRepository.save(signature);
 
         return Optional.of(signature.toDTO());
+    }
+
+    public List<SignatureDTO> getSignaturesByContractId(Long contractId) {
+        Contract contract = findContractById(contractId).orElseThrow(() -> new NoSuchElementException("Contract not found")).fromDTO();
+        List<Signature<?>> signature = signatureRepository.findAllByContract(contract);
+        return signature.stream().map(Signature::toDTO).toList();
     }
 
     public Optional<ContractDTO> getContractByApplicationId(Long applicationId) {

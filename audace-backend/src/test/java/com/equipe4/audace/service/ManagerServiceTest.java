@@ -1,7 +1,6 @@
 package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.ManagerDTO;
-import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.application.StudentsByInternshipFoundStatus;
 import com.equipe4.audace.dto.contract.ContractDTO;
@@ -628,6 +627,28 @@ public class ManagerServiceTest {
         assertThatThrownBy(() -> managerService.signContract(1L, 1L))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("The manager isn't in the right department");
+    }
+
+    @Test
+    void getSignaturesByContractId_HappyPath() {
+        Contract contract = createContract();
+        Signature<Student> signature = new Signature<>(1L, createStudent(), LocalDate.now(), contract);
+
+        when(contractRepository.findById(contract.getId())).thenReturn(Optional.of(contract));
+        when(signatureRepository.findAllByContract(contract)).thenReturn(List.of(signature));
+
+        List<SignatureDTO> result = managerService.getSignaturesByContractId(contract.getId());
+
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result.get(0).getId()).isEqualTo(signature.getId());
+        assertThat(result.get(0).getSignatureDate()).isEqualTo(signature.getSignatureDate());
+    }
+
+    @Test
+    void getSignaturesByContractId_ContractNotFound() {
+        assertThatThrownBy(() -> managerService.getSignaturesByContractId(1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Contract not found");
     }
 
     private Department createDepartment(){

@@ -13,7 +13,6 @@ import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.application.Application;
-import com.equipe4.audace.model.contract.Signature;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
@@ -293,6 +292,22 @@ public class StudentControllerTest {
                 .andExpect(jsonPath("$.salary", is(contractDTO.getSalary())))
                 .andExpect(jsonPath("$.supervisor.email", is(contractDTO.getSupervisor().getEmail())))
                 .andExpect(jsonPath("$.application.id", is(contractDTO.getApplication().getId().intValue())));
+    }
+
+    @Test
+    @WithMockUser(username = "student", authorities = {"STUDENT"})
+    public void givenContractId_whenGetSignatureByContractId_thenReturnSignatureList() throws Exception{
+        // given - precondition or setup
+        SignatureDTO signatureDTO = createSignatureDTO();
+        List<SignatureDTO> signatureDTOList = List.of(signatureDTO);
+
+        given(studentService.getSignaturesByContractId(anyLong())).willReturn(signatureDTOList);
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/students/contracts/{contractId}/signatures", 1L));
+
+        // then - verify the output
+        response.andExpect(status().isOk());
     }
 
     private DepartmentDTO createDepartmentDTO(){
