@@ -1,5 +1,5 @@
+import React, { useEffect, useState } from "react";
 import { Alert, Container } from "react-bootstrap";
-import { useEffect, useState } from "react";
 import {
   getAcceptedApplicationsByDepartment,
   getDepartmentByManager,
@@ -10,6 +10,7 @@ import { getUserId } from "../../../services/authService";
 import { useTranslation } from "react-i18next";
 import ManagerStudentByInternshipStatusList from "../../../components/ManagerStudentByInternshipStatusList";
 import { getContractsByDepartmentId } from "../../../services/contractService";
+import ManagerSignContract from "../../../components/ManagerSignContract";
 
 interface Props {
   isContractCreated?: boolean;
@@ -17,6 +18,7 @@ interface Props {
 
 const ManagerView = ({ isContractCreated }: Props) => {
   const [applications, setApplications] = useState<Application[]>([]);
+  const [departmentId, setDepartmentId] = useState<number | null>(null);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -26,26 +28,29 @@ const ManagerView = ({ isContractCreated }: Props) => {
 
     const fetchData = async () => {
       try {
-        const department = await getDepartmentByManager(parseInt(managerId));
+        const departmentRes = await getDepartmentByManager(parseInt(managerId));
+        if (departmentRes.data && departmentRes.data.id) {
+          setDepartmentId(departmentRes.data.id);
 
-        const applicationsRes = await getAcceptedApplicationsByDepartment(
-          parseInt(managerId),
-          department.data.id!
-        );
+          const applicationsRes = await getAcceptedApplicationsByDepartment(
+            parseInt(managerId),
+            departmentRes.data.id
+          );
+          const contractRes = await getContractsByDepartmentId(
+            departmentRes.data.id
+          );
 
-        const contractRes = await getContractsByDepartmentId(
-          department.data.id!
-        );
+          const applications = applicationsRes.data;
+          const contracts = contractRes.data;
 
-        const applications = applicationsRes.data;
-        const contracts = contractRes.data;
-
-        const filteredApplications = applications.filter((application) => {
-          return !contracts.some((contract) => {
-            return contract.application.id === application.id;
+          const filteredApplications = applications.filter((application) => {
+            return !contracts.some((contract) => {
+              return contract.application.id === application.id;
+            });
           });
-        });
-        setApplications(filteredApplications);
+
+          setApplications(filteredApplications);
+        }
       } catch (err: any) {
         console.log(
           "Accepted applications fetching error: " + err.response.data
@@ -64,6 +69,7 @@ const ManagerView = ({ isContractCreated }: Props) => {
       <h1>{t("manager.title")}</h1>
       <ManagerApplicationsList applications={applications} />
       <ManagerStudentByInternshipStatusList />
+      {departmentId && <ManagerSignContract departmentId={departmentId} />}
     </Container>
   );
 };

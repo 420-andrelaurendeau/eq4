@@ -382,7 +382,7 @@ public class ManagerControllerTest {
 
     @Test
     @WithMockUser(username = "manager", authorities = {"Manager"})
-    void getStudentsWithInternshipStatus_happyPath() throws Exception {
+    public void getStudentsWithInternshipStatus_happyPath() throws Exception {
         DepartmentDTO departmentDTO = createDepartmentDTO();
         StudentDTO student = createStudentDTO(departmentDTO);
 
@@ -411,7 +411,7 @@ public class ManagerControllerTest {
 
     @Test
     @WithMockUser(username = "manager", authorities = {"Manager"})
-    void getStudentsWithInternshipStatus_invalidDepartmentId() throws Exception {
+    public void getStudentsWithInternshipStatus_invalidDepartmentId() throws Exception {
         when(managerService.getStudentsByInternshipFoundStatus(-1L))
                 .thenThrow(new NoSuchElementException("Department not found"));
 
@@ -419,7 +419,45 @@ public class ManagerControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    @WithMockUser(username = "manager", authorities = {"Manager"})
+    public void givenManagerContractId_whenSignContract_thenReturnIsOk() throws Exception {
+        // given - precondition or setup
+        ApplicationDTO applicationDTO = createApplicationDTO(createOfferDTO(1L));
+        ContractDTO contractDTO = createContractDTO(applicationDTO);
 
+        when(managerService.signContract(anyLong(), anyLong())).thenReturn(Optional.of(contractDTO));
+
+        // when - action or behaviour that we are going test
+        ResultActions response = mockMvc.perform(post("/managers/1/sign_contract/1")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(Optional.of(contractDTO))));
+
+        // then - verify the result or output using assert statements
+        response.andDo(print()).
+                andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = "manager", authorities = {"Manager"})
+    public void givenInvalidContractId_whenSignContract_thenReturnIsBadRequest() throws Exception {
+        // given - precondition or setup
+        ApplicationDTO applicationDTO = createApplicationDTO(createOfferDTO(1L));
+        ContractDTO contractDTO = createContractDTO(applicationDTO);
+
+        when(managerService.signContract(anyLong(), anyLong())).thenReturn(Optional.empty());
+
+        // when - action or behaviour that we are going test
+        ResultActions response = mockMvc.perform(post("/managers/-1/sign_contract/-1")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(Optional.of(contractDTO))));
+
+        // then - verify the result or output using assert statements
+        response.andDo(print()).
+                andExpect(status().isBadRequest());
+    }
 
     private DepartmentDTO createDepartmentDTO(){
         return new DepartmentDTO(1L, "GLO", "Génie logiciel");

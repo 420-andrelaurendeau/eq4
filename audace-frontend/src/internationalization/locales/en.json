@@ -232,6 +232,16 @@
       "studentNotFound": "Student wasn't found"
     }
   },
+  "contractsList": {
+    "singleTitle": "Contract",
+    "title": "Contracts",
+    "studentName": "Student",
+    "employerName": "Employer",
+    "offerTitle": "Offer Title",
+    "Dates": "Start Date and End Date",
+    "actions": "Contract Information",
+    "viewDetails": "View Details"
+  },
   "logout": "Log out",
   "pageNotFound": "Error 404: Page Not Found",
   "sessionSelector": {
@@ -270,10 +280,19 @@
       "address": "Address"
     },
     "student": {
+      "name": "Name",
       "title": "Student",
       "email": "Email",
       "phone": "Phone",
       "address": "Address"
+    },
+    "supervisor": {
+      "title": "Supervisor",
+      "position": "Position",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "extension": "Ext."
     }
   },
   "notifications": {
@@ -319,5 +338,13 @@
         "CREATED2" : " has a new application."
       }
     }
+  },
+  "signature": {
+    "manager": "Manager's Signature",
+    "student": "Student's Signature",
+    "employer": "Employer's Signature",
+    "signedOn": "Signed on",
+    "notSigned": "Not signed",
+    "sign": "Sign"
   }
 }

@@ -232,6 +232,15 @@
       "studentNotFound": "Étudiant introuvable"
     }
   },
+  "contractsList": {
+    "title": "Contrats",
+    "studentName": "Étudiant",
+    "employerName": "Employeur",
+    "offerTitle": "Titre de l'offre",
+    "Dates": "Date de début et de fin",
+    "actions": "Informations",
+    "viewDetails": "Voir les détails"
+  },
   "logout": "Déconnexion",
   "pageNotFound": "Erreur 404 : Page non trouvée",
   "sessionSelector": {
@@ -270,9 +279,19 @@
       "address": "Adresse"
     },
     "student": {
+      "name": "Nom",
       "title": "Étudiant",
       "email": "Courriel",
       "phone": "Téléphone",
+      "address": "Adresse"
+    },
+    "supervisor": {
+      "name": "Nom",
+      "position": "Poste",
+      "title": "Superviseur",
+      "email": "Courriel",
+      "phone": "Téléphone",
+      "extension": "Ext.",
       "address": "Adresse"
     }
   },
@@ -317,5 +336,13 @@
         "CREATED2": " a de nouvelles applications."
       }
     }
+  },
+  "signature": {
+    "manager": "Signature du gestionnaire",
+    "student": "Signature de l'étudiant",
+    "employer": "Signature de l'employeur",
+    "signedOn": "Signé le",
+    "notSigned": "Pas signé",
+    "sign": "Signez"
   }
 }

@@ -135,9 +135,17 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
             return ResponseEntity.ok(
                     service.getApplicationById(applicationId).orElseThrow()
             );
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PostMapping("/{managerId}/sign_contract/{contractId}")
+    public ResponseEntity<HttpStatus> signContract(@PathVariable Long managerId, @PathVariable Long contractId) {
+        logger.info("signContract");
+        return service.signContract(managerId, contractId)
+                .map(contractDTO -> new ResponseEntity<HttpStatus>(HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @GetMapping("/studentsWithInternshipFoundStatus/{departmentId}")

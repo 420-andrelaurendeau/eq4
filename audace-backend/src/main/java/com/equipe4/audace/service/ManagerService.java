@@ -33,6 +33,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.NoSuchElementException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -192,6 +193,18 @@ public class ManagerService extends GenericUserService<Manager> {
     }
 
     @Transactional
+    public Optional<ContractDTO> signContract(Long managerId, Long contractId) {
+        Contract contract = contractRepository.findById(contractId).orElseThrow(() -> new NoSuchElementException("Contract not found"));
+        Manager manager = managerRepository.findById(managerId).orElseThrow(() -> new NoSuchElementException("Manager not found"));
+        Department contractDepartment = contract.getApplication().getOffer().getDepartment();
+
+        if (!manager.getDepartment().equals(contractDepartment)) throw new IllegalArgumentException("The manager isn't in the right department");
+
+        contract.setManagerSignature(new Signature<>(manager, LocalDate.now()));
+
+        return Optional.of(contractRepository.save(contract).toDTO());
+    }
+    
     public StudentsByInternshipFoundStatus getStudentsByInternshipFoundStatus(Long departmentId) {
         departmentRepository.findById(departmentId)
                 .orElseThrow(() -> new NoSuchElementException("Department not found"));

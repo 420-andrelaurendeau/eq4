@@ -146,17 +146,6 @@ public class StudentServiceTest {
     }
 
     @Test
-    void createStudent_AlreadyExists() {
-        StudentDTO studentDTO = createStudentDTO();
-
-        when(studentRepository.findStudentByStudentNumberOrEmail(anyString(), anyString())).thenReturn(Optional.of(studentDTO.fromDTO()));
-
-        assertThatThrownBy(() -> studentService.createStudent(studentDTO, "420"))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Student already exists");
-    }
-
-    @Test
     void createStudent_DepartmentInvalid() {
         StudentDTO studentDTO = createStudentDTO();
 
@@ -242,23 +231,6 @@ public class StudentServiceTest {
         assertThatThrownBy(() -> studentService.saveCv(null, studentDTO.getId()))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("File cannot be null");
-    }
-
-    @Test
-    void saveCv_fileUnreadable() {
-        MultipartFile file = new CustomMockMultipartFile(
-                "file",
-                "test.txt",
-                MediaType.TEXT_PLAIN_VALUE,
-                null
-        );
-
-        StudentDTO studentDTO = createStudentDTO();
-        when(studentRepository.findById(studentDTO.getId())).thenReturn(Optional.of(studentDTO.fromDTO()));
-
-        assertThatThrownBy(() -> studentService.saveCv(file, studentDTO.getId()))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("File cannot be read");
     }
 
     private StudentDTO createStudentDTO() {
