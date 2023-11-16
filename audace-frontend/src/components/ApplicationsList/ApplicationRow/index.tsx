@@ -6,12 +6,8 @@ import CvModal from "../../CVsList/CvRow/CvModal";
 import { UserType } from "../../../model/user";
 import EmployerButtons from "./ApplicationButtons/EmployerButtons";
 import { Contract } from "../../../model/contract";
-import {
-  getContractByApplicationId,
-  signContractByStudent
-} from "../../../services/contractService";
-import { getUserId } from "../../../services/authService";
-import {useNavigate} from "react-router-dom";
+import { getContractByApplicationId } from "../../../services/contractService";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   application: Application;
@@ -23,7 +19,6 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
   const { t } = useTranslation();
   const [show, setShow] = useState<boolean>(false);
   const [contract, setContract] = useState<Contract | null>(null);
-  const studentId = parseInt(getUserId()!);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,7 +29,7 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
           const res = await getContractByApplicationId(application.id!, "student");
           setContract(res.data);
           console.log("Contract : " + res.data.id, res.data.supervisor.firstName);
-        } catch (err : any) {
+        } catch (err: any) {
           if (err.response?.status === 404) {
             setContract(null);
           } else {
@@ -45,23 +40,6 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
       fetchContract();
     }
   }, [userType, application.id]);
-
-  const handleApply = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-
-    if (!contract || !studentId) {
-      console.error("Contract or user ID is null");
-      return;
-    }
-
-    try {
-      const response = await signContractByStudent(contract.id!);
-      console.log("Contract signed successfully:", response.data);
-
-    } catch (err) {
-      console.error("Error signing contract:", err);
-    }
-  };
 
   const handleViewContract = (contractId: number) => {
     try {
@@ -88,31 +66,31 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
         <td>
           {
             userType === UserType.Employer && application.offer!.availablePlaces > 0 ? (
-                <div className="d-flex justify-content-center">
-                  <EmployerButtons application={application} updateApplicationsState={updateApplicationsState} />
-                </div>
+              <div className="d-flex justify-content-center">
+                <EmployerButtons application={application} updateApplicationsState={updateApplicationsState} />
+              </div>
             ) : (
-                userType === UserType.Student && contract !== null ? (
-                    <div
-                        style={{
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                    >
-                      <Button
-                          // disabled={isButtonDisabled()}
-                          onClick={() => handleViewContract(contract!.id!)}
-                          variant="outline-primary"
-                          className="text-dark"
-                      >
-                        {t("student.signContractButton")}
-                      </Button>
-                    </div>
-                ) : (
-                    t(`applicationsList.row.status.${application.applicationStatus}`)
-                )
+              userType === UserType.Student && contract !== null ? (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Button
+                    // disabled={isButtonDisabled()}
+                    onClick={() => handleViewContract(contract!.id!)}
+                    variant="outline-primary"
+                    className="text-dark"
+                  >
+                    {t("student.signContractButton")}
+                  </Button>
+                </div>
+              ) : (
+                t(`applicationsList.row.status.${application.applicationStatus}`)
+              )
             )
           }
         </td>

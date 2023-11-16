@@ -3,9 +3,12 @@ package com.equipe4.audace.controller;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.contract.ContractDTO;
+import com.equipe4.audace.dto.contract.SignatureDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
+import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.offer.Offer;
@@ -39,6 +42,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -322,6 +326,70 @@ public class EmployerControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
+    public void signContract_ContractNotFound() throws Exception {
+        Long contractId = 1L;
+
+        when(employerService.signContract(contractId))
+                .thenThrow(new NoSuchElementException("Contract not found"));
+
+        mockMvc.perform(post("/employers/sign_contract")
+                        .param("contractId", contractId.toString())
+                        .with(csrf()))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
+    void signContract_Success() throws Exception {
+        ContractDTO contractDTO = createContractDTO(createApplicationDTO(createOfferDTO(1L)));
+
+        mockMvc.perform(post("/employers/sign_contract")
+                        .param("contractId", contractDTO.getId().toString())
+                        .with(csrf()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
+    public void givenContractId_whenGetContractById_thenReturnContractObject() throws Exception{
+        // given - precondition or setup
+        ApplicationDTO applicationDTO = createApplicationDTO(createOfferDTO(1L));
+        ContractDTO contractDTO = createContractDTO(applicationDTO);
+
+        given(employerService.findContractById(anyLong())).willReturn(Optional.of(contractDTO));
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/employers/contracts/{contractId}", 1L));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.id").value(contractDTO.getId()))
+                .andExpect(jsonPath("$.startHour", is(contractDTO.getStartHour())))
+                .andExpect(jsonPath("$.endHour", is(contractDTO.getEndHour())))
+                .andExpect(jsonPath("$.totalHoursPerWeek", is(contractDTO.getTotalHoursPerWeek())))
+                .andExpect(jsonPath("$.salary", is(contractDTO.getSalary())))
+                .andExpect(jsonPath("$.supervisor.email", is(contractDTO.getSupervisor().getEmail())))
+                .andExpect(jsonPath("$.application.id", is(contractDTO.getApplication().getId().intValue())));
+    }
+
+    @Test
+    @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
+    public void givenContractId_whenGetSignatureByContractId_thenReturnSignatureList() throws Exception{
+        // given - precondition or setup
+        SignatureDTO signatureDTO = createSignatureDTO();
+        List<SignatureDTO> signatureDTOList = List.of(signatureDTO);
+
+        given(employerService.getSignaturesByContractId(anyLong())).willReturn(signatureDTOList);
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/employers/contracts/{contractId}/signatures", 1L));
+
+        // then - verify the output
+        response.andExpect(status().isOk());
+    }
 
     private DepartmentDTO createDepartmentDTO(){
         return new DepartmentDTO(1L, "GLO", "Génie logiciel");
@@ -350,5 +418,16 @@ public class EmployerControllerTest {
     }
     private Session createSession(){
         return new Session(1L, LocalDate.now(), LocalDate.now().plusMonths(6));
+    }
+
+    private ContractDTO createContractDTO(ApplicationDTO applicationDTO){
+        return new ContractDTO(1L, "08:00", "17:00", 40, 18.35, createSupervisor(), applicationDTO);
+    }
+
+    private SignatureDTO createSignatureDTO(){
+        return new SignatureDTO(1L, LocalDate.now());
+    }
+    private Supervisor createSupervisor(){
+        return new Supervisor("super", "visor", "supervisor@email.com", "supervisor", "1234567890", "-123");
     }
 }

@@ -3,12 +3,8 @@ import { useParams } from 'react-router-dom';
 import { Card, ListGroup, ListGroupItem, Container, Row, Col, Button, Placeholder } from 'react-bootstrap';
 import { Contract, Signature } from '../../model/contract';
 import {
-  getContractByIdAsManager,
-  getContractByIdAsStudent,
-  getSignaturesByContractIdAsManager,
-  getSignaturesByContractIdAsStudent,
-  signContractByStudent,
-  signContractByManager
+  signContractByManager,
+  getContractById, signContract, getSignaturesByContractId
 } from '../../services/contractService';
 import { getUserId } from '../../services/authService';
 import { getUserById } from '../../services/userService';
@@ -30,7 +26,7 @@ const SignContract = () => {
 
     switch (role) {
       case 'manager':
-        getContractByIdAsManager(contractId)
+        getContractById(contractId, "manager")
             .then((response) => {
               setContract(response.data);
             })
@@ -42,7 +38,7 @@ const SignContract = () => {
         console.log('Fetching contract as employer');
         break;
       case 'student':
-        getContractByIdAsStudent(contractId)
+        getContractById(contractId, "student")
             .then((response) => {
               setContract(response.data);
             })
@@ -61,7 +57,7 @@ const SignContract = () => {
 
     switch (role) {
       case 'manager':
-        getSignaturesByContractIdAsManager(contractId)
+        getSignaturesByContractId(contractId, "manager")
             .then((response) => {
               setSignatures(response.data);
             })
@@ -73,7 +69,7 @@ const SignContract = () => {
         console.log('Fetching signatures as employer');
         break;
       case 'student':
-        getSignaturesByContractIdAsStudent(contractId)
+        getSignaturesByContractId(contractId, "student")
             .then((response) => {
               setSignatures(response.data);
             })
@@ -137,13 +133,13 @@ const SignContract = () => {
         console.log('Signing as employer');
         break;
       case 'student':
-        signContractByStudent(contract?.id!)
-            .then(() => {
-              console.log('Student signed the contract');
-            })
-            .catch((error: any) => {
-              console.error('Error signing contract as student:', error);
-            });
+        signContract(contract?.id!, "student")
+          .then(() => {
+            console.log('Student signed the contract');
+          })
+          .catch((error: any) => {
+            console.error('Error signing contract as student:', error);
+          });
         break;
       default:
         console.log('Invalid role');
