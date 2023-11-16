@@ -2,7 +2,11 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, ListGroup, ListGroupItem, Container, Row, Col, Button, Placeholder } from 'react-bootstrap';
 import { Contract } from '../../model/contract';
-import { getContractByIdAsManager, getContractByIdAsStudent } from '../../services/contractService';
+import {
+  getContractByIdAsManager,
+  getContractByIdAsStudent,
+  signContractByStudent
+} from '../../services/contractService';
 import { getUserId } from '../../services/authService';
 import { getUserById } from '../../services/userService';
 import { ManagerSignContract } from '../../services/contractService';
@@ -55,36 +59,42 @@ const SignContract = () => {
 
   }, [UserType, id]);
 
-  function handleSign(role: string) {
+
+  function handleSign(role : string) {
+    const userId = parseInt(getUserId() || '0');
+
+    if (!userId) {
+      console.error("Invalid user ID");
+      return;
+    }
+
     switch (role) {
       case 'manager':
-        signAsManager();
+        ManagerSignContract(userId, contract?.id!)
+            .then(() => {
+              console.log('Manager signed the contract');
+            })
+            .catch((error: any) => {
+              console.error('Error signing contract as manager:', error);
+            });
         break;
       case 'employer':
         console.log('Signing as employer');
         break;
       case 'student':
-        console.log('Signing as student');
+        signContractByStudent(contract?.id!)
+            .then(() => {
+              console.log('Student signed the contract');
+            })
+            .catch((error: any) => {
+              console.error('Error signing contract as student:', error);
+            });
         break;
       default:
         console.log('Invalid role');
     }
   }
 
-  function signAsManager() {
-    const userId = parseInt(getUserId() || '0');
-    if (!userId) {
-      console.error("Invalid user ID");
-      return;
-    }
-    ManagerSignContract(userId, contract?.id!)
-      .then(() => {
-        console.log('Manager signed the contract');
-      })
-      .catch((error: any) => {
-        console.error('Error signing contract as manager:', error);
-      });
-  }
 
   return (
     <Container className="mt-4">

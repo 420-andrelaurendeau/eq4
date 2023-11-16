@@ -89,7 +89,7 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
                   <EmployerButtons application={application} updateApplicationsState={updateApplicationsState} />
                 </div>
             ) : (
-                userType === UserType.Student && contract !== undefined ? (
+                userType === UserType.Student && contract !== null ? (
                     <div
                         style={{
                           display: "flex",

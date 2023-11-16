@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/StudentServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/StudentServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/controller/StudentControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/controller/StudentControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/ApplicationsList/ApplicationRow/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/ApplicationsList/ApplicationRow/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/SignContract/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/SignContract/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +113,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.StudentServiceTest.findContractById_HappyPath">
+  <component name="RunManager" selected="Spring Boot.AudaceApplication">
     <configuration name="All in audace" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="audace" />
       <option name="PACKAGE_NAME" value="" />
@@ -120,7 +122,23 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="StudentControllerTest.givenContractId_whenGetContractById_thenReturnContractObject" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ManagerControllerTest.givenManagerContractId_whenSignContract_thenReturnIsOk" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="audace" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.equipe4.audace.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.equipe4.audace.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.controller.ManagerControllerTest" />
+      <option name="METHOD_NAME" value="givenManagerContractId_whenSignContract_thenReturnIsOk" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="StudentControllerTest.getContractByApplicationId_ContractExists" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="audace" />
       <extension name="coverage">
         <pattern>
@@ -130,54 +148,39 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.equipe4.audace.controller" />
       <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.controller.StudentControllerTest" />
-      <option name="METHOD_NAME" value="givenContractId_whenGetContractById_thenReturnContractObject" />
+      <option name="METHOD_NAME" value="getContractByApplicationId_ContractExists" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="StudentServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="StudentControllerTest.signContract_ContractNotFound" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="audace" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.equipe4.audace.service.*" />
+          <option name="PATTERN" value="com.equipe4.audace.controller.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.equipe4.audace.service" />
-      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.service.StudentServiceTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="StudentServiceTest.findContractById_HappyPath" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="audace" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.equipe4.audace.service.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.equipe4.audace.service" />
-      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.service.StudentServiceTest" />
-      <option name="METHOD_NAME" value="findContractById_HappyPath" />
+      <option name="PACKAGE_NAME" value="com.equipe4.audace.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.controller.StudentControllerTest" />
+      <option name="METHOD_NAME" value="signContract_ContractNotFound" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="StudentServiceTest.findContractById_NotFound" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="StudentControllerTest.signContract_Success" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="audace" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.equipe4.audace.service.*" />
+          <option name="PATTERN" value="com.equipe4.audace.controller.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.equipe4.audace.service" />
-      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.service.StudentServiceTest" />
-      <option name="METHOD_NAME" value="findContractById_NotFound" />
+      <option name="PACKAGE_NAME" value="com.equipe4.audace.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.controller.StudentControllerTest" />
+      <option name="METHOD_NAME" value="signContract_Success" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -192,11 +195,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.StudentServiceTest.findContractById_HappyPath" />
-        <item itemvalue="JUnit.StudentServiceTest.findContractById_NotFound" />
-        <item itemvalue="JUnit.StudentControllerTest.givenContractId_whenGetContractById_thenReturnContractObject" />
+        <item itemvalue="JUnit.ManagerControllerTest.givenManagerContractId_whenSignContract_thenReturnIsOk" />
+        <item itemvalue="JUnit.StudentControllerTest.signContract_Success" />
+        <item itemvalue="JUnit.StudentControllerTest.getContractByApplicationId_ContractExists" />
+        <item itemvalue="JUnit.StudentControllerTest.signContract_ContractNotFound" />
         <item itemvalue="JUnit.All in audace" />
-        <item itemvalue="JUnit.StudentServiceTest" />
       </list>
     </recent_temporary>
   </component>
@@ -262,7 +265,7 @@
       <workItem from="1700098763825" duration="6159000" />
       <workItem from="1700108694579" duration="8077000" />
       <workItem from="1700117653356" duration="518000" />
-      <workItem from="1700118183598" duration="568000" />
+      <workItem from="1700118183598" duration="1894000" />
     </task>
     <servers />
   </component>
