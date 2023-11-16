@@ -20,9 +20,9 @@ export interface Supervisor{
   extension: string;
 }
 
-export interface Signature<T extends User> {
+export interface Signature {
   id: number;
-  signatory: T;
+  signatoryId: number;
   signatureDate: Date;
   contract: Contract;
 }

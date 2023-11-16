@@ -51,9 +51,9 @@ export const signContract = async (contractId: number, user: string): Promise<Ax
   }
 };
 
-export const getSignaturesByContractId = async (contractId: number, user: string): Promise<AxiosResponse<Signature<any>[]>> => {
+export const getSignaturesByContractId = async (contractId: number, user: string): Promise<AxiosResponse<Signature[]>> => {
   const PREFIX = getPrefix(user);
-  return http.get<Signature<any>[]>(
+  return http.get<Signature[]>(
       `${PREFIX}/contracts/${contractId}/signatures`,
   );
 }

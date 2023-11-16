@@ -29,6 +29,7 @@ public class Signature <T extends User> {
     public SignatureDTO toDTO(){
         return new SignatureDTO(
             id,
+            signatory.getId(),
             signatureDate
         );
     }

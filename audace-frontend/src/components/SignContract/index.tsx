@@ -9,12 +9,13 @@ import {
 import { getUserId } from '../../services/authService';
 import { getUserById } from '../../services/userService';
 import { useTranslation } from 'react-i18next';
+import './index.css';
 
 const SignContract = () => {
   const { id } = useParams();
   const [contract, setContract] = useState<Contract | null>(null);
   const [userType, setUserType] = useState<string | null>(null);
-  const [signatures, setSignatures] = useState<Signature<any>[]>([]);
+  const [signatures, setSignatures] = useState<Signature[]>([]);
   const { t } = useTranslation();
   const userId = parseInt(getUserId() || '0');
 
@@ -72,6 +73,7 @@ const SignContract = () => {
         getSignaturesByContractId(contractId, "student")
             .then((response) => {
               setSignatures(response.data);
+              console.log("signatures: ", response.data);
             })
             .catch((error) => {
               console.error("Error fetching signatures as student:", error);
@@ -124,6 +126,7 @@ const SignContract = () => {
         signContractByManager(userId, contract?.id!)
             .then(() => {
               console.log('Manager signed the contract');
+              hasUserSigned(userId);
             })
             .catch((error: any) => {
               console.error('Error signing contract as manager:', error);
@@ -135,6 +138,7 @@ const SignContract = () => {
       case 'student':
         signContract(contract?.id!, "student")
           .then(() => {
+            hasUserSigned(userId);
             console.log('Student signed the contract');
           })
           .catch((error: any) => {
@@ -146,10 +150,13 @@ const SignContract = () => {
     }
   }
 
+  const hasUserSigned = (userId: number) => {
+    return signatures.length > 0 && signatures.some(signature => signature?.signatoryId === userId);
+  };
 
   return (
     <Container className="mt-4">
-      <Row className="justify-content-center">
+      <Row className="justify-content-center pb-5">
         <Col md={8}>
           <Card className="mb-3">
             <Card.Header as="h5">{t('contractsList.singleTitle')}</Card.Header>
@@ -271,8 +278,11 @@ const SignContract = () => {
                 <ListGroupItem className="d-flex justify-content-between align-items-center">
                   {t('signature.manager')}
                   <div>
-                    <Button variant="secondary" onClick={() => handleSign('manager')} disabled={userType !== 'manager'}>
-                      {t('signature.sign')}
+                    <Button
+                        variant="secondary"
+                        onClick={() => handleSign('manager')}
+                        disabled={userType !== 'manager' || hasUserSigned(userId)}>
+                      {hasUserSigned(userId) && userType === 'manager' ? t('signature.signed') : t('signature.sign')}
                     </Button>
                   </div>
                 </ListGroupItem>
@@ -287,8 +297,13 @@ const SignContract = () => {
                 <ListGroupItem className="d-flex justify-content-between align-items-center">
                   {t('signature.student')}
                   <div>
-                    <Button variant="secondary" onClick={() => handleSign('student')} disabled={userType !== 'student'}>
-                      {t('signature.sign')}
+                    <Button
+                        variant={hasUserSigned(userId) && userType === 'student' ? "light" : "secondary"}
+                        onClick={() => handleSign('student')}
+                        disabled={userType !== 'student' || hasUserSigned(userId)}
+                        className={hasUserSigned(userId) && userType === 'student' ? "signed-button" : ""}
+                    >
+                      {hasUserSigned(userId) && userType === 'student' ? t('signature.signed') : t('signature.sign')}
                     </Button>
                   </div>
                 </ListGroupItem>
