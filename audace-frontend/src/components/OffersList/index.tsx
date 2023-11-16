@@ -7,6 +7,7 @@ import { useSessionContext } from "../../contextsholders/providers/SessionContex
 import Accordion from 'react-bootstrap/Accordion';
 import Applications from "../Applications";
 import { Card } from "react-bootstrap";
+import React from "react";
 
 interface Props {
     offers: Offer[];
@@ -23,41 +24,37 @@ const OffersList = ({ offers, error, userType, updateOffersState, seeApplication
 
     return (
         <>
-        <Accordion defaultActiveKey="0">
-            <GenericTable list={offers} error={error} emptyListMessage="offersList.noOffers" title="studentOffersList.viewTitle">
-                <thead>
-                    <tr>
-                        <th>{t("offersList.title")}</th>
-                        <th>{t("offersList.internshipStartDate")}</th>
-                        <th>{t("offersList.internshipEndDate")}</th>
-                        <th>{t("offersList.availablePlaces")}</th>
-                        {chosenSession?.id === currentSession?.id && <th></th>}
-                    </tr>
-                </thead>
-                <tbody>
-                    {offers.map((offer: Offer) => {
-                        return(
-                            <>
-                                <OfferRow key={offer.id} offer={offer} userType={userType} updateOffersState={updateOffersState} seeApplications={seeApplications}/>
-                                {userType != UserType.Student &&
+            <Accordion defaultActiveKey="0">
+                <GenericTable list={offers} error={error} emptyListMessage="offersList.noOffers" title="studentOffersList.viewTitle">
+                    <thead>
+                        <tr>
+                            <th>{t("offersList.title")}</th>
+                            <th>{t("offersList.internshipStartDate")}</th>
+                            <th>{t("offersList.internshipEndDate")}</th>
+                            <th>{t("offersList.availablePlaces")}</th>
+                            {chosenSession?.id === currentSession?.id && <th></th>}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {offers.map((offer: Offer) => (
+                            <React.Fragment key={offer.id}>
+                                <OfferRow offer={offer} userType={userType} updateOffersState={updateOffersState} seeApplications={seeApplications} />
+                                {userType !== UserType.Student &&
                                     <tr>
                                         <td colSpan={12}>
                                             <Accordion.Collapse eventKey={offer.id!.toString()}>
                                                 <Card.Body>
-                                                    <Applications offer={offer} userType={userType} updateAvailablePlaces={updateAvailablePlaces}/>
+                                                    <Applications offer={offer} userType={userType} updateAvailablePlaces={updateAvailablePlaces} />
                                                 </Card.Body>
                                             </Accordion.Collapse>
                                         </td>
                                     </tr>
                                 }
-                            </>
-                            )
-                        })
-                    }
-
-                </tbody>
-            </GenericTable>
-        </Accordion>
+                            </React.Fragment>
+                        ))}
+                    </tbody>
+                </GenericTable>
+            </Accordion>
         </>
     );
 };
