@@ -2,7 +2,7 @@ package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.StudentDTO;
-import com.equipe4.audace.dto.contract.ContractDTO;
+import com.equipe4.audace.dto.contract.SignatureDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.application.Application;
@@ -25,10 +25,12 @@ import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.StudentSessionRepository;
 import com.equipe4.audace.repository.signature.SignatureRepository;
-import com.equipe4.audace.utils.ContractManipulator;
 import com.equipe4.audace.utils.NotificationManipulator;
 import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -47,15 +49,14 @@ public class StudentService extends GenericUserService<Student> {
     private final SessionManipulator sessionManipulator;
     private final ContractRepository contractRepository;
     private final NotificationManipulator notificationManipulator;
-    private final ContractManipulator contractManipulator;
     private final SignatureRepository signatureRepository;
 
     public StudentService(SaltRepository saltRepository, DepartmentRepository departmentRepository, OfferRepository offerRepository,
                           StudentRepository studentRepository, CvRepository cvRepository, ApplicationRepository applicationRepository,
                           StudentSessionRepository studentSessionRepository, SessionManipulator sessionManipulator,
                           ContractRepository contractRepository,
-                          NotificationManipulator notificationManipulator, ContractManipulator contractManipulator, SignatureRepository signatureRepository) {
-        super(saltRepository);
+                          NotificationManipulator notificationManipulator, SignatureRepository signatureRepository) {
+        super(applicationRepository, contractRepository, saltRepository);
         this.departmentRepository = departmentRepository;
         this.offerRepository = offerRepository;
         this.studentRepository = studentRepository;
@@ -65,7 +66,6 @@ public class StudentService extends GenericUserService<Student> {
         this.sessionManipulator = sessionManipulator;
         this.notificationManipulator = notificationManipulator;
         this.contractRepository = contractRepository;
-        this.contractManipulator = contractManipulator;
         this.signatureRepository = signatureRepository;
     }
 
@@ -178,21 +178,14 @@ public class StudentService extends GenericUserService<Student> {
         return sessionManipulator.removeApplicationsNotInSession(applications, sessionId).stream().map(Application::toDTO).toList();
     }
 
-    public Optional<ContractDTO> signContract(Long contractId) {
+    public Optional<SignatureDTO> signContract(Long contractId) {
         Contract contract = contractRepository.findById(contractId).orElseThrow(() -> new NoSuchElementException("Contract not found"));
-
         Student student = studentRepository.findByCv(contract.getApplication().getCv()).orElseThrow(() -> new NoSuchElementException("Student not found"));
 
-        signatureRepository.save(new Signature<Student>(null, student, LocalDate.now(), contract));
+        Signature<Student> signature = new Signature<>(null, student, LocalDate.now(), contract);
+        signatureRepository.save(signature);
 
-        return Optional.of(contractRepository.save(contract).toDTO());
+        return Optional.of(signature.toDTO());
     }
 
-//    public Optional<ContractDTO> signContractForStudent(Long userId, Long contractId){
-//        return contractManipulator.signContract(userId, contractId);
-//    }
-
-    public Optional<ContractDTO> getContractByApplicationId(Long applicationId) {
-        return contractManipulator.getContractByApplicationId(applicationId);
-    }
 }

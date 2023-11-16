@@ -4,6 +4,7 @@ import com.equipe4.audace.controller.abstracts.GenericUserController;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.contract.ContractDTO;
+import com.equipe4.audace.dto.contract.SignatureDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Student;
@@ -98,7 +99,7 @@ public class StudentController extends GenericUserController<Student, StudentSer
     }
 
     @PostMapping("/contract_signature")
-    public ResponseEntity<ContractDTO> signContract(@RequestParam("contractId") Long contractId) {
+    public ResponseEntity<SignatureDTO> signContract(@RequestParam("contractId") Long contractId) {
         logger.info("signContractForStudent with contractId: {}", contractId);
         try {
             return service.signContract(contractId)

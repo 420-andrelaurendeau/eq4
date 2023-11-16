@@ -62,7 +62,7 @@ public class ManagerService extends GenericUserService<Manager> {
             NotificationManipulator notificationManipulator,
             StudentRepository studentRepository
     ) {
-        super(saltRepository);
+        super(applicationRepository, contractRepository, saltRepository);
         this.managerRepository = managerRepository;
         this.offerRepository = offerRepository;
         this.departmentRepository = departmentRepository;
@@ -183,12 +183,6 @@ public class ManagerService extends GenericUserService<Manager> {
     public Optional<ContractDTO> findContractById(Long contractId){
         Contract contract = contractRepository.findById(contractId).orElseThrow(() -> new NoSuchElementException("Contract not found"));
         return Optional.of(contract.toDTO());
-    }
-
-    public Optional<ContractDTO> getContractByApplicationId(Long applicationId) {
-        Application application = applicationRepository.findById(applicationId).orElseThrow(() -> new NoSuchElementException("Application not found"));
-
-        return contractRepository.findByApplication(application).map(Contract::toDTO);
     }
 
     public List<ContractDTO> getContractsByDepartment(Long departmentId) {

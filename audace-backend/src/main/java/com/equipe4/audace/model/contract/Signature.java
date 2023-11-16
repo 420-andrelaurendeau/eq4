@@ -1,5 +1,6 @@
 package com.equipe4.audace.model.contract;
 
+import com.equipe4.audace.dto.contract.SignatureDTO;
 import com.equipe4.audace.model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,4 +25,11 @@ public class Signature <T extends User> {
 
     @ManyToOne
     private Contract contract;
+
+    public SignatureDTO toDTO(){
+        return new SignatureDTO(
+            id,
+            signatureDate
+        );
+    }
 }
