@@ -232,6 +232,7 @@
     }
   },
   "contractsList": {
+    "singleTitle": "Contract",
     "title": "Contracts",
     "studentName": "Student",
     "employerName": "Employer",
@@ -278,10 +279,19 @@
       "address": "Address"
     },
     "student": {
+      "name": "Name",
       "title": "Student",
       "email": "Email",
       "phone": "Phone",
       "address": "Address"
+    },
+    "supervisor": {
+      "title": "Supervisor",
+      "position": "Position",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "extension": "Ext."
     }
   },
   "notifications": {

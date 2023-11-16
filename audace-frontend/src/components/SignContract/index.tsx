@@ -7,11 +7,13 @@ import { UserType } from "../../model/user";
 import { getUserId } from '../../services/authService';
 import { getUserById } from '../../services/userService';
 import { ManagerSignContract } from '../../services/contractService';
+import { useTranslation } from 'react-i18next';
 
 const SignContract = () => {
     const { id } = useParams();
     const [contract, setContract] = useState<Contract | null>(null);
     const [UserType, setUserType] = useState<string | null>(null);
+    const { t } = useTranslation();
 
     useEffect(() => {
 
@@ -70,36 +72,38 @@ const SignContract = () => {
             <Row className="justify-content-center">
                 <Col md={8}>
                     <Card className="mb-3">
-                        <Card.Header as="h5">Contract Details</Card.Header>
+                        <Card.Header as="h5">{t('contractsList.singleTitle')}</Card.Header>
                         <Card.Body>
                             <ListGroup variant="flush">
-                                <ListGroupItem><strong>Start Hour:</strong> {startHour}</ListGroupItem>
-                                <ListGroupItem><strong>End Hour:</strong> {endHour}</ListGroupItem>
-                                <ListGroupItem><strong>Total Hours Per Week:</strong> {totalHoursPerWeek}</ListGroupItem>
-                                <ListGroupItem><strong>Salary:</strong> {salary}</ListGroupItem>
+                                <ListGroupItem><strong>{t('manager.createContract.startHour')}:</strong> {startHour}</ListGroupItem>
+                                <ListGroupItem><strong>{t('manager.createContract.endHour')}:</strong> {endHour}</ListGroupItem>
+                                <ListGroupItem><strong>{t('manager.createContract.totalHoursPerWeek')}:</strong> {totalHoursPerWeek}</ListGroupItem>
+                                <ListGroupItem><strong>{t('manager.createContract.salary')}:</strong> {salary}</ListGroupItem>
                             </ListGroup>
                         </Card.Body>
                     </Card>
 
                     <Card className="mb-3">
-                        <Card.Header as="h5">Supervisor Details</Card.Header>
+                        <Card.Header as="h5">{t('infoCard.supervisor.title')}</Card.Header>
                         <Card.Body>
                             <ListGroup variant="flush">
-                                <ListGroupItem><strong>Name:</strong> {`${supervisor.firstName} ${supervisor.lastName}`}</ListGroupItem>
-                                <ListGroupItem><strong>Position:</strong> {supervisor.position}</ListGroupItem>
-                                <ListGroupItem><strong>Email:</strong> {supervisor.email}</ListGroupItem>
-                                <ListGroupItem><strong>Phone:</strong> {supervisor.phone}</ListGroupItem>
+                                <ListGroupItem><strong>{t('infoCard.supervisor.name')}:</strong> {`${supervisor.firstName} ${supervisor.lastName}`}</ListGroupItem>
+                                <ListGroupItem><strong>{t('infoCard.supervisor.position')}:</strong> {supervisor.position}</ListGroupItem>
+                                <ListGroupItem><strong>{t('infoCard.supervisor.email')}:</strong> {supervisor.email}</ListGroupItem>
+                                <ListGroupItem><strong>{t('infoCard.supervisor.phone')}:</strong> {supervisor.phone}</ListGroupItem>
                             </ListGroup>
                         </Card.Body>
                     </Card>
 
                     {student && (
                         <Card className="mb-3">
-                            <Card.Header as="h5">Student Details</Card.Header>
+                            <Card.Header as="h5">{t('infoCard.student.title')}</Card.Header>
                             <Card.Body>
                                 <ListGroup variant="flush">
-                                    <ListGroupItem><strong>Name:</strong> {`${student.firstName} ${student.lastName}`}</ListGroupItem>
-                                    <ListGroupItem><strong>ID:</strong> {student.studentNumber}</ListGroupItem>
+                                    <ListGroupItem><strong>{t('infoCard.student.name')} :</strong> {`${student.firstName} ${student.lastName}`}</ListGroupItem>
+                                    <ListGroupItem><strong>{t('signup.studentId')}:</strong> {student.studentNumber}</ListGroupItem>
+                                    <ListGroupItem><strong>{t('infoCard.student.email')}:</strong> {student.email}</ListGroupItem>
+                                    <ListGroupItem><strong>{t('infoCard.student.phone')}:</strong> {student.phone}</ListGroupItem>
                                 </ListGroup>
                             </Card.Body>
                         </Card>
@@ -107,11 +111,11 @@ const SignContract = () => {
 
                     {employer && (
                         <Card className="mb-3">
-                            <Card.Header as="h5">Employer Details</Card.Header>
+                            <Card.Header as="h5">{t('infoCard.employer.title')}</Card.Header>
                             <Card.Body>
                                 <ListGroup variant="flush">
-                                    <ListGroupItem><strong>Name:</strong> {`${employer.firstName} ${employer.lastName}`}</ListGroupItem>
-                                    <ListGroupItem><strong>Company:</strong> {employer.organisation}</ListGroupItem>
+                                    <ListGroupItem><strong>{t('infoCard.employer.name')} :</strong> {`${employer.firstName} ${employer.lastName}`}</ListGroupItem>
+                                    <ListGroupItem><strong>{t('signup.companyNameEntry')}:</strong> {employer.organisation}</ListGroupItem>
                                 </ListGroup>
                             </Card.Body>
                         </Card>
@@ -119,17 +123,15 @@ const SignContract = () => {
 
                     {offer && (
                         <Card>
-                            <Card.Header as="h5">Offer Details</Card.Header>
+                            <Card.Header as="h5">{t('offersList.title')}</Card.Header>
                             <Card.Body>
                                 <ListGroup variant="flush">
-                                    <ListGroupItem><strong>Title:</strong> {offer.title}</ListGroupItem>
-                                    <ListGroupItem><strong>Description:</strong> {offer.description}</ListGroupItem>
-                                    <ListGroupItem><strong>Internship Start Date:</strong> {offer.internshipStartDate.toString()}</ListGroupItem>
-                                    <ListGroupItem><strong>Internship End Date:</strong> {offer.internshipEndDate.toString()}</ListGroupItem>
+                                    <ListGroupItem><strong>{t('addOffer.title')}:</strong> {offer.title}</ListGroupItem>
+                                    <ListGroupItem><strong>{t('addOffer.description')}:</strong> {offer.description}</ListGroupItem>
+                                    <ListGroupItem><strong>{t('addOffer.startDate')}:</strong> {offer.internshipStartDate.toString()}</ListGroupItem>
+                                    <ListGroupItem><strong>{t('addOffer.endDate')}:</strong> {offer.internshipEndDate.toString()}</ListGroupItem>
                                 </ListGroup>
-
                             </Card.Body>
-
                         </Card>
                     )}
 

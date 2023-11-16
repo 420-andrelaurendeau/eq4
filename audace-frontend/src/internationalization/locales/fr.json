@@ -278,9 +278,19 @@
       "address": "Adresse"
     },
     "student": {
+      "name": "Nom",
       "title": "Étudiant",
       "email": "Courriel",
       "phone": "Téléphone",
+      "address": "Adresse"
+    },
+    "supervisor": {
+      "name": "Nom",
+      "position": "Poste",
+      "title": "Superviseur",
+      "email": "Courriel",
+      "phone": "Téléphone",
+      "extension": "Ext.",
       "address": "Adresse"
     }
   },
