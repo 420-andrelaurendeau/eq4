@@ -123,7 +123,7 @@ public class EmployerController extends GenericUserController<Employer, Employer
     }
 
     @GetMapping("/contracts/{contractId}/signatures")
-    public List<SignatureDTO> getSignaturesByContractId(Long contractId) {
+    public List<SignatureDTO> getSignaturesByContractId(@PathVariable Long contractId) {
         logger.info("getSignatureByContractId");
         return service.getSignaturesByContractId(contractId);
     }

@@ -340,7 +340,7 @@ public class StudentControllerTest {
     }
 
     private SignatureDTO createSignatureDTO(){
-        return new SignatureDTO(1L, LocalDate.now());
+        return new SignatureDTO(1L, 1L, LocalDate.now());
     }
     private Supervisor createSupervisor(){
         return new Supervisor("super", "visor", "supervisor@email.com", "supervisor", "1234567890", "-123");

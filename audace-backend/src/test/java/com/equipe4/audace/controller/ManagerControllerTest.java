@@ -424,7 +424,7 @@ public class ManagerControllerTest {
     @WithMockUser(username = "manager", authorities = {"Manager"})
     public void givenManagerContractId_whenSignContract_thenReturnIsOk() throws Exception {
         // given - precondition or setup
-        SignatureDTO signatureDTO = new SignatureDTO(1L, LocalDate.now());
+        SignatureDTO signatureDTO = createSignatureDTO();
 
         when(managerService.signContract(anyLong(), anyLong())).thenReturn(Optional.of(signatureDTO));
 
@@ -444,7 +444,9 @@ public class ManagerControllerTest {
     public void givenInvalidContractId_whenSignContract_thenReturnIsBadRequest() throws Exception {
         // given - precondition or setup
         ApplicationDTO applicationDTO = createApplicationDTO(createOfferDTO(1L));
-        SignatureDTO signatureDTO = new SignatureDTO(1L, LocalDate.now());
+        SignatureDTO signatureDTO = createSignatureDTO();
+
+        when(managerService.signContract(anyLong(), anyLong())).thenReturn(Optional.of(signatureDTO));
 
         when(managerService.signContract(anyLong(), anyLong())).thenThrow(new NoSuchElementException("Contract not found"));
 
@@ -506,8 +508,8 @@ public class ManagerControllerTest {
         return new ContractDTO(1L, "08:00", "17:00", 40, 18.35, createSupervisor(), applicationDTO);
     }
 
-    private SignatureDTO createSignatureDTO(){
-        return new SignatureDTO(1L, LocalDate.now());
+    private SignatureDTO createSignatureDTO() {
+        return new SignatureDTO(1L, 1L, LocalDate.now());
     }
 
     private Supervisor createSupervisor(){
