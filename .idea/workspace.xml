@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="" />
+    <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/StudentServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/StudentServiceTest.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -108,7 +111,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.StudentControllerTest.givenContractId_whenGetContractById_thenReturnContractObject">
+  <component name="RunManager" selected="JUnit.StudentServiceTest.findContractById_HappyPath">
     <configuration name="All in audace" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="audace" />
       <option name="PACKAGE_NAME" value="" />
@@ -148,7 +151,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="StudentServiceTest.getContractByApplicationId_ApplicationNotFound" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="StudentServiceTest.findContractById_HappyPath" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="audace" />
       <extension name="coverage">
         <pattern>
@@ -158,13 +161,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.equipe4.audace.service" />
       <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.service.StudentServiceTest" />
-      <option name="METHOD_NAME" value="getContractByApplicationId_ApplicationNotFound" />
+      <option name="METHOD_NAME" value="findContractById_HappyPath" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="StudentServiceTest.getContractByApplicationId_Success" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="StudentServiceTest.findContractById_NotFound" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="audace" />
       <extension name="coverage">
         <pattern>
@@ -174,7 +177,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.equipe4.audace.service" />
       <option name="MAIN_CLASS_NAME" value="com.equipe4.audace.service.StudentServiceTest" />
-      <option name="METHOD_NAME" value="getContractByApplicationId_Success" />
+      <option name="METHOD_NAME" value="findContractById_NotFound" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -189,11 +192,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.StudentServiceTest.findContractById_HappyPath" />
+        <item itemvalue="JUnit.StudentServiceTest.findContractById_NotFound" />
         <item itemvalue="JUnit.StudentControllerTest.givenContractId_whenGetContractById_thenReturnContractObject" />
         <item itemvalue="JUnit.All in audace" />
         <item itemvalue="JUnit.StudentServiceTest" />
-        <item itemvalue="JUnit.StudentServiceTest.getContractByApplicationId_ApplicationNotFound" />
-        <item itemvalue="JUnit.StudentServiceTest.getContractByApplicationId_Success" />
       </list>
     </recent_temporary>
   </component>
@@ -259,6 +262,7 @@
       <workItem from="1700098763825" duration="6159000" />
       <workItem from="1700108694579" duration="8077000" />
       <workItem from="1700117653356" duration="518000" />
+      <workItem from="1700118183598" duration="568000" />
     </task>
     <servers />
   </component>

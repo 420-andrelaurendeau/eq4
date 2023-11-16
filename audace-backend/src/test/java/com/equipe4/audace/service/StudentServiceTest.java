@@ -394,6 +394,32 @@ public class StudentServiceTest {
                 .hasMessage("Application not found");
     }
 
+    @Test
+    void findContractById_HappyPath() {
+        Contract mockContract = createContract();
+        when(contractRepository.findById(anyLong())).thenReturn(Optional.of(mockContract));
+
+        Optional<ContractDTO> result = studentService.findContractById(1L);
+
+        assertThat(result).isPresent();
+        assertThat(result.get().getId()).isEqualTo(mockContract.getId());
+        assertThat(result.get().getStartHour()).isEqualTo(mockContract.getStartHour().toString());
+        assertThat(result.get().getEndHour()).isEqualTo(mockContract.getEndHour().toString());
+        assertThat(result.get().getTotalHoursPerWeek()).isEqualTo(mockContract.getTotalHoursPerWeek());
+        assertThat(result.get().getSalary()).isEqualTo(mockContract.getSalary());
+        assertThat(result.get().getSupervisor()).isEqualTo(mockContract.getSupervisor());
+        assertThat(result.get().getApplication()).isEqualTo(mockContract.getApplication().toDTO());
+    }
+
+    @Test
+    void findContractById_NotFound() {
+        when(contractRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> studentService.findContractById(1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessageContaining("Contract not found");
+    }
+
     private Department createDepartment(){
         return new Department(1L, "GLO", "Génie logiciel");
     }
