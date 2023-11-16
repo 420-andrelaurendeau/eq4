@@ -99,17 +99,19 @@ public class StudentController extends GenericUserController<Student, StudentSer
     }
 
     @PostMapping("/contract_signature")
-    public ResponseEntity<SignatureDTO> signContract(@RequestParam("contractId") Long contractId) {
-        logger.info("signContractForStudent with contractId: {}", contractId);
+    public ResponseEntity<HttpStatus> signContract(@RequestParam("contractId") Long contractId) {
         try {
-            return service.signContract(contractId)
-                    .map(ResponseEntity::ok)
-                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            service.signContract(contractId);
+            return ResponseEntity.ok().build();
+
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+
         } catch (Exception e) {
-            logger.error("Error signing contract: " + e.getMessage());
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
     }
+
 
     @GetMapping("/applications/{applicationId}/contract")
     public ResponseEntity<ContractDTO> getContractByApplication(@PathVariable Long applicationId) {

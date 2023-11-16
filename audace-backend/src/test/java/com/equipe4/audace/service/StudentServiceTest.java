@@ -2,6 +2,8 @@ package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.contract.ContractDTO;
+import com.equipe4.audace.dto.contract.SignatureDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
@@ -10,6 +12,7 @@ import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
+import com.equipe4.audace.model.contract.Signature;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
@@ -24,6 +27,7 @@ import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.StudentSessionRepository;
+import com.equipe4.audace.repository.signature.SignatureRepository;
 import com.equipe4.audace.utils.NotificationManipulator;
 import com.equipe4.audace.utils.SessionManipulator;
 import org.junit.jupiter.api.Test;
@@ -43,8 +47,7 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -72,7 +75,7 @@ public class StudentServiceTest {
     @Mock
     private UserRepository userRepository;
     @Mock
-    private ContractManipulator contractManipulator;
+    private SignatureRepository signatureRepository;
     @InjectMocks
     private StudentService studentService;
 
@@ -346,45 +349,78 @@ public class StudentServiceTest {
                 .hasMessage("Student ID cannot be null");
     }
 
-//    @Test
-//    public void signContractForStudent_HappyPath(){
-//        Contract contract = createContract();
-//        Student student = createStudent();
-//
-//        contract.setStudentSignature(new Signature<Student>(student, LocalDate.now()));
-//
-//        when(contractRepository.findById(anyLong())).thenReturn(Optional.of(contract));
-//        when(studentRepository.findByCv(any(Cv.class))).thenReturn(Optional.of(student));
-//        when(contractRepository.save(any(Contract.class))).thenReturn(contract);
-//
-//        ContractDTO contractDTO = studentService.signContract(contract.getId()).orElseThrow();
-//        assertThat(contractDTO.getStudentSignature()).isEqualTo(contract.getStudentSignature());
-//    }
     @Test
-    public void signContractForStudent_invalidId(){
-        when(contractRepository.findById(anyLong())).thenReturn(Optional.empty());
+    void signContract_Success() {
+        Long contractId = 1L;
+        Contract contract = createContract();
+        Student student = createStudent();
+        Signature<Student> signature = new Signature<>(null, student, LocalDate.now(), contract);
 
-        assertThatThrownBy(() -> studentService.signContract(anyLong()))
+        when(contractRepository.findById(contractId)).thenReturn(Optional.of(contract));
+        when(studentRepository.findByCv(any(Cv.class))).thenReturn(Optional.of(student));
+        when(signatureRepository.save(any(Signature.class))).thenReturn(signature);
+
+        Optional<SignatureDTO> result = studentService.signContract(contractId);
+
+        assertTrue(result.isPresent());
+    }
+
+    @Test
+    void signContract_ContractNotFound() {
+        Long contractId = 1L;
+        when(contractRepository.findById(contractId)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> studentService.signContract(contractId))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Contract not found");
     }
 
-//    @Test
-//    public void getContractByApplicationId_HappyPath() {
-//        Application mockApplication = mock(Application.class);
-//        Contract contract = mock(Contract.class);
-//        contract.setApplication(mockApplication);
-//
-//        when(applicationRepository.findById(1L)).thenReturn(Optional.of(mockApplication));
-//        when(contractRepository.findByApplication(mockApplication)).thenReturn(Optional.of(contract));
-//
-//        Optional<ContractDTO> result = studentService.getContractByApplicationId(1L);
-//
-//        assertTrue(result.isPresent(), "Contract should be found");
-//        result.ifPresent(contractDTO -> {
-//            assertThat(contractDTO).isEqualTo(contract.toDTO());
-//        });
-//    }
+    @Test
+    void signContract_StudentNotFound() {
+        Long contractId = 1L;
+        Contract contract = createContract();
+
+        when(contractRepository.findById(contractId)).thenReturn(Optional.of(contract));
+        when(studentRepository.findByCv(any(Cv.class))).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> studentService.signContract(contractId))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Student not found");
+    }
+
+    @Test
+    void getContractByApplicationId_Success() {
+        Long applicationId = 1L;
+        Application application = mock(Application.class);
+        Contract contract = createContract();
+
+        when(applicationRepository.findById(applicationId)).thenReturn(Optional.of(application));
+        when(contractRepository.findByApplication(application)).thenReturn(Optional.of(contract));
+
+        Optional<ContractDTO> result = studentService.getContractByApplicationId(applicationId);
+
+        assertTrue(result.isPresent());
+
+        ContractDTO contractDTO = result.get();
+        assertEquals(contract.getId(), contractDTO.getId());
+        assertEquals(contract.getStartHour().toString(), contractDTO.getStartHour());
+        assertEquals(contract.getEndHour().toString(), contractDTO.getEndHour());
+        assertEquals(contract.getTotalHoursPerWeek(), contractDTO.getTotalHoursPerWeek());
+        assertEquals(contract.getSalary(), contractDTO.getSalary(), 0.001);
+        assertEquals(contract.getSupervisor(), contractDTO.getSupervisor());
+        assertEquals(contract.getApplication().toDTO(), contractDTO.getApplication());
+    }
+
+    @Test
+    void getContractByApplicationId_ApplicationNotFound() {
+        Long applicationId = 1L;
+
+        when(applicationRepository.findById(applicationId)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> studentService.getContractByApplicationId(applicationId))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Application not found");
+    }
 
     private Department createDepartment(){
         return new Department(1L, "GLO", "Génie logiciel");

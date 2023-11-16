@@ -2,6 +2,7 @@ import {AxiosError, AxiosResponse} from "axios";
 import {MANAGER_PREFIX, STUDENT_PREFIX} from "../constants/apiPrefixes";
 import http from "../constants/http";
 import {Contract} from "../model/contract";
+import {Signature} from "../model/signature";
 
 export const createContract = async (
   contract: Contract
@@ -34,11 +35,9 @@ export const getContractByApplicationIdForStudent = async (applicationId: number
     );
 };
 
-export const signContractByStudent = async (
-    contractId: number
-): Promise<AxiosResponse<Contract>> => {
+export const signContractByStudent = async (contractId: number): Promise<AxiosResponse> => {
     try {
-        return await http.post<Contract>(
+        return await http.post(
             `${STUDENT_PREFIX}/contract_signature`, null, {
                 params: {contractId}
             }

@@ -5,6 +5,7 @@ import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.contract.ContractDTO;
+import com.equipe4.audace.dto.contract.SignatureDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
@@ -46,6 +47,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
@@ -227,24 +229,17 @@ public class StudentControllerTest {
 
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT"})
-    public void givenContractId_whenSignContract_thenReturnIsOk() throws Exception{
-        // given - precondition or setup
-        ApplicationDTO applicationDTO = createApplicationDTO(createOfferDTO(1L));
-        applicationDTO.setApplicationStatus(Application.ApplicationStatus.ACCEPTED);
+    void signContract_Success() throws Exception {
+        Long contractId = 1L;
+        SignatureDTO mockSignatureDTO = createSignatureDTO();
 
-        ContractDTO contractDTO = createContractDTO(applicationDTO);
-        Student student = createStudentDTO(createDepartmentDTO()).fromDTO();
+        when(studentService.signContract(contractId))
+                .thenReturn(Optional.of(mockSignatureDTO));
 
-//        contractDTO.setStudentSignature(new Signature(1L, student, LocalDate.now()));
-
-        when(studentService.signContract(contractDTO.getId())).thenReturn(Optional.of(contractDTO));
-
-        mockMvc.perform(put("/students/contract_signature")
-                .param("studentId", "1")
-                .param("contractId", "1")
-                .with(csrf())
-                .accept(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk());
+        mockMvc.perform(post("/students/contract_signature")
+                        .param("contractId", contractId.toString())
+                        .with(csrf()))
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -266,32 +261,16 @@ public class StudentControllerTest {
 
     @Test
     @WithMockUser(username = "student", authorities = {"STUDENT"})
-    void signContractForStudent_ContractNotFound() throws Exception {
+    void signContract_ContractNotFound() throws Exception {
         Long contractId = 1L;
 
         when(studentService.signContract(contractId))
-                .thenReturn(Optional.empty());
+                .thenThrow(new NoSuchElementException("Contract not found"));
 
-        mockMvc.perform(put("/students/contract_signature")
+        mockMvc.perform(post("/students/contract_signature")
                         .param("contractId", contractId.toString())
                         .with(csrf()))
                 .andExpect(status().isNotFound());
-    }
-
-    @Test
-    @WithMockUser(username = "student", authorities = {"STUDENT"})
-    void signContractForStudent_ContractExists() throws Exception {
-        Long contractId = 1L;
-        ContractDTO mockContractDTO = createContractDTO(createApplicationDTO(createOfferDTO(1L)));
-
-        when(studentService.signContract(contractId))
-                .thenReturn(Optional.of(mockContractDTO));
-
-        mockMvc.perform(put("/students/contract_signature")
-                        .param("contractId", contractId.toString())
-                        .with(csrf()))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(mockContractDTO.getId()));
     }
 
     private DepartmentDTO createDepartmentDTO(){
@@ -323,6 +302,9 @@ public class StudentControllerTest {
         return new ContractDTO(1L, "08:00", "17:00", 40, 18.35, createSupervisor(), applicationDTO);
     }
 
+    private SignatureDTO createSignatureDTO(){
+        return new SignatureDTO(1L, LocalDate.now());
+    }
     private Supervisor createSupervisor(){
         return new Supervisor("super", "visor", "supervisor@email.com", "supervisor", "1234567890", "-123");
     }
