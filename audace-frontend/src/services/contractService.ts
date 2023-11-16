@@ -1,7 +1,7 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { EMPLOYER_PREFIX, MANAGER_PREFIX, STUDENT_PREFIX } from "../constants/apiPrefixes";
 import http from "../constants/http";
-import {Contract, Signature} from "../model/contract";
+import { Contract, Signature } from "../model/contract";
 
 export const createContract = async (
   contract: Contract
@@ -37,9 +37,9 @@ export const signContract = async (contractId: number, user: string): Promise<Ax
   const PREFIX = getPrefix(user);
   try {
     return await http.post(
-        `${PREFIX}/sign_contract`, null, {
-          params: { contractId }
-        }
+      `${PREFIX}/sign_contract`, null, {
+      params: { contractId }
+    }
     );
   } catch (error) {
     const axiosError = error as AxiosError;
@@ -54,7 +54,7 @@ export const signContract = async (contractId: number, user: string): Promise<Ax
 export const getSignaturesByContractId = async (contractId: number, user: string): Promise<AxiosResponse<Signature[]>> => {
   const PREFIX = getPrefix(user);
   return http.get<Signature[]>(
-      `${PREFIX}/contracts/${contractId}/signatures`,
+    `${PREFIX}/contracts/${contractId}/signatures`,
   );
 }
 
