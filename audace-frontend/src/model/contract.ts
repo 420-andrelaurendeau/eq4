@@ -9,9 +9,6 @@ export interface Contract {
   salary: number;
   supervisor: Supervisor;
   application: Application;
-  studentSignature?: Signature<Student>;
-  employerSignature?: Signature<Employer>;
-  managerSignature?: Signature<Manager>;
 }
 
 export interface Supervisor{
@@ -24,6 +21,8 @@ export interface Supervisor{
 }
 
 export interface Signature<T extends User> {
+  id: number;
   signatory: T;
   signatureDate: Date;
+  contract: Contract;
 }

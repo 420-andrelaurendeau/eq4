@@ -56,8 +56,7 @@ const SignContract = () => {
 
     }, [id]);
 
-
-    const { supervisor, application, startHour, endHour, totalHoursPerWeek, salary } = contract!;
+    const { supervisor, application, startHour, endHour, totalHoursPerWeek, salary } = contract;
     const { offer } = application || {};
     const { employer } = offer || {};
     const { student } = application.cv || {};

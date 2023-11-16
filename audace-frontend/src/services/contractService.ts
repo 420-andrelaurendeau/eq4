@@ -54,6 +54,7 @@ export const signContractByStudent = async (contractId: number): Promise<AxiosRe
     }
     throw axiosError;
   }
+
 };
 
 export const ManagerSignContract = async (
@@ -64,7 +65,5 @@ export const ManagerSignContract = async (
       `${MANAGER_PREFIX}/${managerId}/sign_contract/${contractId}`,
   );
 }
-
-
 
 
