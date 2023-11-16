@@ -50,6 +50,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -271,6 +273,30 @@ public class StudentControllerTest {
                         .param("contractId", contractId.toString())
                         .with(csrf()))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(username = "student", authorities = {"Student"})
+    public void givenContractId_whenGetContractById_thenReturnContractObject() throws Exception{
+        // given - precondition or setup
+        ApplicationDTO applicationDTO = createApplicationDTO(createOfferDTO(1L));
+        ContractDTO contractDTO = createContractDTO(applicationDTO);
+
+        given(studentService.findContractById(anyLong())).willReturn(Optional.of(contractDTO));
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/students/contracts/{contractId}", 1L));
+
+        // then - verify the output
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.id").value(contractDTO.getId()))
+                .andExpect(jsonPath("$.startHour", is(contractDTO.getStartHour())))
+                .andExpect(jsonPath("$.endHour", is(contractDTO.getEndHour())))
+                .andExpect(jsonPath("$.totalHoursPerWeek", is(contractDTO.getTotalHoursPerWeek())))
+                .andExpect(jsonPath("$.salary", is(contractDTO.getSalary())))
+                .andExpect(jsonPath("$.supervisor.email", is(contractDTO.getSupervisor().getEmail())))
+                .andExpect(jsonPath("$.application.id", is(contractDTO.getApplication().getId().intValue())));
     }
 
     private DepartmentDTO createDepartmentDTO(){
