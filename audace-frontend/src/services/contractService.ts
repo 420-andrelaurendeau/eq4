@@ -13,15 +13,17 @@ export const getContractByIdAsManager = async (id: number): Promise<AxiosRespons
   return http.get(`${MANAGER_PREFIX}/contracts/${id}`);
 };
 
-export const getContractByIdAsStudent = async (id: number): Promise<AxiosResponse> => {
+export const getContractByIdAsStudent = async (id: number): Promise<AxiosResponse<Contract>> => {
   return http.get(`${STUDENT_PREFIX}/contracts/${id}`);
 };
 
 export const getContractByApplicationId = async (
-  applicationId: number
+  applicationId: number,
+  user: string
 ): Promise<AxiosResponse<Contract>> => {
+  const prefix = user === "student" ? STUDENT_PREFIX : MANAGER_PREFIX;
   return http.get<Contract>(
-    `${MANAGER_PREFIX}/applications/${applicationId}/contract`
+    `${prefix}/applications/${applicationId}/contract`
   );
 };
 
@@ -30,12 +32,6 @@ export const getContractsByDepartmentId = async (
 ): Promise<AxiosResponse<Contract[]>> => {
   return http.get<Contract[]>(
     `${MANAGER_PREFIX}/contracts/department/${departmentId}`
-  );
-};
-
-export const getContractByApplicationIdForStudent = async (applicationId: number): Promise<AxiosResponse<Contract>> => {
-  return http.get<Contract>(
-    `${STUDENT_PREFIX}/applications/${applicationId}/contract`
   );
 };
 
@@ -58,11 +54,11 @@ export const signContractByStudent = async (contractId: number): Promise<AxiosRe
 };
 
 export const ManagerSignContract = async (
-    managerId: number,
-    contractId: number
+  managerId: number,
+  contractId: number
 ): Promise<AxiosResponse<Contract>> => {
   return http.post<Contract>(
-      `${MANAGER_PREFIX}/${managerId}/sign_contract/${contractId}`,
+    `${MANAGER_PREFIX}/${managerId}/sign_contract/${contractId}`,
   );
 }
 
