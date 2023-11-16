@@ -49,7 +49,16 @@ export const signContractByStudent = async (contractId: number): Promise<AxiosRe
     }
     throw axiosError;
   }
+
 };
 
+export const ManagerSignContract = async (
+  managerId: number,
+  contractId: number
+): Promise<AxiosResponse<Contract>> => {
+  return http.post<Contract>(
+    `${MANAGER_PREFIX}/${managerId}/sign_contract/${contractId}`,
+  );
 
+}
 
