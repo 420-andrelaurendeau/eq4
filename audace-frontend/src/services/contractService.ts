@@ -9,9 +9,14 @@ export const createContract = async (
   return http.post(`${MANAGER_PREFIX}/contracts`, contract);
 };
 
-export const getContractById = async (id: number): Promise<AxiosResponse> => {
+export const getContractByIdAsManager = async (id: number): Promise<AxiosResponse> => {
   return http.get(`${MANAGER_PREFIX}/contracts/${id}`);
 };
+
+export const getContractByIdAsStudent = async (id: number): Promise<AxiosResponse> => {
+  return http.get(`${STUDENT_PREFIX}/contracts/${id}`);
+};
+
 export const getContractByApplicationId = async (
   applicationId: number
 ): Promise<AxiosResponse<Contract>> => {
@@ -50,6 +55,16 @@ export const signContractByStudent = async (contractId: number): Promise<AxiosRe
     throw axiosError;
   }
 };
+
+export const ManagerSignContract = async (
+    managerId: number,
+    contractId: number
+): Promise<AxiosResponse<Contract>> => {
+  return http.post<Contract>(
+      `${MANAGER_PREFIX}/${managerId}/sign_contract/${contractId}`,
+  );
+}
+
 
 
 

@@ -8,6 +8,7 @@ import EmployerButtons from "./ApplicationButtons/EmployerButtons";
 import { Contract } from "../../../model/contract";
 import { getContractByApplicationIdForStudent, signContractByStudent } from "../../../services/contractService";
 import { getUserId } from "../../../services/authService";
+import {useNavigate} from "react-router-dom";
 
 interface Props {
   application: Application;
@@ -20,6 +21,7 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
   const [show, setShow] = useState<boolean>(false);
   const [contract, setContract] = useState<Contract | null>(null);
   const studentId = parseInt(getUserId()!);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (userType === UserType.Student) {
@@ -37,7 +39,6 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
           }
         }
       };
-
       fetchContract();
     }
   }, [userType, application.id]);
@@ -56,6 +57,15 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
 
     } catch (err) {
       console.error("Error signing contract:", err);
+    }
+  };
+
+  const handleViewContract = (contractId: number) => {
+    try {
+      navigate(`/contract/${contractId}`);
+    }
+    catch (err) {
+      console.error("Error viewing contract:", err);
     }
   };
 
@@ -90,7 +100,7 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
                     >
                       <Button
                           // disabled={isButtonDisabled()}
-                          onClick={handleApply}
+                          onClick={() => handleViewContract(contract!.id!)}
                           variant="outline-primary"
                           className="text-dark"
                       >

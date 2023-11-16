@@ -6,12 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/StudentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/controller/StudentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/contract/SignatureDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/dto/contract/SignatureDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/service/EmployerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/service/EmployerService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/main/java/com/equipe4/audace/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/controller/StudentControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/controller/StudentControllerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/StudentServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/audace-backend/src/test/java/com/equipe4/audace/service/StudentServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/ApplicationsList/ApplicationRow/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/ApplicationsList/ApplicationRow/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/ManagerStudentByInternshipStatusList/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/ManagerStudentByInternshipStatusList/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/SignContract/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/SignContract/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-frontend/src/services/contractService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/services/contractService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -117,7 +114,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.All in audace">
+  <component name="RunManager" selected="Spring Boot.AudaceApplication">
     <configuration name="All in audace" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="audace" />
       <option name="PACKAGE_NAME" value="" />
@@ -265,7 +262,8 @@
       <workItem from="1700022230167" duration="10289000" />
       <workItem from="1700097841755" duration="183000" />
       <workItem from="1700098034126" duration="532000" />
-      <workItem from="1700098763825" duration="4383000" />
+      <workItem from="1700098763825" duration="6159000" />
+      <workItem from="1700108694579" duration="6649000" />
     </task>
     <servers />
   </component>

@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, ListGroup, ListGroupItem, Container, Row, Col, Button } from 'react-bootstrap';
 import { Contract } from '../../model/contract';
-import { getContractById } from '../../services/contractService';
-import { UserType } from "../../model/user";
+import { getContractByIdAsManager, getContractByIdAsStudent} from '../../services/contractService';
 import { getUserId } from '../../services/authService';
 import { getUserById } from '../../services/userService';
 import { ManagerSignContract } from '../../services/contractService';
@@ -33,25 +32,32 @@ const SignContract = () => {
         })();
 
         if (id) {
-            getContractById(parseInt(id))
-                .then((response) => {
-                    console.log("Fetched contract:", response.data);
-                    setContract(response.data);
-                })
-                .catch((error) => {
-                    console.error("Error fetching contract:", error);
-                });
+            if (UserType === 'manager') {
+                getContractByIdAsManager(parseInt(id))
+                    .then((response) => {
+                        console.log("Fetched contract:", response.data);
+                        setContract(response.data);
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching contract as manager:", error);
+                    });
+            }
+            if (UserType === 'student') {
+                getContractByIdAsStudent(parseInt(id))
+                    .then((response) => {
+                        console.log("Fetched contract:", response.data);
+                        setContract(response.data);
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching contract as student:", error);
+                    });
+            }
         }
 
     }, [id]);
 
-    if (!contract) {
-        return <p>Loading contract...</p>;
-    }
 
-
-
-    const { supervisor, application, startHour, endHour, totalHoursPerWeek, salary } = contract;
+    const { supervisor, application, startHour, endHour, totalHoursPerWeek, salary } = contract!;
     const { offer } = application || {};
     const { employer } = offer || {};
     const { student } = application.cv || {};
@@ -71,7 +77,7 @@ const SignContract = () => {
                 console.log('Invalid role');
         }
     }
-    
+
     function signAsManager() {
         const userId = parseInt(getUserId() || '0');
         if (!userId) {
@@ -82,11 +88,10 @@ const SignContract = () => {
             .then(() => {
                 console.log('Manager signed the contract');
             })
-            .catch(error => {
+            .catch((error: any) => {
                 console.error('Error signing contract as manager:', error);
             });
     }
-    
 
     return (
         <Container className="mt-4">
@@ -157,58 +162,36 @@ const SignContract = () => {
                     )}
 
                     <Card className="mt-3">
-                        <Card.Header as="h5">Signature</Card.Header>
+                        <Card.Header as="h5">{t('signature.title')}</Card.Header>
                         <Card.Body>
                             <ListGroup>
                                 <ListGroupItem className="d-flex justify-content-between align-items-center">
-                                   {t('signature.manager')}
+                                    {t('signature.manager')}
                                     <div>
-                                        {UserType === 'manager' && !contract.managerSignature && (
-                                            <Button variant="secondary" onClick={() => handleSign('manager')}>
-                                                {t('signature.sign')}
-                                            </Button>
-                                        )}
-                                        <span className="ms-2">
-                                            {contract.managerSignature
-                                                ? `${t('signature.signedOn')}: ${contract.managerSignature.signatureDate}`
-                                                : `${t('signature.notSigned')}`}
-                                        </span>
+                                        <Button variant="secondary" onClick={() => handleSign('manager')} disabled={UserType !== 'manager'}>
+                                            {t('signature.sign')}
+                                        </Button>
                                     </div>
                                 </ListGroupItem>
                                 <ListGroupItem className="d-flex justify-content-between align-items-center">
-                                {t('signature.employer')}
+                                    {t('signature.employer')}
                                     <div>
-                                        {UserType === 'employer' && !contract.employerSignature && (
-                                            <Button variant="secondary" onClick={() => handleSign('employer')}>
-                                               {t('signature.sign')}
-                                            </Button>
-                                        )}
-                                        <span className="ms-2">
-                                            {contract.employerSignature
-                                                ? `${t('signature.signedOn')}: ${contract.employerSignature.signatureDate}`
-                                                : `${t('signature.notSigned')}`}
-                                        </span>
+                                        <Button variant="secondary" onClick={() => handleSign('employer')} disabled={UserType !== 'employer'}>
+                                            {t('signature.sign')}
+                                        </Button>
                                     </div>
                                 </ListGroupItem>
                                 <ListGroupItem className="d-flex justify-content-between align-items-center">
-                                {t('signature.student')}
+                                    {t('signature.student')}
                                     <div>
-                                        {UserType === 'student' && !contract.studentSignature && (
-                                            <Button variant="secondary" onClick={() => handleSign('student')}>
-                                                {t('signature.sign')}
-                                            </Button>
-                                        )}
-                                        <span className="ms-2">
-                                            {contract.studentSignature
-                                                ? `${t('signature.signedOn')}: ${contract.studentSignature.signatureDate}`
-                                                : `${t('signature.notSigned')}`}
-                                        </span>
+                                        <Button variant="secondary" onClick={() => handleSign('student')} disabled={UserType !== 'student'}>
+                                            {t('signature.sign')}
+                                        </Button>
                                     </div>
                                 </ListGroupItem>
                             </ListGroup>
                         </Card.Body>
                     </Card>
-
                 </Col>
             </Row>
         </Container>
