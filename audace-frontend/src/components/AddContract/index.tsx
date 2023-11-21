@@ -9,6 +9,7 @@ import { getApplicationById } from '../../services/managerService';
 import { Employer, Student } from '../../model/user';
 import InfoCard from '../InfoCard';
 import { createContract, getContractByApplicationId } from '../../services/contractService';
+import { Authority } from '../../model/auth';
 
 const AddContract = () => {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ const AddContract = () => {
     if (!isContractCreated) return;
     if (application === undefined) return;
 
-    getContractByApplicationId(application.id!, "manager")
+    getContractByApplicationId(application.id!, Authority.MANAGER)
       .then((res) => {
         if (res.data !== null) {
           navigate('/manager');

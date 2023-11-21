@@ -2,6 +2,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import { EMPLOYER_PREFIX, MANAGER_PREFIX, STUDENT_PREFIX } from "../constants/apiPrefixes";
 import http from "../constants/http";
 import { Contract, Signature } from "../model/contract";
+import { Authority } from "../model/auth";
 
 export const createContract = async (
   contract: Contract
@@ -9,13 +10,13 @@ export const createContract = async (
   return http.post(`${MANAGER_PREFIX}/contracts`, contract);
 };
 
-export const getContractById = async (id: number, user: string): Promise<AxiosResponse> => {
-  const PREFIX = getPrefix(user);
+export const getContractById = async (id: number, userType: Authority): Promise<AxiosResponse> => {
+  const PREFIX = getPrefix(userType);
   return http.get(`${PREFIX}/contracts/${id}`);
 };
 
-export const getContractByApplicationId = async (applicationId: number, user: string): Promise<AxiosResponse<Contract>> => {
-  const PREFIX = getPrefix(user);
+export const getContractByApplicationId = async (applicationId: number, userType: Authority): Promise<AxiosResponse<Contract>> => {
+  const PREFIX = getPrefix(userType);
   return http.get<Contract>(
     `${PREFIX}/applications/${applicationId}/contract`
   );
@@ -33,8 +34,8 @@ export const signContractByManager = async (managerId: number, contractId: numbe
   );
 }
 
-export const signContract = async (contractId: number, user: string): Promise<AxiosResponse> => {
-  const PREFIX = getPrefix(user);
+export const signContract = async (contractId: number, userType: Authority): Promise<AxiosResponse> => {
+  const PREFIX = getPrefix(userType);
   try {
     return await http.post(
       `${PREFIX}/sign_contract`, null, {
@@ -51,22 +52,20 @@ export const signContract = async (contractId: number, user: string): Promise<Ax
   }
 };
 
-export const getSignaturesByContractId = async (contractId: number, user: string): Promise<AxiosResponse<Signature[]>> => {
-  const PREFIX = getPrefix(user);
+export const getSignaturesByContractId = async (contractId: number, userType: Authority): Promise<AxiosResponse<Signature[]>> => {
+  const PREFIX = getPrefix(userType);
   return http.get<Signature[]>(
     `${PREFIX}/contracts/${contractId}/signatures`,
   );
 }
 
-const getPrefix = (user: string): string | null => {
-  switch (user) {
-    case 'manager':
+const getPrefix = (userType: Authority) => {
+  switch (userType) {
+    case Authority.MANAGER:
       return MANAGER_PREFIX;
-    case 'student':
+    case Authority.STUDENT:
       return STUDENT_PREFIX;
-    case 'employer':
+    case Authority.EMPLOYER:
       return EMPLOYER_PREFIX;
-    default:
-      return null;
   }
 };

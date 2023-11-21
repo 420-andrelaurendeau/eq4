@@ -8,6 +8,7 @@ import EmployerButtons from "./ApplicationButtons/EmployerButtons";
 import { Contract } from "../../../model/contract";
 import { getContractByApplicationId } from "../../../services/contractService";
 import { useNavigate } from "react-router-dom";
+import { Authority } from "../../../model/auth";
 
 interface Props {
   application: Application;
@@ -26,7 +27,7 @@ const ApplicationRow = ({ application, userType, updateApplicationsState }: Prop
 
       const fetchContract = async () => {
         try {
-          const res = await getContractByApplicationId(application.id!, "student");
+          const res = await getContractByApplicationId(application.id!, Authority.STUDENT);
           setContract(res.data);
           console.log("Contract : " + res.data.id, res.data.supervisor.firstName);
         } catch (err: any) {

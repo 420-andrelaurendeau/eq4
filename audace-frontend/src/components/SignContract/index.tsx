@@ -2,34 +2,21 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Card, Col, Container, ListGroup, ListGroupItem, Placeholder, Row } from 'react-bootstrap';
 import { Contract, Signature } from '../../model/contract';
-import {
-  getContractById,
-  getSignaturesByContractId,
-  signContract,
-  signContractByManager
-} from '../../services/contractService';
-import { getUserId } from '../../services/authService';
-import { getUserById } from '../../services/userService';
+import { getContractById, getSignaturesByContractId, signContract, signContractByManager } from '../../services/contractService';
+import { getAuthorities } from '../../services/authService';
 import { useTranslation } from 'react-i18next';
-import './index.css';
 
 const SignContract = () => {
   const { id } = useParams();
   const [contract, setContract] = useState<Contract | null>(null);
-  const [userType, setUserType] = useState<string | null>(null);
   const [signatures, setSignatures] = useState<Signature[]>([]);
   const [userSignature, setUserSignature] = useState<Signature | null>();
   const { t } = useTranslation();
-  const userId = parseInt(getUserId() || '0');
+  const userType = getAuthorities()?.[0];
 
   useEffect(() => {
-    const fetchContract = async (role: string, contractId: number) => {
-      if (!userId) {
-        console.error("Invalid user ID");
-        return;
-      }
-
-      getContractById(contractId, role)
+    const fetchContract = async (contractId: number) => {
+      getContractById(contractId, userType!)
         .then((response) => {
           setContract(response.data);
         })
@@ -38,99 +25,54 @@ const SignContract = () => {
         });
     };
 
-    const fetchSignatures = async (role: string, contractId: number) => {
-      if (!userId) {
-        console.error("Invalid user ID");
-        return;
-      }
-
-      switch (role) {
-        case 'manager':
-          getSignaturesByContractId(contractId, "manager")
-            .then((response) => {
-              setSignatures(response.data);
-            })
-            .catch((error) => {
-              console.error("Error fetching signatures as manager:", error);
-            });
-          break;
-        case 'employer':
-          console.log('Fetching signatures as employer');
-          break;
-        case 'student':
-          getSignaturesByContractId(contractId, "student")
-            .then((response) => {
-              setSignatures(response.data);
-              console.log("signatures: ", response.data);
-            })
-            .catch((error) => {
-              console.error("Error fetching signatures as student:", error);
-            });
-          break;
-      }
-    };
-    let mounted = true;
-
-    const fetchUserAndContract = async () => {
-      try {
-        if (!userId) {
-          console.error("Invalid user ID");
-          return;
-        }
-
-        const response = await getUserById(userId);
-        if (mounted) {
-          const userType = response.data.type || null;
-          setUserType(userType);
-
-          if (id && userType) {
-            const contractId = parseInt(id);
-            await fetchContract(userType, contractId);
-            await fetchSignatures(userType, contractId);
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching user:", error);
-      }
+    const fetchSignatures = async (contractId: number) => {
+      getSignaturesByContractId(contractId, userType!)
+        .then((response) => {
+          setSignatures(response.data);
+          console.log("signatures: ", response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching signatures:", error);
+        });
     };
 
-    fetchUserAndContract();
-
-    return () => {
-      mounted = false;
-    };
-  }, [id, userId]);
-
-  const handleSign = async (role: string) => {
-    if (!userId) {
-      console.error("Invalid user ID");
-      return;
+    if (id && userType) {
+      const contractId = parseInt(id);
+      fetchContract(contractId);
+      fetchSignatures(contractId);
     }
+  }, [id, userType]);
 
-    try {
-      if (contract && role)
-        if (role === 'manager') {
-          signContractByManager(userId, contract?.id!);
-        } else {
-          signContract(contract?.id!, role);
-        }
+  // const handleSign = async (role: string) => {
+  //   if (!userId) {
+  //     console.error("Invalid user ID");
+  //     return;
+  //   }
 
-      const updatedSignaturesResponse = await getSignaturesByContractId(contract?.id!, role);
-      setSignatures(updatedSignaturesResponse.data);
+  //   try {
+  //     if (contract && role)
+  //       if (role === 'manager') {
+  //         signContractByManager(userId, contract?.id!);
+  //       } else {
+  //         signContract(contract?.id!, role);
+  //       }
 
-      const userSignedSignature = updatedSignaturesResponse.data.find(sig => sig?.signatoryId === userId);
-      if (userSignedSignature) {
-        setUserSignature(userSignedSignature);
-      }
-    } catch (error) {
-      console.error(`Error signing contract as ${role}:`, error);
-    }
-  };
+  //     const updatedSignaturesResponse = await getSignaturesByContractId(contract?.id!, role);
+  //     setSignatures(updatedSignaturesResponse.data);
+
+  //     const userSignedSignature = updatedSignaturesResponse.data.find(sig => sig?.signatoryId === userId);
+  //     if (userSignedSignature) {
+  //       setUserSignature(userSignedSignature);
+  //     }
+  //   } catch (error) {
+  //     console.error(`Error signing contract as ${role}:`, error);
+  //   }
+  // };
 
 
-  const hasUserSigned = (userId: number) => {
-    return signatures.length > 0 && signatures.some(signature => signature?.signatoryId === userId);
-  };
+  // const hasUserSigned = (userId: number) => {
+  //   return signatures.length > 0 && signatures.some(signature => signature?.signatoryId === userId);
+  // };
 
   return (
     <Container className="mt-4">
@@ -249,7 +191,7 @@ const SignContract = () => {
             </Card.Body>
           </Card>
 
-          <Card className="mt-3">
+          {/* <Card className="mt-3">
             <Card.Header as="h5">{t('signature.title')}</Card.Header>
             <Card.Body>
               <ListGroup>
@@ -294,7 +236,7 @@ const SignContract = () => {
                 </ListGroupItem>
               </ListGroup>
             </Card.Body>
-          </Card>
+          </Card> */}
         </Col>
       </Row>
     </Container>
