@@ -29,29 +29,13 @@ const SignContract = () => {
         return;
       }
 
-      switch (role) {
-        case 'manager':
-          getContractById(contractId, "manager")
-            .then((response) => {
-              setContract(response.data);
-            })
-            .catch((error) => {
-              console.error("Error fetching contract as manager:", error);
-            });
-          break;
-        case 'employer':
-          console.log('Fetching contract as employer');
-          break;
-        case 'student':
-          getContractById(contractId, "student")
-            .then((response) => {
-              setContract(response.data);
-            })
-            .catch((error) => {
-              console.error("Error fetching contract as student:", error);
-            });
-          break;
-      }
+      getContractById(contractId, role)
+        .then((response) => {
+          setContract(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching contract:", error);
+        });
     };
 
     const fetchSignatures = async (role: string, contractId: number) => {
@@ -124,19 +108,12 @@ const SignContract = () => {
     }
 
     try {
-      switch (role) {
-        case 'manager':
-          await signContractByManager(userId, contract?.id!);
-          console.log('Manager signed the contract');
-          break;
-        case 'student':
-          await signContract(contract?.id!, "student");
-          console.log('Student signed the contract');
-          break;
-        default:
-          console.log('Invalid role');
-          return;
-      }
+      if (contract && role)
+        if (role === 'manager') {
+          signContractByManager(userId, contract?.id!);
+        } else {
+          signContract(contract?.id!, role);
+        }
 
       const updatedSignaturesResponse = await getSignaturesByContractId(contract?.id!, role);
       setSignatures(updatedSignaturesResponse.data);
