@@ -69,6 +69,7 @@ const SignContract = () => {
           .then(() => {
             console.log("Contract signed successfully");
             fetchSignatures(contract.id!);
+            fetchSignatureUsers();
           })
           .catch((error) => {
             console.error("Error signing contract:", error);
@@ -84,6 +85,9 @@ const SignContract = () => {
   };
 
   const getSignatoryName = (signature: Signature) => {
+    if (signatureUsers.length === 0) {
+      return;
+    }
     const signatureUser = signatureUsers.find(signatureUser => signatureUser.id === signature.signatoryId);
     return signatureUser?.firstName + " " + signatureUser?.lastName;
   }
@@ -192,7 +196,9 @@ const SignContract = () => {
           <Row className="mb-3">
             {signatures.map((signature: Signature) => (
               <Col key={signature.id}>
-                <Badge bg="success">{getSignatoryName(signature)} {t('signature.signedOn')} {new Date(signature?.signatureDate).toLocaleDateString()}</Badge>
+                <Badge bg="success">
+                  {getSignatoryName(signature) && `${getSignatoryName(signature)} ${t('signature.signedOn')} ${new Date(signature?.signatureDate).toLocaleDateString()}`}
+                </Badge>
               </Col>
             ))}
             {!isSignedByUser() && (
