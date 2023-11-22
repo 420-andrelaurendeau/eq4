@@ -97,8 +97,9 @@ public class StudentController extends GenericUserController<Student, StudentSer
         return ResponseEntity.ok(offersList);
     }
 
-    @PostMapping("/sign_contract")
-    public ResponseEntity<HttpStatus> signContract(@RequestParam("contractId") Long contractId) {
+    @PostMapping("/sign_contract/{contractId}")
+    public ResponseEntity<HttpStatus> signContract(@PathVariable Long contractId) {
+        logger.info("studentSignContract");
         try {
             service.signContract(contractId);
             return ResponseEntity.ok().build();

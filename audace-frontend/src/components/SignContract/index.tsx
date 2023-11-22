@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Badge, Button, Card, Col, Container, ListGroup, ListGroupItem, Placeholder, Row } from 'react-bootstrap';
 import { Contract, Signature } from '../../model/contract';
-import { getContractById, getSignaturesByContractId, signContract, signContractByManager } from '../../services/contractService';
+import { getContractById, getSignaturesByContractId, signContract } from '../../services/contractService';
 import { getAuthorities, getUserId } from '../../services/authService';
 import { useTranslation } from 'react-i18next';
-import { Authority } from '../../model/auth';
 import { getUserById } from '../../services/userService';
 import { User } from '../../model/user';
 
@@ -15,7 +14,34 @@ const SignContract = () => {
   const [signatures, setSignatures] = useState<Signature[]>([]);
   const [signatureUsers, setSignatureUsers] = useState<User[]>([]);
   const { t } = useTranslation();
+  const userId = getUserId();
   const userType = getAuthorities()?.[0];
+
+  const fetchSignatures = useCallback(async (contractId: number) => {
+    getSignaturesByContractId(contractId, userType!)
+      .then((response) => {
+        setSignatures(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching signatures:", error);
+      });
+  }, [userType]);
+
+  const fetchSignatureUsers = useCallback(async () => {
+    const signatureUsers: User[] = [];
+    signatures.forEach((signature) => {
+      getUserById(signature.signatoryId)
+        .then((response) => {
+          signatureUsers.push(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching signatureUsers:", error);
+        });
+    });
+    console.log("signatureUsers", signatureUsers);
+
+    setSignatureUsers(signatureUsers);
+  }, [signatures]);
 
   useEffect(() => {
     const fetchContract = async (contractId: number) => {
@@ -28,69 +54,39 @@ const SignContract = () => {
         });
     };
 
-    const fetchSignatures = async (contractId: number) => {
-      getSignaturesByContractId(contractId, userType!)
-        .then((response) => {
-          setSignatures(response.data);
-          fetchSignatureUsers();
-        })
-        .catch((error) => {
-          console.error("Error fetching signatures:", error);
-        });
-    };
-
-    const fetchSignatureUsers = async () => {
-      const signatureUsers: User[] = [];
-      signatures.forEach((signature) => {
-        getUserById(signature.signatoryId)
-          .then((response) => {
-            signatureUsers.push(response.data);
-          })
-          .catch((error) => {
-            console.error("Error fetching signatureUsers:", error);
-          });
-      });
-      setSignatureUsers(signatureUsers);
-    }
-
-    if (id && userType) {
+    if (id && userType && signatureUsers.length === 0) {
       const contractId = parseInt(id);
       fetchContract(contractId);
       fetchSignatures(contractId);
+      fetchSignatureUsers();
     }
-    // DONT ADD SIGNATURE IN THERE OR ELSE INFINITE RERENDER
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, userType]);
+  }, [fetchSignatureUsers, fetchSignatures, id, signatureUsers.length, userType]);
 
-  // const handleSign = async (role: string) => {
-  //   if (!userId) {
-  //     console.error("Invalid user ID");
-  //     return;
-  //   }
-
-  //   try {
-  //     if (contract && role)
-  //       if (role === 'manager') {
-  //         signContractByManager(userId, contract?.id!);
-  //       } else {
-  //         signContract(contract?.id!, role);
-  //       }
-
-  //     const updatedSignaturesResponse = await getSignaturesByContractId(contract?.id!, role);
-  //     setSignatures(updatedSignaturesResponse.data);
-
-  //     const userSignedSignature = updatedSignaturesResponse.data.find(sig => sig?.signatoryId === userId);
-  //     if (userSignedSignature) {
-  //       setUserSignature(userSignedSignature);
-  //     }
-  //   } catch (error) {
-  //     console.error(`Error signing contract as ${role}:`, error);
-  //   }
-  // };
+  const handleSign = async () => {
+    try {
+      if (contract && userId && userType) {
+        signContract(contract.id!, parseInt(userId), userType)
+          .then(() => {
+            console.log("Contract signed successfully");
+            fetchSignatures(contract.id!);
+          })
+          .catch((error) => {
+            console.error("Error signing contract:", error);
+          });
+      }
+    } catch (error) {
+      console.error(`Error signing contract as ${userType}:`, error);
+    }
+  };
 
   const isSignedByUser = () => {
     return signatures.find(signature => signature?.signatoryId === parseInt(getUserId()!));
   };
+
+  const getSignatoryName = (signature: Signature) => {
+    const signatureUser = signatureUsers.find(signatureUser => signatureUser.id === signature.signatoryId);
+    return signatureUser?.firstName + " " + signatureUser?.lastName;
+  }
 
   return (
     <Container className="mt-4">
@@ -194,18 +190,17 @@ const SignContract = () => {
           </Card>
 
           <Row className="mb-3">
-            {signatureUsers && signatures.map((signature: Signature) => (
+            {signatures.map((signature: Signature) => (
               <Col key={signature.id}>
-                <Badge bg="primary">signatureUsers[signatures.indexOf(signature)].name {t('signature.signedOn')} {new Date(signature?.signatureDate).toLocaleDateString()}</Badge>
+                <Badge bg="success">{getSignatoryName(signature)} {t('signature.signedOn')} {new Date(signature?.signatureDate).toLocaleDateString()}</Badge>
               </Col>
             ))}
+            {!isSignedByUser() && (
+              <Col>
+                <Button onClick={() => handleSign()}>{t('signature.sign')}</Button>
+              </Col>
+            )}
           </Row>
-
-          <Button
-            className={isSignedByUser() && userType === Authority.MANAGER ? "signed-button" : ""}
-          >
-            {isSignedByUser() && userType === Authority.MANAGER ? t('signature.signed') : t('signature.sign')}
-          </Button>
         </Col>
       </Row >
     </Container >

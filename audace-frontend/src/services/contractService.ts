@@ -1,4 +1,4 @@
-import { AxiosError, AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { EMPLOYER_PREFIX, MANAGER_PREFIX, STUDENT_PREFIX } from "../constants/apiPrefixes";
 import http from "../constants/http";
 import { Contract, Signature } from "../model/contract";
@@ -28,29 +28,13 @@ export const getContractsByDepartmentId = async (departmentId: number): Promise<
   );
 };
 
-export const signContractByManager = async (managerId: number, contractId: number): Promise<AxiosResponse<Contract>> => {
+export const signContract = async (contractId: number, userId: number, userType: Authority): Promise<AxiosResponse> => {
   return http.post<Contract>(
-    `${MANAGER_PREFIX}/${managerId}/sign_contract/${contractId}`,
+    userType === Authority.MANAGER ?
+      `${MANAGER_PREFIX}/${userId}/sign_contract/${contractId}` :
+      `${getPrefix(userType)}/sign_contract/${contractId}`,
   );
 }
-
-export const signContract = async (contractId: number, userType: Authority): Promise<AxiosResponse> => {
-  const PREFIX = getPrefix(userType);
-  try {
-    return await http.post(
-      `${PREFIX}/sign_contract`, null, {
-      params: { contractId }
-    }
-    );
-  } catch (error) {
-    const axiosError = error as AxiosError;
-    console.error('Error in signContract:', axiosError.message);
-    if (axiosError.response) {
-      console.error('Server responded with:', axiosError.response);
-    }
-    throw axiosError;
-  }
-};
 
 export const getSignaturesByContractId = async (contractId: number, userType: Authority): Promise<AxiosResponse<Signature[]>> => {
   const PREFIX = getPrefix(userType);

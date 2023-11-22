@@ -100,8 +100,9 @@ public class EmployerController extends GenericUserController<Employer, Employer
         return ResponseEntity.ok(service.getAllDepartments());
     }
 
-    @PostMapping("/sign_contract")
-    public ResponseEntity<HttpStatus> signContract(@RequestParam("contractId") Long contractId) {
+    @PostMapping("/sign_contract/{contractId}")
+    public ResponseEntity<HttpStatus> signContract(@PathVariable Long contractId) {
+        logger.info("employerSignContract");
         try {
             service.signContract(contractId);
             return ResponseEntity.ok().build();
