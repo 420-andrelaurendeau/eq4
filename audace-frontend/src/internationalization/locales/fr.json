@@ -339,12 +339,7 @@
     }
   },
   "signature": {
-    "title": "Signer le contrat",
-    "manager": "Signature du gestionnaire",
-    "student": "Signature de l'étudiant",
-    "employer": "Signature de l'employeur",
-    "signedOn": "Signé le",
-    "notSigned": "Pas signé",
-    "sign": "Signez"
+    "signedOn": "a signé le",
+    "sign": "Sign"
   }
 }

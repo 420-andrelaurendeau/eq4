@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button, Card, Col, Container, ListGroup, ListGroupItem, Placeholder, Row } from 'react-bootstrap';
+import { Badge, Button, Card, Col, Container, ListGroup, ListGroupItem, Placeholder, Row } from 'react-bootstrap';
 import { Contract, Signature } from '../../model/contract';
 import { getContractById, getSignaturesByContractId, signContract, signContractByManager } from '../../services/contractService';
 import { getAuthorities, getUserId } from '../../services/authService';
@@ -33,7 +33,6 @@ const SignContract = () => {
         .then((response) => {
           setSignatures(response.data);
           fetchSignatureUsers();
-          console.log("signatures: ", response.data);
         })
         .catch((error) => {
           console.error("Error fetching signatures:", error);
@@ -41,16 +40,17 @@ const SignContract = () => {
     };
 
     const fetchSignatureUsers = async () => {
+      const signatureUsers: User[] = [];
       signatures.forEach((signature) => {
         getUserById(signature.signatoryId)
           .then((response) => {
-            console.log("signature user: ", response.data);
-            setSignatureUsers([...signatureUsers, response.data]);
+            signatureUsers.push(response.data);
           })
           .catch((error) => {
             console.error("Error fetching signatureUsers:", error);
           });
       });
+      setSignatureUsers(signatureUsers);
     }
 
     if (id && userType) {
@@ -58,6 +58,7 @@ const SignContract = () => {
       fetchContract(contractId);
       fetchSignatures(contractId);
     }
+    // DONT ADD SIGNATURE IN THERE OR ELSE INFINITE RERENDER
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, userType]);
 
@@ -86,15 +87,6 @@ const SignContract = () => {
   //     console.error(`Error signing contract as ${role}:`, error);
   //   }
   // };
-
-
-  const getSignatureDate = (signature: Signature) => {
-    if (signature?.signatoryId === parseInt(getUserId()!)) {
-      return new Date(signature?.signatureDate).toLocaleDateString();
-    } else {
-      return new Date(signature?.signatureDate).toLocaleDateString();
-    }
-  }
 
   const isSignedByUser = () => {
     return signatures.find(signature => signature?.signatoryId === parseInt(getUserId()!));
@@ -201,18 +193,13 @@ const SignContract = () => {
             </Row>
           </Card>
 
-          {signatures.map((signature: Signature) => (
-            <Card key={signature.id} className="mb-3">
-              <Card.Header as="h5">
-                {/* {signature.signatoryId === parseInt(getUserId()!) ? t('signature.you') : `${signature.signatory.firstName} ${signature.signatory.lastName}`} */}
-              </Card.Header>
-              <Card.Body>
-                <ListGroup variant="flush">
-                  <ListGroupItem><strong>{t('signature.date')}:</strong> {getSignatureDate(signature)}</ListGroupItem>
-                </ListGroup>
-              </Card.Body>
-            </Card>
-          ))}
+          <Row className="mb-3">
+            {signatureUsers && signatures.map((signature: Signature) => (
+              <Col key={signature.id}>
+                <Badge bg="primary">signatureUsers[signatures.indexOf(signature)].name {t('signature.signedOn')} {new Date(signature?.signatureDate).toLocaleDateString()}</Badge>
+              </Col>
+            ))}
+          </Row>
 
           <Button
             className={isSignedByUser() && userType === Authority.MANAGER ? "signed-button" : ""}
@@ -220,7 +207,7 @@ const SignContract = () => {
             {isSignedByUser() && userType === Authority.MANAGER ? t('signature.signed') : t('signature.sign')}
           </Button>
         </Col>
-      </Row>
+      </Row >
     </Container >
   );
 };

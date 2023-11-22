@@ -297,56 +297,49 @@
     }
   },
   "notifications": {
-    "deleteAll" : "Remove all",
+    "deleteAll": "Remove all",
     "student": {
       "offer": {
-        "CREATED1" : "The offer ",
-        "CREATED2" : " can now be applied to."
+        "CREATED1": "The offer ",
+        "CREATED2": " can now be applied to."
       },
       "cv": {
-        "UPDATED1" : "The CV ",
-        "UPDATED2" : " has had it's status updated."
+        "UPDATED1": "The CV ",
+        "UPDATED2": " has had it's status updated."
       },
       "application": {
-        "UPDATED1" : "The application ",
-        "UPDATED2" : " has had it's status updated."
+        "UPDATED1": "The application ",
+        "UPDATED2": " has had it's status updated."
       }
     },
     "manager": {
       "offer": {
-        "CREATED1" : "The offer ",
-        "CREATED2" : " is waiting for your approval.",
-        "UPDATED1" : "The offer ",
-        "UPDATED2" : " has been updated."
+        "CREATED1": "The offer ",
+        "CREATED2": " is waiting for your approval.",
+        "UPDATED1": "The offer ",
+        "UPDATED2": " has been updated."
       },
       "cv": {
-        "CREATED1" : "The CV ",
-        "CREATED2" : " is waiting for your approval.",
-        "UPDATED1" : "The CV ",
-        "UPDATED2" : " has been updated."
+        "CREATED1": "The CV ",
+        "CREATED2": " is waiting for your approval.",
+        "UPDATED1": "The CV ",
+        "UPDATED2": " has been updated."
       },
-      "application": {
-        
-      }
+      "application": {}
     },
     "employer": {
       "offer": {
-        "UPDATED1" : "The offer ",
-        "UPDATED2" : " has had it's status updated."
+        "UPDATED1": "The offer ",
+        "UPDATED2": " has had it's status updated."
       },
       "application": {
-        "CREATED1" : "The offer ",
-        "CREATED2" : " has a new application."
+        "CREATED1": "The offer ",
+        "CREATED2": " has a new application."
       }
     }
   },
   "signature": {
-    "title": "Sign the contract",
-    "manager": "Manager's Signature",
-    "student": "Student's Signature",
-    "employer": "Employer's Signature",
-    "signedOn": "Signed on",
-    "notSigned": "Not signed",
+    "signedOn": "signed on",
     "sign": "Sign"
   }
 }
