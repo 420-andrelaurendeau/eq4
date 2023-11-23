@@ -53,12 +53,13 @@ public class AudaceApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Session session = sessionRepository.save(new Session(null, LocalDate.now(), LocalDate.now().plusMonths(6)));
-		Session session2 = sessionRepository.save(new Session(null, LocalDate.now().plusMonths(-6), LocalDate.now().plusMonths(-1)));
+		Session session = sessionRepository.save(new Session(null, LocalDate.of(2024, 8, 22), LocalDate.of(2024, 1, 22).plusWeeks(15)));
+		Session session2 = sessionRepository.save(new Session(null, LocalDate.of(2023, 8, 21), LocalDate.of(2023, 8, 21).plusWeeks(15)));
+		Session session3 = sessionRepository.save(new Session(null, LocalDate.of(2023, 1, 22), LocalDate.of(2023, 1, 22).plusWeeks(15)));
 
 		Department department = departmentRepository.save(new Department(null, "GLO", "Génie logiciel"));
 
-		Optional<EmployerDTO> optionalEmployerDTO = employerService.createEmployer(new EmployerDTO(1L, "employer", "employerman", "employer@email.com", "password", "Temp Baklungel", "Big Baklunger", "123 Street Street", "1234567890", "-123"));
+		Optional<EmployerDTO> optionalEmployerDTO = employerService.createEmployer(new EmployerDTO(1L, "Earl", "Sinclaire", "esinclaire@email.com", "password", "Temp Baklungel", "Big Baklunger", "123 Street Street", "5143643320", "45123"));
 		if (optionalEmployerDTO.isEmpty()) return;
 		EmployerDTO employerDTO = optionalEmployerDTO.get();
 		Employer employer = employerDTO.fromDTO();
@@ -68,62 +69,56 @@ public class AudaceApplication implements CommandLineRunner {
 		StudentDTO studentDTO = optionalStudent.get();
 		Student student = studentDTO.fromDTO();
 
-		Optional<StudentDTO> optionalStudent2 = studentService.createStudent(new StudentDTO(null, "student", "studentman", "student@email.com", "123 Street Street", "1234567890", "password", "123456789", department.toDTO()), department.getCode());
+		Optional<StudentDTO> optionalStudent2 = studentService.createStudent(new StudentDTO(null, "Ethyl", "Hinkleman", "hinkleman@email.com", "2469 Fallon Drive", "5192477059", "password", "20834534", department.toDTO()), department.getCode());
 		if (optionalStudent2.isEmpty()) return;
 		StudentDTO studentDTO2 = optionalStudent2.get();
 		Student student2 = studentDTO2.fromDTO();
 
-		Optional<StudentDTO> optionalStudent3 = studentService.createStudent(new StudentDTO(null, "student3", "student3", "student3@email.com", "456 Rue Rue", "0123456789", "password", "987654321", department.toDTO()), department.getCode());
+		Optional<StudentDTO> optionalStudent3 = studentService.createStudent(new StudentDTO(null, "Edmonton", "Mundare", "mundare@email.com", "4696 Main St", "7807647135", "password", "1974532", department.toDTO()), department.getCode());
 		if (optionalStudent3.isEmpty()) return;
 		StudentDTO studentDTO3 = optionalStudent3.get();
 		Student student3 = studentDTO3.fromDTO();
 
-        Offer offer1 = offerRepository.save(
-				new Offer(null, "Stage en génie logiciel PROTOTYPE", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 2, department, employer)
-		);
-		offer1.setOfferStatus(Offer.OfferStatus.ACCEPTED);
-        offerSessionRepository.save(new OfferSession(null, offer1, session));
-
 		Offer offer2 = offerRepository.save(
-                new Offer(null, "Stage en génie logiciel chez Roc-a-Fella Records", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer)
+                new Offer(null, "Stage en génie logiciel chez Roc-a-Fella Records", "Stage en génie logiciel", LocalDate.of(2024, 1, 22), LocalDate.of(2024, 1, 22).plusWeeks(15), LocalDate.of(2023, 10, 22).plusMonths(1), 2, department, employer)
 		);
         offer2.setOfferStatus(Offer.OfferStatus.ACCEPTED);
         offer2 = offerRepository.save(offer2);
 		offerSessionRepository.save(new OfferSession(null, offer2, session));
 
         Offer offer3 = offerRepository.save(
-                new Offer(null, "Stage en génie logiciel chez Google", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer)
+                new Offer(null, "Stage en génie logiciel chez Google", "Stage en génie logiciel", LocalDate.of(2024, 1, 22), LocalDate.of(2024, 1, 22).plusWeeks(15), LocalDate.of(2023, 10, 22).plusMonths(1), 3, department, employer)
 		);
         offerSessionRepository.save(new OfferSession(null, offer3, session));
 
         Offer offer4 = offerRepository.save(
-                new Offer(null, "Stage en génie logiciel chez Microsoft", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer)
+                new Offer(null, "Stage en génie logiciel chez Microsoft", "Stage en génie logiciel", LocalDate.of(2023, 1, 22), LocalDate.of(2023, 1, 22).plusWeeks(15), LocalDate.of(2022, 9, 22).plusMonths(1), 3, department, employer)
 		);
-        offerSessionRepository.save(new OfferSession(null, offer4, session));
+        offerSessionRepository.save(new OfferSession(null, offer4, session3));
 
         Offer offer5 = offerRepository.save(
-                new Offer(null, "Stage en génie logiciel chez Apple", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer)
+                new Offer(null, "Stage en génie logiciel chez Apple", "Stage en génie logiciel", LocalDate.of(2023, 5, 20), LocalDate.of(2023, 5, 20).plusWeeks(12), LocalDate.of(2023, 1, 22).plusMonths(1), 3, department, employer)
         );
         offerSessionRepository.save(new OfferSession(null, offer5, session2));
 
 		String cvContent = "cv content for fun";
 		byte[] content = cvContent.getBytes();
 
-		Cv cv1 = new Cv(1L, "cvStudent1.pdf", content, student);
+		Cv cv1 = new Cv(1L, "cvKylian.pdf", content, student);
 		cv1.setCvStatus(Cv.CvStatus.ACCEPTED);
 		cvRepository.save(cv1);
 
-		Cv cv2 = new Cv(2L, "cvStudent2.pdf", content, student2);
+		Cv cv2 = new Cv(2L, "cvEthyl.pdf", content, student2);
 		cv2.setCvStatus(Cv.CvStatus.ACCEPTED);
 		cvRepository.save(cv2);
 
-		Cv cv3 = new Cv(3L, "cvStudent3.pdf", content, student3);
+		Cv cv3 = new Cv(3L, "cvEdmonton.pdf", content, student3);
 		cv3.setCvStatus(Cv.CvStatus.ACCEPTED);
 		cvRepository.save(cv3);
 
-		applicationRepository.save(new Application(1L, cv1, offer1));
-		applicationRepository.save(new Application(2L, cv2, offer1));
-		applicationRepository.save(new Application(3L, cv3, offer1));
+		applicationRepository.save(new Application(1L, cv1, offer2));
+		applicationRepository.save(new Application(2L, cv2, offer2));
+		applicationRepository.save(new Application(3L, cv3, offer2));
 
 
 		Manager manager = new Manager(null, "manager", "managerman", "manager@email.com", "password", "yeete", "1234567890", department);

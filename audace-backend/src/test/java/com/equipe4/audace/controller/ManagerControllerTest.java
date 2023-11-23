@@ -1,6 +1,7 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.application.StudentsByInternshipFoundStatus;
@@ -51,6 +52,7 @@ import java.util.Optional;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
