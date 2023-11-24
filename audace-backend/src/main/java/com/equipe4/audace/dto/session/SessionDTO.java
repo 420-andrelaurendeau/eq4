@@ -14,14 +14,12 @@ public class SessionDTO {
     private Long id;
     private LocalDate startDate;
     private LocalDate endDate;
-    private boolean isCurrentSession;
 
     public Session fromDTO() {
         return new Session(
                 id,
                 startDate,
-                endDate,
-                isCurrentSession
+                endDate
         );
     }
 }

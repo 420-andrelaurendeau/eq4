@@ -49,6 +49,10 @@ public class UserService extends GenericUserService<User> {
         return Optional.of(sessionManipulator.getCurrentSession().toDTO());
     }
 
+    public Optional<SessionDTO> getNextSession() {
+        return Optional.of(sessionManipulator.getNextSession().toDTO());
+    }
+
     public Optional<SessionDTO> getSessionById(Long sessionId) {
         return sessionRepository.findById(sessionId).map(Session::toDTO);
     }

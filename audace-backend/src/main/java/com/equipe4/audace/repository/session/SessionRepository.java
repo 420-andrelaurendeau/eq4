@@ -13,5 +13,4 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
             "WHERE :chosenDate BETWEEN s.startDate AND s.endDate")
     List<Session> findAllByDateBetween(LocalDate chosenDate);
 
-    Optional<Session> findFirstByIsCurrentSessionTrue();
 }

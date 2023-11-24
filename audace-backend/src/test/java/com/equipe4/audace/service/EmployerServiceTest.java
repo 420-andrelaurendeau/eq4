@@ -176,7 +176,7 @@ public class EmployerServiceTest {
 
         when(employerRepository.findById(anyLong())).thenReturn(Optional.of(employer));
         when(offerRepository.findAllByEmployer(any(Employer.class))).thenReturn(offers);
-        when(sessionManipulator.removeOffersNotInSession(offers, session.getId())).thenReturn(offers);
+        when(sessionManipulator.removeOffersNotInNextSession(offers, session.getId())).thenReturn(offers);
 
         List<OfferDTO> offerDTOList = employerService.findAllOffersByEmployerIdAndSessionId(employer.getId(), session.getId());
 
@@ -209,7 +209,7 @@ public class EmployerServiceTest {
         Offer offer = createOffer(1L, createEmployer());
 
         when(offerRepository.findById(offer.getId())).thenReturn(Optional.of(offer));
-        when(sessionManipulator.isOfferInCurrentSession(offer)).thenReturn(true);
+        when(sessionManipulator.isOfferInNextSession(offer)).thenReturn(true);
         when(offerSessionRepository.findByOffer(offer)).thenReturn(Optional.of(new OfferSession()));
 
         employerService.deleteOffer(offer.getId());
@@ -232,7 +232,7 @@ public class EmployerServiceTest {
 
         when(offerRepository.save(any(Offer.class))).thenReturn(offer);
         when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer));
-        when(sessionManipulator.isOfferInCurrentSession(any(Offer.class))).thenReturn(true);
+        when(sessionManipulator.isOfferInNextSession(any(Offer.class))).thenReturn(true);
 
         OfferDTO originalOffer = employerService.createOffer(offer.toDTO()).get();
 

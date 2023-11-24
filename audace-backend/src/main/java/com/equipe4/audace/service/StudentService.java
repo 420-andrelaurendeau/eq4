@@ -90,7 +90,7 @@ public class StudentService extends GenericUserService<Student> {
         List<Offer> offers = offerRepository.findAllByDepartmentAndOfferStatus(department, OfferStatus.ACCEPTED);
 
         return sessionManipulator
-                .removeOffersNotInSession(offers, sessionId)
+                .removeOffersNotInNextSession(offers, sessionId)
                 .stream()
                 .map(Offer::toDTO)
                 .toList();

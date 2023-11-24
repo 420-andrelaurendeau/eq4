@@ -26,9 +26,11 @@ public class SessionManipulator {
     private final StudentSessionRepository studentSessionRepository;
 
     public Session getCurrentSession() {
-        return sessionRepository
-                .findFirstByIsCurrentSessionTrue()
-                .orElseThrow();
+        return getSessionAtDate(LocalDate.now());
+    }
+
+    public Session getNextSession(){
+        return getSessionAtDate(getCurrentSession().getEndDate().plusWeeks(6));
     }
 
     public Optional<Session> getSessionById(Long id) {
@@ -49,7 +51,7 @@ public class SessionManipulator {
         return sessions.get(0);
     }
 
-    public List<Offer> removeOffersNotInSession(List<Offer> offers, Long sessionId) {
+    public List<Offer> removeOffersNotInNextSession(List<Offer> offers, Long sessionId) {
         List<OfferSession> offerSessions = offerSessionRepository.findAllByOfferInAndSessionId(offers, sessionId);
 
         return offerSessions
@@ -58,8 +60,8 @@ public class SessionManipulator {
                 .toList();
     }
 
-    public boolean isOfferInCurrentSession(Offer offer) {
-        Session session = getCurrentSession();
+    public boolean isOfferInNextSession(Offer offer) {
+        Session session = getNextSession();
         return offerSessionRepository.existsByOfferAndSession(offer, session);
     }
 

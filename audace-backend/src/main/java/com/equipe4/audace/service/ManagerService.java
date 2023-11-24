@@ -124,7 +124,7 @@ public class ManagerService extends GenericUserService<Manager> {
         if (!managerDepartment.equals(offerDepartment)) throw new IllegalArgumentException("The manager isn't in the right department");
 
 
-        if (!sessionManipulator.isOfferInCurrentSession(offer)) throw new NoSuchElementException("Offer not found");
+        if (!sessionManipulator.isOfferInNextSession(offer)) throw new NoSuchElementException("Offer not found");
 
         offer.setOfferStatus(offerStatus);
         notificationManipulator.makeNotificationOfferToOfferEmployer(offer, Notification.NotificationCause.UPDATED);
@@ -150,7 +150,7 @@ public class ManagerService extends GenericUserService<Manager> {
         Department department = departmentRepository.findById(departmentId).orElseThrow(() -> new NoSuchElementException("Department not found"));
         List<Offer> offers = offerRepository.findAllByDepartment(department);
 
-        return sessionManipulator.removeOffersNotInSession(offers, sessionId).stream().map(Offer::toDTO).toList();
+        return sessionManipulator.removeOffersNotInNextSession(offers, sessionId).stream().map(Offer::toDTO).toList();
     }
 
     public Optional<ApplicationDTO> getApplicationById(Long applicationId) {

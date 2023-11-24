@@ -98,7 +98,7 @@ public class ManagerServiceTest {
         );
         when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer1));
         when(offerRepository.save(any())).thenReturn(offer1);
-        when(sessionManipulator.isOfferInCurrentSession(offer1)).thenReturn(true);
+        when(sessionManipulator.isOfferInNextSession(offer1)).thenReturn(true);
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
         managerService.acceptOffer(1L, 1L);
@@ -176,7 +176,7 @@ public class ManagerServiceTest {
         );
         when(offerRepository.findById(anyLong())).thenReturn(Optional.of(offer1));
         when(offerRepository.save(any())).thenReturn(offer1);
-        when(sessionManipulator.isOfferInCurrentSession(offer1)).thenReturn(true);
+        when(sessionManipulator.isOfferInNextSession(offer1)).thenReturn(true);
         when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
 
         managerService.refuseOffer(1L, 1L);
@@ -250,7 +250,7 @@ public class ManagerServiceTest {
 
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(mockedDepartment));
         when(offerRepository.findAllByDepartment(mockedDepartment)).thenReturn(offers);
-        when(sessionManipulator.removeOffersNotInSession(offers, 1L)).thenReturn(offers);
+        when(sessionManipulator.removeOffersNotInNextSession(offers, 1L)).thenReturn(offers);
 
         List<OfferDTO> result = managerService.getOffersByDepartmentIdAndSessionId(1L, 1L);
 

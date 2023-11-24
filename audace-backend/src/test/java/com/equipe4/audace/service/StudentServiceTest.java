@@ -79,7 +79,7 @@ public class StudentServiceTest {
 
         when(departmentRepository.findById(anyLong())).thenReturn(Optional.of(department));
         when(offerRepository.findAllByDepartmentAndOfferStatus(department, Offer.OfferStatus.ACCEPTED)).thenReturn(offers);
-        when(sessionManipulator.removeOffersNotInSession(offers, session.getId())).thenReturn(offers);
+        when(sessionManipulator.removeOffersNotInNextSession(offers, session.getId())).thenReturn(offers);
 
         List<OfferDTO> result = studentService.getAcceptedOffersByDepartment(1L, session.getId());
 

@@ -53,9 +53,13 @@ public class AudaceApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Session session = sessionRepository.save(new Session(null, LocalDate.of(2024, 1, 22), LocalDate.of(2024, 1, 22).plusWeeks(15), true));
-		Session session2 = sessionRepository.save(new Session(null, LocalDate.of(2023, 8, 21), LocalDate.of(2023, 8, 21).plusWeeks(15), false));
-		Session session3 = sessionRepository.save(new Session(null, LocalDate.of(2023, 1, 22), LocalDate.of(2023, 1, 22).plusWeeks(15), false));
+
+
+		Session winter23 = sessionRepository.save(new Session(null, LocalDate.of(2023, 1, 20), LocalDate.of(2023, 5, 19)));
+		Session summer23 = sessionRepository.save(new Session(null, LocalDate.of(2023, 5, 20), LocalDate.of(2023, 8, 19)));
+		Session fall23 = sessionRepository.save(new Session(null, LocalDate.of(2023, 8, 20), LocalDate.of(2023, 12, 23)));
+		Session winter24 = sessionRepository.save(new Session(null, LocalDate.of(2024, 1, 20), LocalDate.of(2024, 5, 19)));
+
 
 		Department department = departmentRepository.save(new Department(null, "GLO", "Génie logiciel"));
 
@@ -84,22 +88,22 @@ public class AudaceApplication implements CommandLineRunner {
 		);
         offer2.setOfferStatus(Offer.OfferStatus.ACCEPTED);
         offer2 = offerRepository.save(offer2);
-		offerSessionRepository.save(new OfferSession(null, offer2, session));
+		offerSessionRepository.save(new OfferSession(null, offer2, winter24));
 
         Offer offer3 = offerRepository.save(
                 new Offer(null, "Stage en génie logiciel chez Google", "Stage en génie logiciel", LocalDate.of(2024, 1, 22), LocalDate.of(2024, 1, 22).plusWeeks(15), LocalDate.of(2023, 10, 22).plusMonths(1), 3, department, employer)
 		);
-        offerSessionRepository.save(new OfferSession(null, offer3, session));
+        offerSessionRepository.save(new OfferSession(null, offer3, winter24));
 
         Offer offer4 = offerRepository.save(
-                new Offer(null, "Stage en génie logiciel chez Microsoft", "Stage en génie logiciel", LocalDate.of(2023, 1, 22), LocalDate.of(2023, 1, 22).plusWeeks(15), LocalDate.of(2022, 9, 22).plusMonths(1), 3, department, employer)
+                new Offer(null, "Stage en génie logiciel chez Microsoft", "Stage en génie logiciel", LocalDate.of(2023, 5, 22), LocalDate.of(2023, 5, 22).plusWeeks(12), LocalDate.of(2023, 2, 22).plusMonths(1), 3, department, employer)
 		);
-        offerSessionRepository.save(new OfferSession(null, offer4, session3));
+        offerSessionRepository.save(new OfferSession(null, offer4, summer23));
 
         Offer offer5 = offerRepository.save(
-                new Offer(null, "Stage en génie logiciel chez Apple", "Stage en génie logiciel", LocalDate.of(2023, 5, 20), LocalDate.of(2023, 5, 20).plusWeeks(12), LocalDate.of(2023, 1, 22).plusMonths(1), 3, department, employer)
+                new Offer(null, "Stage en génie logiciel chez Apple", "Stage en génie logiciel", LocalDate.of(2023, 1, 22), LocalDate.of(2023, 1, 22).plusWeeks(12), LocalDate.of(2022, 10, 22).plusMonths(1), 3, department, employer)
         );
-        offerSessionRepository.save(new OfferSession(null, offer5, session2));
+        offerSessionRepository.save(new OfferSession(null, offer5, winter23));
 
 		String cvContent = "cv content for fun";
 		byte[] content = cvContent.getBytes();

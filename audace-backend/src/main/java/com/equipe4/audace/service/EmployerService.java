@@ -82,7 +82,9 @@ public class EmployerService extends GenericUserService<Employer> {
     public Optional<OfferDTO> createOffer(OfferDTO offerDTO){
         if(offerDTO == null) throw new IllegalArgumentException("Offer cannot be null");
 
-        Session session = sessionManipulator.getCurrentSession();
+        //Session session = sessionManipulator.getCurrentSession();
+
+        Session session = sessionManipulator.getNextSession();
 
         offerDTO.setOfferStatus(Offer.OfferStatus.PENDING);
 
@@ -100,7 +102,7 @@ public class EmployerService extends GenericUserService<Employer> {
         Employer employer = employerRepository.findById(employerId).orElseThrow(() -> new NoSuchElementException("Employer not found"));
         List<Offer> offers = offerRepository.findAllByEmployer(employer);
 
-        return sessionManipulator.removeOffersNotInSession(offers, sessionId).stream().map(Offer::toDTO).toList();
+        return sessionManipulator.removeOffersNotInNextSession(offers, sessionId).stream().map(Offer::toDTO).toList();
     }
 
     public Optional<OfferDTO> findOfferById(Long offerId){
@@ -115,7 +117,7 @@ public class EmployerService extends GenericUserService<Employer> {
     @Transactional
     public Optional<OfferDTO> updateOffer(OfferDTO offerDTO){
         Offer offer = offerRepository.findById(offerDTO.getId()).orElseThrow(() -> new NoSuchElementException("Offer not found"));
-        if (!sessionManipulator.isOfferInCurrentSession(offer)) throw new IllegalStateException("Offer is not in current session");
+        if (!sessionManipulator.isOfferInNextSession(offer)) throw new IllegalStateException("Offer is not in current session");
         offer = offerDTO.fromDTO();
         Offer returnedOffer = offerRepository.save(offer);
         notificationManipulator.makeNotificationOfferToAllManagers(returnedOffer, Notification.NotificationCause.UPDATED);
@@ -126,7 +128,7 @@ public class EmployerService extends GenericUserService<Employer> {
     public void deleteOffer(Long offerId){
         Offer offer = offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));
 
-        if (!sessionManipulator.isOfferInCurrentSession(offer)) throw new IllegalStateException("Offer is not in current session");
+        if (!sessionManipulator.isOfferInNextSession(offer)) throw new IllegalStateException("Offer is not in current session");
 
         OfferSession offerSession = offerSessionRepository.findByOffer(offer).orElseThrow();
         offerSessionRepository.delete(offerSession);
