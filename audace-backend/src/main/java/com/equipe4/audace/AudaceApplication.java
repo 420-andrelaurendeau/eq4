@@ -53,9 +53,9 @@ public class AudaceApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Session session = sessionRepository.save(new Session(null, LocalDate.of(2024, 8, 22), LocalDate.of(2024, 1, 22).plusWeeks(15)));
-		Session session2 = sessionRepository.save(new Session(null, LocalDate.of(2023, 8, 21), LocalDate.of(2023, 8, 21).plusWeeks(15)));
-		Session session3 = sessionRepository.save(new Session(null, LocalDate.of(2023, 1, 22), LocalDate.of(2023, 1, 22).plusWeeks(15)));
+		Session session = sessionRepository.save(new Session(null, LocalDate.of(2024, 1, 22), LocalDate.of(2024, 1, 22).plusWeeks(15), true));
+		Session session2 = sessionRepository.save(new Session(null, LocalDate.of(2023, 8, 21), LocalDate.of(2023, 8, 21).plusWeeks(15), false));
+		Session session3 = sessionRepository.save(new Session(null, LocalDate.of(2023, 1, 22), LocalDate.of(2023, 1, 22).plusWeeks(15), false));
 
 		Department department = departmentRepository.save(new Department(null, "GLO", "Génie logiciel"));
 

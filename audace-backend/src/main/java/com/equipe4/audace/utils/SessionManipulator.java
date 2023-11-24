@@ -26,7 +26,9 @@ public class SessionManipulator {
     private final StudentSessionRepository studentSessionRepository;
 
     public Session getCurrentSession() {
-        return getSessionAtDate(LocalDate.now());
+        return sessionRepository
+                .findFirstByIsCurrentSessionTrue()
+                .orElseThrow();
     }
 
     public Optional<Session> getSessionById(Long id) {
@@ -57,7 +59,7 @@ public class SessionManipulator {
     }
 
     public boolean isOfferInCurrentSession(Offer offer) {
-        Session session = getSessionAtDate(LocalDate.now());
+        Session session = getCurrentSession();
         return offerSessionRepository.existsByOfferAndSession(offer, session);
     }
 
