@@ -49,7 +49,6 @@ const Applications = ({ offer, updateAvailablePlaces }: Props) => {
 
   return (
     <Container>
-      <h1 className="text-center my-3">{offer.title}</h1>
       {
         <ApplicationsList
           offer={offer}

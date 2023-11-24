@@ -17,7 +17,8 @@ interface Props {
 const OfferRow = ({ offer, updateOffersState }: Props) => {
   const [show, setShow] = useState<boolean>(false);
   const { t } = useTranslation();
-  const { currentSession, chosenSession } = useSessionContext();
+  const { currentSession, chosenSession, nextSession } = useSessionContext();
+
 
   const handleClick = () => setShow(true);
   const handleClose = () => setShow(false);
@@ -36,7 +37,7 @@ const OfferRow = ({ offer, updateOffersState }: Props) => {
         <td>{formatDate(offer.internshipStartDate)}</td>
         <td>{formatDate(offer.internshipEndDate)}</td>
         <td>{offer.availablePlaces}</td>
-        {chosenSession?.id === currentSession?.id && (
+        {chosenSession?.id === nextSession?.id && (
           <td>
             <div className="d-flex justify-content-center">
               <OfferButtons

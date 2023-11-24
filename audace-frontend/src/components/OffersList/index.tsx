@@ -23,7 +23,7 @@ const OffersList = ({
   updateAvailablePlaces,
 }: Props) => {
   const { t } = useTranslation();
-  const { chosenSession, currentSession } = useSessionContext();
+  const { chosenSession, currentSession, nextSession } = useSessionContext();
   const userType = getUserType();
 
   return (
@@ -41,7 +41,7 @@ const OffersList = ({
               <th>{t("offersList.internshipStartDate")}</th>
               <th>{t("offersList.internshipEndDate")}</th>
               <th>{t("offersList.availablePlaces")}</th>
-              {chosenSession?.id === currentSession?.id && <th></th>}
+              {chosenSession?.id === nextSession?.id && <th></th>}
             </tr>
           </thead>
           <tbody>
