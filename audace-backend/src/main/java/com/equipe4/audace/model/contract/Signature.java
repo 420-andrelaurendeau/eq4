@@ -30,6 +30,8 @@ public class Signature <T extends User> {
         return new SignatureDTO(
             id,
             signatory.getId(),
+            signatory.getFirstName() + " " + signatory.getLastName(),
+            signatory.getClass().getSimpleName(),
             signatureDate
         );
     }

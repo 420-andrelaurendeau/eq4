@@ -339,9 +339,10 @@ public class StudentControllerTest {
         return new ContractDTO(1L, "08:00", "17:00", 40, 18.35, createSupervisor(), applicationDTO);
     }
 
-    private SignatureDTO createSignatureDTO(){
-        return new SignatureDTO(1L, 1L, LocalDate.now());
+    private SignatureDTO createSignatureDTO() {
+        return new SignatureDTO(1L, 1L, "signatureName", "signatureType", LocalDate.now());
     }
+
     private Supervisor createSupervisor(){
         return new Supervisor("super", "visor", "supervisor@email.com", "supervisor", "1234567890", "-123");
     }

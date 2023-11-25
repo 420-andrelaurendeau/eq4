@@ -11,6 +11,7 @@ import java.time.LocalDate;
 public class SignatureDTO {
     private Long id;
     private Long signatoryId;
+    private String signatoryName;
+    private String signatoryType;
     private LocalDate signatureDate;
-
 }

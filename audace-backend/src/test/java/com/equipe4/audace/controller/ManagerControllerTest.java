@@ -509,7 +509,7 @@ public class ManagerControllerTest {
     }
 
     private SignatureDTO createSignatureDTO() {
-        return new SignatureDTO(1L, 1L, LocalDate.now());
+        return new SignatureDTO(1L, 1L, "signatureName", "signatureType", LocalDate.now());
     }
 
     private Supervisor createSupervisor(){
