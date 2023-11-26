@@ -20,7 +20,7 @@ import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.notification.Notification;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.offer.Offer.OfferStatus;
-import com.equipe4.audace.repository.ApplicationRepository;
+import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.repository.contract.ContractRepository;
@@ -35,9 +35,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.NoSuchElementException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -136,6 +136,7 @@ public class ManagerService extends GenericUserService<Manager> {
         notificationManipulator.makeNotificationOfferToOfferEmployer(offer, Notification.NotificationCause.UPDATED);
         return Optional.of(offerRepository.save(offer).toDTO());
     }
+
     @Transactional
     public Optional<OfferDTO> acceptOffer(Long managerId, Long offerId) {
         notificationManipulator.makeNotificationOfferToAllStudents(
@@ -184,6 +185,7 @@ public class ManagerService extends GenericUserService<Manager> {
 
         return Optional.of(contractRepository.save(contract).toDTO());
     }
+
     public Optional<ContractDTO> findContractById(Long contractId){
         Contract contract = contractRepository.findById(contractId).orElseThrow(() -> new NoSuchElementException("Contract not found"));
         return Optional.of(contract.toDTO());

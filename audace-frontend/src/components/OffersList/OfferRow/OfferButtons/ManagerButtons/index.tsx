@@ -5,9 +5,9 @@ import { Offer, OfferStatus } from "../../../../../model/offer";
 import { getUserId } from "../../../../../services/authService";
 
 interface Props {
-  disabled: boolean;
+  disabled?: boolean;
   offer: Offer;
-  updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
+  updateOffersState: (offer: Offer, offerStatus: OfferStatus) => void;
 }
 
 const ManagerButtons = ({ disabled, offer, updateOffersState }: Props) => {
@@ -29,7 +29,7 @@ const ManagerButtons = ({ disabled, offer, updateOffersState }: Props) => {
 
   return (
     <>
-      {offer.offerStatus === "PENDING" ? (
+      {offer.offerStatus === OfferStatus.PENDING ? (
         <>
           <Button
             disabled={disabled}

@@ -3,15 +3,15 @@ import { UserType } from "../../model/user";
 import { CV, CVStatus } from "../../model/cv";
 import CvRow from "./CvRow";
 import GenericTable from "../GenericTable";
+import { getUserType } from "../../services/authService";
 
 interface Props {
   cvs: CV[];
   error: string;
-  userType: UserType;
   updateCvsState?: (cv: CV, cvStatus: CVStatus) => void;
 }
 
-const CvsList = ({ cvs, error, userType, updateCvsState }: Props) => {
+const CvsList = ({ cvs, error, updateCvsState }: Props) => {
   const { t } = useTranslation();
 
   return (
@@ -26,18 +26,13 @@ const CvsList = ({ cvs, error, userType, updateCvsState }: Props) => {
           <tr>
             <th>{t("cvsList.studentName")}</th>
             <th>{t("cvsList.name")}</th>
-            {userType !== UserType.Student && <th></th>}
+            {getUserType() !== UserType.Student && <th></th>}
           </tr>
         </thead>
         <tbody>
           {cvs.map((cv) => {
             return (
-              <CvRow
-                key={cv.id}
-                cv={cv}
-                userType={userType}
-                updateCvsState={updateCvsState}
-              />
+              <CvRow key={cv.id} cv={cv} updateCvsState={updateCvsState} />
             );
           })}
         </tbody>

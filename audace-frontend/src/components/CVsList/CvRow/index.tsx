@@ -5,14 +5,14 @@ import CvButtons from "./CvButtons";
 import { useState } from "react";
 import CvModal from "./CvModal";
 import { useTranslation } from "react-i18next";
+import { getUserType } from "../../../services/authService";
 
 interface Props {
   cv: CV;
-  userType: UserType;
   updateCvsState?: (cv: CV, cvStatus: CVStatus) => void;
 }
 
-const CvRow = ({ cv, userType, updateCvsState }: Props) => {
+const CvRow = ({ cv, updateCvsState }: Props) => {
   const [show, setShow] = useState<boolean>(false);
   const handleClick = () => setShow(true);
   const handleClose = () => setShow(false);
@@ -32,10 +32,9 @@ const CvRow = ({ cv, userType, updateCvsState }: Props) => {
             </u>
           </Col>
         </td>
-        {userType !== UserType.Student && (
+        {getUserType() !== UserType.Student && (
           <td className="text-center">
             <CvButtons
-              userType={userType}
               cv={cv}
               updateCvsState={updateCvsState}
             />

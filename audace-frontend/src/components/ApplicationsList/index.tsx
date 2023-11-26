@@ -3,32 +3,59 @@ import ApplicationRow from "./ApplicationRow";
 import { useTranslation } from "react-i18next";
 import GenericTable from "../GenericTable";
 import { UserType } from "../../model/user";
+import { Offer } from "../../model/offer";
+import { getUserType } from "../../services/authService";
 
 interface Props {
+  offer?: Offer;
   applications: Application[];
   error: string;
-  userType: UserType;
-  updateApplicationsState?: (application: Application, applicationStatus: ApplicationStatus) => void;
+  updateApplicationsState?: (
+    application: Application,
+    applicationStatus: ApplicationStatus
+  ) => void;
 }
 
-const ApplicationsList = ({ applications, error, userType, updateApplicationsState }: Props) => {
+const ApplicationsList = ({
+  offer,
+  applications,
+  error,
+  updateApplicationsState,
+}: Props) => {
   const { t } = useTranslation();
+  const userType = getUserType();
 
   return (
     <>
-      <GenericTable list={applications} error={error} emptyListMessage="applicationsList.noApplications" title="applicationsList.title">
+      <GenericTable
+        list={applications}
+        error={error}
+        emptyListMessage="applicationsList.noApplications"
+        title="applicationsList.title"
+      >
         <thead>
           <tr>
-            {userType !== UserType.Employer && <th>{t("applicationsList.offerTitle")}</th>}
-            {userType !== UserType.Student && <th>{t("applicationsList.studentName")}</th>}
+            {userType !== UserType.Employer && (
+              <th>{t("applicationsList.offerTitle")}</th>
+            )}
+            {userType !== UserType.Student && (
+              <th>{t("applicationsList.studentName")}</th>
+            )}
             <th>{t("applicationsList.cv")}</th>
-            {userType !== UserType.Employer && <th>{t("applicationsList.organization")}</th>}
+            {userType !== UserType.Employer && (
+              <th>{t("applicationsList.organization")}</th>
+            )}
             <th>{t("applicationsList.status")}</th>
           </tr>
         </thead>
         <tbody>
           {applications.map((application) => (
-            <ApplicationRow key={application.id} application={application} userType={userType} updateApplicationsState={updateApplicationsState} />
+            <ApplicationRow
+              offer={offer}
+              key={application.id}
+              application={application}
+              updateApplicationsState={updateApplicationsState}
+            />
           ))}
         </tbody>
       </GenericTable>

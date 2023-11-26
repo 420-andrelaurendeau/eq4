@@ -162,7 +162,8 @@
     },
     "createOfferButton": "Créer une offre",
     "seeOffersButton": "Voir les offres",
-    "seeApplicationsButton": "Voir les candidatures"
+    "seeApplicationsButton": "Voir les candidatures",
+    "addOfferButton": "Créer une offre"
   },
   "addOffer": {
     "pageTitle": "Créer une offre",
@@ -195,10 +196,11 @@
     "submit": "Soumettre"
   },
   "upload": {
-    "CvFormTitle": "Télécharger un CV",
-    "file": "Télécharger un fichier",
+    "CvFormTitle": "Téléverser votre CV",
+    "file": "Séléctionner un fichier",
     "submit": "Soumettre",
-    "success": "Votre CV a été téléchargé avec succès"
+    "success": "Votre CV a été téléversé avec succès",
+    "error": "Il y a eu une erreur lors du téléversement de votre CV"
   },
   "login": {
     "identification": "E-mail ou numéro d'étudiant",
@@ -218,7 +220,8 @@
     "SearchPlaceholder": "Rechercher par titre d'offre, organisation ou étudiant...",
     "noAcceptedApplications": "Aucun résultat trouvé...",
     "organization": "Organisation",
-    "status": "État",
+    "status": "Statut",
+    "studentName": "Nom de l'etudiant",
     "cv": "CV",
     "noApplications": "Aucune candidature soumise",
     "row": {

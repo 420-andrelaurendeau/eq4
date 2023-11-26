@@ -19,7 +19,7 @@ import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.notification.Notification;
 import com.equipe4.audace.model.offer.Offer;
-import com.equipe4.audace.repository.ApplicationRepository;
+import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.EmployerRepository;
 import com.equipe4.audace.repository.ManagerRepository;
 import com.equipe4.audace.repository.StudentRepository;
@@ -439,6 +439,7 @@ public class ManagerServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("The manager isn't in the right department");
     }
+
     @Test
     public void getAcceptedApplicationsByDepartment_happyPath() {
         List<Application> applications = new ArrayList<>();

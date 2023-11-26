@@ -3,32 +3,32 @@ import EmployerButtons from "./EmployerButtons";
 import StudentButtons from "./StudentButtons";
 import ManagerButtons from "./ManagerButtons";
 import { Offer, OfferStatus } from "../../../../model/offer";
+import { getUserType } from "../../../../services/authService";
 
 interface Props {
-  userType: UserType;
-  disabled: boolean;
   offer: Offer;
   updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
-  seeApplications?: (offer: Offer) => void;
-  hideRow?: () => void;
 }
-const OfferButtons = ({userType, disabled, offer, updateOffersState, seeApplications, hideRow}: Props) => {
+const OfferButtons = ({ offer, updateOffersState }: Props) => {
   const selectButtons = () => {
+    const userType = getUserType();
+
     switch (userType) {
       case UserType.Student:
-        return <StudentButtons disabled={false} offer={offer} />;
+        return <StudentButtons offer={offer} />;
       case UserType.Manager:
         return (
-          <ManagerButtons disabled={false} offer={offer} updateOffersState={updateOffersState}/>
+          <ManagerButtons
+            offer={offer}
+            updateOffersState={updateOffersState!}
+          />
         );
       case UserType.Employer:
-        return (
-          <EmployerButtons disabled={false} seeApplications={seeApplications} offer={offer} hideRow={hideRow} />
-        );
+        return <EmployerButtons offer={offer} />;
     }
   };
 
-  return(<>{selectButtons()}</>);
+  return (<>{selectButtons()}</>);
 };
 
 export default OfferButtons;

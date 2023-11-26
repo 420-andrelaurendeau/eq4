@@ -1,5 +1,5 @@
 import { Container } from "react-bootstrap";
-import { Manager, UserType } from "../../../model/user";
+import { Manager  } from "../../../model/user";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import { Offer, OfferStatus } from "../../../model/offer";
@@ -85,15 +85,15 @@ const ManagerOfferView = () => {
       <SessionSelector />
 
       {offers.length > 0 ? (
-        <OffersList offers={offers} error={error} userType={UserType.Manager} updateOffersState={updateOffersState}/>
+        <OffersList offers={offers} error={error} updateOffersState={updateOffersState}/>
       ) : (
         <p>{t("managerOffersList.noMorePendingOffers")}</p>
       )}
       {offersAccepted.length > 0 ? (
-        <OffersList offers={offersAccepted} error={error} userType={UserType.Manager}/>
+        <OffersList offers={offersAccepted} error={error} />
       ) : null}
       {offersRefused.length > 0 ? (
-        <OffersList offers={offersRefused} error={error} userType={UserType.Manager}/>
+        <OffersList offers={offersRefused} error={error} />
       ) : null}
     </Container>
   );

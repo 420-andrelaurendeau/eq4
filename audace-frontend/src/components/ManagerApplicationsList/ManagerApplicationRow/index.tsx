@@ -22,9 +22,8 @@ const ManagerApplicationRow = ({ application }: Props) => {
           variant="outline-secondary"
           className="text-dark"
           onClick={() => {
-            navigate(`/manager/contracts/new/${application.id}`)
-          }
-          }
+            navigate(`/manager/contracts/new/${application.id}`);
+          }}
         >
           {t("manager.createContractButton")}
         </Button>

@@ -10,10 +10,10 @@ import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.model.security.Salt;
-import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.model.session.OfferSession;
 import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.ManagerRepository;
+import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
@@ -31,6 +31,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.time.LocalDate;
 import java.util.Optional;
+
 @SpringBootApplication
 @AllArgsConstructor
 public class AudaceApplication implements CommandLineRunner {
@@ -44,7 +45,7 @@ public class AudaceApplication implements CommandLineRunner {
 	private OfferSessionRepository offerSessionRepository;
 	private ApplicationRepository applicationRepository;
 	private CvRepository cvRepository;
-	public ContractRepository contractRepository;
+	private ContractRepository contractRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AudaceApplication.class, args);

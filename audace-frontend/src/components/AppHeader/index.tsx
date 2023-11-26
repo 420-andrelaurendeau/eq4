@@ -21,10 +21,6 @@ function AppHeader({ showNotifications, setShowNotifications }: Props) {
   const { t } = useTranslation();
   const authority = getAuthorities()?.[0]?.toString().toLowerCase();
 
-  const handleClick = (path: string) => {
-    navigate(path);
-  };
-
   useEffect(() => {
     if (!isConnected()) return;
     getHasNotificationByUserId(parseInt(getUserId()!)).then((res) => {
@@ -63,11 +59,11 @@ function AppHeader({ showNotifications, setShowNotifications }: Props) {
         {authority === "employer" && (
           <Nav>
             <Button
-              onClick={() => handleClick(authority + "/offers/new")}
+              onClick={() => navigate(authority + "/offers/new")}
               variant="light"
               className="me-2"
             >
-              {t("employer.createOfferButton")}
+              {t("employer.addOfferButton")}
             </Button>
           </Nav>
         )}
@@ -75,7 +71,7 @@ function AppHeader({ showNotifications, setShowNotifications }: Props) {
         {authority === "manager" && (
           <Nav>
             <Button
-              onClick={() => handleClick(authority + "/offers")}
+              onClick={() => navigate(authority + "/offers")}
               variant="light"
               className="me-2"
             >
@@ -90,14 +86,14 @@ function AppHeader({ showNotifications, setShowNotifications }: Props) {
           <>
             <ButtonGroup>
               <Button
-                onClick={() => handleClick("/signup/employer")}
+                onClick={() => navigate("/signup/employer")}
                 variant="outline-success"
                 className="me-2"
               >
                 {t("signup.signup")}
               </Button>
               <Button
-                onClick={() => handleClick("/login")}
+                onClick={() => navigate("/login")}
                 variant="outline-primary"
                 className="me-2"
               >

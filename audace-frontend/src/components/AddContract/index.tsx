@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -18,19 +18,18 @@ const AddContract = () => {
   const [errors, setErrors] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [application, setApplication] = useState<Application>();
-  const [startHour, setStartHour] = useState('09:00');
-  const [endHour, setEndHour] = useState('17:00');
+  const [startHour, setStartHour] = useState("09:00");
+  const [endHour, setEndHour] = useState("17:00");
   const [totalHoursPerWeek, setTotalHoursPerWeek] = useState(40);
   const [salary, setSalary] = useState(15.25);
   const [isContractCreated, setIsContractCreated] = useState(true);
 
-  const [supervisorFirstName, setSupervisorFirstName] = useState("")
-  const [supervisorLastName, setSupervisorLastName] = useState("")
-  const [supervisorEmail, setSupervisorEmail] = useState("")
-  const [supervisorPhone, setSupervisorPhone] = useState("")
-  const [supervisorPosition, setSupervisorPosition] = useState("")
-  const [supervisorExtension, setSupervisorExtension] = useState("")
-
+  const [supervisorFirstName, setSupervisorFirstName] = useState("");
+  const [supervisorLastName, setSupervisorLastName] = useState("");
+  const [supervisorEmail, setSupervisorEmail] = useState("");
+  const [supervisorPhone, setSupervisorPhone] = useState("");
+  const [supervisorPosition, setSupervisorPosition] = useState("");
+  const [supervisorExtension, setSupervisorExtension] = useState("");
 
   useEffect(() => {
     getApplicationById(parseInt(applicationId!))
@@ -49,20 +48,19 @@ const AddContract = () => {
     getContractByApplicationId(application.id!, Authority.MANAGER)
       .then((res) => {
         if (res.data !== null) {
-          navigate('/manager');
+          navigate("/manager");
         }
       })
       .catch((error) => {
         console.error("Error fetching contract: " + error);
         setIsContractCreated(false);
       });
-  })
+  });
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!validateForm()) return;
     setIsLoading(true);
-
 
     const formData: Contract = {
       startHour: startHour,
@@ -75,14 +73,14 @@ const AddContract = () => {
         position: supervisorPosition,
         email: supervisorEmail,
         phone: supervisorPhone,
-        extension: supervisorExtension
+        extension: supervisorExtension,
       },
-      application: application!
+      application: application!,
     };
 
     try {
       await createContract(formData);
-      navigate('/manager/createdContract');
+      navigate("/manager/createdContract");
     } catch (error) {
       console.error(error);
       setIsLoading(false);
@@ -92,24 +90,31 @@ const AddContract = () => {
   const validateForm = (): boolean => {
     const errorsToDisplay: string[] = [];
 
-    if (application === undefined) errorsToDisplay.push("manager.createContract.errors.applicationNotFound");
-    if (totalHoursPerWeek <= 0 || totalHoursPerWeek > 168) errorsToDisplay.push("manager.createContract.errors.invalidTotalHoursPerWeek");
-    if (salary <= 0) errorsToDisplay.push("manager.createContract.errors.invalidSalary");
+    if (application === undefined)
+      errorsToDisplay.push("manager.createContract.errors.applicationNotFound");
+    if (totalHoursPerWeek <= 0 || totalHoursPerWeek > 168)
+      errorsToDisplay.push(
+        "manager.createContract.errors.invalidTotalHoursPerWeek"
+      );
+    if (salary <= 0)
+      errorsToDisplay.push("manager.createContract.errors.invalidSalary");
 
     setErrors(errorsToDisplay);
     return errorsToDisplay.length === 0;
-  }
+  };
 
   return (
     <Container className="p-3">
-      <h1>{t('manager.createContract.title')}</h1>
+      <h1>{t("manager.createContract.title")}</h1>
 
       <Row xs={1} md={2} className="g-4 mb-3">
         <Col>
-          <InfoCard employer={application?.offer?.employer as Employer} />
+          <CompanyInfoCard
+            employer={application?.offer?.employer as Employer}
+          />
         </Col>
         <Col>
-          <InfoCard student={application?.cv?.student as Student} />
+          <StudentInfoCard student={application?.cv?.student as Student} />
         </Col>
       </Row>
 
@@ -121,7 +126,11 @@ const AddContract = () => {
         </Alert>
       )}
       <Form onSubmit={handleSubmit}>
-        <Accordion defaultActiveKey={['0']} alwaysOpen className="shadow-sm mb-4">
+        <Accordion
+          defaultActiveKey={["0"]}
+          alwaysOpen
+          className="shadow-sm mb-4"
+        >
           <Accordion.Item eventKey="0">
             <Accordion.Header>
               <Card.Title>Supervisor</Card.Title>
@@ -238,8 +247,13 @@ const AddContract = () => {
             </Form.Group>
           </Col>
         </Row>
-        <Button variant="primary" type="submit" disabled={isLoading} className="mt-3">
-          {isLoading ? t('common.loading') : t('common.submit')}
+        <Button
+          variant="primary"
+          type="submit"
+          disabled={isLoading}
+          className="mt-3"
+        >
+          {isLoading ? t("common.loading") : t("common.submit")}
         </Button>
       </Form>
     </Container>

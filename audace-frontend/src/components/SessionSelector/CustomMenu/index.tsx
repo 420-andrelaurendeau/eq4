@@ -1,7 +1,7 @@
 import {
   CSSProperties,
   Children,
-  ReactNode,
+  PropsWithChildren,
   forwardRef,
   useState,
 } from "react";
@@ -11,16 +11,21 @@ import "react-datepicker/dist/react-datepicker.css";
 import { useTranslation } from "react-i18next";
 
 interface Props {
-  children: ReactNode;
   style: CSSProperties;
   className: string;
   "aria-labelledby": string;
 }
 
-const CustomMenu = forwardRef<HTMLDivElement, Props>(
+const CustomMenu = forwardRef<HTMLDivElement, PropsWithChildren<Props>>(
   ({ children, style, className, "aria-labelledby": labelledby }, ref) => {
     const [filterValue, setFilterValue] = useState<Date>();
     const { t } = useTranslation();
+
+    const elementsToDisplay = Children.toArray(children).filter((child) => {
+      const newStartDate = new Date((child as any).props.session.startDate);
+
+      return !filterValue || newStartDate <= filterValue;
+    });
 
     return (
       <div
@@ -37,11 +42,13 @@ const CustomMenu = forwardRef<HTMLDivElement, Props>(
           isClearable
           placeholderText={t("sessionSelector.filterPlaceholder")}
         />
-        {Children.toArray(children).filter((child) => {
-          const newStartDate = new Date((child as any).props.session.startDate);
-
-          return !filterValue || newStartDate <= filterValue;
-        })}
+        {elementsToDisplay.length > 0 ? (
+          elementsToDisplay
+        ) : (
+          <div className="dropdown-item text-center">
+            {t("sessionSelector.noSessionsFound")}
+          </div>
+        )}
       </div>
     );
   }

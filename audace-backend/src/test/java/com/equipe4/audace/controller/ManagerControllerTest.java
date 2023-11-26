@@ -1,7 +1,6 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.EmployerDTO;
-import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.application.StudentsByInternshipFoundStatus;
@@ -20,6 +19,7 @@ import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.*;
+import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.*;
 import com.equipe4.audace.repository.cv.CvRepository;
@@ -57,7 +57,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -354,7 +353,6 @@ public class ManagerControllerTest {
         // then - verify the result or output using assert statements
         response.andDo(print()).
                 andExpect(status().isCreated());
-
     }
 
     @Test
@@ -379,6 +377,15 @@ public class ManagerControllerTest {
                 .andExpect(jsonPath("$.salary", is(contractDTO.getSalary())))
                 .andExpect(jsonPath("$.supervisor.email", is(contractDTO.getSupervisor().getEmail())))
                 .andExpect(jsonPath("$.application.id", is(contractDTO.getApplication().getId().intValue())));
+    }
+
+
+    private DepartmentDTO createDepartmentDTO(){
+        return new DepartmentDTO(1L, "GLO", "Génie logiciel");
+    }
+
+    private ManagerDTO createManagerDTO(DepartmentDTO departmentDTO) {
+        return new ManagerDTO(1L, "manager", "managerman", "asd", "ads", "das", "sda", departmentDTO);
     }
 
     @Test

@@ -3,28 +3,34 @@ import { Employer, Student } from "../../model/user";
 import { useTranslation } from "react-i18next";
 
 interface CompanyInfoCardProps {
-  employer: Employer;
+  employer?: Employer;
 }
 
-const CompanyInfoCard = ({ employer }: CompanyInfoCardProps) => {
+export const CompanyInfoCard = ({ employer }: CompanyInfoCardProps) => {
   const { t } = useTranslation();
   return (
-    <Accordion defaultActiveKey={['0']} alwaysOpen className="shadow-sm">
+    <Accordion defaultActiveKey={["0"]} alwaysOpen className="shadow-sm">
       <Accordion.Item eventKey="0">
         <Accordion.Header>
-          {employer && <Card.Title>{t("infoCard.employer.title")} <i>{employer?.organisation}</i></Card.Title>}
+          {employer && (
+            <Card.Title>
+              {t("infoCard.employer.title")} <i>{employer?.organisation}</i>
+            </Card.Title>
+          )}
         </Accordion.Header>
         <Accordion.Body>
           {employer ? (
             <Card.Body>
               <Card.Text>
-                <b>{t("infoCard.employer.name")}:</b> {employer.firstName} {employer.lastName}
+                <b>{t("infoCard.employer.name")}:</b> {employer.firstName}{" "}
+                {employer.lastName}
               </Card.Text>
               <Card.Text>
                 <b>{t("infoCard.employer.email")}:</b> {employer.email}
               </Card.Text>
               <Card.Text>
-                <b>{t("infoCard.employer.phone")}:</b> {employer.phone} Ext: {employer.extension}
+                <b>{t("infoCard.employer.phone")}:</b> {employer.phone} Ext:{" "}
+                {employer.extension}
               </Card.Text>
               <Card.Text>
                 <b>{t("infoCard.employer.address")}:</b> {employer.address}
@@ -36,7 +42,9 @@ const CompanyInfoCard = ({ employer }: CompanyInfoCardProps) => {
                 <Placeholder xs={6} />
               </Placeholder>
               <Placeholder as={Card.Text} animation="glow">
-                <Placeholder xs={7} /> <Placeholder xs={4} /> <Placeholder xs={4} /> <Placeholder xs={6} /> <Placeholder xs={8} />
+                <Placeholder xs={7} /> <Placeholder xs={4} />{" "}
+                <Placeholder xs={4} /> <Placeholder xs={6} />{" "}
+                <Placeholder xs={8} />
               </Placeholder>
             </Card.Body>
           )}
@@ -44,19 +52,26 @@ const CompanyInfoCard = ({ employer }: CompanyInfoCardProps) => {
       </Accordion.Item>
     </Accordion>
   );
-}
+};
 
 interface StudentInfoCardProps {
-  student: Student;
+  student?: Student;
 }
 
-const StudentInfoCard = ({ student }: StudentInfoCardProps) => {
+export const StudentInfoCard = ({ student }: StudentInfoCardProps) => {
   const { t } = useTranslation();
   return (
-    <Accordion defaultActiveKey={['0']} alwaysOpen className="shadow-sm">
+    <Accordion defaultActiveKey={["0"]} alwaysOpen className="shadow-sm">
       <Accordion.Item eventKey="0">
         <Accordion.Header>
-          {student && <Card.Title>{t("infoCard.student.title")} <i>{student?.firstName} {student?.lastName}</i></Card.Title>}
+          {student && (
+            <Card.Title>
+              {t("infoCard.student.title")}{" "}
+              <i>
+                {student?.firstName} {student?.lastName}
+              </i>
+            </Card.Title>
+          )}
         </Accordion.Header>
         <Accordion.Body>
           {student ? (
@@ -77,7 +92,9 @@ const StudentInfoCard = ({ student }: StudentInfoCardProps) => {
                 <Placeholder xs={6} />
               </Placeholder>
               <Placeholder as={Card.Text} animation="glow">
-                <Placeholder xs={7} /> <Placeholder xs={4} /> <Placeholder xs={4} /> <Placeholder xs={6} /> <Placeholder xs={8} />
+                <Placeholder xs={7} /> <Placeholder xs={4} />{" "}
+                <Placeholder xs={4} /> <Placeholder xs={6} />{" "}
+                <Placeholder xs={8} />
               </Placeholder>
             </Card.Body>
           )}
@@ -85,23 +102,4 @@ const StudentInfoCard = ({ student }: StudentInfoCardProps) => {
       </Accordion.Item>
     </Accordion>
   );
-}
-
-interface InfoCardProps {
-  employer?: Employer;
-  student?: Student;
-}
-
-const InfoCard = ({ employer, student }: InfoCardProps) => {
-  return (
-    <>
-      {employer ? (
-        <CompanyInfoCard employer={employer as Employer} />
-      ) : (
-        <StudentInfoCard student={student as Student} />
-      )}
-    </>
-  );
-}
-
-export default InfoCard;
+};
