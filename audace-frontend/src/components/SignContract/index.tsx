@@ -1,49 +1,30 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Badge, Button, Card, Col, Container, ListGroup, ListGroupItem, Placeholder, Row } from 'react-bootstrap';
 import { Contract, Signature } from '../../model/contract';
 import { getContractById, getSignaturesByContractId, signContract } from '../../services/contractService';
 import { getAuthorities, getUserId } from '../../services/authService';
 import { useTranslation } from 'react-i18next';
-import { getUserById } from '../../services/userService';
-import { User } from '../../model/user';
 
 const SignContract = () => {
   const { id } = useParams();
   const [contract, setContract] = useState<Contract>();
   const [signatures, setSignatures] = useState<Signature[]>([]);
-  const [signatureUsers, setSignatureUsers] = useState<User[]>([]);
   const { t } = useTranslation();
   const userId = getUserId();
   const userType = getAuthorities()?.[0];
 
-  const fetchSignatures = useCallback(async (contractId: number) => {
-    getSignaturesByContractId(contractId, userType!)
-      .then((response) => {
-        setSignatures(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching signatures:", error);
-      });
-  }, [userType]);
-
-  const fetchSignatureUsers = useCallback(async () => {
-    const signatureUsers: User[] = [];
-    signatures.forEach((signature) => {
-      getUserById(signature.signatoryId)
+  useEffect(() => {
+    const fetchSignatures = async (contractId: number) => {
+      getSignaturesByContractId(contractId, userType!)
         .then((response) => {
-          signatureUsers.push(response.data);
+          setSignatures(response.data);
         })
         .catch((error) => {
-          console.error("Error fetching signatureUsers:", error);
+          console.error("Error fetching signatures:", error);
         });
-    });
-    console.log("signatureUsers", signatureUsers);
+    };
 
-    setSignatureUsers(signatureUsers);
-  }, [signatures]);
-
-  useEffect(() => {
     const fetchContract = async (contractId: number) => {
       getContractById(contractId, userType!)
         .then((response) => {
@@ -54,43 +35,29 @@ const SignContract = () => {
         });
     };
 
-    if (id && userType && signatureUsers.length === 0) {
+    if (id && userType) {
       const contractId = parseInt(id);
       fetchContract(contractId);
       fetchSignatures(contractId);
-      fetchSignatureUsers();
     }
-  }, [fetchSignatureUsers, fetchSignatures, id, signatureUsers.length, userType]);
+  }, [id, userType]);
 
   const handleSign = async () => {
-    try {
-      if (contract && userId && userType) {
-        signContract(contract.id!, parseInt(userId), userType)
-          .then(() => {
-            console.log("Contract signed successfully");
-            fetchSignatures(contract.id!);
-            fetchSignatureUsers();
-          })
-          .catch((error) => {
-            console.error("Error signing contract:", error);
-          });
-      }
-    } catch (error) {
-      console.error(`Error signing contract as ${userType}:`, error);
+    if (contract && userId && userType) {
+      signContract(contract.id!, parseInt(userId), userType)
+        .then((response) => {
+          const newSignature = response.data;
+          setSignatures([...signatures, newSignature]);
+        })
+        .catch((error) => {
+          console.error("Error signing contract:", error);
+        });
     }
   };
 
   const isSignedByUser = () => {
     return signatures.find(signature => signature?.signatoryId === parseInt(getUserId()!));
   };
-
-  const getSignatoryName = (signature: Signature) => {
-    if (signatureUsers.length === 0) {
-      return;
-    }
-    const signatureUser = signatureUsers.find(signatureUser => signatureUser.id === signature.signatoryId);
-    return signatureUser?.firstName + " " + signatureUser?.lastName;
-  }
 
   return (
     <Container className="mt-4">
@@ -197,7 +164,7 @@ const SignContract = () => {
             {signatures.map((signature: Signature) => (
               <Col key={signature.id}>
                 <Badge bg="success">
-                  {getSignatoryName(signature) && `${getSignatoryName(signature)} ${t('signature.signedOn')} ${new Date(signature?.signatureDate).toLocaleDateString()}`}
+                  {`${signature.signatoryName} ${t('signature.signedOn')} ${new Date(signature?.signatureDate).toLocaleDateString()}`}
                 </Badge>
               </Col>
             ))}
