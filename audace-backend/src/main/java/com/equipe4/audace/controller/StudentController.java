@@ -98,17 +98,14 @@ public class StudentController extends GenericUserController<Student, StudentSer
     }
 
     @PostMapping("/sign_contract/{contractId}")
-    public ResponseEntity<HttpStatus> signContract(@PathVariable Long contractId) {
+    public ResponseEntity<SignatureDTO> signContract(@PathVariable Long contractId) {
         logger.info("studentSignContract");
         try {
-            service.signContract(contractId);
-            return ResponseEntity.ok().build();
-
-        } catch (NoSuchElementException e) {
+            return ResponseEntity.ok(
+                    service.signContract(contractId).orElseThrow()
+            );
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
-
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
         }
     }
 
