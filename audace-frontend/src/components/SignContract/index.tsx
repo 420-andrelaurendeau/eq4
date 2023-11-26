@@ -59,6 +59,32 @@ const SignContract = () => {
     return signatures.find(signature => signature?.signatoryId === parseInt(getUserId()!));
   };
 
+  const getSignatoryType = (signatoryType: string) => {
+    switch (signatoryType.toUpperCase()) {
+      case 'EMPLOYER':
+        return t('contractsList.employerName');
+      case 'STUDENT':
+        return t('infoCard.student.title');
+      case 'MANAGER':
+        return t('manager.title');
+      default:
+        return '';
+    }
+  }
+
+  const getSignatureColor = (signatoryType: string) => {
+    switch (signatoryType.toUpperCase()) {
+      case 'EMPLOYER':
+        return 'success';
+      case 'STUDENT':
+        return 'primary';
+      case 'MANAGER':
+        return 'info';
+      default:
+        return '';
+    }
+  }
+
   return (
     <Container className="mt-4">
       <Row className="justify-content-center pb-5">
@@ -163,9 +189,10 @@ const SignContract = () => {
           <Row className="mb-3">
             {signatures.map((signature: Signature) => (
               <Col key={signature.id}>
-                <Badge bg="success">
+                <Badge bg={getSignatureColor(signature.signatoryType)} className="p-2">
                   {`${signature.signatoryName} ${t('signature.signedOn')} ${new Date(signature?.signatureDate).toLocaleDateString()}`}
                 </Badge>
+                {getSignatoryType(signature.signatoryType)}
               </Col>
             ))}
             {!isSignedByUser() && (
