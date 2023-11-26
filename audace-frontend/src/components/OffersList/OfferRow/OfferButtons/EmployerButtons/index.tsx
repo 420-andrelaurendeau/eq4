@@ -22,8 +22,6 @@ const EmployerButtons = ({ offer }: Props) => {
 
   const editButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
-    console.log("Edit button clicked");
-    console.log("Offer:", offer);
 
     if (offer?.id) {
       navigate(`/employer/offers/${offer.id}`);
@@ -34,8 +32,6 @@ const EmployerButtons = ({ offer }: Props) => {
 
   const deleteButtonClick = async (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
-    console.log("Delete button clicked");
-    console.log("Offer:", offer);
 
     try {
       const response = await employerDeleteOffer(offer.id!);
@@ -50,7 +46,6 @@ const EmployerButtons = ({ offer }: Props) => {
       if (response.status !== 200) {
         throw new Error(`Failed to delete offer. Status: ${response.status}`);
       }
-      console.log("Offer deleted successfully");
     } catch (error) {
       console.error("Failed to delete offer:", error);
     }

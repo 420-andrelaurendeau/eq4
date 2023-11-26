@@ -342,6 +342,10 @@
   },
   "signature": {
     "signedOn": "signed on",
-    "sign": "Sign"
+    "sign": "Click to sign",
+    "waiting": "Missing employer and student signatures",
+    "employerNotSigned": "The employer has not signed the contract yet",
+    "studentNotSigned": "The student has not signed the contract yet",
+    "managerNotSigned": "The manager has not signed the contract yet"
   }
 }

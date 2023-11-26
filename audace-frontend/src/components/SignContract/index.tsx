@@ -5,6 +5,7 @@ import { Contract, Signature } from '../../model/contract';
 import { getContractById, getSignaturesByContractId, signContract } from '../../services/contractService';
 import { getAuthorities, getUserId } from '../../services/authService';
 import { useTranslation } from 'react-i18next';
+import { Authority } from '../../model/auth';
 
 const SignContract = () => {
   const { id } = useParams();
@@ -55,34 +56,37 @@ const SignContract = () => {
     }
   };
 
-  const isSignedByUser = () => {
-    return signatures.find(signature => signature?.signatoryId === parseInt(getUserId()!));
-  };
-
   const getSignatoryType = (signatoryType: string) => {
     switch (signatoryType.toUpperCase()) {
       case 'EMPLOYER':
-        return t('contractsList.employerName');
+        return t('signature.employerNotSigned');
       case 'STUDENT':
-        return t('infoCard.student.title');
+        return t('signature.studentNotSigned');
       case 'MANAGER':
-        return t('manager.title');
+        return t('signature.managerNotSigned');
       default:
         return '';
     }
   }
 
-  const getSignatureColor = (signatoryType: string) => {
-    switch (signatoryType.toUpperCase()) {
-      case 'EMPLOYER':
-        return 'success';
-      case 'STUDENT':
-        return 'primary';
-      case 'MANAGER':
-        return 'info';
-      default:
-        return '';
-    }
+  const getMissingSignatures = () => {
+    if (!contract) return [];
+
+    const signatoryTypes = ['Employer', 'Manager', 'Student',];
+    signatoryTypes.sort((a, b) => a.toUpperCase() === userType?.toUpperCase() ? 1 : -1);
+    const signaturesTypes = signatures.map(signature => signature.signatoryType);
+
+    return signatoryTypes.filter(signatoryType => !signaturesTypes.includes(signatoryType));
+  }
+
+  const didEmployerAndStudentSign = () => {
+    if (!contract) return false;
+    if (userType !== Authority.MANAGER) return true;
+
+    const signatoryTypes = ['Employer', 'Student'];
+    const signaturesTypes = signatures.map(signature => signature.signatoryType);
+
+    return signatoryTypes.every(signatoryType => signaturesTypes.includes(signatoryType));
   }
 
   return (
@@ -188,18 +192,29 @@ const SignContract = () => {
 
           <Row className="mb-3">
             {signatures.map((signature: Signature) => (
-              <Col key={signature.id}>
-                <Badge bg={getSignatureColor(signature.signatoryType)} className="p-2">
+              <Col key={signature.id} md={12} lg={4} className="mb-3">
+                <Badge bg="success" className="p-2">
                   {`${signature.signatoryName} ${t('signature.signedOn')} ${new Date(signature?.signatureDate).toLocaleDateString()}`}
                 </Badge>
-                {getSignatoryType(signature.signatoryType)}
               </Col>
             ))}
-            {!isSignedByUser() && (
-              <Col>
-                <Button onClick={() => handleSign()}>{t('signature.sign')}</Button>
+            {getMissingSignatures().map((signatoryType: string) => (
+              <Col key={signatoryType} md={12} lg={4} className="mb-3">
+                {signatoryType.toUpperCase() === userType ? (
+                  <Badge className="p-2 pe-auto"
+                    onClick={didEmployerAndStudentSign() ? handleSign : undefined}
+                    role={didEmployerAndStudentSign() ? 'button' : undefined}
+                    bg={didEmployerAndStudentSign() ? 'primary' : 'secondary'}
+                  >
+                    {didEmployerAndStudentSign() ? t('signature.sign') : t('signature.waiting')}
+                  </Badge>
+                ) :
+                  <Badge bg="danger" className="p-2">
+                    {getSignatoryType(signatoryType)}
+                  </Badge>
+                }
               </Col>
-            )}
+            ))}
           </Row>
         </Col>
       </Row >

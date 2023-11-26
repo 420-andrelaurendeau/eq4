@@ -8,6 +8,7 @@ import Applications from "../Applications";
 import { Card } from "react-bootstrap";
 import { getUserType } from "../../services/authService";
 import { UserType } from "../../model/user";
+import React from "react";
 
 interface Props {
   offers: Offer[];
@@ -47,9 +48,8 @@ const OffersList = ({
           <tbody>
             {offers.map((offer: Offer) => {
               return (
-                <>
+                <React.Fragment key={offer.id}>
                   <OfferRow
-                    key={offer.id}
                     offer={offer}
                     updateOffersState={updateOffersState}
                   />
@@ -67,7 +67,7 @@ const OffersList = ({
                       </td>
                     </tr>
                   )}
-                </>
+                </React.Fragment>
               );
             })}
           </tbody>

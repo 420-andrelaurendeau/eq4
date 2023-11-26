@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Application, ApplicationStatus } from "../../../model/application";
-import { Col } from "react-bootstrap";
+import { Button, Col } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import CvModal from "../../CVsList/CvRow/CvModal";
 import { UserType } from "../../../model/user";
@@ -41,7 +41,6 @@ const ApplicationRow = ({
         try {
           const res = await getContractByApplicationId(application.id!, Authority.STUDENT);
           setContract(res.data);
-          console.log("Contract : " + res.data.id, res.data.supervisor.firstName);
         } catch (err: any) {
           if (err.response?.status === 404) {
             setContract(null);
@@ -93,7 +92,13 @@ const ApplicationRow = ({
               />
             </div>
           ) : (
-            t(`applicationsList.row.status.${application.applicationStatus}`)
+            <Button
+              onClick={() => handleViewContract(contract!.id!)}
+              variant="outline-primary"
+              className="text-dark"
+            >
+              {t("student.viewContractDetails")}
+            </Button>
           )}
         </td>
       </tr>
