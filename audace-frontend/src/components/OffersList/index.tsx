@@ -24,7 +24,6 @@ const OffersList = ({
 }: Props) => {
   const { t } = useTranslation();
   const { chosenSession, currentSession, nextSession } = useSessionContext();
-  const userType = getUserType();
 
   return (
     <>
@@ -52,21 +51,8 @@ const OffersList = ({
                     key={offer.id}
                     offer={offer}
                     updateOffersState={updateOffersState}
+                    updateAvailablePlaces={updateAvailablePlaces}
                   />
-                  {userType !== UserType.Student && (
-                    <tr>
-                      <td colSpan={12}>
-                        <Accordion.Collapse eventKey={offer.id!.toString()}>
-                          <Card.Body>
-                            <Applications
-                              offer={offer}
-                              updateAvailablePlaces={updateAvailablePlaces}
-                            />
-                          </Card.Body>
-                        </Accordion.Collapse>
-                      </td>
-                    </tr>
-                  )}
                 </>
               );
             })}

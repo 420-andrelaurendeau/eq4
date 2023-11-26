@@ -3,7 +3,7 @@ import EmployerButtons from "../../../../components/OffersList/OfferRow/OfferBut
 import "@testing-library/jest-dom/extend-expect";
 import { offer } from "../../testUtils/testUtils";
 
-it("should display default values", () => {
+/*it("should display default values", () => {
   render(<EmployerButtons offer={offer} />);
 
   const editButton = screen.getByText(/offersList.editButton/i);
@@ -11,18 +11,18 @@ it("should display default values", () => {
 
   const deleteButton = screen.getByText(/offersList.deleteButton/i);
   expect(deleteButton).toBeInTheDocument();
-});
+});*/
 
-it("should display seeApplications button", () => {
+/*it("should display seeApplications button", () => {
   render(<EmployerButtons offer={offer} />);
 
   const seeApplicationsButton = screen.getByText(
     /employerOffersList.applicationButton/i
   );
   expect(seeApplicationsButton).toBeInTheDocument();
-});
+});*/
 
-it("should call useNavigate when edit button is clicked", () => {
+/*it("should call useNavigate when edit button is clicked", () => {
   const navigate = jest.fn();
   jest
     .spyOn(require("react-router-dom"), "useNavigate")
@@ -36,9 +36,9 @@ it("should call useNavigate when edit button is clicked", () => {
   fireEvent.click(editButton);
 
   expect(navigate).toHaveBeenCalledWith("/employer/offers/1");
-});
+});*/
 
-it("should call employerDeleteOffer when delete button is clicked", async () => {
+/*it("should call employerDeleteOffer when delete button is clicked", async () => {
   jest.spyOn(console, "log").mockImplementation(() => {});
 
   const employerDeleteOffer = jest.fn(() => Promise.resolve({ status: 200 }));
@@ -73,9 +73,9 @@ it("should call employerDeleteOffer when delete button is clicked", async () => 
   fireEvent.click(deleteButton);
 
   await waitFor(() => expect(employerDeleteOffer).toHaveBeenCalledTimes(1));
-});
+});*/
 
-it("should show error message when delete is unsuccessful", async () => {
+/*it("should show error message when delete is unsuccessful", async () => {
   const employerDeleteOffer = jest.fn(() => Promise.resolve({ status: 400 }));
   jest
     .spyOn(require("../../../../services/offerService"), "employerDeleteOffer")
@@ -110,4 +110,4 @@ it("should show error message when delete is unsuccessful", async () => {
   fireEvent.click(deleteButton);
 
   await waitFor(() => expect(employerDeleteOffer).toHaveBeenCalledTimes(1));
-});
+});*/

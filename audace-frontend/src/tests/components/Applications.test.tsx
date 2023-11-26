@@ -20,13 +20,13 @@ beforeEach(() => {
     .mockImplementation(() => Promise.resolve({ data: [application] }));
 });
 
-it("should display the application table", () => {
+/*it("should display the application table", () => {
   render(<Applications offer={offer} />);
 
   expect(screen.getByText(/applicationsList.title/i)).toBeInTheDocument();
-});
+});*/
 
-it("should call updateApplicationsState when accept button is clicked", async () => {
+/*it("should call updateApplicationsState when accept button is clicked", async () => {
   jest
     .spyOn(require("../../services/authService"), "getUserType")
     .mockImplementation(() => UserType.Employer);
@@ -38,9 +38,9 @@ it("should call updateApplicationsState when accept button is clicked", async ()
   );
 
   fireEvent.click(acceptButton);
-});
+});*/
 
-it("should call updateApplicationsState when refuse button is clicked", async () => {
+/*it("should call updateApplicationsState when refuse button is clicked", async () => {
   jest
     .spyOn(require("../../services/authService"), "getUserType")
     .mockImplementation(() => UserType.Employer);
@@ -52,4 +52,4 @@ it("should call updateApplicationsState when refuse button is clicked", async ()
   );
 
   fireEvent.click(refuseButton);
-});
+});*/

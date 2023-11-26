@@ -1,51 +1,25 @@
-import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
-import { Offer } from "../../model/offer";
-import { getUserId } from "../../services/authService";
-import { useNavigate } from "react-router-dom";
-import Application, { ApplicationStatus } from "../../model/application";
-import { Container } from "react-bootstrap";
-import { getAllApplicationsByEmployerIdAndOfferId } from "../../services/applicationService";
+import {useTranslation} from "react-i18next";
+import {useEffect, useState} from "react";
+import {Offer} from "../../model/offer";
+import {getUserId} from "../../services/authService";
+import {useNavigate} from "react-router-dom";
+import Application, {ApplicationStatus} from "../../model/application";
+import {Container} from "react-bootstrap";
+import {getAllApplicationsByEmployerIdAndOfferId} from "../../services/applicationService";
 import ApplicationsList from "../ApplicationsList";
 
 interface Props {
+  applications: Application[];
   offer: Offer;
+  error: string;
   updateAvailablePlaces?: (offer: Offer) => void;
+  updateApplicationsState?: (
+      application: Application,
+      applicationStatus: ApplicationStatus
+  ) => void;
 }
 
-const Applications = ({ offer, updateAvailablePlaces }: Props) => {
-  const [error, setError] = useState<string>("");
-  const [applications, setApplications] = useState<Application[]>([]);
-  const { t } = useTranslation();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const id = getUserId();
-    if (id == null) {
-      navigate("/pageNotFound");
-      return;
-    }
-    getAllApplicationsByEmployerIdAndOfferId(parseInt(id), offer.id!)
-      .then((res) => {
-        setApplications(res.data);
-      })
-      .catch((err) => {
-        setError(err.response.data);
-        console.log(err);
-      });
-  }, [navigate, t, offer.id]);
-
-  const updateApplicationsState = (
-    application: Application,
-    applicationStatus: ApplicationStatus
-  ) => {
-    let newApplications = applications.filter((a) => a.id !== application.id);
-    application.applicationStatus = applicationStatus;
-    newApplications.push(application);
-    setApplications(newApplications);
-    if (applicationStatus === ApplicationStatus.ACCEPTED)
-      updateAvailablePlaces!(offer);
-  };
+const Applications = ({ offer, applications, error, updateApplicationsState }: Props) => {
 
   return (
     <Container>

@@ -1,24 +1,27 @@
-import { Button, useAccordionButton } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import { Offer } from "../../../../../model/offer";
-import { useNavigate } from "react-router-dom";
-import {
-  employerDeleteOffer,
-  getAllOffersByEmployerIdAndSessionId,
-} from "../../../../../services/offerService";
-import { useOfferContext } from "../../../../../contextsholders/providers/OfferContextHolder";
-import { getUserId } from "../../../../../services/authService";
-import { useSessionContext } from "../../../../../contextsholders/providers/SessionContextHolder";
+import {Button, useAccordionButton} from "react-bootstrap";
+import {useTranslation} from "react-i18next";
+import {Offer} from "../../../../../model/offer";
+import {useNavigate} from "react-router-dom";
+import {employerDeleteOffer, getAllOffersByEmployerIdAndSessionId,} from "../../../../../services/offerService";
+import {useOfferContext} from "../../../../../contextsholders/providers/OfferContextHolder";
+import {getUserId} from "../../../../../services/authService";
+import {useSessionContext} from "../../../../../contextsholders/providers/SessionContextHolder";
+import {useEffect, useState} from "react";
+import {getAllApplicationsByEmployerIdAndOfferId} from "../../../../../services/applicationService";
+import Application, {ApplicationStatus} from "../../../../../model/application";
 
 interface Props {
   offer: Offer;
+  pendingApplications: Application[];
 }
 
-const EmployerButtons = ({ offer }: Props) => {
+const EmployerButtons = ({ offer, pendingApplications }: Props) => {
   const { t } = useTranslation();
   const { setOffers } = useOfferContext();
   const { chosenSession } = useSessionContext();
   const navigate = useNavigate();
+
+
 
   const editButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -53,6 +56,8 @@ const EmployerButtons = ({ offer }: Props) => {
   };
   const seeApplicationsButtonClick = useAccordionButton(offer.id!.toString());
 
+
+
   return (
     <>
       <Button
@@ -68,9 +73,14 @@ const EmployerButtons = ({ offer }: Props) => {
       <Button
         onClick={seeApplicationsButtonClick}
         variant="outline-success"
-        className="ms-2 text-dark"
+        className="ms-2 text-dark position-relative"
       >
         {t("employerOffersList.applicationButton")}
+        {offer.availablePlaces > 0 && pendingApplications && (pendingApplications.length > 0 && (
+            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              {pendingApplications.length}
+            </span>
+        ))}
       </Button>
     </>
   );
