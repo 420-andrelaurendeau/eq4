@@ -1,12 +1,16 @@
 import { useTranslation } from "react-i18next";
 import { Application, ApplicationStatus } from "../../../model/application";
 import { Col } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CvModal from "../../CVsList/CvRow/CvModal";
 import { UserType } from "../../../model/user";
 import EmployerButtons from "./ApplicationButtons/EmployerButtons";
 import { getUserType } from "../../../services/authService";
 import { Offer } from "../../../model/offer";
+import { Contract } from "../../../model/contract";
+import { useNavigate } from "react-router-dom";
+import { getContractByApplicationId } from "../../../services/contractService";
+import { Authority } from "../../../model/auth";
 
 interface Props {
   offer?: Offer;
@@ -26,6 +30,9 @@ const ApplicationRow = ({
   const [show, setShow] = useState<boolean>(false);
   const [contract, setContract] = useState<Contract | null>(null);
   const navigate = useNavigate();
+  const handleClick = () => setShow(true);
+  const handleClose = () => setShow(false);
+  const userType = getUserType();
 
   useEffect(() => {
     if (userType === UserType.Student) {
@@ -55,10 +62,6 @@ const ApplicationRow = ({
       console.error("Error viewing contract:", err);
     }
   };
-
-  const handleClick = () => setShow(true);
-  const handleClose = () => setShow(false);
-  const userType = getUserType();
 
   return (
     <>

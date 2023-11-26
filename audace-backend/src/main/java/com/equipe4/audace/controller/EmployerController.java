@@ -107,7 +107,7 @@ public class EmployerController extends GenericUserController<Employer, Employer
             return ResponseEntity.ok(
                     service.signContract(contractId).orElseThrow()
             );
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
     }

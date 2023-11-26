@@ -18,7 +18,7 @@ import com.equipe4.audace.model.offer.Offer.OfferStatus;
 import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.model.session.StudentSession;
-import com.equipe4.audace.repository.ApplicationRepository;
+import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;

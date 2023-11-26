@@ -104,7 +104,7 @@ public class StudentController extends GenericUserController<Student, StudentSer
             return ResponseEntity.ok(
                     service.signContract(contractId).orElseThrow()
             );
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
     }

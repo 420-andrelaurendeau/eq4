@@ -147,7 +147,7 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
             return ResponseEntity.ok(
                     service.signContract(managerId, contractId).orElseThrow()
             );
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
     }

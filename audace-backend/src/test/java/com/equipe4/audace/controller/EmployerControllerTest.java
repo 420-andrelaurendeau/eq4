@@ -335,8 +335,7 @@ public class EmployerControllerTest {
         when(employerService.signContract(contractId))
                 .thenThrow(new NoSuchElementException("Contract not found"));
 
-        mockMvc.perform(post("/employers/sign_contract")
-                        .param("contractId", contractId.toString())
+        mockMvc.perform(post("/employers/sign_contract/1")
                         .with(csrf()))
                 .andExpect(status().isNotFound());
     }
@@ -345,9 +344,11 @@ public class EmployerControllerTest {
     @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
     void signContract_Success() throws Exception {
         ContractDTO contractDTO = createContractDTO(createApplicationDTO(createOfferDTO(1L)));
+        SignatureDTO signatureDTO = createSignatureDTO();
 
-        mockMvc.perform(post("/employers/sign_contract")
-                        .param("contractId", contractDTO.getId().toString())
+        when(employerService.signContract(anyLong())).thenReturn(Optional.of(signatureDTO));
+
+        mockMvc.perform(post("/employers/sign_contract/1")
                         .with(csrf()))
                 .andExpect(status().isOk());
     }

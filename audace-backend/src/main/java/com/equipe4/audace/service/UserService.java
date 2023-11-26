@@ -6,7 +6,6 @@ import com.equipe4.audace.dto.session.SessionDTO;
 import com.equipe4.audace.model.User;
 import com.equipe4.audace.model.notification.Notification;
 import com.equipe4.audace.model.session.Session;
-import com.equipe4.audace.repository.ApplicationRepository;
 import com.equipe4.audace.repository.UserRepository;
 import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.security.SaltRepository;

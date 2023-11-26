@@ -1,6 +1,7 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.application.StudentsByInternshipFoundStatus;
@@ -380,9 +381,6 @@ public class ManagerControllerTest {
     }
 
 
-    private DepartmentDTO createDepartmentDTO(){
-        return new DepartmentDTO(1L, "GLO", "Génie logiciel");
-    }
 
     private ManagerDTO createManagerDTO(DepartmentDTO departmentDTO) {
         return new ManagerDTO(1L, "manager", "managerman", "asd", "ads", "das", "sda", departmentDTO);
