@@ -36,7 +36,6 @@ const ApplicationRow = ({
 
   useEffect(() => {
     const fetchContract = async () => {
-      if (!userType || !application.id) return;
       try {
         const res = await getContractByApplicationId(application.id!, userType === UserType.Employer ? Authority.EMPLOYER : Authority.STUDENT);
         setContract(res.data);

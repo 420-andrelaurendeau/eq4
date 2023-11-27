@@ -191,17 +191,10 @@ const SignContract = () => {
           </Card>
 
           <Row className="mb-3">
-            {signatures.map((signature: Signature) => (
-              <Col key={signature.id} md={12} lg={4} className="mb-3">
-                <Badge bg="success" className="p-2">
-                  {`${signature.signatoryName} ${t('signature.signedOn')} ${new Date(signature?.signatureDate).toLocaleDateString()}`}
-                </Badge>
-              </Col>
-            ))}
             {getMissingSignatures().map((signatoryType: string) => (
-              <Col key={signatoryType} md={12} lg={4} className="mb-3">
+              <Col key={signatoryType} className="mb-3">
                 {signatoryType.toUpperCase() === userType ? (
-                  <Badge className="p-2 pe-auto"
+                  <Badge className="p-2"
                     onClick={didEmployerAndStudentSign() ? handleSign : undefined}
                     role={didEmployerAndStudentSign() ? 'button' : undefined}
                     bg={didEmployerAndStudentSign() ? 'primary' : 'secondary'}
@@ -213,6 +206,13 @@ const SignContract = () => {
                     {getSignatoryType(signatoryType)}
                   </Badge>
                 }
+              </Col>
+            ))}
+            {signatures.map((signature: Signature) => (
+              <Col key={signature.id} className="mb-3">
+                <Badge bg="success" className="p-2">
+                  {`${signature.signatoryName} ${t('signature.signedOn')} ${new Date(signature?.signatureDate).toLocaleDateString()}`}
+                </Badge>
               </Col>
             ))}
           </Row>

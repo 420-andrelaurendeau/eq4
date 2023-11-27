@@ -345,9 +345,9 @@
   "signature": {
     "signedOn": "a signé le",
     "sign": "Cliquer ici pour signer",
-    "waiting": "Signatures de l'employeur et de l'étudiant manquantes",
-    "employerNotSigned": "L'employeur n'a pas encore signé le contrat",
-    "studentNotSigned": "L'étudiant n'a pas encore signé le contrat",
-    "managerNotSigned": "Le gestionnaire n'a pas encore signé le contrat"
+    "waiting": "L'employeur et l'étudiant n'ont pas signé",
+    "employerNotSigned": "L'employeur n'a pas encore signé",
+    "studentNotSigned": "L'étudiant n'a pas encore signé",
+    "managerNotSigned": "Le gestionnaire n'a pas encore signé"
   }
 }
