@@ -8,7 +8,7 @@ import {
 import { Session } from "../../model/session";
 import {
   getAllSessions,
-  getCurrentSession, getNextSession,
+  getCurrentSession,
   getSessionById,
 } from "../../services/sessionService";
 
@@ -22,7 +22,6 @@ interface SessionContextType {
   sessions: Session[];
   chosenSession?: Session;
   currentSession?: Session;
-  nextSession?: Session;
   setChosenSession: (session: Session) => void;
   setSessions: (newSessions: Session[]) => void;
 }
@@ -31,7 +30,6 @@ export const SessionContext = createContext<SessionContextType>({
   sessions: [],
   chosenSession: undefined,
   currentSession: undefined,
-  nextSession: undefined,
   setChosenSession: () => {},
   setSessions: () => {},
 });
@@ -42,7 +40,6 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [chosenSession, setChosenSession] = useState<Session>();
   const [currentSession, setCurrentSession] = useState<Session>();
-  const [nextSession, setNextSession] = useState<Session>();
 
   const changeChosenSession = (session: Session) => {
     setChosenSession(session);
@@ -76,22 +73,7 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
       .catch((err) => {
         console.error(err);
       });
-
-    getNextSession()
-        .then((res) => {
-          setNextSession(res.data);
-
-          if (chosenSessionId !== null) return;
-
-          changeChosenSession(res.data);
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-
-  }, [chosenSession, currentSession, nextSession]);
-
-
+  }, [chosenSession, currentSession]);
 
   useEffect(() => {
     getAllSessions()
@@ -111,7 +93,6 @@ export const SessionProvider = ({ children }: SessionProviderProps) => {
         setChosenSession: changeChosenSession,
         chosenSession,
         currentSession,
-        nextSession
       }}
     >
       {children}

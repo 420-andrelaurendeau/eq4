@@ -37,7 +37,12 @@ const ApplicationRow = ({
   useEffect(() => {
     const fetchContract = async () => {
       try {
-        const res = await getContractByApplicationId(application.id!, userType === UserType.Employer ? Authority.EMPLOYER : Authority.STUDENT);
+        const res = await getContractByApplicationId(
+          application.id!,
+          userType === UserType.Employer
+            ? Authority.EMPLOYER
+            : Authority.STUDENT
+        );
         setContract(res.data);
       } catch (err: any) {
         if (err.response?.status === 404) {
@@ -53,8 +58,7 @@ const ApplicationRow = ({
   const handleViewContract = (contractId: number) => {
     try {
       navigate(`/contract/${contractId}`);
-    }
-    catch (err) {
+    } catch (err) {
       console.error("Error viewing contract:", err);
     }
   };

@@ -1,11 +1,6 @@
-import {useTranslation} from "react-i18next";
-import {useEffect, useState} from "react";
-import {Offer} from "../../model/offer";
-import {getUserId} from "../../services/authService";
-import {useNavigate} from "react-router-dom";
-import Application, {ApplicationStatus} from "../../model/application";
-import {Container} from "react-bootstrap";
-import {getAllApplicationsByEmployerIdAndOfferId} from "../../services/applicationService";
+import { Offer } from "../../model/offer";
+import Application, { ApplicationStatus } from "../../model/application";
+import { Container } from "react-bootstrap";
 import ApplicationsList from "../ApplicationsList";
 
 interface Props {
@@ -14,13 +9,17 @@ interface Props {
   error: string;
   updateAvailablePlaces?: (offer: Offer) => void;
   updateApplicationsState?: (
-      application: Application,
-      applicationStatus: ApplicationStatus
+    application: Application,
+    applicationStatus: ApplicationStatus
   ) => void;
 }
 
-const Applications = ({ offer, applications, error, updateApplicationsState }: Props) => {
-
+const Applications = ({
+  offer,
+  applications,
+  error,
+  updateApplicationsState,
+}: Props) => {
   return (
     <Container>
       {

@@ -85,7 +85,7 @@ public class StudentService extends GenericUserService<Student> {
         }
         studentDTO.setDepartment(departmentOptional.get().toDTO());
 
-        Session session = sessionManipulator.getCurrentSession();
+        Session session = sessionManipulator.getNextSession();
 
         Student student = studentDTO.fromDTO();
         hashAndSaltPassword(student);
@@ -145,7 +145,6 @@ public class StudentService extends GenericUserService<Student> {
         List<Application> alreadyApplied = applicationRepository.findApplicationsByCvStudentIdAndOfferId(studentId, offerId);
 
         if (!alreadyApplied.isEmpty()) throw new IllegalArgumentException("Student already applied to this offer");
-
 
         Cv cv = cvRepository.findById(cvId).orElseThrow(() -> new NoSuchElementException("Cv not found"));
         Offer offer = offerRepository.findById(offerId).orElseThrow(() -> new NoSuchElementException("Offer not found"));

@@ -11,7 +11,6 @@ export const formatDate = (date: Date) => {
 
 export const determineSessionSeason = (chosenSession: Session): string => {
   const startDate = new Date(chosenSession.startDate);
-  console.log(startDate)
   if (isWinter(startDate)) return "sessionSelector.winter";
   if (isSummer(startDate)) return "sessionSelector.summer";
   if (isFall(startDate)) return "sessionSelector.fall";
@@ -21,7 +20,6 @@ export const determineSessionSeason = (chosenSession: Session): string => {
 
 const isFall = (startDate: Date): boolean => {
   const month = startDate.getMonth() + 1;
-  console.log(month)
 
   if (month < 8) return false;
   if (month === 12) return startDate.getDate() <= 23;
@@ -32,7 +30,6 @@ const isFall = (startDate: Date): boolean => {
 
 const isWinter = (startDate: Date): boolean => {
   const month = startDate.getMonth() + 1;
-  console.log(month)
 
   if (month > 5) return false;
   if (month === 5) return startDate.getDate() <= 18;
@@ -43,7 +40,6 @@ const isWinter = (startDate: Date): boolean => {
 
 const isSummer = (startDate: Date): boolean => {
   const month = startDate.getMonth() + 1;
-  console.log(month)
 
   if (month < 5 || month > 8) return false;
   if (month === 8) return startDate.getDate() <= 18;

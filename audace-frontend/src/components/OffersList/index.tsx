@@ -4,10 +4,6 @@ import OfferRow from "./OfferRow";
 import GenericTable from "../GenericTable";
 import { useSessionContext } from "../../contextsholders/providers/SessionContextHolder";
 import Accordion from "react-bootstrap/Accordion";
-import Applications from "../Applications";
-import { Card } from "react-bootstrap";
-import { getUserType } from "../../services/authService";
-import { UserType } from "../../model/user";
 
 interface Props {
   offers: Offer[];
@@ -23,7 +19,7 @@ const OffersList = ({
   updateAvailablePlaces,
 }: Props) => {
   const { t } = useTranslation();
-  const { chosenSession, currentSession, nextSession } = useSessionContext();
+  const { chosenSession, currentSession } = useSessionContext();
 
   return (
     <>
@@ -40,7 +36,7 @@ const OffersList = ({
               <th>{t("offersList.internshipStartDate")}</th>
               <th>{t("offersList.internshipEndDate")}</th>
               <th>{t("offersList.availablePlaces")}</th>
-              {chosenSession?.id === nextSession?.id && <th></th>}
+              {chosenSession?.id === currentSession?.id && <th></th>}
             </tr>
           </thead>
           <tbody>

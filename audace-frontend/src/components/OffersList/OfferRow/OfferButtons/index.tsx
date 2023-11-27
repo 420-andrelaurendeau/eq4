@@ -11,7 +11,11 @@ interface Props {
   updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
   pendingApplications?: Application[];
 }
-const OfferButtons = ({ offer, updateOffersState, pendingApplications }: Props) => {
+const OfferButtons = ({
+  offer,
+  updateOffersState,
+  pendingApplications,
+}: Props) => {
   const selectButtons = () => {
     const userType = getUserType();
 
@@ -26,11 +30,16 @@ const OfferButtons = ({ offer, updateOffersState, pendingApplications }: Props) 
           />
         );
       case UserType.Employer:
-        return <EmployerButtons offer={offer} pendingApplications={pendingApplications!}/>;
+        return (
+          <EmployerButtons
+            offer={offer}
+            pendingApplications={pendingApplications!}
+          />
+        );
     }
   };
 
-  return (<>{selectButtons()}</>);
+  return <>{selectButtons()}</>;
 };
 
 export default OfferButtons;

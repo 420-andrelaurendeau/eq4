@@ -53,13 +53,10 @@ public class AudaceApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-
-
 		Session winter23 = sessionRepository.save(new Session(null, LocalDate.of(2023, 1, 20), LocalDate.of(2023, 5, 19)));
 		Session summer23 = sessionRepository.save(new Session(null, LocalDate.of(2023, 5, 20), LocalDate.of(2023, 8, 19)));
 		Session fall23 = sessionRepository.save(new Session(null, LocalDate.of(2023, 8, 20), LocalDate.of(2023, 12, 23)));
 		Session winter24 = sessionRepository.save(new Session(null, LocalDate.of(2024, 1, 20), LocalDate.of(2024, 5, 19)));
-
 
 		Department department = departmentRepository.save(new Department(null, "GLO", "Génie logiciel"));
 
@@ -120,10 +117,9 @@ public class AudaceApplication implements CommandLineRunner {
 		cv3.setCvStatus(Cv.CvStatus.ACCEPTED);
 		cvRepository.save(cv3);
 
-		applicationRepository.save(new Application(1L, cv1, offer2));
-		applicationRepository.save(new Application(2L, cv2, offer2));
-		applicationRepository.save(new Application(3L, cv3, offer2));
-
+		applicationRepository.save(new Application(null, cv1, offer2));
+		applicationRepository.save(new Application(null, cv2, offer2));
+		applicationRepository.save(new Application(null, cv3, offer2));
 
 		Manager manager = new Manager(null, "manager", "managerman", "manager@email.com", "password", "yeete", "1234567890", department);
 		manager = managerRepository.save(manager);

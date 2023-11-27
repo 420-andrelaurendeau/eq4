@@ -1,12 +1,15 @@
-import {Button, useAccordionButton} from "react-bootstrap";
-import {useTranslation} from "react-i18next";
-import {Offer} from "../../../../../model/offer";
-import {useNavigate} from "react-router-dom";
-import {employerDeleteOffer, getAllOffersByEmployerIdAndSessionId,} from "../../../../../services/offerService";
-import {useOfferContext} from "../../../../../contextsholders/providers/OfferContextHolder";
-import {getUserId} from "../../../../../services/authService";
-import {useSessionContext} from "../../../../../contextsholders/providers/SessionContextHolder";
-import Application, {ApplicationStatus} from "../../../../../model/application";
+import { Button, useAccordionButton } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import { Offer } from "../../../../../model/offer";
+import { useNavigate } from "react-router-dom";
+import {
+  employerDeleteOffer,
+  getAllOffersByEmployerIdAndSessionId,
+} from "../../../../../services/offerService";
+import { useOfferContext } from "../../../../../contextsholders/providers/OfferContextHolder";
+import { getUserId } from "../../../../../services/authService";
+import { useSessionContext } from "../../../../../contextsholders/providers/SessionContextHolder";
+import Application from "../../../../../model/application";
 
 interface Props {
   offer: Offer;
@@ -18,8 +21,6 @@ const EmployerButtons = ({ offer, pendingApplications }: Props) => {
   const { setOffers } = useOfferContext();
   const { chosenSession } = useSessionContext();
   const navigate = useNavigate();
-
-
 
   const editButtonClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -53,8 +54,6 @@ const EmployerButtons = ({ offer, pendingApplications }: Props) => {
   };
   const seeApplicationsButtonClick = useAccordionButton(offer.id!.toString());
 
-
-
   return (
     <>
       <Button
@@ -73,11 +72,13 @@ const EmployerButtons = ({ offer, pendingApplications }: Props) => {
         className="ms-2 text-dark position-relative"
       >
         {t("employerOffersList.applicationButton")}
-        {offer.availablePlaces > 0 && pendingApplications && (pendingApplications.length > 0 && (
+        {offer.availablePlaces > 0 &&
+          pendingApplications &&
+          pendingApplications.length > 0 && (
             <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
               {pendingApplications.length}
             </span>
-        ))}
+          )}
       </Button>
     </>
   );
