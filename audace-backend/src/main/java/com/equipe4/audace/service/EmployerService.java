@@ -191,6 +191,12 @@ public class EmployerService extends GenericUserService<Employer> {
                 .toList();
     }
 
+    public Optional<ContractDTO> getContractByApplicationId(Long applicationId) {
+        Application application = applicationRepository.findById(applicationId).orElseThrow(() -> new NoSuchElementException("Application not found"));
+
+        return contractRepository.findByApplication(application).map(Contract::toDTO);
+    }
+
     public Optional<ContractDTO> findContractById(Long contractId){
         Contract contract = contractRepository.findById(contractId).orElseThrow(() -> new NoSuchElementException("Contract not found"));
         return Optional.of(contract.toDTO());

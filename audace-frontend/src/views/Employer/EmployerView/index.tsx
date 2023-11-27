@@ -69,7 +69,6 @@ const EmployerView = () => {
         error={error}
         updateAvailablePlaces={updateAvailablePlaces}
       />
-      asd
     </Container>
   );
 };

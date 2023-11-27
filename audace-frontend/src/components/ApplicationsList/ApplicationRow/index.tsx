@@ -35,22 +35,20 @@ const ApplicationRow = ({
   const userType = getUserType();
 
   useEffect(() => {
-    if (userType === UserType.Student) {
-
-      const fetchContract = async () => {
-        try {
-          const res = await getContractByApplicationId(application.id!, Authority.STUDENT);
-          setContract(res.data);
-        } catch (err: any) {
-          if (err.response?.status === 404) {
-            setContract(null);
-          } else {
-            console.error("Error fetching contract:", err);
-          }
+    const fetchContract = async () => {
+      if (!userType || !application.id) return;
+      try {
+        const res = await getContractByApplicationId(application.id!, userType === UserType.Employer ? Authority.EMPLOYER : Authority.STUDENT);
+        setContract(res.data);
+      } catch (err: any) {
+        if (err.response?.status === 404) {
+          setContract(null);
+        } else {
+          console.error("Error fetching contract:", err);
         }
-      };
-      fetchContract();
-    }
+      }
+    };
+    fetchContract();
   }, [userType, application.id]);
 
   const handleViewContract = (contractId: number) => {
@@ -86,10 +84,26 @@ const ApplicationRow = ({
         <td>
           {userType === UserType.Employer && offer!.availablePlaces > 0 ? (
             <div className="d-flex justify-content-center">
-              <EmployerButtons
-                application={application}
-                updateApplicationsState={updateApplicationsState}
-              />
+              {application.applicationStatus === "PENDING" ? (
+                <EmployerButtons
+                  application={application}
+                  updateApplicationsState={updateApplicationsState}
+                />
+              ) : (
+                <>
+                  {contract ? (
+                    <Button
+                      onClick={() => handleViewContract(contract!.id!)}
+                      variant="outline-primary"
+                      className="text-dark"
+                    >
+                      {t("student.viewContractDetails")}
+                    </Button>
+                  ) : (
+                    t("student.contractNotAvailable")
+                  )}
+                </>
+              )}
             </div>
           ) : (
             <>

@@ -112,6 +112,16 @@ public class EmployerController extends GenericUserController<Employer, Employer
         }
     }
 
+    @GetMapping("/applications/{applicationId}/contract")
+    public ResponseEntity<ContractDTO> getContractByApplication(@PathVariable Long applicationId) {
+        logger.info("getContractByApplication");
+        try {
+            return ResponseEntity.ok(service.getContractByApplicationId(applicationId).orElseThrow());
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/contracts/{contractId}")
     public ResponseEntity<ContractDTO> getContractById(@PathVariable Long contractId){
         logger.info("getContractById");
