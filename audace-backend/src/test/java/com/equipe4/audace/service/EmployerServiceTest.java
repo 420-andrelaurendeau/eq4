@@ -2,6 +2,7 @@ package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.contract.ContractDTO;
 import com.equipe4.audace.dto.contract.SignatureDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
@@ -41,6 +42,7 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
@@ -410,6 +412,40 @@ public class EmployerServiceTest {
         assertThatThrownBy(() -> employerService.getSignaturesByContractId(1L))
                 .isInstanceOf(NoSuchElementException.class)
                 .hasMessage("Contract not found");
+    }
+
+    @Test
+    void getContractByApplicationId_Success() {
+        Long applicationId = 1L;
+        Application application = mock(Application.class);
+        Contract contract = createContract();
+
+        when(applicationRepository.findById(applicationId)).thenReturn(Optional.of(application));
+        when(contractRepository.findByApplication(application)).thenReturn(Optional.of(contract));
+
+        Optional<ContractDTO> result = employerService.getContractByApplicationId(applicationId);
+
+        assertTrue(result.isPresent());
+
+        ContractDTO contractDTO = result.get();
+        assertEquals(contract.getId(), contractDTO.getId());
+        assertEquals(contract.getStartHour().toString(), contractDTO.getStartHour());
+        assertEquals(contract.getEndHour().toString(), contractDTO.getEndHour());
+        assertEquals(contract.getTotalHoursPerWeek(), contractDTO.getTotalHoursPerWeek());
+        assertEquals(contract.getSalary(), contractDTO.getSalary(), 0.001);
+        assertEquals(contract.getSupervisor(), contractDTO.getSupervisor());
+        assertEquals(contract.getApplication().toDTO(), contractDTO.getApplication());
+    }
+
+    @Test
+    void getContractByApplicationId_ApplicationNotFound() {
+        Long applicationId = 1L;
+
+        when(applicationRepository.findById(applicationId)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> employerService.getContractByApplicationId(applicationId))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Application not found");
     }
 
 

@@ -393,6 +393,23 @@ public class EmployerControllerTest {
         response.andExpect(status().isOk());
     }
 
+    @Test
+    @WithMockUser(username = "employer", authorities = {"EMPLOYER"})
+    void getContractByApplicationId_ContractExists() throws Exception {
+        ApplicationDTO applicationDTO = createApplicationDTO(createOfferDTO(1L));
+        ContractDTO mockContractDTO = createContractDTO(applicationDTO);
+
+        when(employerService.getContractByApplicationId(applicationDTO.getId()))
+                .thenReturn(Optional.of(mockContractDTO));
+
+        ResultActions result = mockMvc.perform(
+                get("/employers/applications/{applicationId}/contract", applicationDTO.getId())
+        );
+
+        result.andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(mockContractDTO.getId()));
+    }
+
     private DepartmentDTO createDepartmentDTO(){
         return new DepartmentDTO(1L, "GLO", "Génie logiciel");
     }
