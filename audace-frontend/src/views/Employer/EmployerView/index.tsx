@@ -54,9 +54,8 @@ const EmployerView = () => {
   }, [employer, chosenSession, setOffers]);
 
   const updateAvailablePlaces = (offer: Offer) => {
-    let updatedOffers = offers.map((o) => {
-      if (o.id === offer.id)
-        return { ...o, availablePlaces: --o.availablePlaces };
+    let updatedOffers = offers.map(o => {
+      if (o.id === offer.id) return { ...o, availablePlaces: --o.availablePlaces };
       return o;
     });
     setOffers(updatedOffers);

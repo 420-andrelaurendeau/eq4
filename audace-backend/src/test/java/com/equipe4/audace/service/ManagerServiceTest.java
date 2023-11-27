@@ -4,6 +4,7 @@ import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.application.StudentsByInternshipFoundStatus;
 import com.equipe4.audace.dto.contract.ContractDTO;
+import com.equipe4.audace.dto.contract.SignatureDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
@@ -13,6 +14,7 @@ import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.contract.Contract;
+import com.equipe4.audace.model.contract.Signature;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.notification.Notification;
@@ -25,6 +27,7 @@ import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
+import com.equipe4.audace.repository.signature.SignatureRepository;
 import com.equipe4.audace.utils.NotificationManipulator;
 import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.persistence.EntityNotFoundException;
@@ -42,8 +45,7 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -57,6 +59,8 @@ public class ManagerServiceTest {
     @Mock
     private ManagerRepository managerRepository;
     @Mock
+    private StudentRepository studentRepository;
+    @Mock
     private CvRepository cvRepository;
     @Mock
     private ContractRepository contractRepository;
@@ -65,9 +69,9 @@ public class ManagerServiceTest {
     @Mock
     private ApplicationRepository applicationRepository;
     @Mock
-    private StudentRepository studentRepository;
-    @Mock
     private NotificationManipulator notificationManipulator;
+    @Mock
+    private SignatureRepository signatureRepository;
     @InjectMocks
     private ManagerService managerService;
 
@@ -578,6 +582,76 @@ public class ManagerServiceTest {
         assertThat(result).isEqualTo(expected);
     }
 
+    @Test
+    public void signContract_HappyPath(){
+        Manager manager = createManager();
+        Contract contract = createContract();
+        Signature<Manager> signature = new Signature<>(null, manager, LocalDate.now(), contract);
+
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
+        when(contractRepository.findById(anyLong())).thenReturn(Optional.of(contract));
+        when(signatureRepository.save(any(Signature.class))).thenReturn(signature);
+
+        Optional<SignatureDTO> result = managerService.signContract(manager.getId(), contract.getId());
+
+        assertTrue(result.isPresent());
+    }
+
+    @Test
+    public void signContract_InvalidManagerId(){
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.empty());
+        when(contractRepository.findById(anyLong())).thenReturn(Optional.of(createContract()));
+
+        assertThatThrownBy(() -> managerService.signContract(1L, 1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Manager not found");
+    }
+
+    @Test
+    public void signContract_InvalidContractId(){
+        when(contractRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> managerService.signContract(1L, 1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Contract not found");
+    }
+
+    @Test
+    public void signContract_WrongDepartment(){
+        Manager manager = createManager();
+        manager.setDepartment(new Department(2L, "code2", "name2"));
+        Contract contract = createContract();
+
+        when(managerRepository.findById(anyLong())).thenReturn(Optional.of(manager));
+        when(contractRepository.findById(anyLong())).thenReturn(Optional.of(contract));
+
+        assertThatThrownBy(() -> managerService.signContract(1L, 1L))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("The manager isn't in the right department");
+    }
+
+    @Test
+    void getSignaturesByContractId_HappyPath() {
+        Contract contract = createContract();
+        Signature<Student> signature = new Signature<>(1L, createStudent(), LocalDate.now(), contract);
+
+        when(contractRepository.findById(contract.getId())).thenReturn(Optional.of(contract));
+        when(signatureRepository.findAllByContract(contract)).thenReturn(List.of(signature));
+
+        List<SignatureDTO> result = managerService.getSignaturesByContractId(contract.getId());
+
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result.get(0).getId()).isEqualTo(signature.getId());
+        assertThat(result.get(0).getSignatureDate()).isEqualTo(signature.getSignatureDate());
+    }
+
+    @Test
+    void getSignaturesByContractId_ContractNotFound() {
+        assertThatThrownBy(() -> managerService.getSignaturesByContractId(1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Contract not found");
+    }
+
     private Department createDepartment(){
         return new Department(1L, "GLO", "Génie logiciel");
     }
@@ -588,6 +662,11 @@ public class ManagerServiceTest {
     private Student createStudent() {
         Department department = createDepartment();
         return new Student(1L, "student", "studentman", "student@email.com", "password", "123 Street Street", "1234567890", "123456789", department);
+    }
+
+    private Manager createManager() {
+        Department department = createDepartment();
+        return new Manager(1L, "firstName", "lastName", "email", "password", "address", "phone", department);
     }
 
     private Cv createCv() {

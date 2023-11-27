@@ -3,6 +3,8 @@ package com.equipe4.audace.controller;
 import com.equipe4.audace.controller.abstracts.GenericUserController;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.contract.ContractDTO;
+import com.equipe4.audace.dto.contract.SignatureDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Student;
@@ -93,5 +95,41 @@ public class StudentController extends GenericUserController<Student, StudentSer
         }
 
         return ResponseEntity.ok(offersList);
+    }
+
+    @PostMapping("/sign_contract/{contractId}")
+    public ResponseEntity<SignatureDTO> signContract(@PathVariable Long contractId) {
+        logger.info("studentSignContract");
+        try {
+            return ResponseEntity.ok(
+                    service.signContract(contractId).orElseThrow()
+            );
+        } catch (IllegalArgumentException | NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/applications/{applicationId}/contract")
+    public ResponseEntity<ContractDTO> getContractByApplication(@PathVariable Long applicationId) {
+        logger.info("getContractByApplication");
+        try {
+            return ResponseEntity.ok(service.getContractByApplicationId(applicationId).orElseThrow());
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/contracts/{contractId}")
+    public ResponseEntity<ContractDTO> getContractById(@PathVariable Long contractId){
+        logger.info("getContractById");
+        return service.findContractById(contractId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/contracts/{contractId}/signatures")
+    public List<SignatureDTO> getSignaturesByContractId(@PathVariable Long contractId) {
+        logger.info("getSignatureByContractId");
+        return service.getSignaturesByContractId(contractId);
     }
 }

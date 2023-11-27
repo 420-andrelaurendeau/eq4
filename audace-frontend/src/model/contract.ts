@@ -10,11 +10,19 @@ export interface Contract {
   application: Application;
 }
 
-export interface Supervisor{
+export interface Supervisor {
   firstName: string;
   lastName: string;
   position: string;
   email: string;
-  phone:string;
+  phone: string;
   extension: string;
+}
+
+export interface Signature {
+  id: number;
+  signatoryId: number;
+  signatoryName: string;
+  signatoryType: string;
+  signatureDate: Date;
 }

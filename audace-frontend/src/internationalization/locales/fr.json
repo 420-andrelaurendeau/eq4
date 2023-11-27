@@ -16,23 +16,23 @@
     "extensionEntry": "Extension",
     "lastNameEntry": "Nom de famille",
     "firstNameEntry": "Prénom",
-    "positionEntry": "Poste",
-    "emailEntry": "E-mail",
+    "positionEntry": "Fonction occupée",
+    "emailEntry": "Courriel",
     "password": "Choisissez un mot de passe",
     "passwordConfirmation": "Confirmez votre mot de passe",
     "studentId": "Numéro d'étudiant",
     "signup": "S'inscrire",
     "errors": {
       "organisation": "Veuillez entrer un nom d'organisation valide",
-      "position": "Le poste ne peut pas être vide",
+      "position": "la fonction occupée ne peut pas être vide",
       "firstName": "Le prénom ne peut pas être vide",
       "lastName": "Le nom de famille ne peut pas être vide",
       "address": "L'adresse ne peut pas être vide",
       "city": "La ville ne peut pas être vide",
       "postalCode": "Veuillez entrer un code postal valide",
       "phone": "Veuillez entrer un numéro de téléphone valide",
-      "extension": "Veuillez entrer une extension valide",
-      "email": "Veuillez entrer une adresse e-mail valide",
+      "extension": "Veuillez entrer un numéro de poste valide",
+      "email": "Veuillez entrer un courriel valide",
       "password": "Veuillez entrer un mot de passe valide",
       "passwordConfirmation": "Les mots de passe ne correspondent pas",
       "studentId": "Veuillez entrer un numéro d'étudiant valide",
@@ -113,7 +113,7 @@
   },
   "employerOffersList": {
     "viewTitle": "Offres disponibles",
-    "status": "Statut",
+    "status": "État",
     "PENDING": "En attente",
     "ACCEPTED": "Accepté",
     "REFUSED": "Refusé",
@@ -122,7 +122,9 @@
     "applicationButton": "Voir les applications"
   },
   "student": {
-    "seeOffersButton": "Voir les offres"
+    "seeOffersButton": "Voir les offres",
+    "viewContractDetails": "Consulter le contrat",
+    "contractNotAvailable": "Accepté. Veuillez attendre la création du contrat..."
   },
   "manager": {
     "seeOffersButton": "Voir les offres",
@@ -234,6 +236,16 @@
       "studentNotFound": "Étudiant introuvable"
     }
   },
+  "contractsList": {
+    "title": "Contrats",
+    "studentName": "Étudiant",
+    "employerName": "Employeur",
+    "offerTitle": "Titre de l'offre",
+    "Dates": "Date de début et de fin",
+    "actions": "Informations",
+    "viewDetails": "Voir les détails",
+    "noContractsFound": "Aucun contrat trouvé"
+  },
   "logout": "Déconnexion",
   "pageNotFound": "Erreur 404 : Page non trouvée",
   "sessionSelector": {
@@ -272,9 +284,19 @@
       "address": "Adresse"
     },
     "student": {
+      "name": "Nom",
       "title": "Étudiant",
       "email": "Courriel",
       "phone": "Téléphone",
+      "address": "Adresse"
+    },
+    "supervisor": {
+      "name": "Nom",
+      "position": "Poste",
+      "title": "Superviseur",
+      "email": "Courriel",
+      "phone": "Téléphone",
+      "extension": "Ext.",
       "address": "Adresse"
     }
   },
@@ -319,5 +341,13 @@
         "CREATED2": " a de nouvelles applications."
       }
     }
+  },
+  "signature": {
+    "signedOn": "a signé le",
+    "sign": "Cliquer ici pour signer",
+    "waiting": "L'employeur et l'étudiant n'ont pas signé",
+    "employerNotSigned": "L'employeur n'a pas encore signé",
+    "studentNotSigned": "L'étudiant n'a pas encore signé",
+    "managerNotSigned": "Le gestionnaire n'a pas encore signé"
   }
 }

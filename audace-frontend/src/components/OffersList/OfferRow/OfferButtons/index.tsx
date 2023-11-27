@@ -30,7 +30,7 @@ const OfferButtons = ({ offer, updateOffersState, pendingApplications }: Props) 
     }
   };
 
-  return <>{selectButtons()}</>;
+  return (<>{selectButtons()}</>);
 };
 
 export default OfferButtons;

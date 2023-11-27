@@ -2,10 +2,15 @@ package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.contract.ContractDTO;
+import com.equipe4.audace.dto.contract.SignatureDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
 import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.application.Application;
+import com.equipe4.audace.model.contract.Contract;
+import com.equipe4.audace.model.contract.Signature;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.notification.Notification;
@@ -15,10 +20,12 @@ import com.equipe4.audace.model.session.OfferSession;
 import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.EmployerRepository;
+import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.OfferSessionRepository;
+import com.equipe4.audace.repository.signature.SignatureRepository;
 import com.equipe4.audace.utils.NotificationManipulator;
 import com.equipe4.audace.utils.SessionManipulator;
 import org.junit.jupiter.api.Test;
@@ -28,13 +35,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -57,6 +66,10 @@ public class EmployerServiceTest {
     private NotificationManipulator notificationManipulator;
     @InjectMocks
     private EmployerService employerService;
+    @Mock
+    private ContractRepository contractRepository;
+    @Mock
+    private SignatureRepository signatureRepository;
 
     @Test
     public void createEmployer_HappyPath(){
@@ -354,6 +367,87 @@ public class EmployerServiceTest {
                 .hasMessage("Employer does not own this application");
     }
 
+    @Test
+    void signContract_Success() {
+        Long contractId = 1L;
+        Contract contract = createContract();
+        Employer employer = createEmployer();
+        Signature<Employer> signature = new Signature<>(null, employer, LocalDate.now(), contract);
+
+        when(contractRepository.findById(contractId)).thenReturn(Optional.of(contract));
+        when(signatureRepository.save(any(Signature.class))).thenReturn(signature);
+
+        Optional<SignatureDTO> result = employerService.signContract(contractId);
+
+        assertTrue(result.isPresent());
+    }
+
+    @Test
+    void signContract_ContractNotFound() {
+        Long contractId = 1L;
+        when(contractRepository.findById(contractId)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> employerService.signContract(contractId))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Contract not found");
+    }
+
+    @Test
+    void getSignaturesByContractId_HappyPath() {
+        Contract contract = createContract();
+        Signature<Employer> signature = new Signature<>(1L, createEmployer(), LocalDate.now(), contract);
+
+        when(contractRepository.findById(contract.getId())).thenReturn(Optional.of(contract));
+        when(signatureRepository.findAllByContract(contract)).thenReturn(List.of(signature));
+
+        List<SignatureDTO> result = employerService.getSignaturesByContractId(contract.getId());
+
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result.get(0).getId()).isEqualTo(signature.getId());
+        assertThat(result.get(0).getSignatureDate()).isEqualTo(signature.getSignatureDate());
+    }
+
+    @Test
+    void getSignaturesByContractId_ContractNotFound() {
+        assertThatThrownBy(() -> employerService.getSignaturesByContractId(1L))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Contract not found");
+    }
+
+    @Test
+    void getContractByApplicationId_Success() {
+        Long applicationId = 1L;
+        Application application = mock(Application.class);
+        Contract contract = createContract();
+
+        when(applicationRepository.findById(applicationId)).thenReturn(Optional.of(application));
+        when(contractRepository.findByApplication(application)).thenReturn(Optional.of(contract));
+
+        Optional<ContractDTO> result = employerService.getContractByApplicationId(applicationId);
+
+        assertTrue(result.isPresent());
+
+        ContractDTO contractDTO = result.get();
+        assertEquals(contract.getId(), contractDTO.getId());
+        assertEquals(contract.getStartHour().toString(), contractDTO.getStartHour());
+        assertEquals(contract.getEndHour().toString(), contractDTO.getEndHour());
+        assertEquals(contract.getTotalHoursPerWeek(), contractDTO.getTotalHoursPerWeek());
+        assertEquals(contract.getSalary(), contractDTO.getSalary(), 0.001);
+        assertEquals(contract.getSupervisor(), contractDTO.getSupervisor());
+        assertEquals(contract.getApplication().toDTO(), contractDTO.getApplication());
+    }
+
+    @Test
+    void getContractByApplicationId_ApplicationNotFound() {
+        Long applicationId = 1L;
+
+        when(applicationRepository.findById(applicationId)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> employerService.getContractByApplicationId(applicationId))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("Application not found");
+    }
+
 
     private Department createDepartment(){
         return new Department(1L, "GLO", "Génie logiciel");
@@ -374,5 +468,19 @@ public class EmployerServiceTest {
     private Offer createOffer(Long id, Employer employer) {
         Department department = createDepartment();
         return new Offer(id,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, department, employer);
+    }
+
+    private Application createApplication() {
+        Offer offer = createOffer(1L, createEmployer());
+        return new Application(1L, createCv(), offer);
+    }
+
+    private Contract createContract() {
+        DateTimeFormatter dtf = new DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("H:mm").toFormatter(Locale.ENGLISH);
+        Application application = createApplication();
+        return new Contract(1L, LocalTime.parse("08:00", dtf), LocalTime.parse("17:00", dtf), 40, 18.35, createSupervisor(), application);
+    }
+    private Supervisor createSupervisor(){
+        return new Supervisor("super", "visor", "supervisor", "supervisor@email.com", "1234567890", "-123");
     }
 }

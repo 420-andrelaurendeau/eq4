@@ -7,6 +7,7 @@ import com.equipe4.audace.model.User;
 import com.equipe4.audace.model.notification.Notification;
 import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.repository.UserRepository;
+import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.SessionRepository;
 import com.equipe4.audace.utils.NotificationManipulator;
@@ -29,6 +30,7 @@ public class UserService extends GenericUserService<User> {
             SessionRepository sessionRepository,
             NotificationManipulator notificationManipulator,
             SessionManipulator sessionManipulator
+
     ) {
         super(saltRepository);
         this.userRepository = userRepository;
