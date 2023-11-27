@@ -123,7 +123,8 @@
   },
   "student": {
     "seeOffersButton": "Voir les offres",
-    "viewContractDetails": "Consulter le contrat"
+    "viewContractDetails": "Consulter le contrat",
+    "contractNotAvailable": "Accepté. Veuillez attendre la création du contrat..."
   },
   "manager": {
     "seeOffersButton": "Voir les offres",

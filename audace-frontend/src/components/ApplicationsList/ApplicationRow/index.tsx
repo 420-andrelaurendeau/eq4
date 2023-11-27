@@ -92,13 +92,19 @@ const ApplicationRow = ({
               />
             </div>
           ) : (
-            <Button
-              onClick={() => handleViewContract(contract!.id!)}
-              variant="outline-primary"
-              className="text-dark"
-            >
-              {t("student.viewContractDetails")}
-            </Button>
+            <>
+              {contract ? (
+                <Button
+                  onClick={() => handleViewContract(contract!.id!)}
+                  variant="outline-primary"
+                  className="text-dark"
+                >
+                  {t("student.viewContractDetails")}
+                </Button>
+              ) : (
+                t("student.contractNotAvailable")
+              )}
+            </>
           )}
         </td>
       </tr>
