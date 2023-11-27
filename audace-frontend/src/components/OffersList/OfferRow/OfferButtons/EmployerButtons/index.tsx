@@ -6,13 +6,11 @@ import {employerDeleteOffer, getAllOffersByEmployerIdAndSessionId,} from "../../
 import {useOfferContext} from "../../../../../contextsholders/providers/OfferContextHolder";
 import {getUserId} from "../../../../../services/authService";
 import {useSessionContext} from "../../../../../contextsholders/providers/SessionContextHolder";
-import {useEffect, useState} from "react";
-import {getAllApplicationsByEmployerIdAndOfferId} from "../../../../../services/applicationService";
 import Application, {ApplicationStatus} from "../../../../../model/application";
 
 interface Props {
   offer: Offer;
-  pendingApplications: Application[];
+  pendingApplications?: Application[];
 }
 
 const EmployerButtons = ({ offer, pendingApplications }: Props) => {
