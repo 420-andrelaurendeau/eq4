@@ -1,14 +1,15 @@
 package com.equipe4.audace.dto.contract;
 
-import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.contract.Contract;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
 import java.util.Locale;
 
 @Data

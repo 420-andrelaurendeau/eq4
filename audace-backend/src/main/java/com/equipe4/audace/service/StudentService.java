@@ -2,10 +2,14 @@ package com.equipe4.audace.service;
 
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.StudentDTO;
+import com.equipe4.audace.dto.contract.ContractDTO;
+import com.equipe4.audace.dto.contract.SignatureDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.application.Application;
 import com.equipe4.audace.model.Student;
+import com.equipe4.audace.model.contract.Contract;
+import com.equipe4.audace.model.contract.Signature;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.notification.Notification;
@@ -15,11 +19,13 @@ import com.equipe4.audace.repository.StudentRepository;
 import com.equipe4.audace.model.session.Session;
 import com.equipe4.audace.model.session.StudentSession;
 import com.equipe4.audace.repository.application.ApplicationRepository;
+import com.equipe4.audace.repository.contract.ContractRepository;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.offer.OfferRepository;
 import com.equipe4.audace.repository.security.SaltRepository;
 import com.equipe4.audace.repository.session.StudentSessionRepository;
+import com.equipe4.audace.repository.signature.SignatureRepository;
 import com.equipe4.audace.utils.NotificationManipulator;
 import com.equipe4.audace.utils.SessionManipulator;
 import jakarta.transaction.Transactional;
@@ -27,6 +33,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -38,12 +45,15 @@ public class StudentService extends GenericUserService<Student> {
     private final ApplicationRepository applicationRepository;
     private final StudentSessionRepository studentSessionRepository;
     private final SessionManipulator sessionManipulator;
+    private final ContractRepository contractRepository;
     private final NotificationManipulator notificationManipulator;
+    private final SignatureRepository signatureRepository;
 
     public StudentService(SaltRepository saltRepository, DepartmentRepository departmentRepository, OfferRepository offerRepository,
                           StudentRepository studentRepository, CvRepository cvRepository, ApplicationRepository applicationRepository,
                           StudentSessionRepository studentSessionRepository, SessionManipulator sessionManipulator,
-                          NotificationManipulator notificationManipulator) {
+                          ContractRepository contractRepository,
+                          NotificationManipulator notificationManipulator, SignatureRepository signatureRepository) {
         super(saltRepository);
         this.departmentRepository = departmentRepository;
         this.offerRepository = offerRepository;
@@ -53,6 +63,8 @@ public class StudentService extends GenericUserService<Student> {
         this.studentSessionRepository = studentSessionRepository;
         this.sessionManipulator = sessionManipulator;
         this.notificationManipulator = notificationManipulator;
+        this.contractRepository = contractRepository;
+        this.signatureRepository = signatureRepository;
     }
 
     @Transactional
@@ -163,4 +175,32 @@ public class StudentService extends GenericUserService<Student> {
 
         return sessionManipulator.removeApplicationsNotInSession(applications, sessionId).stream().map(Application::toDTO).toList();
     }
+
+    public Optional<SignatureDTO> signContract(Long contractId) {
+        Contract contract = contractRepository.findById(contractId).orElseThrow(() -> new NoSuchElementException("Contract not found"));
+        Student student = studentRepository.findByCv(contract.getApplication().getCv()).orElseThrow(() -> new NoSuchElementException("Student not found"));
+
+        Signature<Student> signature = new Signature<>(null, student, LocalDate.now(), contract);
+        signatureRepository.save(signature);
+
+        return Optional.of(signature.toDTO());
+    }
+
+    public List<SignatureDTO> getSignaturesByContractId(Long contractId) {
+        Contract contract = findContractById(contractId).orElseThrow(() -> new NoSuchElementException("Contract not found")).fromDTO();
+        List<Signature<?>> signature = signatureRepository.findAllByContract(contract);
+        return signature.stream().map(Signature::toDTO).toList();
+    }
+
+    public Optional<ContractDTO> getContractByApplicationId(Long applicationId) {
+        Application application = applicationRepository.findById(applicationId).orElseThrow(() -> new NoSuchElementException("Application not found"));
+
+        return contractRepository.findByApplication(application).map(Contract::toDTO);
+    }
+
+    public Optional<ContractDTO> findContractById(Long contractId){
+        Contract contract = contractRepository.findById(contractId).orElseThrow(() -> new NoSuchElementException("Contract not found"));
+        return Optional.of(contract.toDTO());
+    }
+
 }

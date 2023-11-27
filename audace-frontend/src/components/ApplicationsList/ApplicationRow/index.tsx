@@ -1,12 +1,16 @@
 import { useTranslation } from "react-i18next";
 import { Application, ApplicationStatus } from "../../../model/application";
-import { Col } from "react-bootstrap";
-import { useState } from "react";
+import { Button, Col } from "react-bootstrap";
+import { useEffect, useState } from "react";
 import CvModal from "../../CVsList/CvRow/CvModal";
 import { UserType } from "../../../model/user";
 import EmployerButtons from "./ApplicationButtons/EmployerButtons";
 import { getUserType } from "../../../services/authService";
 import { Offer } from "../../../model/offer";
+import { Contract } from "../../../model/contract";
+import { useNavigate } from "react-router-dom";
+import { getContractByApplicationId } from "../../../services/contractService";
+import { Authority } from "../../../model/auth";
 
 interface Props {
   offer?: Offer;
@@ -24,9 +28,36 @@ const ApplicationRow = ({
 }: Props) => {
   const { t } = useTranslation();
   const [show, setShow] = useState<boolean>(false);
+  const [contract, setContract] = useState<Contract | null>(null);
+  const navigate = useNavigate();
   const handleClick = () => setShow(true);
   const handleClose = () => setShow(false);
   const userType = getUserType();
+
+  useEffect(() => {
+    const fetchContract = async () => {
+      try {
+        const res = await getContractByApplicationId(application.id!, userType === UserType.Employer ? Authority.EMPLOYER : Authority.STUDENT);
+        setContract(res.data);
+      } catch (err: any) {
+        if (err.response?.status === 404) {
+          setContract(null);
+        } else {
+          console.error("Error fetching contract:", err);
+        }
+      }
+    };
+    fetchContract();
+  }, [userType, application.id]);
+
+  const handleViewContract = (contractId: number) => {
+    try {
+      navigate(`/contract/${contractId}`);
+    }
+    catch (err) {
+      console.error("Error viewing contract:", err);
+    }
+  };
 
   return (
     <>
@@ -52,13 +83,41 @@ const ApplicationRow = ({
         <td>
           {userType === UserType.Employer && offer!.availablePlaces > 0 ? (
             <div className="d-flex justify-content-center">
-              <EmployerButtons
-                application={application}
-                updateApplicationsState={updateApplicationsState}
-              />
+              {application.applicationStatus === "PENDING" ? (
+                <EmployerButtons
+                  application={application}
+                  updateApplicationsState={updateApplicationsState}
+                />
+              ) : (
+                <>
+                  {contract ? (
+                    <Button
+                      onClick={() => handleViewContract(contract!.id!)}
+                      variant="outline-primary"
+                      className="text-dark"
+                    >
+                      {t("student.viewContractDetails")}
+                    </Button>
+                  ) : (
+                    t("student.contractNotAvailable")
+                  )}
+                </>
+              )}
             </div>
           ) : (
-            t(`applicationsList.row.status.${application.applicationStatus}`)
+            <>
+              {contract ? (
+                <Button
+                  onClick={() => handleViewContract(contract!.id!)}
+                  variant="outline-primary"
+                  className="text-dark"
+                >
+                  {t("student.viewContractDetails")}
+                </Button>
+              ) : (
+                t("student.contractNotAvailable")
+              )}
+            </>
           )}
         </td>
       </tr>

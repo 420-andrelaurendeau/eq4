@@ -1,22 +1,28 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.dto.EmployerDTO;
+import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.StudentDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
 import com.equipe4.audace.dto.application.StudentsByInternshipFoundStatus;
 import com.equipe4.audace.dto.contract.ContractDTO;
+import com.equipe4.audace.dto.contract.SignatureDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Manager;
+import com.equipe4.audace.model.Student;
 import com.equipe4.audace.model.Supervisor;
 import com.equipe4.audace.model.application.Application;
+import com.equipe4.audace.model.contract.Contract;
+import com.equipe4.audace.model.contract.Signature;
 import com.equipe4.audace.model.cv.Cv;
 import com.equipe4.audace.model.department.Department;
 import com.equipe4.audace.model.offer.Offer;
 import com.equipe4.audace.repository.*;
 import com.equipe4.audace.repository.application.ApplicationRepository;
 import com.equipe4.audace.repository.contract.ContractRepository;
+import com.equipe4.audace.repository.*;
 import com.equipe4.audace.repository.cv.CvRepository;
 import com.equipe4.audace.repository.department.DepartmentRepository;
 import com.equipe4.audace.repository.notification.NotificationRepository;
@@ -50,12 +56,12 @@ import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -375,9 +381,6 @@ public class ManagerControllerTest {
     }
 
 
-    private DepartmentDTO createDepartmentDTO(){
-        return new DepartmentDTO(1L, "GLO", "Génie logiciel");
-    }
 
     private ManagerDTO createManagerDTO(DepartmentDTO departmentDTO) {
         return new ManagerDTO(1L, "manager", "managerman", "asd", "ads", "das", "sda", departmentDTO);
@@ -385,7 +388,7 @@ public class ManagerControllerTest {
 
     @Test
     @WithMockUser(username = "manager", authorities = {"Manager"})
-    void getStudentsWithInternshipStatus_happyPath() throws Exception {
+    public void getStudentsWithInternshipStatus_happyPath() throws Exception {
         DepartmentDTO departmentDTO = createDepartmentDTO();
         StudentDTO student = createStudentDTO(departmentDTO);
 
@@ -414,12 +417,73 @@ public class ManagerControllerTest {
 
     @Test
     @WithMockUser(username = "manager", authorities = {"Manager"})
-    void getStudentsWithInternshipStatus_invalidDepartmentId() throws Exception {
+    public void getStudentsWithInternshipStatus_invalidDepartmentId() throws Exception {
         when(managerService.getStudentsByInternshipFoundStatus(-1L))
                 .thenThrow(new NoSuchElementException("Department not found"));
 
         mockMvc.perform(get("/managers/studentsWithInternshipFoundStatus/{departmentId}", -1L))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(username = "manager", authorities = {"Manager"})
+    public void givenManagerContractId_whenSignContract_thenReturnIsOk() throws Exception {
+        // given - precondition or setup
+        SignatureDTO signatureDTO = createSignatureDTO();
+
+        when(managerService.signContract(anyLong(), anyLong())).thenReturn(Optional.of(signatureDTO));
+
+        // when - action or behaviour that we are going test
+        ResultActions response = mockMvc.perform(post("/managers/1/sign_contract/1")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(Optional.of(signatureDTO))));
+
+        // then - verify the result or output using assert statements
+        response.andDo(print()).
+                andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = "manager", authorities = {"Manager"})
+    public void givenInvalidContractId_whenSignContract_thenReturnIsBadRequest() throws Exception {
+        // given - precondition or setup
+        ApplicationDTO applicationDTO = createApplicationDTO(createOfferDTO(1L));
+        SignatureDTO signatureDTO = createSignatureDTO();
+
+        when(managerService.signContract(anyLong(), anyLong())).thenReturn(Optional.of(signatureDTO));
+
+        when(managerService.signContract(anyLong(), anyLong())).thenThrow(new NoSuchElementException("Contract not found"));
+
+        // when - action or behaviour that we are going test
+        ResultActions response = mockMvc.perform(post("/managers/-1/sign_contract/-1")
+                .with(csrf())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(Optional.of(signatureDTO))));
+
+        // then - verify the result or output using assert statements
+        response.andDo(print()).
+                andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(username = "manager", authorities = {"Manager"})
+    public void givenContractId_whenGetSignatureByContractId_thenReturnSignatureList() throws Exception{
+        // given - precondition or setup
+        SignatureDTO signatureDTO = createSignatureDTO();
+        List<SignatureDTO> signatureDTOList = List.of(signatureDTO);
+
+        given(managerService.getSignaturesByContractId(anyLong())).willReturn(signatureDTOList);
+
+        // when -  action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/managers/contracts/{contractId}/signatures", 1L));
+
+        // then - verify the output
+        response.andExpect(status().isOk());
+    }
+
+    private DepartmentDTO createDepartmentDTO(){
+        return new DepartmentDTO(1L, "GLO", "Génie logiciel");
     }
 
     private EmployerDTO createEmployerDTO() {
@@ -439,6 +503,7 @@ public class ManagerControllerTest {
         DepartmentDTO departmentDTO = createDepartmentDTO();
         return new OfferDTO(id,"Stage en génie logiciel", "Stage en génie logiciel", LocalDate.now(), LocalDate.now(), LocalDate.now(), 3, Offer.OfferStatus.PENDING, departmentDTO, employerDTO);
     }
+
     private ApplicationDTO createApplicationDTO(OfferDTO offerDTO) {
         CvDTO cvDTO = createCvDTO(createStudentDTO(createDepartmentDTO()));
         return new ApplicationDTO(1L, cvDTO, offerDTO, Application.ApplicationStatus.PENDING);
@@ -446,6 +511,10 @@ public class ManagerControllerTest {
 
     private ContractDTO createContractDTO(ApplicationDTO applicationDTO){
         return new ContractDTO(1L, "08:00", "17:00", 40, 18.35, createSupervisor(), applicationDTO);
+    }
+
+    private SignatureDTO createSignatureDTO() {
+        return new SignatureDTO(1L, 1L, "signatureName", "signatureType", LocalDate.now());
     }
 
     private Supervisor createSupervisor(){

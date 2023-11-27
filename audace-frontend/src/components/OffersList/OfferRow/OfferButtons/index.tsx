@@ -28,7 +28,7 @@ const OfferButtons = ({ offer, updateOffersState }: Props) => {
     }
   };
 
-  return <>{selectButtons()}</>;
+  return (<>{selectButtons()}</>);
 };
 
 export default OfferButtons;

@@ -122,7 +122,9 @@
     "applicationButton": "See applications"
   },
   "student": {
-    "seeOffersButton": "See Offers"
+    "seeOffersButton": "See Offers",
+    "viewContractDetails": "Consult the Contract",
+    "contractNotAvailable": "Accepted. Please wait for the contract to be created..."
   },
   "manager": {
     "seeOffersButton": "See Offers",
@@ -233,6 +235,17 @@
       "studentNotFound": "Student wasn't found"
     }
   },
+  "contractsList": {
+    "singleTitle": "Contract",
+    "title": "Contracts",
+    "studentName": "Student",
+    "employerName": "Employer",
+    "offerTitle": "Offer Title",
+    "Dates": "Start Date and End Date",
+    "actions": "Contract Information",
+    "viewDetails": "View Details",
+    "noContractsFound": "No contracts found"
+  },
   "logout": "Log out",
   "pageNotFound": "Error 404: Page Not Found",
   "sessionSelector": {
@@ -271,54 +284,69 @@
       "address": "Address"
     },
     "student": {
+      "name": "Name",
       "title": "Student",
       "email": "Email",
       "phone": "Phone",
       "address": "Address"
+    },
+    "supervisor": {
+      "title": "Supervisor",
+      "position": "Position",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "extension": "Ext."
     }
   },
   "notifications": {
-    "deleteAll" : "Remove all",
+    "deleteAll": "Remove all",
     "student": {
       "offer": {
-        "CREATED1" : "The offer ",
-        "CREATED2" : " can now be applied to."
+        "CREATED1": "The offer ",
+        "CREATED2": " can now be applied to."
       },
       "cv": {
-        "UPDATED1" : "The CV ",
-        "UPDATED2" : " has had it's status updated."
+        "UPDATED1": "The CV ",
+        "UPDATED2": " has had it's status updated."
       },
       "application": {
-        "UPDATED1" : "The application ",
-        "UPDATED2" : " has had it's status updated."
+        "UPDATED1": "The application ",
+        "UPDATED2": " has had it's status updated."
       }
     },
     "manager": {
       "offer": {
-        "CREATED1" : "The offer ",
-        "CREATED2" : " is waiting for your approval.",
-        "UPDATED1" : "The offer ",
-        "UPDATED2" : " has been updated."
+        "CREATED1": "The offer ",
+        "CREATED2": " is waiting for your approval.",
+        "UPDATED1": "The offer ",
+        "UPDATED2": " has been updated."
       },
       "cv": {
-        "CREATED1" : "The CV ",
-        "CREATED2" : " is waiting for your approval.",
-        "UPDATED1" : "The CV ",
-        "UPDATED2" : " has been updated."
+        "CREATED1": "The CV ",
+        "CREATED2": " is waiting for your approval.",
+        "UPDATED1": "The CV ",
+        "UPDATED2": " has been updated."
       },
-      "application": {
-        
-      }
+      "application": {}
     },
     "employer": {
       "offer": {
-        "UPDATED1" : "The offer ",
-        "UPDATED2" : " has had it's status updated."
+        "UPDATED1": "The offer ",
+        "UPDATED2": " has had it's status updated."
       },
       "application": {
-        "CREATED1" : "The offer ",
-        "CREATED2" : " has a new application."
+        "CREATED1": "The offer ",
+        "CREATED2": " has a new application."
       }
     }
+  },
+  "signature": {
+    "signedOn": "signed on",
+    "sign": "Click to sign",
+    "waiting": "Missing employer and student signatures",
+    "employerNotSigned": "The employer has not signed yet",
+    "studentNotSigned": "The student has not signed yet",
+    "managerNotSigned": "The manager has not signed yet"
   }
 }

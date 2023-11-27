@@ -3,6 +3,8 @@ package com.equipe4.audace.controller;
 import com.equipe4.audace.controller.abstracts.GenericUserController;
 import com.equipe4.audace.dto.EmployerDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.contract.ContractDTO;
+import com.equipe4.audace.dto.contract.SignatureDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
 import com.equipe4.audace.model.Employer;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/employers")
@@ -95,5 +98,41 @@ public class EmployerController extends GenericUserController<Employer, Employer
     public ResponseEntity<List<DepartmentDTO>> getAllDepartments() {
         logger.info("getAllDepartments");
         return ResponseEntity.ok(service.getAllDepartments());
+    }
+
+    @PostMapping("/sign_contract/{contractId}")
+    public ResponseEntity<SignatureDTO> signContract(@PathVariable Long contractId) {
+        logger.info("employerSignContract");
+        try {
+            return ResponseEntity.ok(
+                    service.signContract(contractId).orElseThrow()
+            );
+        } catch (IllegalArgumentException | NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/applications/{applicationId}/contract")
+    public ResponseEntity<ContractDTO> getContractByApplication(@PathVariable Long applicationId) {
+        logger.info("getContractByApplication");
+        try {
+            return ResponseEntity.ok(service.getContractByApplicationId(applicationId).orElseThrow());
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/contracts/{contractId}")
+    public ResponseEntity<ContractDTO> getContractById(@PathVariable Long contractId){
+        logger.info("getContractById");
+        return service.findContractById(contractId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/contracts/{contractId}/signatures")
+    public List<SignatureDTO> getSignaturesByContractId(@PathVariable Long contractId) {
+        logger.info("getSignatureByContractId");
+        return service.getSignaturesByContractId(contractId);
     }
 }

@@ -1,10 +1,11 @@
 package com.equipe4.audace.controller;
 
 import com.equipe4.audace.controller.abstracts.GenericUserController;
-import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.application.ApplicationDTO;
+import com.equipe4.audace.dto.ManagerDTO;
 import com.equipe4.audace.dto.application.StudentsByInternshipFoundStatus;
 import com.equipe4.audace.dto.contract.ContractDTO;
+import com.equipe4.audace.dto.contract.SignatureDTO;
 import com.equipe4.audace.dto.cv.CvDTO;
 import com.equipe4.audace.dto.department.DepartmentDTO;
 import com.equipe4.audace.dto.offer.OfferDTO;
@@ -134,7 +135,19 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
             return ResponseEntity.ok(
                     service.getApplicationById(applicationId).orElseThrow()
             );
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/{managerId}/sign_contract/{contractId}")
+    public ResponseEntity<SignatureDTO> signContract(@PathVariable Long managerId, @PathVariable Long contractId) {
+        logger.info("managerSignContract");
+        try {
+            return ResponseEntity.ok(
+                    service.signContract(managerId, contractId).orElseThrow()
+            );
+        } catch (IllegalArgumentException | NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
     }
@@ -150,5 +163,11 @@ public class ManagerController extends GenericUserController<Manager, ManagerSer
         } catch (NoSuchElementException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/contracts/{contractId}/signatures")
+    public List<SignatureDTO> getSignaturesByContractId(@PathVariable Long contractId) {
+        logger.info("getSignatureByContractId");
+        return service.getSignaturesByContractId(contractId);
     }
 }

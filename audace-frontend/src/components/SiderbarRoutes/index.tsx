@@ -17,6 +17,7 @@ import EmployerView from "../../views/Employer/EmployerView";
 import NotificationSidebar from "../NotificationSidebar";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Collapse } from "react-bootstrap";
+import SignContract from "../SignContract";
 
 interface Props {
   showNotifications: boolean;
@@ -113,6 +114,7 @@ const SidebarRoutes = ({ showNotifications }: Props) => {
               </AuthorizedRoute>
             }
           />
+          <Route path="/contract/:id" element={<SignContract />} />
           <Route path="*" element={<PageNotFoundView />} />
           <Route
             path="/"

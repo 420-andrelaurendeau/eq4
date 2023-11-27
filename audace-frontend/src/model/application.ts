@@ -12,4 +12,5 @@ export enum ApplicationStatus {
   ACCEPTED = "ACCEPTED",
   REFUSED = "REFUSED"
 }
+
 export default Application;

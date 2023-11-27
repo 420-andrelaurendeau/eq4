@@ -46,7 +46,6 @@ const EmployerButtons = ({ offer }: Props) => {
       if (response.status !== 200) {
         throw new Error(`Failed to delete offer. Status: ${response.status}`);
       }
-      console.log("Offer deleted successfully");
     } catch (error) {
       console.error("Failed to delete offer:", error);
     }
