@@ -13,6 +13,7 @@ interface Props {
 
 const CvsList = ({ cvs, error, updateCvsState }: Props) => {
   const { t } = useTranslation();
+  const userType = getUserType();
 
   return (
     <>
@@ -24,9 +25,12 @@ const CvsList = ({ cvs, error, updateCvsState }: Props) => {
       >
         <thead>
           <tr>
-            <th>{t("cvsList.studentName")}</th>
+            {userType !== UserType.Student && (
+              <th>{t("cvsList.studentName")}</th>
+            )}
             <th>{t("cvsList.name")}</th>
-            {getUserType() !== UserType.Student && <th></th>}
+            {userType !== UserType.Student && <th></th>}
+            {userType === UserType.Student && <th>{t("cvsList.status")}</th>}
           </tr>
         </thead>
         <tbody>

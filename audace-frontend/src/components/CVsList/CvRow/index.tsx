@@ -17,13 +17,16 @@ const CvRow = ({ cv, updateCvsState }: Props) => {
   const handleClick = () => setShow(true);
   const handleClose = () => setShow(false);
   const { t } = useTranslation();
+  const userType = getUserType();
 
   return (
     <>
       <tr>
-        <td>
-          {cv.student.firstName} {cv.student.lastName}
-        </td>
+        {userType !== UserType.Student && (
+          <td>
+            {cv.student.firstName} {cv.student.lastName}
+          </td>
+        )}
         <td>
           <Col>{cv.fileName}</Col>
           <Col className="text-muted small">
@@ -32,13 +35,13 @@ const CvRow = ({ cv, updateCvsState }: Props) => {
             </u>
           </Col>
         </td>
-        {getUserType() !== UserType.Student && (
+        {userType !== UserType.Student && (
           <td className="text-center">
-            <CvButtons
-              cv={cv}
-              updateCvsState={updateCvsState}
-            />
+            <CvButtons cv={cv} updateCvsState={updateCvsState} />
           </td>
+        )}
+        {userType === UserType.Student && (
+          <td className="text-center">{t(`cvsList.${cv.cvStatus}`)}</td>
         )}
       </tr>
       {show && <CvModal cv={cv} show={show} handleClose={handleClose} />}

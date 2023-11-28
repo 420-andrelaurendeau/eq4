@@ -53,6 +53,7 @@ const FileUploader = ({ student }: Props) => {
           <Form.Label>{t("upload.file")}</Form.Label>
           <FormControl
             type="file"
+            accept=".pdf"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               if (e.target.files) setFile(e.target.files[0]);
             }}

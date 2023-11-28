@@ -46,7 +46,11 @@
     "name": "CV",
     "viewMore": "View the CV",
     "noCvs": "No CVs available",
-    "studentName": "Student"
+    "studentName": "Student",
+    "status": "Status",
+    "PENDING": "Pending",
+    "ACCEPTED": "Accepted",
+    "REFUSED": "Refused"
   },
   "offersList": {
     "errors": {
@@ -108,6 +112,7 @@
     "title": "Applications",
     "acceptButton": "Accept",
     "refuseButton": "Refuse",
+    "PENDING": "Pending",
     "ACCEPTED": "Accepted",
     "REFUSED": "Refused"
   },
