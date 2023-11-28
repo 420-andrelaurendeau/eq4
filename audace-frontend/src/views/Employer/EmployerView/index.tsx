@@ -54,8 +54,9 @@ const EmployerView = () => {
   }, [employer, chosenSession, setOffers]);
 
   const updateAvailablePlaces = (offer: Offer) => {
-    let updatedOffers = offers.map(o => {
-      if (o.id === offer.id) return { ...o, availablePlaces: --o.availablePlaces };
+    let updatedOffers = offers.map((o) => {
+      if (o.id === offer.id)
+        return { ...o, availablePlaces: --o.availablePlaces };
       return o;
     });
     setOffers(updatedOffers);
@@ -63,6 +64,7 @@ const EmployerView = () => {
 
   return (
     <Container className="mt-3">
+      <h1 className="my-3">{t("employer.title")}</h1>
       <SessionSelector />
       <OffersList
         offers={offers}

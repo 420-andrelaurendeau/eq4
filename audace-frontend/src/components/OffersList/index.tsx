@@ -42,14 +42,12 @@ const OffersList = ({
           <tbody>
             {offers.map((offer: Offer) => {
               return (
-                <>
-                  <OfferRow
-                    key={offer.id}
-                    offer={offer}
-                    updateOffersState={updateOffersState}
-                    updateAvailablePlaces={updateAvailablePlaces}
-                  />
-                </>
+                <OfferRow
+                  key={offer.id}
+                  offer={offer}
+                  updateOffersState={updateOffersState}
+                  updateAvailablePlaces={updateAvailablePlaces}
+                />
               );
             })}
           </tbody>

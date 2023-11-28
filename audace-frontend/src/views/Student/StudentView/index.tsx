@@ -102,17 +102,9 @@ const StudentView = ({
 
   return (
     <Container>
-      <h1 className="my-3" style={{ textTransform: "capitalize" }}>
-        {student?.firstName} {student?.lastName}
-      </h1>
-
+      <h1 className="my-3">{t("student.title")}</h1>
       <SessionSelector />
-
-      {viewOffers && (
-        <>
-          <OffersList offers={offers} error={offersError} />
-        </>
-      )}
+      {viewOffers && <OffersList offers={offers} error={offersError} />}
       <CVsList cvs={cvs} error={cvsError} />
       {viewUpload && <FileUploader student={student!} />}
       <ApplicationsList applications={applications} error={applicationsError} />
