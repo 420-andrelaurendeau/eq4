@@ -121,7 +121,7 @@ public class AudaceApplication implements CommandLineRunner {
 		applicationRepository.save(new Application(null, cv2, offer2));
 		applicationRepository.save(new Application(null, cv3, offer2));
 
-		Manager manager = new Manager(null, "manager", "managerman", "manager@email.com", "password", "yeete", "1234567890", department);
+		Manager manager = new Manager(null, "Carl", "LaMontagne", "cmont@email.com", "password", "yeete", "1234567890", department);
 		manager = managerRepository.save(manager);
 
 		String managerPassword = manager.getPassword();
