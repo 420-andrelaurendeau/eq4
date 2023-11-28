@@ -117,7 +117,7 @@ const ApplicationRow = ({
         {userType !== UserType.Employer && (
           <td>{application.offer!.employer.organisation}</td>
         )}
-        <td>{userType === UserType.Employer && renderStatus()}</td>
+        <td>{renderStatus()}</td>
       </tr>
       {show && (
         <CvModal cv={application.cv!} show={show} handleClose={handleClose} />
