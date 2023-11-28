@@ -41,12 +41,22 @@ const EmployerButtons = ({ application, updateApplicationsState }: Props) => {
 
   return (
     <>
-      <Button onClick={acceptButtonClick} className="btn-success me-2">
-        {t("employerApplicationsList.acceptButton")}
-      </Button>
-      <Button onClick={refuseButtonClick} className="btn-danger">
-        {t("employerApplicationsList.refuseButton")}
-      </Button>
+      {application.applicationStatus === "PENDING" ? (
+        <>
+          <Button
+            onClick={acceptButtonClick}
+            className="me-2"
+            variant="outline-success"
+          >
+            {t("employerApplicationsList.acceptButton")}
+          </Button>
+          <Button onClick={refuseButtonClick} variant="outline-danger">
+            {t("employerApplicationsList.refuseButton")}
+          </Button>
+        </>
+      ) : (
+        <p>{t("employerApplicationsList." + application.applicationStatus)}</p>
+      )}
     </>
   );
 };

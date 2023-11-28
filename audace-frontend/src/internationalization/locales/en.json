@@ -124,7 +124,8 @@
   "student": {
     "seeOffersButton": "See Offers",
     "viewContractDetails": "Consult the Contract",
-    "contractNotAvailable": "Accepted. Please wait for the contract to be created..."
+    "contractNotAvailable": "Accepted. Please wait for the contract to be created...",
+    "title": "Student"
   },
   "manager": {
     "seeOffersButton": "See Offers",
@@ -163,7 +164,8 @@
     "createOfferButton": "Create Offer",
     "seeOffersButton": "See Offers",
     "seeApplicationsButton": "See Applications",
-    "addOfferButton": "Create Offer"
+    "addOfferButton": "Create Offer",
+    "title": "Employer"
   },
   "addOffer": {
     "pageTitle": "Create Offer",

@@ -37,7 +37,12 @@ const ApplicationRow = ({
   useEffect(() => {
     const fetchContract = async () => {
       try {
-        const res = await getContractByApplicationId(application.id!, userType === UserType.Employer ? Authority.EMPLOYER : Authority.STUDENT);
+        const res = await getContractByApplicationId(
+          application.id!,
+          userType === UserType.Employer
+            ? Authority.EMPLOYER
+            : Authority.STUDENT
+        );
         setContract(res.data);
       } catch (err: any) {
         if (err.response?.status === 404) {
@@ -53,10 +58,42 @@ const ApplicationRow = ({
   const handleViewContract = (contractId: number) => {
     try {
       navigate(`/contract/${contractId}`);
-    }
-    catch (err) {
+    } catch (err) {
       console.error("Error viewing contract:", err);
     }
+  };
+
+  const renderStatus = () => {
+    if (application.applicationStatus === ApplicationStatus.PENDING) {
+      return (
+        <div className="d-flex justify-content-center">
+          <EmployerButtons
+            application={application}
+            updateApplicationsState={updateApplicationsState}
+          />
+        </div>
+      );
+    }
+
+    if (application.applicationStatus === ApplicationStatus.REFUSED) {
+      return t("employerApplicationsList.REFUSED");
+    }
+
+    return renderStatusWithContract();
+  };
+
+  const renderStatusWithContract = () => {
+    return contract ? (
+      <Button
+        onClick={() => handleViewContract(contract!.id!)}
+        variant="outline-primary"
+        className="text-dark"
+      >
+        {t("student.viewContractDetails")}
+      </Button>
+    ) : (
+      t("student.contractNotAvailable")
+    );
   };
 
   return (
@@ -80,46 +117,7 @@ const ApplicationRow = ({
         {userType !== UserType.Employer && (
           <td>{application.offer!.employer.organisation}</td>
         )}
-        <td>
-          {userType === UserType.Employer && offer!.availablePlaces > 0 ? (
-            <div className="d-flex justify-content-center">
-              {application.applicationStatus === "PENDING" ? (
-                <EmployerButtons
-                  application={application}
-                  updateApplicationsState={updateApplicationsState}
-                />
-              ) : (
-                <>
-                  {contract ? (
-                    <Button
-                      onClick={() => handleViewContract(contract!.id!)}
-                      variant="outline-primary"
-                      className="text-dark"
-                    >
-                      {t("student.viewContractDetails")}
-                    </Button>
-                  ) : (
-                    t("student.contractNotAvailable")
-                  )}
-                </>
-              )}
-            </div>
-          ) : (
-            <>
-              {contract ? (
-                <Button
-                  onClick={() => handleViewContract(contract!.id!)}
-                  variant="outline-primary"
-                  className="text-dark"
-                >
-                  {t("student.viewContractDetails")}
-                </Button>
-              ) : (
-                t("student.contractNotAvailable")
-              )}
-            </>
-          )}
-        </td>
+        <td>{userType === UserType.Employer && renderStatus()}</td>
       </tr>
       {show && (
         <CvModal cv={application.cv!} show={show} handleClose={handleClose} />

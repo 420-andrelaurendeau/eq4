@@ -4,12 +4,18 @@ import StudentButtons from "./StudentButtons";
 import ManagerButtons from "./ManagerButtons";
 import { Offer, OfferStatus } from "../../../../model/offer";
 import { getUserType } from "../../../../services/authService";
+import Application from "../../../../model/application";
 
 interface Props {
   offer: Offer;
   updateOffersState?: (offer: Offer, offerStatus: OfferStatus) => void;
+  pendingApplications?: Application[];
 }
-const OfferButtons = ({ offer, updateOffersState }: Props) => {
+const OfferButtons = ({
+  offer,
+  updateOffersState,
+  pendingApplications,
+}: Props) => {
   const selectButtons = () => {
     const userType = getUserType();
 
@@ -24,11 +30,16 @@ const OfferButtons = ({ offer, updateOffersState }: Props) => {
           />
         );
       case UserType.Employer:
-        return <EmployerButtons offer={offer} />;
+        return (
+          <EmployerButtons
+            offer={offer}
+            pendingApplications={pendingApplications!}
+          />
+        );
     }
   };
 
-  return (<>{selectButtons()}</>);
+  return <>{selectButtons()}</>;
 };
 
 export default OfferButtons;

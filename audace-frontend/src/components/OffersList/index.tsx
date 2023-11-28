@@ -4,11 +4,6 @@ import OfferRow from "./OfferRow";
 import GenericTable from "../GenericTable";
 import { useSessionContext } from "../../contextsholders/providers/SessionContextHolder";
 import Accordion from "react-bootstrap/Accordion";
-import Applications from "../Applications";
-import { Card } from "react-bootstrap";
-import { getUserType } from "../../services/authService";
-import { UserType } from "../../model/user";
-import React from "react";
 
 interface Props {
   offers: Offer[];
@@ -25,7 +20,6 @@ const OffersList = ({
 }: Props) => {
   const { t } = useTranslation();
   const { chosenSession, currentSession } = useSessionContext();
-  const userType = getUserType();
 
   return (
     <>
@@ -48,26 +42,12 @@ const OffersList = ({
           <tbody>
             {offers.map((offer: Offer) => {
               return (
-                <React.Fragment key={offer.id}>
-                  <OfferRow
-                    offer={offer}
-                    updateOffersState={updateOffersState}
-                  />
-                  {userType !== UserType.Student && (
-                    <tr>
-                      <td colSpan={12}>
-                        <Accordion.Collapse eventKey={offer.id!.toString()}>
-                          <Card.Body>
-                            <Applications
-                              offer={offer}
-                              updateAvailablePlaces={updateAvailablePlaces}
-                            />
-                          </Card.Body>
-                        </Accordion.Collapse>
-                      </td>
-                    </tr>
-                  )}
-                </React.Fragment>
+                <OfferRow
+                  key={offer.id}
+                  offer={offer}
+                  updateOffersState={updateOffersState}
+                  updateAvailablePlaces={updateAvailablePlaces}
+                />
               );
             })}
           </tbody>

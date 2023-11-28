@@ -3,8 +3,17 @@ import OfferRow from "../../../components/OffersList/OfferRow";
 import "@testing-library/jest-dom/extend-expect";
 import { Table } from "react-bootstrap";
 import { offer } from "../testUtils/testUtils";
+import { UserType } from "../../../model/user";
 
 // Rendered in a table and tbody to avoid getting warnings
+
+jest
+  .spyOn(require("../../../services/authService"), "getUserId")
+  .mockReturnValue("1");
+
+jest
+  .spyOn(require("../../../services/authService"), "getUserType")
+  .mockReturnValue(UserType.Student);
 
 it("should display default values", () => {
   render(
@@ -67,7 +76,7 @@ it("should close modal when close is clicked", async () => {
   expect(closeButton).toBeInTheDocument();
 
   fireEvent.click(closeButton);
-  
+
   const orgText = screen.queryByText(/offer.modal.org/i);
   expect(orgText).not.toBeInTheDocument();
 });

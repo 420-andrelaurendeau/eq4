@@ -29,11 +29,5 @@ public class OfferDTO {
         return new Offer(id, title, description, internshipStartDate, internshipEndDate, offerEndDate, availablePlaces, department.fromDTO(), employer.fromDTO());
     }
 
-    public Long getEmployerId() {
-        return employer.getId();
-    }
 
-    public String getDepartmentCode() {
-        return department.getCode();
-    }
 }

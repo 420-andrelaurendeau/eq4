@@ -11,40 +11,39 @@ export const formatDate = (date: Date) => {
 
 export const determineSessionSeason = (chosenSession: Session): string => {
   const startDate = new Date(chosenSession.startDate);
-
-  if (isFall(startDate)) return "sessionSelector.fall";
   if (isWinter(startDate)) return "sessionSelector.winter";
-  if (isSpring(startDate)) return "sessionSelector.spring";
+  if (isSummer(startDate)) return "sessionSelector.summer";
+  if (isFall(startDate)) return "sessionSelector.fall";
 
-  return "sessionSelector.summer";
+  return "sessionSelector.fall";
 };
 
 const isFall = (startDate: Date): boolean => {
-  const month = startDate.getMonth();
+  const month = startDate.getMonth() + 1;
 
-  if (month < 8 || month > 11) return false;
-  if (month === 11) return startDate.getDate() < 21;
-  if (month === 8) return startDate.getDate() >= 23;
+  if (month < 8) return false;
+  if (month === 12) return startDate.getDate() <= 23;
+  if (month === 8) return startDate.getDate() >= 20;
 
   return true;
 };
 
 const isWinter = (startDate: Date): boolean => {
-  const month = startDate.getMonth();
+  const month = startDate.getMonth() + 1;
 
-  if (month > 2 && month < 11) return false;
-  if (month === 11) return startDate.getDate() >= 21;
-  if (month === 2) return startDate.getDate() <= 20;
+  if (month > 5) return false;
+  if (month === 5) return startDate.getDate() <= 18;
+  if (month === 1) return startDate.getDate() >= 19;
 
   return true;
 };
 
-const isSpring = (startDate: Date): boolean => {
-  const month = startDate.getMonth();
+const isSummer = (startDate: Date): boolean => {
+  const month = startDate.getMonth() + 1;
 
-  if (month < 2 || month > 5) return false;
-  if (month === 5) return startDate.getDate() < 21;
-  if (month === 2) return startDate.getDate() >= 19;
+  if (month < 5 || month > 8) return false;
+  if (month === 8) return startDate.getDate() <= 18;
+  if (month === 5) return startDate.getDate() >= 19;
 
   return true;
 };

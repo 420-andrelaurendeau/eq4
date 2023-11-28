@@ -46,6 +46,13 @@ public class UserController extends GenericUserController<User, UserService> {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
+    @GetMapping("/sessions/next")
+    public ResponseEntity<SessionDTO> getNextSession() {
+        return service.getNextSession()
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
     @GetMapping("/sessions/{id}")
     public ResponseEntity<SessionDTO> getSessionById(@PathVariable Long id) {
         return service.getSessionById(id)

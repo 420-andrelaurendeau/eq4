@@ -85,7 +85,7 @@ public class SessionManipulatorTest {
 
         when(offerSessionRepository.findAllByOfferInAndSessionId(expected, session.getId())).thenReturn(offerSessions);
 
-        List<Offer> result = sessionManipulator.removeOffersNotInSession(expected, session.getId());
+        List<Offer> result = sessionManipulator.removeOffersNotInNextSession(expected, session.getId());
         assertThat(result).isEqualTo(expected);
     }
 
@@ -99,7 +99,7 @@ public class SessionManipulatorTest {
 
         when(offerSessionRepository.findAllByOfferInAndSessionId(expected, session.getId())).thenReturn(List.of());
 
-        List<Offer> result = sessionManipulator.removeOffersNotInSession(expected, session.getId());
+        List<Offer> result = sessionManipulator.removeOffersNotInNextSession(expected, session.getId());
         assertThat(result).isEqualTo(List.of());
     }
 
@@ -117,7 +117,7 @@ public class SessionManipulatorTest {
 
         when(offerSessionRepository.findAllByOfferInAndSessionId(expected, session.getId())).thenReturn(offerSessions);
 
-        List<Offer> result = sessionManipulator.removeOffersNotInSession(expected, session.getId());
+        List<Offer> result = sessionManipulator.removeOffersNotInNextSession(expected, session.getId());
         assertThat(result).isEqualTo(List.of(expected.get(0)));
     }
 
@@ -132,7 +132,7 @@ public class SessionManipulatorTest {
         );
         when(offerSessionRepository.existsByOfferAndSession(offer, session)).thenReturn(true);
 
-        boolean result = sessionManipulator.isOfferInCurrentSession(offer);
+        boolean result = sessionManipulator.isOfferInNextSession(offer);
         assertThat(result).isTrue();
     }
 
@@ -147,7 +147,7 @@ public class SessionManipulatorTest {
         );
         when(offerSessionRepository.existsByOfferAndSession(offer, session)).thenReturn(false);
 
-        boolean result = sessionManipulator.isOfferInCurrentSession(offer);
+        boolean result = sessionManipulator.isOfferInNextSession(offer);
         assertThat(result).isFalse();
     }
 
@@ -167,7 +167,7 @@ public class SessionManipulatorTest {
 
         when(offerSessionRepository.findAllByOfferInAndSessionId(expected, session.getId())).thenReturn(offerSessions);
 
-        List<Offer> result = sessionManipulator.removeOffersNotInSession(expected, session.getId());
+        List<Offer> result = sessionManipulator.removeOffersNotInNextSession(expected, session.getId());
 
         assertThat(result).isEqualTo(expected);
     }

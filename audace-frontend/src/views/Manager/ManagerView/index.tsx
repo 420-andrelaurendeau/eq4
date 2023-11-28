@@ -66,7 +66,7 @@ const ManagerView = ({ isContractCreated }: Props) => {
       <Alert variant="success" hidden={isContractCreated === undefined}>
         {t("manager.contractCreated")}
       </Alert>
-      <h1>{t("manager.title")}</h1>
+      <h1 className="my-3">{t("manager.title")}</h1>
       <ManagerApplicationsList applications={applications} />
       <ManagerStudentByInternshipStatusList />
       {departmentId && <ManagerSignContract departmentId={departmentId} />}

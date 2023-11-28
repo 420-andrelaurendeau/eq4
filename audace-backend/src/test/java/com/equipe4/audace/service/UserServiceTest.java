@@ -87,9 +87,9 @@ class UserServiceTest {
     void getCurrentSession_happyPath_test() {
         Session session = new Session(1L, LocalDate.now(), LocalDate.now().plusMonths(1));
 
-        when(sessionManipulator.getCurrentSession()).thenReturn(session);
+        when(sessionManipulator.getNextSession()).thenReturn(session);
 
-        Optional<SessionDTO> sessionDTO = userService.getCurrentSession();
+        Optional<SessionDTO> sessionDTO = userService.getNextSession();
 
         assertTrue(sessionDTO.isPresent());
         assertThat(sessionDTO.get()).isEqualTo(session.toDTO());
