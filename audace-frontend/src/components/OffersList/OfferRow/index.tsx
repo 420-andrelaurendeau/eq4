@@ -43,7 +43,7 @@ const OfferRow = ({
       navigate("/pageNotFound");
       return;
     }
-    if (userType !== UserType.Student) {
+    if (userType === UserType.Employer) {
       getAllApplicationsByEmployerIdAndOfferId(parseInt(id), offer.id!)
         .then((res) => {
           setApplications(res.data);
@@ -67,7 +67,7 @@ const OfferRow = ({
     applicationStatus: ApplicationStatus
   ) => {
     let newApplications = applications.filter((a) => a.id !== application.id);
-    
+
     application.applicationStatus = applicationStatus;
     newApplications.push(application);
 
@@ -108,7 +108,7 @@ const OfferRow = ({
           </td>
         )}
       </tr>
-      {userType !== UserType.Student && (
+      {userType === UserType.Employer && (
         <tr>
           <td colSpan={12}>
             <Accordion.Collapse eventKey={offer.id!.toString()}>
