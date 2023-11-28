@@ -60,7 +60,8 @@ const ContractsList = ({ departmentId }: Props) => {
                   <th>{t("contractsList.studentName")}</th>
                   <th>{t("contractsList.employerName")}</th>
                   <th>{t("contractsList.offerTitle")}</th>
-                  <th>{t("contractsList.Dates")}</th>
+                  <th>{t("contractsList.startDate")}</th>
+                  <th>{t("contractsList.endDate")}</th>
                   <th>{t("contractsList.actions")}</th>
                 </tr>
               </thead>
@@ -71,7 +72,8 @@ const ContractsList = ({ departmentId }: Props) => {
                     <td>{contract.application.cv!.student.firstName} {contract.application.cv!.student.lastName}</td>
                     <td>{`${contract.application.offer!.employer.firstName} ${contract.application.offer!.employer.lastName}`}</td>
                     <td>{contract.application.offer!.title}</td>
-                    <td>{format(new Date(contract.application.offer!.internshipStartDate), 'dd/MM/yyyy')}, {format(new Date(contract.application.offer!.internshipEndDate), 'dd/MM/yyyy')}</td>
+                    <td>{format(new Date(contract.application.offer!.internshipStartDate), 'dd/MM/yyyy')}</td>
+                    <td>{format(new Date(contract.application.offer!.internshipEndDate), 'dd/MM/yyyy')}</td>
                     <td>
                       <Button variant="primary" size="sm" onClick={() => handleViewContract(contract.id!)}>
                         {t("contractsList.viewDetails")}

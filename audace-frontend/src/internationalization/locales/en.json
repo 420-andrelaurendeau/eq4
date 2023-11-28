@@ -241,7 +241,8 @@
     "studentName": "Student",
     "employerName": "Employer",
     "offerTitle": "Offer Title",
-    "Dates": "Start Date and End Date",
+    "startDate": "Start Date",
+    "endDate": "End Date",
     "actions": "Contract Information",
     "viewDetails": "View Details",
     "noContractsFound": "No contracts found"
