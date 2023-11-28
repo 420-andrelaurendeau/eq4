@@ -39,7 +39,7 @@ describe("toggle button", () => {
 
     render(<SessionSelector />);
 
-    const selectedSession = screen.getByText(/sessionSelector.winter 2021/i);
+    const selectedSession = screen.getByText(/sessionSelector.fall 2021/i);
     expect(selectedSession).toBeInTheDocument();
   });
 });
@@ -68,7 +68,7 @@ describe("dropdown menu", () => {
     fireEvent.click(unselectedSession);
 
     const dropdownItems = await screen.findAllByText(
-      /sessionSelector.winter 2021/i
+      /sessionSelector.fall 2021/i
     );
 
     dropdownItems.forEach((item) => {
@@ -98,7 +98,7 @@ describe("dropdown menu", () => {
     fireEvent.click(unselectedSession);
 
     const dropdownItems = await screen.findAllByText(
-      /sessionSelector.winter 2021/i
+      /sessionSelector.fall 2021/i
     );
 
     fireEvent.click(dropdownItems[0]);
@@ -115,7 +115,7 @@ it("should call seeApplications", async () => {
   fireEvent.click(unselectedSession);
 
   const dropdownItems = await screen.findAllByText(
-    /sessionSelector.winter 2021/i
+    /sessionSelector.fall 2021/i
   );
 
   fireEvent.click(dropdownItems[0]);
