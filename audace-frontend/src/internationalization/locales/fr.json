@@ -108,6 +108,7 @@
     "title": "Candidatures",
     "acceptButton": "Accepter",
     "refuseButton": "Refuser",
+    "PENDING": "En attente",
     "ACCEPTED": "Accepté",
     "REFUSED": "Refusé"
   },

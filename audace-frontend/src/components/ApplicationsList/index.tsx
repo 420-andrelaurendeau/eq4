@@ -3,11 +3,9 @@ import ApplicationRow from "./ApplicationRow";
 import { useTranslation } from "react-i18next";
 import GenericTable from "../GenericTable";
 import { UserType } from "../../model/user";
-import { Offer } from "../../model/offer";
 import { getUserType } from "../../services/authService";
 
 interface Props {
-  offer?: Offer;
   applications: Application[];
   error: string;
   updateApplicationsState?: (
@@ -17,7 +15,6 @@ interface Props {
 }
 
 const ApplicationsList = ({
-  offer,
   applications,
   error,
   updateApplicationsState,
@@ -51,7 +48,6 @@ const ApplicationsList = ({
         <tbody>
           {applications.map((application) => (
             <ApplicationRow
-              offer={offer}
               key={application.id}
               application={application}
               updateApplicationsState={updateApplicationsState}

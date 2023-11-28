@@ -6,14 +6,12 @@ import CvModal from "../../CVsList/CvRow/CvModal";
 import { UserType } from "../../../model/user";
 import EmployerButtons from "./ApplicationButtons/EmployerButtons";
 import { getUserType } from "../../../services/authService";
-import { Offer } from "../../../model/offer";
 import { Contract } from "../../../model/contract";
 import { useNavigate } from "react-router-dom";
 import { getContractByApplicationId } from "../../../services/contractService";
 import { Authority } from "../../../model/auth";
 
 interface Props {
-  offer?: Offer;
   application: Application;
   updateApplicationsState?: (
     application: Application,
@@ -22,7 +20,6 @@ interface Props {
 }
 
 const ApplicationRow = ({
-  offer,
   application,
   updateApplicationsState,
 }: Props) => {
@@ -64,19 +61,20 @@ const ApplicationRow = ({
   };
 
   const renderStatus = () => {
-    if (application.applicationStatus === ApplicationStatus.PENDING) {
+    if (
+      userType === UserType.Employer &&
+      application.applicationStatus === ApplicationStatus.PENDING
+    ) {
       return (
-        <div className="d-flex justify-content-center">
-          <EmployerButtons
-            application={application}
-            updateApplicationsState={updateApplicationsState}
-          />
-        </div>
+        <EmployerButtons
+          application={application}
+          updateApplicationsState={updateApplicationsState}
+        />
       );
     }
 
-    if (application.applicationStatus === ApplicationStatus.REFUSED) {
-      return t("employerApplicationsList.REFUSED");
+    if (application.applicationStatus !== ApplicationStatus.ACCEPTED) {
+      return t(`employerApplicationsList.${application.applicationStatus}`);
     }
 
     return renderStatusWithContract();
@@ -117,7 +115,9 @@ const ApplicationRow = ({
         {userType !== UserType.Employer && (
           <td>{application.offer!.employer.organisation}</td>
         )}
-        <td>{renderStatus()}</td>
+        <td>
+          <div className="d-flex justify-content-center">{renderStatus()}</div>
+        </td>
       </tr>
       {show && (
         <CvModal cv={application.cv!} show={show} handleClose={handleClose} />
