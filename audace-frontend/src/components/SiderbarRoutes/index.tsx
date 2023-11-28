@@ -36,16 +36,18 @@ const SidebarRoutes = ({ showNotifications }: Props) => {
           <Route
             path="/signup/*"
             element={
-              <Routes>
-                <Route
-                  path="employer"
-                  element={<SignupView userType={UserType.Employer} />}
-                />
-                <Route
-                  path="student/:depCode"
-                  element={<SignupView userType={UserType.Student} />}
-                />
-              </Routes>
+              <ConnectedRoute isConnectedRoute={false}>
+                <Routes>
+                  <Route
+                    path="employer"
+                    element={<SignupView userType={UserType.Employer} />}
+                  />
+                  <Route
+                    path="student/:depCode"
+                    element={<SignupView userType={UserType.Student} />}
+                  />
+                </Routes>
+              </ConnectedRoute>
             }
           />
           <Route
