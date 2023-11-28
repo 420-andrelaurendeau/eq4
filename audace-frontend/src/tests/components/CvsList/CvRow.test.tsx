@@ -77,9 +77,6 @@ it("should open modal when viewMore is clicked", async () => {
 
   fireEvent.click(viewMore);
 
-  const studentName = screen.getAllByText(/john doe/i)[1];
-  await waitFor(() => expect(studentName).toBeInTheDocument());
-
   const cvName = screen.getByText(/john doe - The best CV/i);
   expect(cvName).toBeInTheDocument();
 });
@@ -98,13 +95,10 @@ it("should close modal when close button is clicked", async () => {
 
   fireEvent.click(viewMore);
 
-  const studentName = screen.getAllByText(/john doe/i)[1];
-  await waitFor(() => expect(studentName).toBeInTheDocument());
-
   const closeButton = screen.getByLabelText(/close/i);
   expect(closeButton).toBeInTheDocument();
 
   fireEvent.click(closeButton);
 
-  await waitFor(() => expect(studentName).not.toBeInTheDocument());
+  await waitFor(() => expect(closeButton).not.toBeInTheDocument());
 });

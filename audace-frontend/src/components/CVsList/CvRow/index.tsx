@@ -40,6 +40,9 @@ const CvRow = ({ cv, updateCvsState }: Props) => {
             <CvButtons cv={cv} updateCvsState={updateCvsState} />
           </td>
         )}
+        {userType === UserType.Student && (
+          <td className="text-center">{t(`cvsList.${cv.cvStatus}`)}</td>
+        )}
       </tr>
       {show && <CvModal cv={cv} show={show} handleClose={handleClose} />}
     </>
