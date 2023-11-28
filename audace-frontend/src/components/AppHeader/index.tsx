@@ -77,6 +77,13 @@ function AppHeader({ showNotifications, setShowNotifications }: Props) {
             >
               {t("manager.seeOffersButton")}
             </Button>
+            <Button
+              onClick={() => navigate(authority + "/cvs")}
+              variant="light"
+              className="me-2"
+            >
+              {t("manager.seeCvsButton")}
+            </Button>
           </Nav>
         )}
       </Navbar.Collapse>
