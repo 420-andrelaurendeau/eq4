@@ -63,6 +63,39 @@ const ApplicationRow = ({
     }
   };
 
+  const renderStatus = () => {
+    if (application.applicationStatus === ApplicationStatus.PENDING) {
+      return (
+        <div className="d-flex justify-content-center">
+          <EmployerButtons
+            application={application}
+            updateApplicationsState={updateApplicationsState}
+          />
+        </div>
+      );
+    }
+
+    if (application.applicationStatus === ApplicationStatus.REFUSED) {
+      return t("employerApplicationsList.REFUSED");
+    }
+
+    return renderStatusWithContract();
+  };
+
+  const renderStatusWithContract = () => {
+    return contract ? (
+      <Button
+        onClick={() => handleViewContract(contract!.id!)}
+        variant="outline-primary"
+        className="text-dark"
+      >
+        {t("student.viewContractDetails")}
+      </Button>
+    ) : (
+      t("student.contractNotAvailable")
+    );
+  };
+
   return (
     <>
       <tr>
@@ -84,46 +117,7 @@ const ApplicationRow = ({
         {userType !== UserType.Employer && (
           <td>{application.offer!.employer.organisation}</td>
         )}
-        <td>
-          {userType === UserType.Employer && offer!.availablePlaces > 0 ? (
-            <div className="d-flex justify-content-center">
-              {application.applicationStatus === "PENDING" ? (
-                <EmployerButtons
-                  application={application}
-                  updateApplicationsState={updateApplicationsState}
-                />
-              ) : (
-                <>
-                  {contract ? (
-                    <Button
-                      onClick={() => handleViewContract(contract!.id!)}
-                      variant="outline-primary"
-                      className="text-dark"
-                    >
-                      {t("student.viewContractDetails")}
-                    </Button>
-                  ) : (
-                    t("student.contractNotAvailable")
-                  )}
-                </>
-              )}
-            </div>
-          ) : (
-            <>
-              {contract ? (
-                <Button
-                  onClick={() => handleViewContract(contract!.id!)}
-                  variant="outline-primary"
-                  className="text-dark"
-                >
-                  {t("student.viewContractDetails")}
-                </Button>
-              ) : (
-                t("student.contractNotAvailable")
-              )}
-            </>
-          )}
-        </td>
+        <td>{userType === UserType.Employer && renderStatus()}</td>
       </tr>
       {show && (
         <CvModal cv={application.cv!} show={show} handleClose={handleClose} />
