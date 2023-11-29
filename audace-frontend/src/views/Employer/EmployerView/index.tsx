@@ -55,10 +55,11 @@ const EmployerView = () => {
 
   const updateAvailablePlaces = (offer: Offer) => {
     let updatedOffers = offers.map((o) => {
-      if (o.id === offer.id)
-        return { ...o, availablePlaces: --o.availablePlaces };
+      if (o.id === offer.id) o.availablePlaces--;
+
       return o;
     });
+
     setOffers(updatedOffers);
   };
 

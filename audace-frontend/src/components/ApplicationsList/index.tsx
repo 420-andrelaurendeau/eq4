@@ -4,10 +4,12 @@ import { useTranslation } from "react-i18next";
 import GenericTable from "../GenericTable";
 import { UserType } from "../../model/user";
 import { getUserType } from "../../services/authService";
+import { Offer } from "../../model/offer";
 
 interface Props {
   applications: Application[];
   error: string;
+  offer?: Offer;
   updateApplicationsState?: (
     application: Application,
     applicationStatus: ApplicationStatus
@@ -17,6 +19,7 @@ interface Props {
 const ApplicationsList = ({
   applications,
   error,
+  offer,
   updateApplicationsState,
 }: Props) => {
   const { t } = useTranslation();
@@ -50,6 +53,7 @@ const ApplicationsList = ({
             <ApplicationRow
               key={application.id}
               application={application}
+              offer={offer}
               updateApplicationsState={updateApplicationsState}
             />
           ))}

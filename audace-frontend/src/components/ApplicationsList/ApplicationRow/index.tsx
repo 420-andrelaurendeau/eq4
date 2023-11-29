@@ -10,9 +10,11 @@ import { Contract } from "../../../model/contract";
 import { useNavigate } from "react-router-dom";
 import { getContractByApplicationId } from "../../../services/contractService";
 import { Authority } from "../../../model/auth";
+import { Offer } from "../../../model/offer";
 
 interface Props {
   application: Application;
+  offer?: Offer;
   updateApplicationsState?: (
     application: Application,
     applicationStatus: ApplicationStatus
@@ -22,6 +24,7 @@ interface Props {
 const ApplicationRow = ({
   application,
   updateApplicationsState,
+  offer,
 }: Props) => {
   const { t } = useTranslation();
   const [show, setShow] = useState<boolean>(false);
@@ -68,6 +71,7 @@ const ApplicationRow = ({
       return (
         <EmployerButtons
           application={application}
+          offer={offer!}
           updateApplicationsState={updateApplicationsState}
         />
       );

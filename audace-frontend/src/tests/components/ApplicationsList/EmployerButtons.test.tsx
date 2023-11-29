@@ -1,10 +1,10 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import EmployerButtons from "../../../components/ApplicationsList/ApplicationRow/ApplicationButtons/EmployerButtons";
-import { application } from "../testUtils/testUtils";
+import { application, offer } from "../testUtils/testUtils";
 import "@testing-library/jest-dom/extend-expect";
 
 it("should display values", () => {
-  render(<EmployerButtons application={application} />);
+  render(<EmployerButtons application={application} offer={offer} />);
 
   expect(
     screen.getByText(/employerApplicationsList.acceptButton/i)
@@ -20,6 +20,7 @@ it("should call updateApplicationsState on accept button click", async () => {
     <EmployerButtons
       application={application}
       updateApplicationsState={updateApplicationsState}
+      offer={offer}
     />
   );
 
@@ -39,6 +40,7 @@ it("should call updateApplicationsState on refuse button click", async () => {
     <EmployerButtons
       application={application}
       updateApplicationsState={updateApplicationsState}
+      offer={offer}
     />
   );
 
