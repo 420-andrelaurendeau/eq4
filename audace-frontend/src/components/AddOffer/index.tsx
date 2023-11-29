@@ -111,7 +111,7 @@ const AddOffer: React.FC = () => {
         offerStatus: OfferStatus.PENDING,
         employer
       };
-  
+
       try {
         await addOffer(formData);
         navigate(`/employer`);
@@ -122,11 +122,11 @@ const AddOffer: React.FC = () => {
       setShowAlert(true);
     }
   };
-  
+
 
   const addOffer = async (offerData: Offer) => {
     try {
-     await employerCreateOffer(offerData);
+      await employerCreateOffer(offerData);
 
     } catch (error) {
       console.error("There was an error sending the data:", error);
@@ -135,17 +135,17 @@ const AddOffer: React.FC = () => {
 
   return (
     <>
-    <h3 className="text-center">{t("addOffer.pageTitle")}</h3>
-    <Form className="container mt-5">
-    {showAlert && (
-        <Alert variant="danger" onClose={resetAlert} dismissible>
-          {errors.map((error, index) => (
-            <p key={index}>{t(error)}</p>
-          ))}
-        </Alert>
-      )}
-      <Row>
-        <FormInput
+      <h3 className="text-center mt-3">{t("addOffer.pageTitle")}</h3>
+      <Form className="container mt-5">
+        {showAlert && (
+          <Alert variant="danger" onClose={resetAlert} dismissible>
+            {errors.map((error, index) => (
+              <p key={index}>{t(error)}</p>
+            ))}
+          </Alert>
+        )}
+        <Row>
+          <FormInput
             label="addOffer.title"
             value={title}
             onChange={(e: any) => setTitle(e.target.value)}
@@ -184,7 +184,7 @@ const AddOffer: React.FC = () => {
 
 
         <Row>
-        <Col md="4">
+          <Col md="4">
             <Form.Group controlId="formOfferStartDate">
               <Form.Label>{t("addOffer.startDate")}</Form.Label>
               <Form.Control

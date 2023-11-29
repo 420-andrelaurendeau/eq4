@@ -8,7 +8,7 @@ import {
 import { getUserId } from "../../services/authService";
 import Notification from "../../model/notification";
 import { useTranslation } from "react-i18next";
-import { Button } from "react-bootstrap";
+import { Button, Container, Row } from "react-bootstrap";
 
 const NotificationSidebar = () => {
   const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -34,10 +34,7 @@ const NotificationSidebar = () => {
   const renderNotifications = () => {
     return notifications.map((notification: Notification) => {
       return (
-        <div
-          className="alert alert-danger mb-0 rounded-start-0 notification"
-          key={notification.id}
-        >
+        <Container key={notification.id} className="alert alert-info mb-2 rounded-start-0 notification">
           <div
             className="float-end cursor-pointer"
             onClick={() => {
@@ -47,7 +44,7 @@ const NotificationSidebar = () => {
             <i className="bi bi-trash"></i>
           </div>
           {makeNotifications(notification)}
-        </div>
+        </Container>
       );
     });
   };
@@ -69,22 +66,22 @@ const NotificationSidebar = () => {
       <div>
         {t(
           "notifications." +
-            notification.user.type +
-            "." +
-            notification.type +
-            "." +
-            notification.cause +
-            "1"
+          notification.user.type +
+          "." +
+          notification.type +
+          "." +
+          notification.cause +
+          "1"
         )}{" "}
         {title}{" "}
         {t(
           "notifications." +
-            notification.user.type +
-            "." +
-            notification.type +
-            "." +
-            notification.cause +
-            "2"
+          notification.user.type +
+          "." +
+          notification.type +
+          "." +
+          notification.cause +
+          "2"
         )}
       </div>
     );

@@ -50,7 +50,6 @@ const FileUploader = ({ student }: Props) => {
       <h5>{t("upload.CvFormTitle")}</h5>
       <Form className="my-3">
         <Form.Group controlId="formBasicCvFile">
-          <Form.Label>{t("upload.file")}</Form.Label>
           <FormControl
             type="file"
             accept=".pdf"
@@ -60,13 +59,15 @@ const FileUploader = ({ student }: Props) => {
           />
         </Form.Group>
 
-        <Button
-          variant="outline-primary"
-          className="mt-3 text-dark"
-          onClick={submitForm}
-        >
-          {t("upload.submit")}
-        </Button>
+        {file && (
+          <Button
+            variant="outline-primary"
+            className="mt-3 text-dark"
+            onClick={submitForm}
+          >
+            {t("upload.submit")}
+          </Button>
+        )}
       </Form>
       {successMessage !== "" && (
         <Alert variant="success">{t(successMessage)}</Alert>

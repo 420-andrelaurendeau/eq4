@@ -83,7 +83,7 @@ const ManagerCvView = () => {
   };
   return (
     <Container>
-      <h1>{t("managerCvsList.viewTitle")}</h1>
+      <h1 className="mt-3">{t("managerCvsList.viewTitle")}</h1>
 
       <SessionSelector />
 
