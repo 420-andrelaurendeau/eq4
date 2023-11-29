@@ -152,7 +152,8 @@
         "email": "Email",
         "phone": "Phone",
         "position": "Position",
-        "extension": "Extension"
+        "extension": "Extension",
+        "title": "Supervisor"
       },
       "title": "Create Contract",
       "startHour": "Start Hour",
@@ -165,7 +166,12 @@
         "invalidStartHour": "Start hour is invalid",
         "invalidEndHour": "End hour is invalid",
         "invalidTotalHoursPerWeek": "Total hours per week is invalid",
-        "invalidSalary": "Salary is invalid"
+        "invalidSalary": "Salary is invalid",
+        "invalidSupervisorFirstName": "Supervisor first name is invalid",
+        "invalidSupervisorLastName": "Supervisor last name is invalid",
+        "invalidSupervisorEmail": "Supervisor email is invalid",
+        "invalidSupervisorPhone": "Supervisor phone is invalid",
+        "invalidSupervisorPosition": "Supervisor position is invalid"
       }
     }
   },

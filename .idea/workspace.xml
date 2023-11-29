@@ -6,11 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="e422380c-210f-421a-9275-8ce951f69b8f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/OffersList/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/audace-frontend/src/components/AddContract/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/components/AddContract/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-frontend/src/internationalization/locales/en.json" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/internationalization/locales/en.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/audace-frontend/src/internationalization/locales/fr.json" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/internationalization/locales/fr.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/views/Manager/ManagerCvView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/views/Manager/ManagerCvView/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/audace-frontend/src/views/Manager/ManagerOfferView/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/audace-frontend/src/views/Manager/ManagerOfferView/index.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -271,7 +269,7 @@
       <workItem from="1700123286011" duration="9717000" />
       <workItem from="1700133139742" duration="381000" />
       <workItem from="1700133723550" duration="3209000" />
-      <workItem from="1701230368821" duration="4356000" />
+      <workItem from="1701230368821" duration="7853000" />
     </task>
     <servers />
   </component>

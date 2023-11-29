@@ -57,6 +57,52 @@ const AddContract = () => {
       });
   });
 
+  const validateForm = (): boolean => {
+    const errorsToDisplay: string[] = [];
+
+    if (!application) {
+      errorsToDisplay.push("manager.createContract.errors.applicationNotFound");
+    }
+
+    if (!supervisorFirstName.trim()) {
+      errorsToDisplay.push("manager.createContract.errors.invalidSupervisorFirstName");
+    }
+
+    if (!supervisorLastName.trim()) {
+      errorsToDisplay.push("manager.createContract.errors.invalidSupervisorLastName");
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!supervisorEmail.trim() || !emailRegex.test(supervisorEmail)) {
+      errorsToDisplay.push("manager.createContract.errors.invalidSupervisorEmail");
+    }
+
+
+    if (!supervisorPosition.trim()) {
+      errorsToDisplay.push("manager.createContract.errors.invalidSupervisorPosition");
+    }
+
+    const isValidTime = (time: string) => /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(time);
+    if (!isValidTime(startHour)) {
+      errorsToDisplay.push("manager.createContract.errors.invalidStartHour");
+    }
+
+    if (!isValidTime(endHour) || endHour <= startHour) {
+      errorsToDisplay.push("manager.createContract.errors.invalidEndHour");
+    }
+
+    if (totalHoursPerWeek <= 0 || totalHoursPerWeek > 168) {
+      errorsToDisplay.push("manager.createContract.errors.invalidTotalHoursPerWeek");
+    }
+
+    if (salary < 15.25) {
+      errorsToDisplay.push("manager.createContract.errors.invalidSalary");
+    }
+
+    setErrors(errorsToDisplay);
+    return errorsToDisplay.length === 0;
+  };
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!validateForm()) return;
@@ -85,22 +131,6 @@ const AddContract = () => {
       console.error(error);
       setIsLoading(false);
     }
-  };
-
-  const validateForm = (): boolean => {
-    const errorsToDisplay: string[] = [];
-
-    if (application === undefined)
-      errorsToDisplay.push("manager.createContract.errors.applicationNotFound");
-    if (totalHoursPerWeek <= 0 || totalHoursPerWeek > 168)
-      errorsToDisplay.push(
-        "manager.createContract.errors.invalidTotalHoursPerWeek"
-      );
-    if (salary <= 0)
-      errorsToDisplay.push("manager.createContract.errors.invalidSalary");
-
-    setErrors(errorsToDisplay);
-    return errorsToDisplay.length === 0;
   };
 
   return (
@@ -133,7 +163,7 @@ const AddContract = () => {
         >
           <Accordion.Item eventKey="0">
             <Accordion.Header>
-              <Card.Title>Supervisor</Card.Title>
+              <Card.Title>{t("manager.createContract.supervisor.title")}</Card.Title>
             </Accordion.Header>
             <Accordion.Body>
               <Card.Body>

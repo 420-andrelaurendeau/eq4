@@ -152,7 +152,8 @@
         "email": "E-mail",
         "phone": "Téléphone",
         "position": "Poste",
-        "extension": "Extension"
+        "extension": "Extension",
+        "title": "Superviseur"
       },
       "title": "Créer un contrat",
       "startHour": "Heure de début",
@@ -166,7 +167,12 @@
         "invalidStartHour": "L'heure de début est invalide",
         "invalidEndHour": "L'heure de fin est invalide",
         "invalidTotalHoursPerWeek": "Le nombre d'heures par semaine est invalide",
-        "invalidSalary": "Le salaire est invalide"
+        "invalidSalary": "Le salaire est invalide",
+        "invalidSupervisorFirstName": "Le prénom du superviseur est invalide",
+        "invalidSupervisorLastName": "Le nom de famille du superviseur est invalide",
+        "invalidSupervisorEmail": "L'e-mail du superviseur est invalide",
+        "invalidSupervisorPhone": "Le numéro de téléphone du superviseur est invalide",
+        "invalidSupervisorPosition": "Le poste du superviseur est invalide"
       }
     }
   },
