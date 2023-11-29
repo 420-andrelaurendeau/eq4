@@ -93,7 +93,10 @@
     "refuseButton": "Refuse",
     "ACCEPTED": "Accepted",
     "REFUSED": "Refused",
-    "noMorePendingOffers": "There are no more pending offers"
+    "noMorePendingOffers": "There are no more pending offers",
+    "pendingOffers": "Pending Offers",
+    "acceptedOffers": "Accepted Offers",
+    "refusedOffers": "Refused Offers"
   },
   "managerCvsList": {
     "errors": {

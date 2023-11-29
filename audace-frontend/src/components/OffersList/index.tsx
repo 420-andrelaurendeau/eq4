@@ -28,7 +28,7 @@ const OffersList = ({
           list={offers}
           error={error}
           emptyListMessage="offersList.noOffers"
-          title="studentOffersList.viewTitle"
+          title=""
         >
           <thead>
             <tr>

@@ -93,7 +93,7 @@ const ManagerCvView = () => {
             <CvsList cvs={cvs} error={error} updateCvsState={updateCvsState} />
           </Container>
       ) : (
-        <p className="text-center">{t("managerCvsList.noMorePendingCvs")}</p>
+        <p>{t("managerCvsList.noMorePendingCvs")}</p>
       )}
       {cvsAccepted.length > 0 ? (
           <Container style={{ padding: 0 }}>

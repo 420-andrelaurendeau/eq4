@@ -82,18 +82,28 @@ const ManagerOfferView = () => {
   };
   return (
     <Container className="mt-3">
+      <h1 className="mt-3">{t("managerOffersList.viewTitle")}</h1>
       <SessionSelector />
 
       {offers.length > 0 ? (
-        <OffersList offers={offers} error={error} updateOffersState={updateOffersState}/>
+        <Container style={{ padding: 0 }}>
+          <h4>{t("managerOffersList.pendingOffers")}</h4>
+          <OffersList offers={offers} error={error} updateOffersState={updateOffersState}/>
+        </Container>
       ) : (
         <p>{t("managerOffersList.noMorePendingOffers")}</p>
       )}
       {offersAccepted.length > 0 ? (
-        <OffersList offers={offersAccepted} error={error} />
+          <Container style={{ padding: 0 }}>
+            <h4>{t("managerOffersList.acceptedOffers")}</h4>
+            <OffersList offers={offersAccepted} error={error} />
+          </Container>
       ) : null}
       {offersRefused.length > 0 ? (
-        <OffersList offers={offersRefused} error={error} />
+          <Container style={{ padding: 0 }}>
+            <h4>{t("managerOffersList.refusedOffers")}</h4>
+            <OffersList offers={offersRefused} error={error} />
+          </Container>
       ) : null}
     </Container>
   );
