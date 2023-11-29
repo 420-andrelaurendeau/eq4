@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { Table, Form, Row, Col } from "react-bootstrap";
 import Application from "../../model/application";
 import { useTranslation } from "react-i18next";
@@ -74,10 +74,11 @@ const ManagerApplicationsList = ({ applications }: Props) => {
             </thead>
             <tbody className="table-custom">
               {filteredApplications.map((application) => (
-                <ManagerApplicationRow
-                  key={application.id}
-                  application={application}
-                />
+                <Fragment key={application.id}>
+                  <ManagerApplicationRow
+                    application={application}
+                  />
+                </Fragment>
               ))}
             </tbody>
           </Table>

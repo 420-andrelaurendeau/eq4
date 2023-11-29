@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { Student, StudentsByInternshipFoundStatus } from "../../model/user";
 import {
   getDepartmentByManager,
@@ -128,11 +128,12 @@ const ManagerStudentByInternshipStatusList = () => {
             </thead>
             <tbody className="table-custom">
               {filteredStudents.map((student) => (
-                <ManagerStudentByInternshipStatusRow
-                  key={student.id}
-                  student={student}
-                  status={studentsByInternshipStatus![selectedOption].status}
-                />
+                <Fragment key={student.id}>
+                  <ManagerStudentByInternshipStatusRow
+                    student={student}
+                    status={studentsByInternshipStatus![selectedOption].status}
+                  />
+                </Fragment>
               ))}
             </tbody>
           </Table>
