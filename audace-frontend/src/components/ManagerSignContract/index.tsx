@@ -47,45 +47,42 @@ const ContractsList = ({ departmentId }: Props) => {
 
   return (
     <>
-      <Container fluid>
-        <Row style={{ padding: "16px 0", display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
-          <Col><h3>{t("contractsList.title")}</h3></Col>
-        </Row>
+      <Row style={{ padding: "16px 0", display: "flex", justifyContent: "flex-end", alignItems: "center" }}>
+        <Col><h3>{t("contractsList.title")}</h3></Col>
+      </Row>
+      {filteredContracts.length > 0 ? (
+        <div style={{ overflow: "auto", maxHeight: "18.5rem" }}>
+          <Table className="table-custom" striped bordered hover size="sm">
+            <thead className="table-custom">
+              <tr>
+                <th>{t("contractsList.studentName")}</th>
+                <th>{t("contractsList.employerName")}</th>
+                <th>{t("contractsList.offerTitle")}</th>
+                <th>{t("contractsList.Dates")}</th>
+                <th>{t("contractsList.actions")}</th>
+              </tr>
+            </thead>
+            <tbody className="table-custom">
+              {filteredContracts.map((contract) => (
+                <tr key={contract.id}>
 
-        {filteredContracts.length > 0 ? (
-          <div style={{ overflow: "auto", maxHeight: "18.5rem" }}>
-            <Table className="table-custom" striped bordered hover size="sm">
-              <thead className="table-custom">
-                <tr>
-                  <th>{t("contractsList.studentName")}</th>
-                  <th>{t("contractsList.employerName")}</th>
-                  <th>{t("contractsList.offerTitle")}</th>
-                  <th>{t("contractsList.Dates")}</th>
-                  <th>{t("contractsList.actions")}</th>
+                  <td>{contract.application.cv!.student.firstName} {contract.application.cv!.student.lastName}</td>
+                  <td>{`${contract.application.offer!.employer.firstName} ${contract.application.offer!.employer.lastName}`}</td>
+                  <td>{contract.application.offer!.title}</td>
+                  <td>{format(new Date(contract.application.offer!.internshipStartDate), 'dd/MM/yyyy')}, {format(new Date(contract.application.offer!.internshipEndDate), 'dd/MM/yyyy')}</td>
+                  <td>
+                    <Button variant="primary" size="sm" onClick={() => handleViewContract(contract.id!)}>
+                      {t("contractsList.viewDetails")}
+                    </Button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody className="table-custom">
-                {filteredContracts.map((contract) => (
-                  <tr key={contract.id}>
-
-                    <td>{contract.application.cv!.student.firstName} {contract.application.cv!.student.lastName}</td>
-                    <td>{`${contract.application.offer!.employer.firstName} ${contract.application.offer!.employer.lastName}`}</td>
-                    <td>{contract.application.offer!.title}</td>
-                    <td>{format(new Date(contract.application.offer!.internshipStartDate), 'dd/MM/yyyy')}, {format(new Date(contract.application.offer!.internshipEndDate), 'dd/MM/yyyy')}</td>
-                    <td>
-                      <Button variant="primary" size="sm" onClick={() => handleViewContract(contract.id!)}>
-                        {t("contractsList.viewDetails")}
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          </div>
-        ) : (
-          <p>{t("contractsList.noContractsFound")}</p>
-        )}
-      </Container>
+              ))}
+            </tbody>
+          </Table>
+        </div>
+      ) : (
+        <p>{t("contractsList.noContractsFound")}</p>
+      )}
     </>
   );
 };

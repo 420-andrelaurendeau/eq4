@@ -9,16 +9,22 @@ import {
   employerRefuseApplication,
 } from "../../../../../services/applicationService";
 import { getUserId } from "../../../../../services/authService";
+import { Offer } from "../../../../../model/offer";
 
 interface Props {
   application: Application;
+  offer: Offer;
   updateApplicationsState?: (
     application: Application,
     applicationStatus: ApplicationStatus
   ) => void;
 }
 
-const EmployerButtons = ({ application, updateApplicationsState }: Props) => {
+const EmployerButtons = ({
+  application,
+  updateApplicationsState,
+  offer,
+}: Props) => {
   const { t } = useTranslation();
 
   const acceptButtonClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -43,16 +49,23 @@ const EmployerButtons = ({ application, updateApplicationsState }: Props) => {
     <>
       {application.applicationStatus === "PENDING" ? (
         <>
-          <Button
-            onClick={acceptButtonClick}
-            className="me-2"
-            variant="outline-success"
-          >
-            {t("employerApplicationsList.acceptButton")}
-          </Button>
-          <Button onClick={refuseButtonClick} variant="outline-danger">
-            {t("employerApplicationsList.refuseButton")}
-          </Button>
+          {offer.availablePlaces > 0 ? (
+            <>
+              <Button
+                onClick={acceptButtonClick}
+                className="me-2"
+                variant="outline-success"
+              >
+                {t("employerApplicationsList.acceptButton")}
+              </Button>
+              <Button onClick={refuseButtonClick} variant="outline-danger">
+                {t("employerApplicationsList.refuseButton")}
+              </Button>
+              {offer.availablePlaces}
+            </>
+          ) : (
+            <p>{t("employerApplicationsList.noPlaces")}</p>
+          )}
         </>
       ) : (
         <p>{t("employerApplicationsList." + application.applicationStatus)}</p>

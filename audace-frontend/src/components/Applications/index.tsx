@@ -6,6 +6,7 @@ import ApplicationsList from "../ApplicationsList";
 interface Props {
   applications: Application[];
   error: string;
+  offer: Offer;
   updateAvailablePlaces?: (offer: Offer) => void;
   updateApplicationsState?: (
     application: Application,
@@ -16,6 +17,7 @@ interface Props {
 const Applications = ({
   applications,
   error,
+  offer,
   updateApplicationsState,
 }: Props) => {
   return (
@@ -24,6 +26,7 @@ const Applications = ({
         <ApplicationsList
           applications={applications}
           error={error}
+          offer={offer}
           updateApplicationsState={updateApplicationsState}
         />
       }

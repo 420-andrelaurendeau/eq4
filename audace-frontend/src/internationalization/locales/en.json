@@ -93,7 +93,10 @@
     "refuseButton": "Refuse",
     "ACCEPTED": "Accepted",
     "REFUSED": "Refused",
-    "noMorePendingOffers": "There are no more pending offers"
+    "noMorePendingOffers": "There are no more pending offers",
+    "pendingOffers": "Pending Offers",
+    "acceptedOffers": "Accepted Offers",
+    "refusedOffers": "Refused Offers"
   },
   "managerCvsList": {
     "errors": {
@@ -106,7 +109,10 @@
     "refuseButton": "Refuse",
     "ACCEPTED": "Accepted",
     "REFUSED": "Refused",
-    "noMorePendingCvs": "There are no more pending CVs"
+    "noMorePendingCvs": "There are no more pending CVs",
+    "pendingCvs": "Pending CVs",
+    "acceptedCvs": "Accepted CVs",
+    "refusedCvs": "Refused CVs"
   },
   "employerApplicationsList": {
     "title": "Applications",
@@ -114,7 +120,8 @@
     "refuseButton": "Refuse",
     "PENDING": "Pending",
     "ACCEPTED": "Accepted",
-    "REFUSED": "Refused"
+    "REFUSED": "Refused",
+    "noPlaces": "No places available"
   },
   "employerOffersList": {
     "viewTitle": "Available Offers",
@@ -145,7 +152,8 @@
         "email": "Email",
         "phone": "Phone",
         "position": "Position",
-        "extension": "Extension"
+        "extension": "Extension",
+        "title": "Supervisor"
       },
       "title": "Create Contract",
       "startHour": "Start Hour",
@@ -158,7 +166,12 @@
         "invalidStartHour": "Start hour is invalid",
         "invalidEndHour": "End hour is invalid",
         "invalidTotalHoursPerWeek": "Total hours per week is invalid",
-        "invalidSalary": "Salary is invalid"
+        "invalidSalary": "Salary is invalid",
+        "invalidSupervisorFirstName": "Supervisor first name is invalid",
+        "invalidSupervisorLastName": "Supervisor last name is invalid",
+        "invalidSupervisorEmail": "Supervisor email is invalid",
+        "invalidSupervisorPhone": "Supervisor phone is invalid",
+        "invalidSupervisorPosition": "Supervisor position is invalid"
       }
     }
   },
@@ -276,7 +289,7 @@
         "ACCEPTED": "Accepted",
         "REFUSED": "Refused",
         "PENDING": "Pending",
-        "NO_APPLICATIONS": "No applications",
+        "NO_APPLICATION": "No applications",
         "INTERN": "Intern"
       }
     }

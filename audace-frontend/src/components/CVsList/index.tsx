@@ -21,7 +21,7 @@ const CvsList = ({ cvs, error, updateCvsState }: Props) => {
         list={cvs}
         error={error}
         emptyListMessage="cvsList.noCvs"
-        title="cvsList.name"
+        title=""
       >
         <thead>
           <tr>

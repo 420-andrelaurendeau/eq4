@@ -115,6 +115,7 @@ const OfferRow = ({
               <Card.Body>
                 <Applications
                   error={error}
+                  offer={offer}
                   applications={applications}
                   updateAvailablePlaces={updateAvailablePlaces}
                   updateApplicationsState={updateApplicationsState}

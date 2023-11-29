@@ -60,13 +60,15 @@ const FileUploader = ({ student }: Props) => {
           />
         </Form.Group>
 
-        <Button
-          variant="outline-primary"
-          className="mt-3 text-dark"
-          onClick={submitForm}
-        >
-          {t("upload.submit")}
-        </Button>
+        {file && (
+          <Button
+            variant="outline-primary"
+            className="mt-3 text-dark"
+            onClick={submitForm}
+          >
+            {t("upload.submit")}
+          </Button>
+        )}
       </Form>
       {successMessage !== "" && (
         <Alert variant="success">{t(successMessage)}</Alert>

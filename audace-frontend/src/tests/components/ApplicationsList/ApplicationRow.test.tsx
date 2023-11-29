@@ -1,13 +1,13 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import ApplicationRow from "../../../components/ApplicationsList/ApplicationRow";
-import { application } from "../testUtils/testUtils";
+import { application, offer } from "../testUtils/testUtils";
 import "@testing-library/jest-dom/extend-expect";
 import { UserType } from "../../../model/user";
 
 jest.mock("../../../components/PDFViewer", () => () => <div>We are here</div>);
 
 it("should display the application values", () => {
-  render(<ApplicationRow application={application} />);
+  render(<ApplicationRow application={application} offer={offer} />);
 
   expect(screen.getByText(/The best cv/i)).toBeInTheDocument();
   expect(screen.getByText(/organisation/i)).toBeInTheDocument();
@@ -18,7 +18,7 @@ it("should display employer buttons if user is employer", () => {
     .spyOn(require("../../../services/authService"), "getUserType")
     .mockImplementation(() => UserType.Employer);
 
-  render(<ApplicationRow application={application} />);
+  render(<ApplicationRow application={application} offer={offer} />);
 
   expect(
     screen.getByText(/employerApplicationsList.acceptButton/i)

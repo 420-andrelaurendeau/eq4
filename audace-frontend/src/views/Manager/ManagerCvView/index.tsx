@@ -83,20 +83,29 @@ const ManagerCvView = () => {
   };
   return (
     <Container>
-      <h1>{t("managerCvsList.viewTitle")}</h1>
+      <h1 className="mt-3">{t("managerCvsList.viewTitle")}</h1>
 
       <SessionSelector />
 
       {cvs.length > 0 ? (
-        <CvsList cvs={cvs} error={error} updateCvsState={updateCvsState} />
+          <Container style={{ padding: 0 }}>
+            <h4>{t("managerCvsList.pendingCvs")}</h4>
+            <CvsList cvs={cvs} error={error} updateCvsState={updateCvsState} />
+          </Container>
       ) : (
-        <p className="text-center">{t("managerCvsList.noMorePendingCvs")}</p>
+        <p>{t("managerCvsList.noMorePendingCvs")}</p>
       )}
       {cvsAccepted.length > 0 ? (
-        <CvsList cvs={cvsAccepted} error={error} />
+          <Container style={{ padding: 0 }}>
+            <h4>{t("managerCvsList.acceptedCvs")}</h4>
+            <CvsList cvs={cvsAccepted} error={error} />
+          </Container>
       ) : null}
       {cvsRefused.length > 0 ? (
-        <CvsList cvs={cvsRefused} error={error} />
+          <Container style={{ padding: 0 }}>
+            <h4>{t("managerCvsList.refusedCvs")}</h4>
+            <CvsList cvs={cvsRefused} error={error} />
+          </Container>
       ) : null}
     </Container>
   );

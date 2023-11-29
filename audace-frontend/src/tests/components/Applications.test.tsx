@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom/extend-expect";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import Applications from "../../components/Applications";
-import { application } from "./testUtils/testUtils";
+import { application, offer } from "./testUtils/testUtils";
 import { UserType } from "../../model/user";
 import { ApplicationStatus } from "../../model/application";
 
@@ -14,7 +14,7 @@ beforeEach(() => {
 });
 
 it("should display the application table", () => {
-  render(<Applications applications={[application]} error="" />);
+  render(<Applications applications={[application]} error="" offer={offer} />);
 
   expect(screen.getByText(/applicationsList.title/i)).toBeInTheDocument();
 });
@@ -49,6 +49,7 @@ describe("button clicks", () => {
         updateAvailablePlaces={jest.fn()}
         applications={[application]}
         error=""
+        offer={offer}
       />
     );
 
@@ -76,6 +77,7 @@ describe("button clicks", () => {
         updateAvailablePlaces={jest.fn()}
         applications={[application]}
         error=""
+        offer={offer}
       />
     );
 

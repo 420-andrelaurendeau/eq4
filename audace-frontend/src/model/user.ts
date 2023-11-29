@@ -38,11 +38,11 @@ export interface StudentsWithStatus {
 }
 
 export enum InternshipStatus {
-  studentsWithIntership = "INTERN",
   studentsWithPendingResponse = "PENDING",
   studentsWithRefusedResponse = "REFUSED",
   studentsWithAcceptedResponse = "ACCEPTED",
   studentsWithNoApplications = "NO_APPLICATION",
+  studentsWithInternship = "INTERN"
 }
 
 export interface StudentsByInternshipFoundStatus {

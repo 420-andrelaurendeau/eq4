@@ -161,9 +161,7 @@ const LoginForm = () => {
           {t("signin")}
         </Button>
         {!areCredentialsValid && (
-          <p className="invalid-credentials">
-            {t("login.errors.invalidCredentials")}
-          </p>
+          <Alert variant="danger mt-3">{t("login.errors.invalidCredentials")}</Alert>
         )}
       </Form>
       {showExpiredSessionNotif && (

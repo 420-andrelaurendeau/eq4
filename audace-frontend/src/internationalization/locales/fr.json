@@ -93,7 +93,10 @@
     "refuseButton": "Refuser",
     "ACCEPTED": "Accepté",
     "REFUSED": "Refusé",
-    "noMorePendingOffers": "Il n'y a plus d'offres en attente"
+    "noMorePendingOffers": "Il n'y a plus d'offre en attente",
+    "pendingOffers": "Offres en attente d'approbation",
+    "acceptedOffers": "Offres acceptées",
+    "refusedOffers": "Offres refusées"
   },
   "managerCvsList": {
     "errors": {
@@ -106,7 +109,10 @@
     "refuseButton": "Refuser",
     "ACCEPTED": "Accepté",
     "REFUSED": "Refusé",
-    "noMorePendingCvs": "Il n'y a plus de CV en attente"
+    "noMorePendingCvs": "Il n'y a plus de CV en attente",
+    "pendingCvs": "CVs en attente d'approbation",
+    "acceptedCvs": "CVs acceptés",
+    "refusedCvs": "CVs refusés"
   },
   "employerApplicationsList": {
     "title": "Candidatures",
@@ -114,7 +120,8 @@
     "refuseButton": "Refuser",
     "PENDING": "En attente",
     "ACCEPTED": "Accepté",
-    "REFUSED": "Refusé"
+    "REFUSED": "Refusé",
+    "noPlaces": "Aucune place disponible"
   },
   "employerOffersList": {
     "viewTitle": "Offres disponibles",
@@ -145,7 +152,8 @@
         "email": "E-mail",
         "phone": "Téléphone",
         "position": "Poste",
-        "extension": "Extension"
+        "extension": "Extension",
+        "title": "Superviseur"
       },
       "title": "Créer un contrat",
       "startHour": "Heure de début",
@@ -159,7 +167,12 @@
         "invalidStartHour": "L'heure de début est invalide",
         "invalidEndHour": "L'heure de fin est invalide",
         "invalidTotalHoursPerWeek": "Le nombre d'heures par semaine est invalide",
-        "invalidSalary": "Le salaire est invalide"
+        "invalidSalary": "Le salaire est invalide",
+        "invalidSupervisorFirstName": "Le prénom du superviseur est invalide",
+        "invalidSupervisorLastName": "Le nom de famille du superviseur est invalide",
+        "invalidSupervisorEmail": "L'e-mail du superviseur est invalide",
+        "invalidSupervisorPhone": "Le numéro de téléphone du superviseur est invalide",
+        "invalidSupervisorPosition": "Le poste du superviseur est invalide"
       }
     }
   },
@@ -276,7 +289,7 @@
         "ACCEPTED": "Accepté",
         "REFUSED": "Refusé",
         "PENDING": "En Attente",
-        "NO_APPLICATIONS": "Aucune application",
+        "NO_APPLICATION": "Aucune application",
         "INTERN": "Stagiaire"
       }
     }
