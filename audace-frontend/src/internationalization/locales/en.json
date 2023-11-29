@@ -106,7 +106,10 @@
     "refuseButton": "Refuse",
     "ACCEPTED": "Accepted",
     "REFUSED": "Refused",
-    "noMorePendingCvs": "There are no more pending CVs"
+    "noMorePendingCvs": "There are no more pending CVs",
+    "pendingCvs": "Pending CVs",
+    "acceptedCvs": "Accepted CVs",
+    "refusedCvs": "Refused CVs"
   },
   "employerApplicationsList": {
     "title": "Applications",
@@ -277,7 +280,7 @@
         "ACCEPTED": "Accepted",
         "REFUSED": "Refused",
         "PENDING": "Pending",
-        "NO_APPLICATIONS": "No applications",
+        "NO_APPLICATION": "No applications",
         "INTERN": "Intern"
       }
     }

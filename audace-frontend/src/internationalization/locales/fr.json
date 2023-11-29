@@ -106,7 +106,10 @@
     "refuseButton": "Refuser",
     "ACCEPTED": "Accepté",
     "REFUSED": "Refusé",
-    "noMorePendingCvs": "Il n'y a plus de CV en attente"
+    "noMorePendingCvs": "Il n'y a plus de CV en attente",
+    "pendingCvs": "CVs en attente d'approbation",
+    "acceptedCvs": "CVs acceptés",
+    "refusedCvs": "CVs refusés"
   },
   "employerApplicationsList": {
     "title": "Candidatures",
@@ -277,7 +280,7 @@
         "ACCEPTED": "Accepté",
         "REFUSED": "Refusé",
         "PENDING": "En Attente",
-        "NO_APPLICATIONS": "Aucune application",
+        "NO_APPLICATION": "Aucune application",
         "INTERN": "Stagiaire"
       }
     }
