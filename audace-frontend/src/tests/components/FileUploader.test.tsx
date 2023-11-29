@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import FileUploader from "../../components/FileUploader";
 import { Student } from "../../model/user";
+import "@testing-library/jest-dom/extend-expect";
 
 const student: Student = {
   studentNumber: "1234567890",
@@ -12,12 +13,6 @@ const student: Student = {
   password: "password",
   type: "student",
 };
-
-it("should have a submit button", () => {
-  render(<FileUploader student={student} />);
-
-  screen.getByText(/upload.submit/i);
-});
 
 it("should have a file input", () => {
   render(<FileUploader student={student} />);
@@ -45,7 +40,9 @@ it("should submit a file", async () => {
 it("should not submit without a file", async () => {
   render(<FileUploader student={student} />);
 
-  fireEvent.click(screen.getByText(/upload.submit/i));
+  const submitButton = screen.queryByText(/upload.submit/i);
+
+  expect(submitButton).not.toBeInTheDocument();
 });
 
 it("should pop an alert on submit failure", async () => {

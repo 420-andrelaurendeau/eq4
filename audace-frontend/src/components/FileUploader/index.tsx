@@ -50,6 +50,7 @@ const FileUploader = ({ student }: Props) => {
       <h5>{t("upload.CvFormTitle")}</h5>
       <Form className="my-3">
         <Form.Group controlId="formBasicCvFile">
+          <Form.Label>{t("upload.file")}</Form.Label>
           <FormControl
             type="file"
             accept=".pdf"
