@@ -86,6 +86,9 @@ const ManagerStudentByInternshipStatusList = () => {
               value={selectedOption}
               onChange={handleDropdownChange}
             >
+              <option value="studentsWithInternship">
+                {t("studentsByInternship.row.statusValues.INTERN")}
+              </option>
               <option value="studentsWithPendingResponse">
                 {t("studentsByInternship.row.statusValues.PENDING")}
               </option>
@@ -96,7 +99,7 @@ const ManagerStudentByInternshipStatusList = () => {
                 {t("studentsByInternship.row.statusValues.REFUSED")}
               </option>
               <option value="studentsWithoutApplications">
-                {t("studentsByInternship.row.statusValues.NO_APPLICATIONS")}
+                {t("studentsByInternship.row.statusValues.NO_APPLICATION")}
               </option>
             </select>
           </Col>
