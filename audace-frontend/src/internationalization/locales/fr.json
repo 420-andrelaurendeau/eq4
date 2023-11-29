@@ -114,7 +114,8 @@
     "refuseButton": "Refuser",
     "PENDING": "En attente",
     "ACCEPTED": "Accepté",
-    "REFUSED": "Refusé"
+    "REFUSED": "Refusé",
+    "noPlaces": "Aucune place disponible"
   },
   "employerOffersList": {
     "viewTitle": "Offres disponibles",
