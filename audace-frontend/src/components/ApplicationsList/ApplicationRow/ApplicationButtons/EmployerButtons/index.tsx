@@ -60,8 +60,7 @@ const EmployerButtons = ({
               </Button>
               <Button onClick={refuseButtonClick} variant="outline-danger">
                 {t("employerApplicationsList.refuseButton")}
-              </Button>
-              {offer.availablePlaces}
+              </Button>{" "}
             </>
           ) : (
             <p>{t("employerApplicationsList.noPlaces")}</p>
